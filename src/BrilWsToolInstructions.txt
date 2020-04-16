@@ -1,0 +1,27 @@
+**************Things to know before installing***************************
+
+- The below instructions are for downloading the brilws tool. This tool calculates the luminosity value required for calculating the normalisation factors for each process. 
+
+- Instructions are based on those given on the following webpage: https://cms-service-lumi.web.cern.ch/cms-service-lumi/brilwsdoc.html#commandstructure
+
+- These were implemented while logged into lxplus and inside the CMSSW version CMSSW_10_0_0. 
+
+- Instructions should be implemented while inside CMSSW_10_0_0/src and after typing cmsenv
+
+- Step 4 is to obtain the path of the "Bril" directory that you create. Copy and paste this path in step 5, in the place of where I have written "PUTYOURPATHHERE"
+
+- For step 8, input the correct nomtag in the place of "NAMEOFJSONNOMTAGGOESHERE". For 2017, the nomtag used was /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json. This was found under the heading "2017 pp 13 TeV run" on this webpage: https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#CurRec. For 2016 and 2018, the normtag used was the same as for 2017.  
+
+- Also for step 8, input the correct .txt file name for the golden json. For 2017, this was Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt. This was found in the "final" directory in the following link: https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions17/13TeV/. Links to other json txt files for other years can be found under the introduction heading of this webpage: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGoodLumiSectionsJSONFile. 
+
+**************Commands to type into the terminal***************************
+
+1. mkdir Bril
+2. export PATH=$HOME/.local/bin:/cvmfs/cms-bril.cern.ch/brilconda/bin:$PATH
+3. export PATH=$HOME/.local/bin:/nfshome0/lumipro/brilconda/bin:$PATH
+4. pwd
+5. export PATH=PUTYOURPATHHERE/bin:$PATH
+6. pip install --install-option="--prefix=$HOME/.local" brilws
+7. wget https://cern.ch/cmslumisw/installers/linux-64/Brilconda-1.1.7-Linux-x86_64.sh
+8. brilcalc lumi --normtag NAMEOFJSONNONTAGGOESHERE -u /fb -i NAMEOFTXTFILEGOESHERE
+8. Read the lumi value (in fb^-1) from the "totrecorded(/fb)" column.

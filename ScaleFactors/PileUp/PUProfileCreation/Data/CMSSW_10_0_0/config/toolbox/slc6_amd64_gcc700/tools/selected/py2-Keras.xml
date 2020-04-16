@@ -1,0 +1,3 @@
+<tool name="py2-Keras" version="2.1.2-mmelna">
+  <use name="py2-pippkgs_depscipy"/>
+</tool>

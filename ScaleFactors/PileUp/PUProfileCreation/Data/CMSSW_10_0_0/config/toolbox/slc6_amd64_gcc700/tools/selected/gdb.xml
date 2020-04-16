@@ -1,0 +1,6 @@
+<tool name="gdb" version="8.0-mmelna4">
+  <client>
+    <environment name="GDB_BASE" default="/cvmfs/cms.cern.ch/slc6_amd64_gcc700/external/gdb/8.0-mmelna4"/>
+  </client>
+  <runtime name="PATH" value="$GDB_BASE/bin" type="path"/>
+</tool>

@@ -1,0 +1,9 @@
+
+Nominal:
+pileupCalc.py -i Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt --inputLumiJSON pileup_latest.txt --calcMode true --minBiasXsec 69200 --maxPileupBin 100 --numPileupBins 100 MyDataPileupHistogram2018.root
+
+Scale up (varied the cross section value by one sigma (4.6% for Run 2)):
+pileupCalc.py -i Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt --inputLumiJSON pileup_latest.txt --calcMode true --minBiasXsec 72383.2 --maxPileupBin 100 --numPileupBins 100 MyDataPileupHistogramScaleUp2018.root
+
+Scale down (varied the cross section value by one sigma (4.6% for Run 2)):
+pileupCalc.py -i Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt --inputLumiJSON pileup_latest.txt --calcMode true --minBiasXsec 66016.8 --maxPileupBin 100 --numPileupBins 100 MyDataPileupHistogramScaleDown2018.root
