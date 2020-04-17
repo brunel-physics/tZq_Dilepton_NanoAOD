@@ -22,7 +22,7 @@ LIBRARIES = 	$(shell root-config --libs) \
 #		-lyaml-cpp \
 
 INCLUDE_PATH = 	-Iinclude  \
-                -isystem/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/include \	
+                -isystem/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/include \
 		-isystem$(shell root-config --incdir) \
 
 # Do NOT use -O3, it breaks MVA input creation
