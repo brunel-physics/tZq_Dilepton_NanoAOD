@@ -8841,7 +8841,8 @@ float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_e
 }}; 
 
 
-float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+
+float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down, &MuonSFTest_ID_sys_stat, &MuonSFTest_Iso_sys_stat](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_syst, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
@@ -8868,8 +8869,8 @@ float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Unce
 
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up);}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down );}
-  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_mumu * PdfMax );}
-  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_mumu * PdfMin );}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMax );}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2);}
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0);}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3);}
@@ -9321,8 +9322,8 @@ else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
 else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
 else if(ME_Up == true){branch = "ME_Up";}
 else if(ME_Down == true){branch = "ME_Down";}
-else if(alphaS_up == true){branch = "alphaS_Up";}
-else if(alphaS_down == true){branch = "alphaS_Down";}
+else if(alphaS_up == true){branch = "alphaS_up";}
+else if(alphaS_down == true){branch = "alphaS_down";}
 else if(isr_up == true){branch = "isr_up";}
 else if(isr_down == true){branch = "isr_down";}
 else if(fsr_up == true){branch = "fsr_up";}
@@ -11348,7 +11349,7 @@ else{std::cout << "Please select data or MC" << std::endl;}
 
 
 
-auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_Up, const bool& alphaS_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
   std::vector<std::string> Processes;
@@ -11428,47 +11429,47 @@ auto Hadd(const std::string& year, const bool& blinding){
 
  	if(year == "2016"){
 
-                gSystem->Exec("hadd Results_MCRatio_2016_ee_NPL_Blinded.root Results_t*q_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_ee_NPL_Blinded.root Results_Diboson_WZ_*_2016_ee_NPL_Blinded.root");
+                system("hadd Results_MCRatio_2016_ee_NPL_Blinded.root Results_t*q_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_ee_NPL_Blinded.root Results_Diboson_WZ_*_2016_ee_NPL_Blinded.root");
 	
-		gSystem->Exec("hadd Results_MCRatio_2016_mumu_NPL_Blinded.root Results_t*q_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2016_mumu_NPL_Blinded.root");
+		system("hadd Results_MCRatio_2016_mumu_NPL_Blinded.root Results_t*q_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2016_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllMC_2016_ee_NPL_Blinded.root Results_MC_*_2016_ee_NPL_Blinded.root");
+		system("hadd Results_AllMC_2016_ee_NPL_Blinded.root Results_MC_*_2016_ee_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllMC_2016_mumu_NPL_Blinded.root Results_MC_*_2016_mumu_NPL_Blinded.root");
+		system("hadd Results_AllMC_2016_mumu_NPL_Blinded.root Results_MC_*_2016_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllData_2016_ee_NPL_Blinded.root Results_data_*_2016_ee_NPL_Blinded.root");
+		system("hadd Results_AllData_2016_ee_NPL_Blinded.root Results_data_*_2016_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllData_2016_mumu_NPL_Blinded.root Results_data_*_2016_mumu_NPL_Blinded.root");
+                system("hadd Results_AllData_2016_mumu_NPL_Blinded.root Results_data_*_2016_mumu_NPL_Blinded.root");
 
         }
         else if(year == "2017"){
          
-	        gSystem->Exec("hadd Results_MCRatio_2017_ee_NPL_Blinded.root Results_t*q_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_ee_NPL_Blinded.root Results_Diboson_WZ_*_2017_ee_NPL_Blinded.root");
+	        system("hadd Results_MCRatio_2017_ee_NPL_Blinded.root Results_t*q_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_ee_NPL_Blinded.root Results_Diboson_WZ_*_2017_ee_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_MCRatio_2017_mumu_NPL_Blinded.root Results_t*q_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2017_mumu_NPL_Blinded.root");        
+		system("hadd Results_MCRatio_2017_mumu_NPL_Blinded.root Results_t*q_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2017_mumu_NPL_Blinded.root");        
 
-		gSystem->Exec("hadd Results_AllMC_2017_ee_NPL_Blinded.root Results_MC_*_2017_ee_NPL_Blinded.root");
+		system("hadd Results_AllMC_2017_ee_NPL_Blinded.root Results_MC_*_2017_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllMC_2017_mumu_NPL_Blinded.root Results_MC_*_2017_mumu_NPL_Blinded.root");
+                system("hadd Results_AllMC_2017_mumu_NPL_Blinded.root Results_MC_*_2017_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllData_2017_ee_NPL_Blinded.root Results_data_*_2017_ee_NPL_Blinded.root");
+		system("hadd Results_AllData_2017_ee_NPL_Blinded.root Results_data_*_2017_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllData_2017_mumu_NPL_Blinded.root Results_data_*_2017_mumu_NPL_Blinded.root");
+                system("hadd Results_AllData_2017_mumu_NPL_Blinded.root Results_data_*_2017_mumu_NPL_Blinded.root");
 
 	}
         else if(year == "2018"){
         
-	        gSystem->Exec("hadd Results_MCRatio_2018_ee_NPL_Blinded.root Results_t*q_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_ee_NPL_Blinded.root Results_Diboson_WZ_*_2018_ee_NPL_Blinded.root");
+	        system("hadd Results_MCRatio_2018_ee_NPL_Blinded.root Results_t*q_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_ee_NPL_Blinded.root Results_Diboson_WZ_*_2018_ee_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_MCRatio_2018_mumu_NPL_Blinded.root Results_t*q_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2018_mumu_NPL_Blinded.root");
+		system("hadd Results_MCRatio_2018_mumu_NPL_Blinded.root Results_t*q_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2018_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllMC_2018_ee_NPL_Blinded.root Results_MC_*_2018_ee_NPL_Blinded.root");
+		system("hadd Results_AllMC_2018_ee_NPL_Blinded.root Results_MC_*_2018_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllMC_2018_mumu_NPL_Blinded.root Results_MC_*_2018_mumu_NPL_Blinded.root");
+                system("hadd Results_AllMC_2018_mumu_NPL_Blinded.root Results_MC_*_2018_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllData_2018_ee_NPL_Blinded.root Results_data_*_2018_ee_NPL_Blinded.root");
+		system("hadd Results_AllData_2018_ee_NPL_Blinded.root Results_data_*_2018_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllData_2018_mumu_NPL_Blinded.root Results_data_*_2018_mumu_NPL_Blinded.root");
+                system("hadd Results_AllData_2018_mumu_NPL_Blinded.root Results_data_*_2018_mumu_NPL_Blinded.root");
 
         }
         else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;} 
@@ -11479,47 +11480,47 @@ auto Hadd(const std::string& year, const bool& blinding){
 
   	if(year == "2016"){
  
-                gSystem->Exec("hadd Results_MCRatio_2016_ee_NPL.root Results_t*q_2016_ee_NPL.root Results_ttbarV_ttbarW_*_2016_ee_NPL.root Results_ttbarV_ttbarZ_*_2016_ee_NPL.root Results_Diboson_WZ_*_2016_ee_NPL.root");
+                system("hadd Results_MCRatio_2016_ee_NPL.root Results_t*q_2016_ee_NPL.root Results_ttbarV_ttbarW_*_2016_ee_NPL.root Results_ttbarV_ttbarZ_*_2016_ee_NPL.root Results_Diboson_WZ_*_2016_ee_NPL.root");
  
-		gSystem->Exec("hadd Results_MCRatio_2016_mumu_NPL.root Results_t*q_2016_mumu_NPL.root Results_ttbarV_ttbarW_*_2016_mumu_NPL.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL.root Results_Diboson_WZ_*_2016_mumu_NPL.root"); 
+		system("hadd Results_MCRatio_2016_mumu_NPL.root Results_t*q_2016_mumu_NPL.root Results_ttbarV_ttbarW_*_2016_mumu_NPL.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL.root Results_Diboson_WZ_*_2016_mumu_NPL.root"); 
 
-		gSystem->Exec("hadd Results_AllMC_2016_ee_NPL.root Results_MC_*_2016_ee_NPL.root");
+		system("hadd Results_AllMC_2016_ee_NPL.root Results_MC_*_2016_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllMC_2016_mumu_NPL.root Results_MC_*_2016_mumu_NPL.root");
+                system("hadd Results_AllMC_2016_mumu_NPL.root Results_MC_*_2016_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllData_2016_ee_NPL.root Results_data_*_2016_ee_NPL.root");
+		system("hadd Results_AllData_2016_ee_NPL.root Results_data_*_2016_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllData_2016_mumu_NPL.root Results_data_*_2016_mumu_NPL.root");
+                system("hadd Results_AllData_2016_mumu_NPL.root Results_data_*_2016_mumu_NPL.root");
 
          }
         else if(year == "2017"){
         
-	        gSystem->Exec("hadd Results_MCRatio_2017_ee_NPL.root Results_t*q_2017_ee_NPL.root Results_ttbarV_ttbarW_*_2017_ee_NPL.root Results_ttbarV_ttbarZ_*_2017_ee_NPL.root Results_Diboson_WZ_*_2017_ee_NPL.root");
+	        system("hadd Results_MCRatio_2017_ee_NPL.root Results_t*q_2017_ee_NPL.root Results_ttbarV_ttbarW_*_2017_ee_NPL.root Results_ttbarV_ttbarZ_*_2017_ee_NPL.root Results_Diboson_WZ_*_2017_ee_NPL.root");
      
-		gSystem->Exec("hadd Results_MCRatio_2017_mumu_NPL.root Results_t*q_2017_mumu_NPL.root Results_ttbarV_ttbarW_*_2017_mumu_NPL.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL.root Results_Diboson_WZ_*_2017_mumu_NPL.root");
+		system("hadd Results_MCRatio_2017_mumu_NPL.root Results_t*q_2017_mumu_NPL.root Results_ttbarV_ttbarW_*_2017_mumu_NPL.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL.root Results_Diboson_WZ_*_2017_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllMC_2017_ee_NPL.root Results_MC_*_2017_ee_NPL.root");
+		system("hadd Results_AllMC_2017_ee_NPL.root Results_MC_*_2017_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllMC_2017_mumu_NPL.root Results_MC_*_2017_mumu_NPL.root");
+                system("hadd Results_AllMC_2017_mumu_NPL.root Results_MC_*_2017_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllData_2017_ee_NPL.root Results_data_*_2017_ee_NPL.root");
+		system("hadd Results_AllData_2017_ee_NPL.root Results_data_*_2017_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllData_2017_mumu_NPL.root Results_data_*_2017_mumu_NPL.root")
+                system("hadd Results_AllData_2017_mumu_NPL.root Results_data_*_2017_mumu_NPL.root");
 
         }
         else if(year == "2018"){
 
-                gSystem->Exec("hadd Results_MCRatio_2018_ee_NPL.root Results_t*q_2018_ee_NPL.root Results_ttbarV_ttbarW_*_2018_ee_NPL.root Results_ttbarV_ttbarZ_*_2018_ee_NPL.root Results_Diboson_WZ_*_2018_ee_NPL.root");
+                system("hadd Results_MCRatio_2018_ee_NPL.root Results_t*q_2018_ee_NPL.root Results_ttbarV_ttbarW_*_2018_ee_NPL.root Results_ttbarV_ttbarZ_*_2018_ee_NPL.root Results_Diboson_WZ_*_2018_ee_NPL.root");
 
-		gSystem->Exec("hadd Results_MCRatio_2018_mumu_NPL.root Results_t*q_2018_mumu_NPL.root Results_ttbarV_ttbarW_*_2018_mumu_NPL.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL.root Results_Diboson_WZ_*_2018_mumu_NPL.root");
+		system("hadd Results_MCRatio_2018_mumu_NPL.root Results_t*q_2018_mumu_NPL.root Results_ttbarV_ttbarW_*_2018_mumu_NPL.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL.root Results_Diboson_WZ_*_2018_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllMC_2018_ee_NPL.root Results_MC_*_2018_ee_NPL.root");
+		system("hadd Results_AllMC_2018_ee_NPL.root Results_MC_*_2018_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllMC_2018_mumu_NPL.root Results_MC_*_2018_mumu_NPL.root");
+                system("hadd Results_AllMC_2018_mumu_NPL.root Results_MC_*_2018_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllData_2018_ee_NPL.root Results_data_*_2018_ee_NPL.root");
+		system("hadd Results_AllData_2018_ee_NPL.root Results_data_*_2018_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllData_2018_mumu_NPL.root Results_data_*_2018_mumu_NPL.root")
+                system("hadd Results_AllData_2018_mumu_NPL.root Results_data_*_2018_mumu_NPL.root");
 
 
         }
@@ -11542,21 +11543,21 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
  TFile* AllMC_ee, AllMC_mumu, AllData_ee, AllData_mumu, MCRatio_ee, MCRatio_mumu;
 
  if(blinding == true){
-        AllMC_ee = new TFile{"Results_AllMC_" + year + "_ee_NPL_Blinded.root", "READ"};
-        AllMC_mumu = new TFile{"Results_AllMC_" + year + "_mumu_NPL_Blinded.root", "READ"};
-	AllData_ee = new TFile{"Results_AllData_" + year + "_ee_NPL_Blinded.root", "READ"};
-        AllData_mumu = new TFile{"Results_AllData_" + year + "_mumu_NPL_Blinded.root", "READ"};
-	MCRatio_ee = new TFile{"Results_MCRatio_" + year + "_ee_NPL_Blinded.root", "READ"};
-        MCRatio_mumu = new TFile{"Results_MCRatio_" + year + "_mumu_NPL_Blinded.root", "READ"};
+        AllMC_ee = new TFile("Results_AllMC_" + year + "_ee_NPL_Blinded.root", "READ");
+        AllMC_mumu = new TFile("Results_AllMC_" + year + "_mumu_NPL_Blinded.root", "READ");
+	AllData_ee = new TFile("Results_AllData_" + year + "_ee_NPL_Blinded.root", "READ");
+        AllData_mumu = new TFile("Results_AllData_" + year + "_mumu_NPL_Blinded.root", "READ");
+	MCRatio_ee = new TFile("Results_MCRatio_" + year + "_ee_NPL_Blinded.root", "READ");
+        MCRatio_mumu = new TFile("Results_MCRatio_" + year + "_mumu_NPL_Blinded.root", "READ");
 
  }
  else{
-	AllMC_ee = new TFile{"Results_AllMC_" + year + "_ee_NPL.root", "READ"};
-	AllMC_mumu = new TFile{"Results_AllMC_" + year + "_mumu_NPL.root", "READ"};
-	AllData_ee = new TFile{"Results_AllData_" + year + "_ee_NPL.root", "READ"};
-        AllData_mumu = new TFile{"Results_AllData_" + year + "_mumu_NPL.root", "READ"};
-	MCRatio_ee = new TFile{"Results_MCRatio_" + year + "_ee_NPL.root", "READ"};
-        MCRatio_mumu = new TFile{"Results_MCRatio_" + year + "_mumu_NPL.root", "READ"};
+	AllMC_ee = new TFile("Results_AllMC_" + year + "_ee_NPL.root", "READ");
+	AllMC_mumu = new TFile("Results_AllMC_" + year + "_mumu_NPL.root", "READ");
+	AllData_ee = new TFile("Results_AllData_" + year + "_ee_NPL.root", "READ");
+        AllData_mumu = new TFile("Results_AllData_" + year + "_mumu_NPL.root", "READ");
+	MCRatio_ee = new TFile("Results_MCRatio_" + year + "_ee_NPL.root", "READ");
+        MCRatio_mumu = new TFile("Results_MCRatio_" + year + "_mumu_NPL.root", "READ");
 
  }
  
@@ -11573,10 +11574,10 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
  TH1* h_NMC_SS_NonPrompt_ee = (TH1*)MCRatio_ee->GetObjectChecked("SameSign", "TH1");
  TH1* h_NMC_SS_NonPrompt_mumu = (TH1*)MCRatio_mumu->GetObjectChecked("SameSign", "TH1");
 
- int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetNEntries();
- int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetNEntries();
- int h_NMC_SS_NonPrompt_ee = h_NMC_SS_NonPrompt_ee->GetNEntries();
- int h_NMC_SS_NonPrompt_mumu = h_NMC_SS_NonPrompt_mumu->GetNEntries();
+ int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetEntries();
+ int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetEntries();
+ int NMC_SS_NonPrompt_ee = h_NMC_SS_NonPrompt_ee->GetEntries();
+ int NMC_SS_NonPrompt_mumu = h_NMC_SS_NonPrompt_mumu->GetEntries();
 
  int ratio_ee = NMC_OS_NonPrompt_ee / NMC_SS_NonPrompt_ee;
  int ratio_mumu = NMC_OS_NonPrompt_mumu / NMC_SS_NonPrompt_mumu;
@@ -11589,8 +11590,8 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
  for(int i = 0; i < nbins; i++){
 
-	h_NData_OS_NonPrompt_ee->SetBinContent.at(i) = ( ( h_NData_SS_ee->GetBinContent.at(i) - h_NMC_SS_ee->GetBinContent.at(i) ) * ratio_ee);
-   	h_NData_OS_NonPrompt_mumu->SetBinContent.at(i) = ( ( h_NData_SS_mumu->GetBinContent.at(i) - h_NMC_SS_mumu->GetBinContent.at(i) ) * ratio_mumu);  
+	h_NData_OS_NonPrompt_ee->SetBinContent(i) = ( ( h_NData_SS_ee->GetBinContent(i) - h_NMC_SS_ee->GetBinContent(i) ) * ratio_ee);
+   	h_NData_OS_NonPrompt_mumu->SetBinContent(i) = ( ( h_NData_SS_mumu->GetBinContent(i) - h_NMC_SS_mumu->GetBinContent(i) ) * ratio_mumu);  
 
  }
 
@@ -11612,7 +11613,7 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
  h_NMC_OS_NonPrompt_ee->Write();
  h_NMC_OS_NonPrompt_mumu->Write();
  h_NMC_SS_NonPrompt_ee->Write();
- h_NMC_SS_NonPrompt_mumu->Wtite();
+ h_NMC_SS_NonPrompt_mumu->Write();
 
 
  NPL_output->Close();
@@ -11709,6 +11710,8 @@ void fulleventselectionAlgo::fulleventselection(){
 	//fsr_down  
 	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
+	}
+
 
   }
   else{
@@ -11722,16 +11725,16 @@ void fulleventselectionAlgo::fulleventselection(){
 	//Nominal
 	if(blinding == true){
 
-		fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-		fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	}
 	else{
 
-		fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-        	fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        	fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	}
 
