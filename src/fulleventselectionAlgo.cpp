@@ -554,7 +554,7 @@ double linereader(const int& LineNumber, const string& year){
 
 
 
-void fulleventselection_calculator(const string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+void fulleventselection_calculator(const string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
 
@@ -8813,13 +8813,32 @@ else{
 
 //Lambda function for the event weight column
 
-auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEff_Sys, const float& EGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight){
+auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEff_Sys, const float& EGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
 
+  double PdfMin = 1.0;
+  double PdfMax = 1.0;
+
+  //For the min and max Pdf weights
+  for(int i = 0; i < LHEPdfWeight.size(); i++){
+
+  	float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(i);
+
+	if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
+	else{continue;}
+
+	if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
+        else{continue;}
+	
+  }
+
+
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff_Sys * EGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee));}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff_Sys * EGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) );}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMax );}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2);}
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(0);}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(3);}
@@ -8832,7 +8851,7 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
 }}; 
 
 
-auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& MuonSFTest_Iso_sys_syst, const floats& ReturnedPSWeight){
+auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& MuonSFTest_Iso_sys_syst, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
@@ -8840,8 +8859,27 @@ auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncer
   float SF_up = SF_mumu + SF_Uncert_mumu;
   float SF_down = SF_mumu - SF_Uncert_mumu;
 
+  double PdfMin = 1.0;
+  double PdfMax = 1.0;
+
+  //For the min and max Pdf weights
+  for(int i = 0; i < LHEPdfWeight.size(); i++){
+
+        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(i);
+
+        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
+        else{continue;}
+
+        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
+        else{continue;}
+  
+  }
+
+
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up);}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down );}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMax );}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2);}
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0);}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3);}
@@ -8909,7 +8947,7 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("EGammaSF_egammaEffReco", EGammaSF_egammaEffReco, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("EGammaSF_egammaEffReco_Sys", EGammaSF_egammaEffReco_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("ReturnedPSWeight", PSWeight, {PSWeightString_ee, "Electron_pt_Selection"})
-					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight"});
+					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP"});
 								      
 
 
@@ -8938,7 +8976,7 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 						 .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Isosys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
                                                  .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Isosys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
 						 .Define("ReturnedPSWeight", PSWeight, {PSWeightString_mumu, "MuonPt_RochCorr"})
-                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight"});
+                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP"});
 				
 
 
@@ -9291,6 +9329,10 @@ else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp
 else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown";}
 else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
 else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
+else if(ME_Up == true){branch = "ME_Up";}
+else if(ME_Down == true){branch = "ME_Down";}
+else if(alphaS_Up == true){branch = "alphaS_Up";}
+else if(alphaS_Up == true){branch = "alphaS_Down";}
 else if(isr_up == true){branch = "isr_up";}
 else if(isr_down == true){branch = "isr_down";}
 else if(fsr_up == true){branch = "fsr_up";}
@@ -11316,7 +11358,7 @@ else{cout << "Please select data or MC" << endl;}
 
 
 
-auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
   vector<string> Processes;
@@ -11377,7 +11419,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 //looping over the process names
   for(int i = 0; i < Processes.size(); i++){
 
-  	fulleventselection_calculator(Processes.at(i), blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, isr_up, isr_down, fsr_up, fsr_down);
+  	fulleventselection_calculator(Processes.at(i), blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, alphaS_up, alphaS_down, isr_up, isr_down, fsr_up, fsr_down);
 
   }
 
@@ -11601,7 +11643,8 @@ void fulleventselectionAlgo::fulleventselection(){
   cout << "The script started running:" << " " << asctime(localtm) << endl;
 
 
-//  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, isr_up, isr_down, fsr_up, fsr_down);
+//  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, alphaS_up, alphaS_down, isr_up, isr_down, fsr_up, fsr_down);
+
 
   bool blinding = true;
   string year = "2017";
@@ -11610,68 +11653,76 @@ void fulleventselectionAlgo::fulleventselection(){
   bool ttbarCR = false;
 
   //Nominal
- fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+ fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
  if(NPL == false){
 
 	//PU_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//PU_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//BTag_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//BTag_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-/*
 	//JetSmearing_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//JetSmearing_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//JetResolution_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//JetResolution_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//LeptonEfficiencies_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
 	//LeptonEfficiencies_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+
+	//PDF_ScaleUp 
+        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+
+        //PDF_ScaleDown 
+        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+
+	//ME_Up
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+
+	//ME_Down
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+
+	//alphaS_up
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+
+	//alphaS_down
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);
 
 
    	if(year == "2017" || year == "2018"){
 
-	//PDF_ScaleUp 
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
-
-	//PDF_ScaleDown 
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);
-
 	//isr_up
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
 	//isr_down
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
 	//fsr_up
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
 	//fsr_down  
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
 
-	}
-*/
-
-}
-else{
+  }
+  else{
 
 
 	//Creating the NPL root file
