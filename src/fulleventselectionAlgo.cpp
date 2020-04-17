@@ -30,18 +30,13 @@ fulleventselectionAlgo::~fulleventselectionAlgo()
 
 
 using namespace ROOT; // RDataFrame's namespace
-using namespace std;
 using ROOT::RDF::RNode;
-
-
 
 using floats = ROOT::VecOps::RVec<float>;
 using ints = ROOT::VecOps::RVec<int>;
 using bools = ROOT::VecOps::RVec<bool>;
 using chars = ROOT::VecOps::RVec<UChar_t>;
 using doubles = ROOT::VecOps::RVec<double>;
-
-
 
 
 std::fstream& GotoLine(std::fstream& file, unsigned int num){
@@ -66,7 +61,7 @@ double linereader_JetSmear(const int& LineNumber){
    fstream file("../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt");
    GotoLine(file, LineNumber);
 
-   string line;
+   std::string line;
    file >> line;
 
    double Value = atof(line.c_str());
@@ -79,7 +74,7 @@ double linereader_JetSmear(const int& LineNumber){
 int line_number = 0;
 int Index = 0;
 int output_index;
-vector<int> line_number_vec{};
+std::vector<int> line_number_vec{};
 
 class CSVReader
 {
@@ -123,8 +118,8 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 //For the Rochester corrections
 auto RochesterCorrections_testscript2(
 
-const string& year, 
-const string& process, 
+const std::string& year, 
+const std::string& process, 
 const ints& MuonCharge, 
 const floats& MuonPt,
 const floats& MuonEta,
@@ -133,12 +128,12 @@ const ints& Muon_genPartIdx,
 const ints& Muon_nTrackerLayers){
 
 
-	string RoccoTextFile;
+	std::string RoccoTextFile;
 
 	if(year == "2016"){RoccoTextFile = "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt";}
 	else if(year == "2017"){RoccoTextFile = "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2017.txt";}
 	else if(year == "2018"){RoccoTextFile = "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2018.txt";}
-	else{cout << "Error for rochester corrections: choose a year out of 2016, 2017 or 2018." << endl;}
+	else{std::cout << "Error for rochester corrections: choose a year out of 2016, 2017 or 2018." << std::endl;}
 
 
 	RoccoR rc{RoccoTextFile};
@@ -216,16 +211,16 @@ const ints& Muon_nTrackerLayers){
 
 
 //Functions for reading the trigger efficiency and SF text files
-double linereader_TriggerSF(const int& LineNumber, const string& InputTriggerSF_File, const string& year, const bool& blinding){
+double linereader_TriggerSF(const int& LineNumber, const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
 
-   string TriggerSF_TextFiles;
+   std::string TriggerSF_TextFiles;
 
    if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
    else if(InputTriggerSF_File == "MC_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
    else if(InputTriggerSF_File == "Data_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_Data_MET_" + year + ".txt";}
    else if(InputTriggerSF_File == "MC_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_MC_ttbar_" + year + ".txt";}
    else if(InputTriggerSF_File == "SF_Central" || InputTriggerSF_File == "SF_Uncert"){TriggerSF_TextFiles = "TriggerSF_ScaleFactors_" + year + ".txt";}
-   else{cout << "please choose an appropriate input text file for trigger SFs" << endl;}
+   else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
 
 
    using namespace std;
@@ -233,7 +228,7 @@ double linereader_TriggerSF(const int& LineNumber, const string& InputTriggerSF_
    fstream file(TriggerSF_TextFiles.c_str());
    GotoLine(file, LineNumber);
 
-   string line;
+   std::string line;
    file >> line;
 
    double Value = atof(line.c_str());
@@ -244,9 +239,9 @@ double linereader_TriggerSF(const int& LineNumber, const string& InputTriggerSF_
 
 
 
-int linecounter_TriggerSF(const string& InputTriggerSF_File, const string& year, const bool& blinding){
+int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
 
-   string TriggerSF_TextFiles;
+   std::string TriggerSF_TextFiles;
 
  
   if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
@@ -254,13 +249,13 @@ int linecounter_TriggerSF(const string& InputTriggerSF_File, const string& year,
    else if(InputTriggerSF_File == "Data_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_Data_MET_" + year + ".txt";}
    else if(InputTriggerSF_File == "MC_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_MC_ttbar_" + year + ".txt";}
    else if(InputTriggerSF_File == "SF_Central" || InputTriggerSF_File == "SF_Uncert"){TriggerSF_TextFiles = "TriggerSF_ScaleFactors_" + year + ".txt";}
-   else{cout << "please choose an appropriate input text file for trigger SFs" << endl;}
+   else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
 
 
 
    int number_of_lines = 0;
-   string line;
-   ifstream myfile(TriggerSF_TextFiles.c_str());
+   std::string line;
+   std::ifstream myfile(TriggerSF_TextFiles.c_str());
 
    while (getline(myfile, line))
         ++number_of_lines;
@@ -270,11 +265,11 @@ int linecounter_TriggerSF(const string& InputTriggerSF_File, const string& year,
 
 
 
-auto textfilereader2_TriggerSF(const string& InputTriggerSF_File, const string& year, const bool& blinding){
+auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
 
 
    int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year, blinding);
-   vector<double> Value;
+   std::vector<double> Value;
 
 
    for(int i = 1; i < NumberOfLines+1; i++){
@@ -290,7 +285,7 @@ auto textfilereader2_TriggerSF(const string& InputTriggerSF_File, const string& 
 
 //For creating the output directories
 //Creating a directory for all results
-auto DirectoryCreator(const string& year, const bool& blinding, const bool& NPL){
+auto DirectoryCreator(const std::string& year, const bool& blinding, const bool& NPL){
 
 	if(year == "2016"){
 
@@ -418,7 +413,7 @@ auto DirectoryCreator(const string& year, const bool& blinding, const bool& NPL)
                 }
 
 	}
-	else{cout << "Year must be 2016, 2017 or 2018" << endl;}
+	else{std::cout << "Year must be 2016, 2017 or 2018" << std::endl;}
 
 
 }
@@ -526,17 +521,17 @@ template<typename T, typename U, typename... Types>
 
 //Reading values from the normalisation text file
 
-double linereader(const int& LineNumber, const string& year){
+double linereader(const int& LineNumber, const std::string& year){
 
 
    using namespace std;
 
-   string NormFileString = "Normalisation/NormalisationFactors_" + year + ".txt"; 
+   std::string NormFileString = "Normalisation/NormalisationFactors_" + year + ".txt"; 
 
-   fstream file(NormFileString.c_str());
+   std::fstream file(NormFileString.c_str());
    GotoLine(file, LineNumber);
 
-   string line;
+   std::string line;
    file >> line;
 
    double Value = atof(line.c_str());
@@ -554,17 +549,17 @@ double linereader(const int& LineNumber, const string& year){
 
 
 
-void fulleventselection_calculator(const string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
 
 
 //EnableImplicitMT();
 
-vector<string> input_files;
-ofstream CutFlowReport;
+std::vector<std::string> input_files;
+std::ofstream CutFlowReport;
 
-string cutflowstring;
+std::string cutflowstring;
 
 if(blinding == false){
 
@@ -583,7 +578,7 @@ if(blinding == false){
 	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 		cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ttbarCR.txt";
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 	else{cutflowstring = "CutFlowReport_" + process + "_" + year + ".txt";}
 
 }
@@ -604,7 +599,7 @@ else{
         else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
                 cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ttbarCR_Blinded.txt";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{cutflowstring = "CutFlowReport_" + process + "_" + year + "_Blinded.txt";}
 
 
@@ -736,7 +731,7 @@ if(year == "2016"){
 	else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2016_Blinded.root"};}
 	else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2016.root"};}
         else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2016.root"};}
-	else{cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << endl;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
 
 
 }
@@ -813,7 +808,7 @@ else if(year == "2017"){
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"};}
         else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2017.root"};}
         else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2017.root"};}
-	else{cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << endl;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
 
 }
 else if(year == "2018"){
@@ -877,11 +872,11 @@ else if(year == "2018"){
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"};}
         else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2018.root"};}
         else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2018.root"};}
-	else{cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << endl;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
 
 
 }
-else{cout << "Script only for 2016, 2017 or 2018 samples" << endl;}
+else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 
@@ -929,7 +924,7 @@ const bool& HLT_Ele27_WPTight_Gsf)-> bool{
 	return HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0;
 
   }
-  else{cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << endl;}
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
 
 
 }};
@@ -964,7 +959,7 @@ const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
                HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
 
   }
-  else{cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << endl;}
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
 
 
 }};
@@ -1001,7 +996,7 @@ const bool& HLT_IsoMu24_eta2p1
 	return HLT_IsoMu24 > 0;
 
   }
-  else{cout << "Please choose a year out of 2016, 2017 or 2018 for the trigger paths" << endl;}
+  else{std::cout << "Please choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
 
 }};
 
@@ -1032,7 +1027,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0;
 
   }
-  else{cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << endl;}
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
 
 
 }};
@@ -1082,7 +1077,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
 
  }
- else{cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << endl;}
+ else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
 
 
 }};
@@ -1105,11 +1100,11 @@ else if(year == "2017" || year == "2018"){
 	if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
         else{MinElectronPt = 25; MinMuonPt = 25;}
 }
-else{cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
+else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
 
 
 
-string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
+std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
 
 if(
 
@@ -1198,7 +1193,7 @@ process == "data_SingleMuonRunH"
   JetPhiInput = "Jet_phi";
 
 }
-else{cout << "Please choose MC or data as the input" << endl;}
+else{std::cout << "Please choose MC or data as the input" << std::endl;}
 
 
 
@@ -2003,12 +1998,12 @@ auto deltaRcheck_floats{[](const floats& Object1_eta, const floats& Object1_phi,
 
   if(Object2_phi.size() > 1){
 
-  	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return min(deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)), deltaR(Object1_eta, Object1_phi, Object2_eta.at(1), Object2_phi.at(1))); });
+  	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return std::min(deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)), deltaR(Object1_eta, Object1_phi, Object2_eta.at(1), Object2_phi.at(1))); });
 
   }
   else{
 
-	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)); });
+	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)); });
 
   }
 
@@ -2191,7 +2186,7 @@ const floats& dRJet_lep){
 
   if(year == "2016"){JetId = 1;} //1 is loose 
   else if(year == "2017" || year == "2018"){JetId = 2;} //2 is tight
-  else{cout << "Choose a year out of 2016, 2017 or 2018" << endl;}
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
 
   return
 
@@ -3325,7 +3320,7 @@ Flag_eeBadScFilter_Selection > 0;
 //Twiki link: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution#Smearing_procedures
 
 //Reading the JER and SF text files
-string FileNameJetSmear;
+std::string FileNameJetSmear;
 
 
 auto RowReader2{[&FileNameJetSmear, &year](
@@ -3348,7 +3343,7 @@ const floats& Jet_pt) {
   	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
   	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
   	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-  	else{cout << "Please enter an appropriate file name" << endl;}
+  	else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2017"){
@@ -3357,7 +3352,7 @@ const floats& Jet_pt) {
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else{cout << "Please enter an appropriate file name" << endl;}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2018"){
@@ -3366,18 +3361,18 @@ const floats& Jet_pt) {
   	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
   	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
   	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-  	else{cout << "Please enter an appropriate file name" << endl;}
+  	else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
-  else{cout << "The year can only be 2016, 2017 or 2018" << endl;}
+  else{std::cout << "The year can only be 2016, 2017 or 2018" << std::endl;}
 
 
-  ifstream file;
+  std::ifstream file;
   file.open(FileNameJetSmear);
 
   if (file.good())
   {
-    string str = "";
+    std::string str = "";
 
     int line_number = 0;
 	
@@ -3422,7 +3417,7 @@ const floats& Jet_pt) {
                         file >> Col5;
                         file >> Col6;
                 }
-		else{cout << "Please enter an appropriate file name" << endl;}
+		else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 	}
 
@@ -3484,7 +3479,7 @@ const floats& Jet_pt) {
         else{	floats Vec4(DownValueVec.size(), 0.0);
 		return Vec4;}
   }
-  else{cout << "bools cannot be all true or all false" << endl; cout << "sigmaJER = " << sigmaJER << endl; cout << "SF = " << SF << endl; cout << "up = " << up << endl; cout << "down = " << down << endl;} 
+  else{std::cout << "bools cannot be all true or all false" << std::endl; std::cout << "sigmaJER = " << sigmaJER << std::endl; std::cout << "SF = " << SF << std::endl; std::cout << "up = " << up << std::endl; std::cout << "down = " << down << std::endl;} 
 
 
 
@@ -3494,7 +3489,7 @@ const floats& Jet_pt) {
 auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
 
    int number_of_lines = 0;
-   string line;
+   std::string line;
 
 
    if(year == "2016"){
@@ -3503,7 +3498,7 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-        else{cout << "Please enter an appropriate file name" << endl;}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2017"){
@@ -3512,7 +3507,7 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else{cout << "Please enter an appropriate file name" << endl;}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2018"){
@@ -3521,13 +3516,13 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-        else{cout << "Please enter an appropriate file name" << endl;}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
-  else{cout << "The year can only be 2016, 2017 or 2018" << endl;} 
+  else{std::cout << "The year can only be 2016, 2017 or 2018" << std::endl;} 
 
 
-   ifstream myfile(FileNameJetSmear);
+   std::ifstream myfile(FileNameJetSmear);
 
    while (getline(myfile, line))
         ++number_of_lines;
@@ -3551,13 +3546,13 @@ const floats& Jet_pt
 
   for(int i = 0; i < linecounter(SigmaJER, JetSmearScaleFactor, Up, Down) + 1; i++){
 
-		string quantity; 
+		std::string quantity; 
 
 		if(SigmaJER == true && JetSmearScaleFactor == false && Up == false && Down == false){quantity = "sigma JER";}
    		else if(SigmaJER == false && JetSmearScaleFactor == true && Up == false && Down == false){quantity = "SF";}
    		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == true && Down == false){quantity = "SF (up variation)";}
    		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == false && Down == true){quantity = "SF (down variation)";}
-   		else{cout << "Please enter an appropriate file name" << endl;}
+   		else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 		return RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt) > 0.0;
 
@@ -3762,7 +3757,7 @@ const unsigned int& nJet
 ){
 
 
-  vector<TLorentzVector> OutputVec{};
+  std::vector<TLorentzVector> OutputVec{};
 
   for(int i = 0; i < nJet; i++){
 
@@ -3785,7 +3780,7 @@ const unsigned int& nJet
 
 
 //To get the properties of the smeared jet
-auto GetSmearedJetPt{[](vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
+auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
 
  floats NewPtVec = {};
 
@@ -3801,7 +3796,7 @@ auto GetSmearedJetPt{[](vector<TLorentzVector> SmearedJet4Momentum, const floats
 }};
 
 
-auto GetSmearedJetPhi{[](vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
+auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
 
  floats NewPhiVec{};
 
@@ -3818,7 +3813,7 @@ auto GetSmearedJetPhi{[](vector<TLorentzVector> SmearedJet4Momentum, const float
 }};
 
  
-auto GetSmearedJetEta{[](vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
+auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
 
 
  floats NewEtaVec = {};
@@ -3835,7 +3830,7 @@ auto GetSmearedJetEta{[](vector<TLorentzVector> SmearedJet4Momentum, const float
 }};
 
 
-auto GetSmearedJetMass{[](vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
+auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
 
 
  floats NewMassVec = {};
@@ -3937,7 +3932,7 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
 //For the normalisation factors
 auto NormalisationFactorFunction{[&process, &year](){
 
-  vector<string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
+  std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
 				    "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
 			            "ZPlusJets_PtBinned_0To50", "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250",
 				    "ZPlusJets_PtBinned_100To250_ext1", "ZPlusJets_PtBinned_100To250_ext2", "ZPlusJets_PtBinned_100To250_ext5",
@@ -3974,7 +3969,7 @@ auto NormalisationFactorFunction{[&process, &year](){
 
 //EGamma SF functions
 
-auto EGammaFunction{[](const string& year, const string& type, const floats& pt, const floats& SuperClusterEta){
+auto EGammaFunction{[](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
   floats OutputVector{};
   floats OutputVectorFinal{};
@@ -3996,7 +3991,7 @@ auto EGammaFunction{[](const string& year, const string& type, const floats& pt,
 
 		}
 
-		else{cout << "No EGamma SF input file found (2016)"<< endl;}
+		else{std::cout << "No EGamma SF input file found (2016)"<< std::endl;}
 
   	}
   	else if(year == "2017"){
@@ -4017,7 +4012,7 @@ auto EGammaFunction{[](const string& year, const string& type, const floats& pt,
 
 		}
 
-		else{cout << "No EGamma SF input file found (2017)" << endl;}
+		else{std::cout << "No EGamma SF input file found (2017)" << std::endl;}
 
   	}
 	else if(year == "2018"){
@@ -4032,10 +4027,10 @@ auto EGammaFunction{[](const string& year, const string& type, const floats& pt,
 			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
 		}
-		else{cout << "No EGamma SF input file found (2018)" << endl;}
+		else{std::cout << "No EGamma SF input file found (2018)" << std::endl;}
 
 	}
-  	else{cout << "EGamma function is only for 2016 and 2017 so far" << endl;}
+  	else{std::cout << "EGamma function is only for 2016 and 2017 so far" << std::endl;}
 
   	TH2* histo = (TH2*)inputfile->GetObjectChecked("EGamma_SF2D", "TH2");
 
@@ -4123,7 +4118,7 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 
 //Lambda functions for lepton efficiencies
 
-auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDown, const floats& pt, const floats& eta){
+auto MuonSF{[&year](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
   floats AbsEta = abs(eta);
 
@@ -4164,7 +4159,7 @@ auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDo
                 histo_RunsGH = (TH2*)inputfile_RunsGH->GetObjectChecked("TightISO_TightID_pt_eta/pt_abseta_ratio", "TH2");
 
         }
-	else{cout << "Please choose either ID or ISO for the type" << endl;}	
+	else{std::cout << "Please choose either ID or ISO for the type" << std::endl;}	
 
   }
   else if(year == "2017"){
@@ -4223,7 +4218,7 @@ auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDo
 		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst", "TH2"); 
   
   	}
-  	else{cout << "Choose a function input out of: ID, ID sys, ID sys (stat), ID sys (syst), Iso sys, Iso sys (stat), Iso sys (syst)." << endl;}
+  	else{std::cout << "Choose a function input out of: ID, ID sys, ID sys (stat), ID sys (syst), Iso sys, Iso sys (stat), Iso sys (syst)." << std::endl;}
 
   }
   else if(year == "2018"){
@@ -4244,10 +4239,10 @@ auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDo
 
 
         }
-        else{cout << "Please choose either ID or ISO for the type" << endl;}	
+        else{std::cout << "Please choose either ID or ISO for the type" << std::endl;}	
 
   }
-  else{cout << "Select a year out of 2016, 2017 or 2018." << endl;}
+  else{std::cout << "Select a year out of 2016, 2017 or 2018." << std::endl;}
 
  
 
@@ -4301,7 +4296,7 @@ auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDo
                                         MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
                                 
                                 }
-				else{cout << "Select an up or down uncertainty" << endl;}
+				else{std::cout << "Select an up or down uncertainty" << std::endl;}
 
                         }
 			else if(type == "Iso sys"){
@@ -4318,7 +4313,7 @@ auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDo
                                         MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
 
                                 }
-				else{cout << "Select an up or down uncertainty" << endl;}
+				else{std::cout << "Select an up or down uncertainty" << std::endl;}
 
 
 			}
@@ -4352,11 +4347,11 @@ auto MuonSF{[&year](const string& type, const string& year, const string& UpOrDo
                         else{MuonSFOutput.push_back(MuonSF_RunsABCD);}
 
                 }
-		else{cout << "Code only for 2016, 2017 or 2018." << endl;}
+		else{std::cout << "Code only for 2016, 2017 or 2018." << std::endl;}
 
 
 	}
-	else{cout << "inside else statement for pushing back muon SF output" << endl; auto One = 1.0; MuonSFOutput.push_back(One);}
+	else{std::cout << "inside else statement for pushing back muon SF output" << std::endl; auto One = 1.0; MuonSFOutput.push_back(One);}
 
 
 
@@ -4388,7 +4383,7 @@ auto MuonSFTest_Iso{[&MuonSF, &year](const floats& pt, const floats& eta){
 
 
 
-auto MuonSFTest_IDsys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_ID_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
   
   if(year == "2016"){
         return MuonSF("ID sys", year, "Up", pt, eta);
@@ -4396,14 +4391,14 @@ auto MuonSFTest_IDsys_syst{[&MuonSF, &year](const floats& pt, const floats& eta)
   else if(year == "2017"){
         return MuonSF("ID sys (syst)", year, " ", pt, eta);
   }  
-  else{cout << "Need to add 2018" << endl;}
+  else{std::cout << "Need to add 2018" << std::endl;}
 
 }};
 
 
 
 
-auto MuonSFTest_IDsys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_ID_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
 
   if(year == "2016"){
 	return MuonSF("ID sys", year, "Down", pt, eta);
@@ -4411,14 +4406,14 @@ auto MuonSFTest_IDsys_stat{[&MuonSF, &year](const floats& pt, const floats& eta)
   else if(year == "2017"){
   	return MuonSF("ID sys (stat)", year, " ", pt, eta);
   }
-  else{cout << "Need to add 2018" << endl;}  
+  else{std::cout << "Need to add 2018" << std::endl;}  
 
 }};
 
 
 
 
-auto MuonSFTest_Isosys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_Iso_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
 
   if(year == "2016"){
         return MuonSF("Iso sys", year, "Up", pt, eta);
@@ -4426,14 +4421,14 @@ auto MuonSFTest_Isosys_syst{[&MuonSF, &year](const floats& pt, const floats& eta
   else if(year == "2017"){
         return MuonSF("Iso sys (syst)", year, " ", pt, eta);
   }
-  else{cout << "Need to add 2018" << endl;}
+  else{std::cout << "Need to add 2018" << std::endl;}
 
 }};
 
 
 
 
-auto MuonSFTest_Isosys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_Iso_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
 
   if(year == "2016"){
         return MuonSF("Iso sys", year, "Down", pt, eta);
@@ -4441,7 +4436,7 @@ auto MuonSFTest_Isosys_stat{[&MuonSF, &year](const floats& pt, const floats& eta
   else if(year == "2017"){
         return MuonSF("Iso sys (stat)", year, " ", pt, eta);
   }
-  else{cout << "Need to add 2018" << endl;}
+  else{std::cout << "Need to add 2018" << std::endl;}
 
 }};
 
@@ -4577,7 +4572,7 @@ const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
   HLT_PFHT800_PFMET85_PFMHT85_IDTight > 0;
 
   }
-  else{cout << "Choose a year out of 2016, 2017 or 2018" << endl;}
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
 
 }};
 
@@ -4671,7 +4666,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 
 
   }
-  else{cout << "Please choose a year out of 2016, 2017 or 2018" << endl;}
+  else{std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl;}
 
 }};
 
@@ -4765,7 +4760,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
          HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
 
   }
-  else{cout << "Choose 2016, 2017 or 2018" << endl;}
+  else{std::cout << "Choose 2016, 2017 or 2018" << std::endl;}
   
 
 }};
@@ -4863,7 +4858,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
           HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron
 	
   }
-  else{cout << "Input 2016, 2017 or 2018" << endl;}
+  else{std::cout << "Input 2016, 2017 or 2018" << std::endl;}
 
 }};
 
@@ -4875,7 +4870,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
 //MET triggers
-vector<string> MET_triggers;
+std::vector<std::string> MET_triggers;
 
 if(year == "2016"){ 
 
@@ -4959,7 +4954,7 @@ MET_triggers= {
 };
 
 }
-else{cout << "include MET triggers for 2018" << endl;}
+else{std::cout << "include MET triggers for 2018" << std::endl;}
 
 
 //dummy lambda function
@@ -4971,7 +4966,7 @@ auto DummyBool{[](const bool& HLT_ZeroBias_part7){
 
 
 
-vector<string> leptontriggers_strings;
+std::vector<std::string> leptontriggers_strings;
 
 if(year == "2016"){
 
@@ -5054,17 +5049,17 @@ else if(year == "2018"){
 };
 
 } 
-else{cout << "choose 2016, 2017 or 2018" << endl;}
+else{std::cout << "choose 2016, 2017 or 2018" << std::endl;}
 
 
 
 
 
 
-vector<string> sJER_sigmaJER_strings = {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"};
+std::vector<std::string> sJER_sigmaJER_strings = {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"};
 
-string SJER;
-string SIGMAJER;
+std::string SJER;
+std::string SIGMAJER;
 
 if(JetSmearing_ScaleUp == true){SJER = "sJER_up";} 
 else if(JetSmearing_ScaleDown == true){SJER = "sJER_down";}
@@ -5075,11 +5070,11 @@ else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
 else{SIGMAJER = "sigma_JER";}
 
 
-vector<string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER};
-vector<string> ApplyCJER_strings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"};
+std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER};
+std::vector<std::string> ApplyCJER_strings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"};
 
 
-vector<string> flags_strings = {
+std::vector<std::string> flags_strings = {
 "Flag_goodVertices", 
 "Flag_globalSuperTightHalo2016Filter", 
 "Flag_HBHENoiseFilter", 
@@ -5092,7 +5087,7 @@ vector<string> flags_strings = {
 };
 
 
-vector<string> mumu_strings = {
+std::vector<std::string> mumu_strings = {
 "nMuon", 
 "Muon_tightId_Selection", 
 "Muon_pfIsoId_Selection", 
@@ -5103,28 +5098,28 @@ vector<string> mumu_strings = {
 
 
 
-vector<string> deltaR_JetE_strings{
+std::vector<std::string> deltaR_JetE_strings{
 JetEtaInput,
 JetPhiInput,
 "z_lep_eta",
 "z_lep_phi"
 };
 
-vector<string> deltaR_JetMu_strings{
+std::vector<std::string> deltaR_JetMu_strings{
 JetEtaInput,
 JetPhiInput,
 "z_lep_eta",
 "z_lep_phi"
 };
 
-vector<string> deltaR_j1j2_strings{
+std::vector<std::string> deltaR_j1j2_strings{
 "LeadingJetEta",
 "LeadingJetPhi",
 "SubleadingJetEta",
 "SubleadingJetPhi",
 };
 
-vector<string> InvMass_AllJets_strings{
+std::vector<std::string> InvMass_AllJets_strings{
 "LeadingJetpT",
 "SubleadingJetpT",
 "ThirdJetpT",
@@ -5144,7 +5139,7 @@ vector<string> InvMass_AllJets_strings{
 "nJet"
 };
 
-vector<string> InvMass_3Jets_strings{
+std::vector<std::string> InvMass_3Jets_strings{
 "LeadingJetpT",
 "SubleadingJetpT",
 "ThirdJetpT",
@@ -5160,18 +5155,18 @@ vector<string> InvMass_3Jets_strings{
 "nJet"
 };
 
-vector<string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
-vector<string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
-vector<string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
-vector<string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
 
-vector<string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
-vector<string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
-vector<string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
-vector<string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
 
 
-vector<string> w_pair_strings = {
+std::vector<std::string> w_pair_strings = {
 JetPtInput,
 JetEtaInput,
 JetPhiInput,
@@ -5180,7 +5175,7 @@ JetMassInput,
 "lead_bjet"};
 
 
-vector<string> top_strings = {
+std::vector<std::string> top_strings = {
 "bjetpt",
 "bjeteta",
 "bjetphi",
@@ -5192,56 +5187,56 @@ vector<string> top_strings = {
 "w_mass",
 "w_reco_jets"};
 
-vector<string> deltaR_Top_LeadingElectron_strings = {
+std::vector<std::string> deltaR_Top_LeadingElectron_strings = {
 "Top_Phi",
 "Top_Eta",
 "LeadingElectronEta",
 "LeadingElectronPhi"
 };
 
-vector<string> deltaR_Top_LeadingMuon_strings = {
+std::vector<std::string> deltaR_Top_LeadingMuon_strings = {
 "Top_Phi",
 "Top_Eta",
 "LeadingMuonEta",
 "LeadingMuonPhi"
 };
 
-vector<string> deltaR_Top_SubleadingElectron_strings = {
+std::vector<std::string> deltaR_Top_SubleadingElectron_strings = {
 "Top_Phi",
 "Top_Eta",
 "SubleadingElectronEta",
 "SubleadingElectronPhi"
 };
 
-vector<string> deltaR_Top_SubleadingMuon_strings = {
+std::vector<std::string> deltaR_Top_SubleadingMuon_strings = {
 "Top_Phi",
 "Top_Eta",
 "SubleadingMuonEta",
 "SubleadingMuonPhi"
 };
 
-vector<string> deltaR_Top_LeadingJet_strings = {
+std::vector<std::string> deltaR_Top_LeadingJet_strings = {
 "Top_Phi",
 "Top_Eta",
 "SubleadingJetEta",
 "SubleadingJetPhi"
 };
 
-vector<string> deltaR_Top_SubleadingJet_strings = {
+std::vector<std::string> deltaR_Top_SubleadingJet_strings = {
 "Top_Phi",
 "Top_Eta",
 "SubleadingJetEta",
 "SubleadingJetPhi"
 };
 
-vector<string> deltaR_Top_ThirdJet_strings = {
+std::vector<std::string> deltaR_Top_ThirdJet_strings = {
 "Top_Phi",
 "Top_Eta",
 "ThirdJetEta",
 "ThirdJetPhi"
 };
 
-vector<string> deltaR_Top_FourthJet_strings = {
+std::vector<std::string> deltaR_Top_FourthJet_strings = {
 "Top_Phi",
 "Top_Eta",
 "FourthJetEta",
@@ -5249,42 +5244,42 @@ vector<string> deltaR_Top_FourthJet_strings = {
 };
 
 
-vector<string> deltaR_WJet1_WJet2_strings = {
+std::vector<std::string> deltaR_WJet1_WJet2_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "WPairJet2Phi",
 "WPairJet2Eta",
 };
 
-vector<string> deltaR_Z_Top_strings = {
+std::vector<std::string> deltaR_Z_Top_strings = {
 "RecoZPhi",
 "RecoZEta",
 "Top_Phi",
 "Top_Eta",
 };
 
-vector<string> deltaR_WJet1_LeadingElectron_strings = {
+std::vector<std::string> deltaR_WJet1_LeadingElectron_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "LeadingElectronPhi",
 "LeadingElectronEta"
 };
 
-vector<string> deltaR_WJet1_SubleadingElectron_strings = {
+std::vector<std::string> deltaR_WJet1_SubleadingElectron_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "SubleadingElectronPhi",
 "SubleadingElectronEta"
 };
 
-vector<string> deltaR_WJet1_LeadingMuon_strings = {
+std::vector<std::string> deltaR_WJet1_LeadingMuon_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "LeadingMuonPhi",
 "LeadingMuonEta"
 };
 
-vector<string> deltaR_WJet1_SubleadingMuon_strings = {
+std::vector<std::string> deltaR_WJet1_SubleadingMuon_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "SubleadingMuonPhi",
@@ -5292,42 +5287,42 @@ vector<string> deltaR_WJet1_SubleadingMuon_strings = {
 };
 
 
-vector<string> deltaR_WJet1_LeadingJet_strings = {
+std::vector<std::string> deltaR_WJet1_LeadingJet_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "LeadingJetPhi",
 "LeadingJetEta"
 };
 
-vector<string> deltaR_WJet1_SubleadingJet_strings = {
+std::vector<std::string> deltaR_WJet1_SubleadingJet_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "SubleadingJetPhi",
 "SubleadingJetEta"
 };
 
-vector<string> deltaR_WJet1_ThirdJet_strings = {
+std::vector<std::string> deltaR_WJet1_ThirdJet_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "ThirdJetPhi",
 "ThirdJetEta"
 };
 
-vector<string> deltaR_WJet1_FourthJet_strings = {
+std::vector<std::string> deltaR_WJet1_FourthJet_strings = {
 "WPairJet1Phi",
 "WPairJet1Eta",
 "FourthJetPhi",
 "FourthJetEta"
 };
 
-vector<string> deltaR_WJet2_LeadingElectron_strings = {
+std::vector<std::string> deltaR_WJet2_LeadingElectron_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "LeadingElectronPhi",
 "LeadingElectronEta"
 };
 
-vector<string> deltaR_WJet2_SubleadingElectron_strings = {
+std::vector<std::string> deltaR_WJet2_SubleadingElectron_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "SubleadingElectronPhi",
@@ -5335,14 +5330,14 @@ vector<string> deltaR_WJet2_SubleadingElectron_strings = {
 };
 
 
-vector<string> deltaR_WJet2_LeadingMuon_strings = {
+std::vector<std::string> deltaR_WJet2_LeadingMuon_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "LeadingMuonPhi",
 "LeadingMuonEta"
 };
 
-vector<string> deltaR_WJet2_SubleadingMuon_strings = {
+std::vector<std::string> deltaR_WJet2_SubleadingMuon_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "SubleadingMuonPhi",
@@ -5350,28 +5345,28 @@ vector<string> deltaR_WJet2_SubleadingMuon_strings = {
 };
 
 
-vector<string> deltaR_WJet2_LeadingJet_strings = {
+std::vector<std::string> deltaR_WJet2_LeadingJet_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "LeadingJetPhi",
 "LeadingJetEta"
 };
 
-vector<string> deltaR_WJet2_SubleadingJet_strings = {
+std::vector<std::string> deltaR_WJet2_SubleadingJet_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "SubleadingJetPhi",
 "SubleadingJetEta"
 };
 
-vector<string> deltaR_WJet2_ThirdJet_strings = {
+std::vector<std::string> deltaR_WJet2_ThirdJet_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "ThirdJetPhi",
 "ThirdJetEta"
 };
 
-vector<string> deltaR_WJet2_FourthJet_strings = {
+std::vector<std::string> deltaR_WJet2_FourthJet_strings = {
 "WPairJet2Phi",
 "WPairJet2Eta",
 "FourthJetPhi",
@@ -5379,49 +5374,49 @@ vector<string> deltaR_WJet2_FourthJet_strings = {
 };
 
 
-vector<string> deltaR_Z_LeadingJet_strings = {
+std::vector<std::string> deltaR_Z_LeadingJet_strings = {
 "RecoZPhi",
 "RecoZEta",
 "LeadingJetPhi",
 "LeadingJetEta"
 };
 
-vector<string> deltaR_Z_SubleadingJet_strings = {
+std::vector<std::string> deltaR_Z_SubleadingJet_strings = {
 "RecoZPhi",
 "RecoZEta",
 "SubleadingJetPhi",
 "SubleadingJetEta"
 };
 
-vector<string> deltaR_Z_ThirdJet_strings = {
+std::vector<std::string> deltaR_Z_ThirdJet_strings = {
 "RecoZPhi",
 "RecoZEta",
 "ThirdJetPhi",
 "ThirdJetEta"
 };
 
-vector<string> deltaR_Z_FourthJet_strings = {
+std::vector<std::string> deltaR_Z_FourthJet_strings = {
 "RecoZPhi",
 "RecoZEta",
 "FourthJetPhi",
 "FourthJetEta"
 };
 
-vector<string> deltaR_Top_W_strings = {
+std::vector<std::string> deltaR_Top_W_strings = {
 "w_pair_eta",
 "w_pair_phi",
 "Top_Eta",
 "Top_Phi"
 };
 
-vector<string> deltaR_W_Z_strings = {
+std::vector<std::string> deltaR_W_Z_strings = {
 "w_pair_phi",
 "w_pair_eta",
 "RecoZEta",
 "RecoZPhi"
 };
 
-vector<string> RecoZ_strings_ee{
+std::vector<std::string> RecoZ_strings_ee{
 "nElectron",
 "LeadingElectron_pT",
 "LeadingElectronEta",
@@ -5433,7 +5428,7 @@ vector<string> RecoZ_strings_ee{
 "SubleadingElectronMass"
 };
 
-vector<string> RecoZ_strings_mumu{
+std::vector<std::string> RecoZ_strings_mumu{
 "nMuon",
 "LeadingMuon_pT",
 "LeadingMuonEta",
@@ -5446,7 +5441,7 @@ vector<string> RecoZ_strings_mumu{
 };
 
 
-vector<string> TotalHT_System_strings = {
+std::vector<std::string> TotalHT_System_strings = {
 "RecoZHT",
 "RecoWHT",
 "Top_HT",
@@ -5454,7 +5449,7 @@ vector<string> TotalHT_System_strings = {
 "TotJetHT"
 };
 
-vector<string> TotalPt_System_strings = {
+std::vector<std::string> TotalPt_System_strings = {
 "RecoZPt",
 "w_pair_pt",
 "ReweightedTopPt",
@@ -5462,7 +5457,7 @@ vector<string> TotalPt_System_strings = {
 "JetPtSum"
 };
 
-vector<string> TotalPt_System_strings_data = {
+std::vector<std::string> TotalPt_System_strings_data = {
 "RecoZPt",
 "w_pair_pt",
 "Top_Pt",
@@ -5471,7 +5466,7 @@ vector<string> TotalPt_System_strings_data = {
 };
 
 
-vector<string> TotalEta_System_strings = {
+std::vector<std::string> TotalEta_System_strings = {
 "RecoZEta",
 "w_pair_eta",
 "Top_Eta",
@@ -5480,7 +5475,7 @@ vector<string> TotalEta_System_strings = {
 };
 
 
-vector<string> TotalPhi_System_strings = {
+std::vector<std::string> TotalPhi_System_strings = {
 "RecoZEta",
 "w_pair_eta",
 "Top_Eta",
@@ -5489,14 +5484,14 @@ vector<string> TotalPhi_System_strings = {
 };
 
 
-vector<string> dR_Z_WPairJet1_strings = {
+std::vector<std::string> dR_Z_WPairJet1_strings = {
 "RecoZPhi",
 "RecoZEta",
 "WPairJet1Eta",
 "WPairJet1Phi"
 };
 
-vector<string> dR_Z_WPairJet2_strings = {
+std::vector<std::string> dR_Z_WPairJet2_strings = {
 "RecoZPhi",
 "RecoZEta",
 "WPairJet2Eta",
@@ -5504,7 +5499,7 @@ vector<string> dR_Z_WPairJet2_strings = {
 };
 
 
-vector<string> MinDeltaR_strings = {
+std::vector<std::string> MinDeltaR_strings = {
 "nJet",
 "RecoZPhi",
 "RecoZEta",
@@ -5513,34 +5508,34 @@ JetEtaInput
 };
 
 
-vector<string> MinDeltaPhi_strings = {
+std::vector<std::string> MinDeltaPhi_strings = {
 "nJet",
 "RecoZPhi",
 JetPhiInput
 };
 
-vector<string> dR_LeadingLepton_LeadingBJet_strings_ee = {
+std::vector<std::string> dR_LeadingLepton_LeadingBJet_strings_ee = {
 "bjeteta",
 "LeadingElectronEta",
 "bjetphi",
 "LeadingElectronPhi"
 };
 
-vector<string> dR_SubleadingLepton_LeadingBJet_strings_ee = {
+std::vector<std::string> dR_SubleadingLepton_LeadingBJet_strings_ee = {
 "bjeteta",
 "SubleadingElectronEta",
 "bjetphi",
 "SubleadingElectronPhi"
 };
 
-vector<string> dR_LeadingLepton_LeadingBJet_strings_mumu = {
+std::vector<std::string> dR_LeadingLepton_LeadingBJet_strings_mumu = {
 "bjeteta",
 "LeadingMuonEta",
 "bjetphi",
 "LeadingMuonPhi"
 };
 
-vector<string> dR_SubleadingLepton_LeadingBJet_strings_mumu = {
+std::vector<std::string> dR_SubleadingLepton_LeadingBJet_strings_mumu = {
 "bjeteta",
 "SubleadingMuonEta",
 "bjetphi",
@@ -5548,59 +5543,59 @@ vector<string> dR_SubleadingLepton_LeadingBJet_strings_mumu = {
 };
 
 
-vector<string> DeltaPhi_Leadinglepton_BJet_string_ee = {
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
 JetPhiInput,
 "LeadingElectronPhi"
 };
 
-vector<string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
 JetPhiInput,
 "LeadingMuonPhi"
 };
 
 
-vector<string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
 JetPhiInput,
 "SubleadingElectronPhi"
 };
 
-vector<string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
 JetPhiInput,
 "SubleadingMuonPhi"
 };
 
 
 
-vector<string> BJetOutputDiscriminantStrings_Leading = {
+std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
 "LeadingJetpT",
 "Jet_btagCSVV2",
 "tightjets",
 JetEtaInput
 }; 
 
-vector<string> BJetOutputDiscriminantStrings_Subleading = {
+std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
 "SubleadingJetpT",
 "Jet_btagCSVV2",
 "tightjets",
 JetEtaInput
 };
 
-vector<string> BJetOutputDiscriminantStrings_Third = {
+std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
 "ThirdJetpT",
 "Jet_btagCSVV2",
 "tightjets",
 JetEtaInput
 };
 
-vector<string> BJetOutputDiscriminantStrings_Fourth = {
+std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
 "FourthJetpT",
 "Jet_btagCSVV2",
 "tightjets",
 JetEtaInput
 };
 
-vector<string> lep_cut_ee_strings;
-vector<string> lep_cut_mumu_strings;
+std::vector<std::string> lep_cut_ee_strings;
+std::vector<std::string> lep_cut_mumu_strings;
 
 if(NPL == true){
 
@@ -5657,7 +5652,7 @@ else{
 }
 
 
-vector<string> lep_cut_emu_strings = {
+std::vector<std::string> lep_cut_emu_strings = {
 "Electron_pt_SelectionEmu",
 "LooseElectron_pt_SelectionEmu",
 "OppositeSign_emu",
@@ -5868,7 +5863,7 @@ auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_par
   else if(year == "2018"){
         PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
   }
-  else{cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << endl;}
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
 
 
   return PU_Weight_input;
@@ -6025,7 +6020,7 @@ else if(ttbarCR == true){
        auto d_mumu_selection = d_emu_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");
 
 }
-else{cout << "please choose ttbarCR as true or false" << endl;}
+else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
 */
 
 
@@ -6128,18 +6123,18 @@ else{cout << "please choose ttbarCR as true or false" << endl;}
 	float Eff_emu = (N_MET_DileptonTriggers_And_SelectionCriteria_emu) / (N_MET_And_SelectionCriteria_emu + 1.0e-06); //1.0e-06 to prevent nan values
 
 	
-        string TriggerSF_Efficiency;
+        std::string TriggerSF_Efficiency;
 
         if(process == "Data_triggerSF"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
 	else if(process == "MC_triggerSF_ttbar"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_MC_ZPlusJets_" + year + ".txt";}
 
-	ofstream TriggerSF_Efficiency_File;
+	std::ofstream TriggerSF_Efficiency_File;
 	TriggerSF_Efficiency_File.open(TriggerSF_Efficiency.c_str());	
 
 	TriggerSF_Efficiency_File << Eff_ee << '\n'
 				  << Eff_mumu << '\n'
-				  << Eff_emu << '\n' << endl;
+				  << Eff_emu << '\n' << std::endl;
 
 
 	//alpha values
@@ -6160,19 +6155,19 @@ else{cout << "please choose ttbarCR as true or false" << endl;}
 	float Alpha_emu = (Eff_Dilepton_Selection_emu * Eff_MET_Selection_emu) / (Eff_MET_Dilepton_Selection_emu + 1.0e-06);
 
 
-	string TriggerSF_Alpha;
+	std::string TriggerSF_Alpha;
 
         if(process == "Data_triggerSF"){ TriggerSF_Alpha = "TriggerSF_Alpha_Data_MET_" + year + ".txt";}
         else if(process == "MC_triggerSF_ttbar"){ TriggerSF_Alpha = "TriggerSF_Alpha_MC_ttbar_" + year + ".txt";}
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_Alpha = "TriggerSF_Alpha_MC_ZPlusJets_" + year + ".txt";}
-        else{cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar or MC_triggerSF_ZPlusJets" << endl;}
+        else{std::cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar or MC_triggerSF_ZPlusJets" << std::endl;}
 
-        ofstream TriggerSF_Alpha_File;
+       std::ofstream TriggerSF_Alpha_File;
         TriggerSF_Alpha_File.open(TriggerSF_Alpha.c_str());
 
         TriggerSF_Alpha_File << Alpha_ee << '\n'
                              << Alpha_mumu << '\n'
-                             << Alpha_emu << '\n' << endl;
+                             << Alpha_emu << '\n' << std::endl;
 
 
 
@@ -6188,14 +6183,14 @@ else{cout << "please choose ttbarCR as true or false" << endl;}
 
 
 
-	string TriggerSF_EfficiencyUncerts;
+	std::string TriggerSF_EfficiencyUncerts;
 
         if(process == "Data_triggerSF"){ TriggerSF_EfficiencyUncerts = "TriggerSF_EfficiencyUncerts_Data_MET_" + year + ".txt";}
         else if(process == "MC_triggerSF_ttbar"){ TriggerSF_EfficiencyUncerts = "TriggerSF_EfficiencyUncerts_MC_ttbar_" + year + ".txt";}
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_EfficiencyUncerts = "TriggerSF_EfficiencyUncerts_MC_ZPlusJets_" + year + ".txt";}
-        else{cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar, MC_triggerSF_ZPlusJets" << endl;}
+        else{std::cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar, MC_triggerSF_ZPlusJets" << std::endl;}
 
-        ofstream TriggerSF_EfficiencyUncerts_File;
+       std::ofstream TriggerSF_EfficiencyUncerts_File;
         TriggerSF_EfficiencyUncerts_File.open(TriggerSF_EfficiencyUncerts.c_str());
 
         TriggerSF_EfficiencyUncerts_File << Eff_ee_UpperUncert << '\n'
@@ -6203,7 +6198,7 @@ else{cout << "please choose ttbarCR as true or false" << endl;}
 					 << Eff_mumu_UpperUncert << '\n'
                                          << Eff_mumu_LowerUncert << '\n'
 					 << Eff_emu_UpperUncert << '\n'
-                                         << Eff_emu_LowerUncert << '\n' << endl;
+                                         << Eff_emu_LowerUncert << '\n' << std::endl;
 
 
 	//Turn on curves
@@ -6398,7 +6393,7 @@ else{cout << "please choose ttbarCR as true or false" << endl;}
 	}
 
 	//Saving the turn on curves to an output file
-	string TurnOnCurvesOutput;
+	std::string TurnOnCurvesOutput;
 
 	if(blinding == false){
 
@@ -6417,7 +6412,7 @@ else{cout << "please choose ttbarCR as true or false" << endl;}
         else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + ".root";}
 
 }
@@ -6438,7 +6433,7 @@ else{
         else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR_Blinded.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_Blinded.root";}
 
 
@@ -6511,11 +6506,6 @@ else{
 
 	TurnOnCurvesFile->Close();
 
-	 
-
-
-	return 0; //Return so that the rest of the script doesn't run. This is to only obtain trigger efficiencies and alpha values.
-
   } //end of if statement for trigger SF processes
 
 
@@ -6581,8 +6571,8 @@ else{
 
 
 
-  string TriggerSF_ScaleFactors = "TriggerSF_ScaleFactors_" + year + ".txt";
-  ofstream TriggerSF_ScaleFactors_File;
+  std::string TriggerSF_ScaleFactors = "TriggerSF_ScaleFactors_" + year + ".txt";
+  std::ofstream TriggerSF_ScaleFactors_File;
   TriggerSF_ScaleFactors_File.open(TriggerSF_ScaleFactors.c_str());
 
   TriggerSF_ScaleFactors_File << SF_ee << '\n'
@@ -6590,7 +6580,7 @@ else{
 			      << SF_emu << '\n' 
 			      << SF_Uncert_ee << '\n'
 			      << SF_Uncert_mumu << '\n'
-			      << SF_Uncert_emu << '\n' << endl;
+			      << SF_Uncert_emu << '\n' << std::endl;
 
 
 
@@ -6807,7 +6797,7 @@ else{
                                                                       .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 
 
-string BTagEffOutput = process + "_BTagEffPlots.root";
+std::string BTagEffOutput = process + "_BTagEffPlots.root";
 
 
 if(blinding == false){
@@ -6827,7 +6817,7 @@ if(blinding == false){
         else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
                 BTagEffOutput = "BTagEffPlots_" + process + "_" + year + "_NPL_ttbarCR.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{BTagEffOutput = "BTagEffPlots_" + process + "_" + year + ".root";}
 
 }
@@ -6848,7 +6838,7 @@ else{
         else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
                 BTagEffOutput = "BTagEffPlots_" + process + "_" + year + "_NPL_ttbarCR_Blinded.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{BTagEffOutput = "BTagEffPlots_" + process + "_" + year + "_Blinded.root";}
 
 
@@ -7250,68 +7240,68 @@ auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, cons
 	CSVReader reader("../ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 	std::vector<std::vector<std::string> > dataList = reader.getData();
         
-	vector<string> OutputVec{}; 
-	vector<string> outputstringvec{};
+	std::vector<std::string> OutputVec{}; 
+	std::vector<std::string> outputstringvec{};
 
-	string number;
+	std::string number;
 
         if(BTagOrNot == true){number = "1";}
 	else{number = "0";}
 
-	vector<string> CSVv2OperatingPointTest(pts.size(), number); 
+	std::vector<std::string> CSVv2OperatingPointTest(pts.size(), number); 
 
-	string MeasurementTypeString;
+	std::string MeasurementTypeString;
 
 	if(GenPart_pdgId.at(j) == 4 || GenPart_pdgId.at(j) == 5){MeasurementTypeString = "mujets";}
 	else if(GenPart_pdgId.at(j) > 0 && GenPart_pdgId.at(j) < 4){MeasurementTypeString = "incl";}
-	else{cout << "Not charm, bjet or light jet" << endl;}
+	else{std::cout << "Not charm, bjet or light jet" << std::endl;}
 
-        vector<string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
+        std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
 
-	string systematic_type_string;
+	std::string systematic_type_string;
 
 	if(BTag_ScaleUp == true){systematic_type_string = "up";}
         else if(BTag_ScaleDown == true){systematic_type_string = "down";}
  	else{systematic_type_string = "central";}
 
-        vector<string> SysTypeTest(pts.size(), "central");
-        vector<string> JetFlavourTest(pts.size(), "0"); 
+        std::vector<std::string> SysTypeTest(pts.size(), "central");
+        std::vector<std::string> JetFlavourTest(pts.size(), "0"); 
 
-        vector<string> EtaTest{};
+        std::vector<std::string> EtaTest{};
 
 
 	for(int i = 0; i < etas.size(); i++){
 
-		ostringstream ss;
+		std::stringstream ss;
 		ss << etas.at(i);
-		string EtaString(ss.str());
+		std::string EtaString(ss.str());
 
 		EtaTest.push_back(EtaString);
 
 	}
 
-	vector<string> PtTest{};
+	std::vector<std::string> PtTest{};
 
 
         for(int i = 0; i < pts.size(); i++){
 
-                ostringstream ss;
+                std::stringstream ss;
                 ss << pts.at(i);
-                string PtString(ss.str());
+                std::string PtString(ss.str());
 
                 PtTest.push_back(PtString);
 
         }
 
 
-	vector<string> DiscrTest{};
+	std::vector<std::string> DiscrTest{};
 
         for(int i = 0; i < pts.size(); i++){
 
 
-                ostringstream ss;
+                std::stringstream ss;
                 ss << CSVv2Discr.at(i);
-                string CSVv2DiscrString(ss.str());
+                std::string CSVv2DiscrString(ss.str());
 
                 DiscrTest.push_back(CSVv2DiscrString);
 
@@ -7319,8 +7309,8 @@ auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, cons
 
 
 
-	vector<string> OutVec{};
-	vector<string> FinalOutVec{};
+	std::vector<std::string> OutVec{};
+	std::vector<std::string> FinalOutVec{};
 
 
 
@@ -7341,15 +7331,15 @@ for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
                 	for(std::string data : vec)
                 	{
 				
-				string VecAt1String = vec.at(1);
-				string VecAt2String = vec.at(2);
-				string VecAt3String = vec.at(3);
-			        string VecAt4String = vec.at(4);
-				string VecAt5String = vec.at(5);
-				string VecAt6String = vec.at(6);
-				string VecAt7String = vec.at(7);
-				string VecAt8String = vec.at(8);
-				string VecAt9String = vec.at(9);
+				std::string VecAt1String = vec.at(1);
+				std::string VecAt2String = vec.at(2);
+				std::string VecAt3String = vec.at(3);
+			        std::string VecAt4String = vec.at(4);
+				std::string VecAt5String = vec.at(5);
+				std::string VecAt6String = vec.at(6);
+				std::string VecAt7String = vec.at(7);
+				std::string VecAt8String = vec.at(8);
+				std::string VecAt9String = vec.at(9);
 				
 
 				VecAt1String.erase(0, 0);
@@ -7399,7 +7389,7 @@ for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
                         	|| (VecAt7Float < PtTestFloat)
                         	|| (VecAt8Float > DiscrTestFloat) 
                         	|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
-				else{cout << "double check criteria" << endl;}
+				else{std::cout << "double check criteria" << std::endl;}
 			
                 	}
 
@@ -7407,12 +7397,12 @@ for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
 
 
 
-	vector<string> NewOutVec{};
-	vector<string> Zeroes{}; 
+	std::vector<std::string> NewOutVec{};
+	std::vector<std::string> Zeroes{}; 
 	Zeroes.push_back("0");
 	Zeroes.push_back("0");
 
-	bool check = all_of(OutVec.begin(), OutVec.end(), [](string s){return s == "0";});
+	bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
 
 
 	if(OutVec.size() != 0 && check == false){
@@ -7422,31 +7412,31 @@ for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
 	
 		}
 	
-		string outputstring;
+		std::string outputString;
 
 	
 		if(NewOutVec.size() > 11){
 
-			outputstring = NewOutVec.at( ((i+1)*11)-1 );
+			outputString = NewOutVec.at( ((i+1)*11)-1 );
 		}
 		else{
-			outputstring = NewOutVec.at(0); 
+			outputString = NewOutVec.at(0); 
 		}
 
-		outputstring.erase(outputstring.begin()+1);
-                outputstring.erase(outputstring.begin());
-                outputstring.erase(outputstring.end()-2);
-                outputstring.erase(outputstring.end()-1);
+		outputString.erase(outputString.begin()+1);
+                outputString.erase(outputString.begin());
+                outputString.erase(outputString.end()-2);
+                outputString.erase(outputString.end()-1);
 		
-                string::size_type pos = 0;
+                std::string::size_type pos = 0;
  
-                while ((pos = outputstring.find('x', pos)) != string::npos)
+                while ((pos = outputString.find('x', pos)) != std::string::npos)
                 {
-                        outputstring.replace(pos, 1, PtTest.at(i));
+                        outputString.replace(pos, 1, PtTest.at(i));
                         pos += 2;
                 }
                 
-		outputstringvec.push_back(outputstring);
+		outputstringvec.push_back(outputString);
 		FinalOutVec.push_back(outputstringvec.at(i));
 
 	
@@ -7458,33 +7448,33 @@ for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
 
 
 
-//Evaluating the mathematical expression in the string
-string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
-string ConcatenatedString5, ConcatenatedString6, ConcatenatedString7, ConcatenatedString8;
-string ConcatenatedString9, ConcatenatedString10, ConcatenatedString11, ConcatenatedString12;
-string ConcatenatedString13, ConcatenatedString14, ConcatenatedString15, ConcatenatedString16;
-vector<char> VecForConcString{};
-vector<char> VecForConcString2{};
-vector<char> VecForConcString3{};
-vector<char> VecForConcString4{};
-vector<char> VecForConcString5{};
-vector<char> VecForConcString6{};
-vector<char> VecForConcString7{};
-vector<char> VecForConcString8{};
-vector<char> VecForConcString9{};
-vector<char> VecForConcString10{};
-vector<char> VecForConcString11{};
-vector<char> VecForConcString12{};
-vector<char> VecForConcString13{};
-vector<char> VecForConcString14{};
-vector<char> VecForConcString15{};
-vector<char> VecForConcString16{};
+//Evaluating the mathematical expression in the std::string
+std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
+std::string ConcatenatedString5, ConcatenatedString6, ConcatenatedString7, ConcatenatedString8;
+std::string ConcatenatedString9, ConcatenatedString10, ConcatenatedString11, ConcatenatedString12;
+std::string ConcatenatedString13, ConcatenatedString14, ConcatenatedString15, ConcatenatedString16;
+std::vector<char> VecForConcString{};
+std::vector<char> VecForConcString2{};
+std::vector<char> VecForConcString3{};
+std::vector<char> VecForConcString4{};
+std::vector<char> VecForConcString5{};
+std::vector<char> VecForConcString6{};
+std::vector<char> VecForConcString7{};
+std::vector<char> VecForConcString8{};
+std::vector<char> VecForConcString9{};
+std::vector<char> VecForConcString10{};
+std::vector<char> VecForConcString11{};
+std::vector<char> VecForConcString12{};
+std::vector<char> VecForConcString13{};
+std::vector<char> VecForConcString14{};
+std::vector<char> VecForConcString15{};
+std::vector<char> VecForConcString16{};
 int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14, index15, index16;
 float result;
 
 for(int i = 0; i < FinalOutVec.size(); i++){
 
-	string FirstElement = FinalOutVec.at(i);
+	std::string FirstElement = FinalOutVec.at(i);
 
 	if(FirstElement.at(0) != '('){
 
@@ -7977,68 +7967,68 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 						if(FirstElement.at(index) == '+'){result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2;}
 						else if(FirstElement.at(index) == '-'){result = ConcatenatedStringToFloat - ConcatenatedStringToFloat2;}
 						else if(FirstElement.at(index) == '*'){result = ConcatenatedStringToFloat * ConcatenatedStringToFloat2;}
-						else{cout << "FirstElement.at(index) is " << FirstElement.at(index) << ". This is not a +, - or *. Output has been set to zero" << endl; result = 0;}
+						else{std::cout << "FirstElement.at(index) is " << FirstElement.at(index) << ". This is not a +, - or *. Output has been set to zero" << std::endl; result = 0;}
 
 
 						if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '(' && FirstElement.at(index2+2) == '-'){
 							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3);
 						}
-						else{cout << "error" << endl;}
+						else{std::cout << "error" << std::endl;}
 
 
 						if(FirstElement.at(index4) == '+'){
 							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4);
 						}
-						else{cout << "error message 2" << endl;}
+						else{std::cout << "error message 2" << std::endl;}
 
 
 						if(FirstElement.at(index5) == '*' && FirstElement.at(index5+1) == '('){
 							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5));
 						}
-						else{cout << "error message 3" << endl;}
+						else{std::cout << "error message 3" << std::endl;}
 
 						if(FirstElement.at(index6) == '+'){
         						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6));
 						}
-						else{cout << "error message 4" << endl;}
+						else{std::cout << "error message 4" << std::endl;}
 
 
 						if(FirstElement.at(index7) == '*'){
         						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7)));
 						}	   
-						else{cout << "error message 5" << endl;}
+						else{std::cout << "error message 5" << std::endl;}
 
 
 						if(FirstElement.at(index8) == '+'){
  	       						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8)));
 						}
-						else{cout << "error message 5" << endl;}
+						else{std::cout << "error message 5" << std::endl;}
 
 						if(FirstElement.at(index9) == '*' && FirstElement.at(index9+1) == '('){
 							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9))));
 						}
-						else{cout << "error message 6" << endl;}
+						else{std::cout << "error message 6" << std::endl;}
 
 						if(FirstElement.at(index10) == '+'){
         						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))));
 						}
-						else{cout << "error message 7" << endl;}
+						else{std::cout << "error message 7" << std::endl;}
 
 						if(FirstElement.at(index11) == '*' && FirstElement.at(index11+1) == '(' && FirstElement.at(index11+2) == '-'){
         						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11)))));
 						}
-						else{cout << "error message 8" << endl;}
+						else{std::cout << "error message 8" << std::endl;}
 
 
 						if(FirstElement.at(index12) == '+'){
         						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12)))));
 						}	
-						else{cout << "error message 9" << endl;}
+						else{std::cout << "error message 9" << std::endl;}
 
 						if(FirstElement.at(index13) == '*'){
         						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12*ConcatenatedStringToFloat13)))));
 						}
-						else{cout << "error message 10" << endl;}
+						else{std::cout << "error message 10" << std::endl;}
 
 						ResultVector.push_back(result);
 
@@ -8373,7 +8363,7 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 			
 
 		}
-		else{cout << "ERROR" << endl;}
+		else{std::cout << "ERROR" << std::endl;}
 
 		ResultVector.push_back(result);
 
@@ -8813,7 +8803,7 @@ else{
 
 //Lambda function for the event weight column
 
-auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEff_Sys, const float& EGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
@@ -8835,15 +8825,15 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
   }
 
 
-  if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff_Sys * EGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee));}
-  else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff_Sys * EGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) );}
-  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMax );}
-  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMin );}
-  else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2);}
-  else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(0);}
-  else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(3);}
-  else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(1);}
-  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee);}
+  if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee));}
+  else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) );}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMax );}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMin );}
+  else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2);}
+  else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(0);}
+  else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(3);}
+  else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(1);}
+  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee);}
   
 
   return EventWeight;
@@ -8851,7 +8841,7 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
 }}; 
 
 
-auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& MuonSFTest_Iso_sys_syst, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
@@ -8878,8 +8868,8 @@ auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncer
 
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up);}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down );}
-  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMax );}
-  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * SF_ee * PdfMin );}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_mumu * PdfMax );}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_mumu * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2);}
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0);}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3);}
@@ -8903,8 +8893,8 @@ auto DummyColumnFunction{[](const floats& pts){
 }};
 
 
-string PSWeightString_ee;
-string PSWeightString_mumu;
+std::string PSWeightString_ee;
+std::string PSWeightString_mumu;
 
 if( (year == "2017" || year == "2018") &&
      (process == "tZq" ||
@@ -8971,10 +8961,10 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
                                                  .Define("BTagWeight", BTagWeightFunction, {"ProbBTagMC", "ProbBTagData"})
 						 .Define("MuonSFTest_ID", MuonSFTest_ID, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
 						 .Define("MuonSFTest_Iso", MuonSFTest_Iso, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
-                                                 .Define("MuonSFTest_ID_sys_syst", MuonSFTest_IDsys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
-						 .Define("MuonSFTest_ID_sys_stat", MuonSFTest_IDsys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
-						 .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Isosys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
-                                                 .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Isosys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
+                                                 .Define("MuonSFTest_ID_sys_syst", MuonSFTest_ID_sys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
+						 .Define("MuonSFTest_ID_sys_stat", MuonSFTest_ID_sys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
+						 .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
+                                                 .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
 						 .Define("ReturnedPSWeight", PSWeight, {PSWeightString_mumu, "MuonPt_RochCorr"})
                                                  .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP"});
 				
@@ -9078,7 +9068,7 @@ auto d_ReweightedEvents_mumu = std::make_unique<RNode>(d_WeightedEvents_mumu);
 for(auto i = 0u; i < colNames_ee.size(); i++){
 
         auto colType = d_WeightedEvents_ee.GetColumnType(colNames_ee.at(i));
-        string ReweightedColumnName_ee = colNames_ee.at(i) + "_" + "Weighted";
+        std::string ReweightedColumnName_ee = colNames_ee.at(i) + "_" + "Weighted";
 
 
 	if(colType == "float"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_float, {colNames_ee.at(i), "EventWeight"}));}
@@ -9089,7 +9079,7 @@ for(auto i = 0u; i < colNames_ee.size(); i++){
         else if(colType == "doubles"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_doubles, {colNames_ee.at(i), "EventWeight"}));}
 	else if(colType == "bool"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bool, {colNames_ee.at(i), "EventWeight"}));}
         else if(colType == "bools"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bools, {colNames_ee.at(i), "EventWeight"}));}
-	else{cout << "ERROR: The column type is: " << colType << endl; break;}
+	else{std::cout << "ERROR: The column type is: " << colType << std::endl; break;}
 
 
 
@@ -9099,7 +9089,7 @@ for(auto i = 0u; i < colNames_ee.size(); i++){
 for(auto i = 0u; i < colNames_mumu.size(); i++){
 
         auto colType = d_WeightedEvents_mumu.GetColumnType(colNames_mumu.at(i));
-        string ReweightedColumnName_mumu = colNames_mumu.at(i) + "_" + "Weighted";
+        std::string ReweightedColumnName_mumu = colNames_mumu.at(i) + "_" + "Weighted";
 
 
 	if(colType == "float"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_float, {colNames_mumu.at(i), "EventWeight"}));}
@@ -9110,7 +9100,7 @@ for(auto i = 0u; i < colNames_mumu.size(); i++){
         else if(colType == "doubles"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_doubles, {colNames_mumu.at(i), "EventWeight"}));}
 	else if(colType == "bool"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bool, {colNames_mumu.at(i), "EventWeight"}));}
         else if(colType == "bools"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bools, {colNames_mumu.at(i), "EventWeight"}));}
-        else{cout << "ERROR: The column type is: " << colType << endl; break;}
+        else{std::cout << "ERROR: The column type is: " << colType << std::endl; break;}
 
       
   
@@ -9124,7 +9114,7 @@ int nbins = 40;
 
 double W_stddev_ee, Top_stddev_ee, W_stddev_mumu, Top_stddev_mumu;
 
-string Filename;
+std::string Filename;
 
 if(process == "tZq"){
 
@@ -9143,7 +9133,7 @@ if(process == "tZq"){
 	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 		Filename = process + "_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 	else{Filename = process + "_AfterFullSelection_GaussianFit_" + year + ".root";}
 
 
@@ -9181,7 +9171,7 @@ if(process == "tZq"){
 
 
 
-string tZq_WAndTop_Filename; 
+std::string tZq_WAndTop_Filename; 
 
 
 if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
@@ -9199,12 +9189,12 @@ else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
 else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){ 
 	 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
         
 
 
-TFile* tZq_WAndTop_File = TFile::Open(tZq_WAndTop_Filename.c_str(), "READ");
+TFile* tZq_WAndTop_File = new TFile{tZq_WAndTop_Filename.c_str(), "READ"};
 
 TH1* WHist_ee = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_WMass_ee", "TH1");
 TH1* TopHist_ee = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_InvTopMass_ee", "TH1");
@@ -9225,7 +9215,7 @@ tZq_WAndTop_File->Close();
 
 //Write the nominal mass and resolution values to a text file
 
-string filenamestring_variable;
+std::string filenamestring_variable;
 
 if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
 	filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL.txt";
@@ -9242,18 +9232,18 @@ else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
 else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 	filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL_ttbarCR.txt";	
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{filenamestring_variable = "Resolution_" + process + "_" + year + ".txt";}
 
 
 
-ofstream Resolution;
+std::ofstream Resolution;
 Resolution.open(filenamestring_variable.c_str());
 
 Resolution << "W_stddev_ee: " << W_stddev_ee << '\n'
 	   << "Top_stddev_ee: " << Top_stddev_ee << '\n' 
 	   << "W_stddev_mumu: " << W_stddev_mumu << '\n'
-           << "Top_stddev_mumu: " << Top_stddev_mumu << '\n' << endl;
+           << "Top_stddev_mumu: " << Top_stddev_mumu << '\n' << std::endl;
 
 
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
@@ -9274,7 +9264,7 @@ auto chi2_ee{[&W_stddev_ee, &Top_stddev_ee](const float& w_mass, const float& To
   //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
 
   	if(w_mass > LowerBound && w_mass < UpperBound){return chi2;}	
-	else{cout << "w_mass is not within 5 sigma of the mean W mass value" << endl; float Zero = 0.0; return Zero;}
+	else{std::cout << "w_mass is not within 5 sigma of the mean W mass value" << std::endl; float Zero = 0.0; return Zero;}
 
 }};
 
@@ -9299,7 +9289,7 @@ auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const flo
   //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
 
         if(w_mass > LowerBound && w_mass < UpperBound){return chi2;}
-        else{cout << "w_mass is not within 5 sigma of the mean W mass value" << endl;}
+        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value" << std::endl;}
 
 
  
@@ -9309,10 +9299,10 @@ auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const flo
 
 
 
-string Chi2Range_string, BlindedHistosRootFile;
+std::string Chi2Range_string, BlindedHistosRootFile;
 
 
-string branch;
+std::string branch;
 
 if(NPL == true){branch = "NPL";}
 else if(ZPlusJetsCR == true){branch = "ZPlusJetsCR";}
@@ -9331,8 +9321,8 @@ else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
 else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
 else if(ME_Up == true){branch = "ME_Up";}
 else if(ME_Down == true){branch = "ME_Down";}
-else if(alphaS_Up == true){branch = "alphaS_Up";}
-else if(alphaS_Up == true){branch = "alphaS_Down";}
+else if(alphaS_up == true){branch = "alphaS_Up";}
+else if(alphaS_down == true){branch = "alphaS_Down";}
 else if(isr_up == true){branch = "isr_up";}
 else if(isr_down == true){branch = "isr_down";}
 else if(fsr_up == true){branch = "fsr_up";}
@@ -9456,19 +9446,19 @@ if(blinding == true){
 	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL_ttbarCR.txt";
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 	else{Chi2Range_string = "Chi2Range_" + process + "_" + year + ".txt";}
 
 
 	
 
-	ofstream Chi2Range;
+	std::ofstream Chi2Range;
 	Chi2Range.open(Chi2Range_string.c_str());
 
 	Chi2Range << "MinChi2_ee: " << MinChi2_ee << '\n'
                   << "MaxChi2_ee: " << MaxChi2_ee << '\n'
 		  << "MinChi2_mumu: " << MinChi2_mumu << '\n'
-                  << "MaxChi2_mumu: " << MaxChi2_mumu << endl;
+                  << "MaxChi2_mumu: " << MaxChi2_mumu << std::endl;
 
 
 	auto chi2_filter_ee{[&MaxChi2_ee, &MinChi2_ee](const float& chi2_ee){
@@ -9501,8 +9491,8 @@ if(blinding == true){
 
 
 	//snapshots to save the histograms to output root files
-	string OutRootFile_ee;
-	string OutRootFile_mumu;
+	std::string OutRootFile_ee;
+	std::string OutRootFile_mumu;
   
         if(NPL == false){
   
@@ -9527,8 +9517,8 @@ if(blinding == true){
 }
 else{
 
-	string OutRootFile_ee_unblinded;
-	string OutRootFile_mumu_unblinded;
+	std::string OutRootFile_ee_unblinded;
+	std::string OutRootFile_mumu_unblinded;
 
 
 	if(NPL == false){
@@ -9552,7 +9542,7 @@ else{
 
 //m top vs m W
 
-string TwoDHistoFileName;
+std::string TwoDHistoFileName;
 
 if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
 	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_" + year + ".root";	
@@ -9569,7 +9559,7 @@ else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
 else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_" + year + ".root";
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + ".root";}
 
 
@@ -9627,8 +9617,8 @@ if(NPL == true){
         }
         else{NPL_SF_mumu = 99999;}
 
-	ofstream NPL_numbers_MC;
-	string NPLNumbersStringMC = "NPL_SF_MC_" + process + "_" + year + ".txt";
+	std::ofstream NPL_numbers_MC;
+	std::string NPLNumbersStringMC = "NPL_SF_MC_" + process + "_" + year + ".txt";
 	NPL_numbers_MC.open(NPLNumbersStringMC.c_str()); 
 
         NPL_numbers_MC << "Num_OppositeSignNonPrompt_MC_ee = " << Num_OppositeSignNonPrompt_MC_ee << '\n'
@@ -9636,7 +9626,7 @@ if(NPL == true){
         	       << "Num_OppositeSignNonPrompt_MC_mumu = " << Num_OppositeSignNonPrompt_MC_mumu << '\n'
         	       << "Num_SameSignNonPrompt_MC_mumu = " << Num_SameSignNonPrompt_MC_mumu << '\n'
 		       << "NPL_SF_ee = " << NPL_SF_ee << '\n'
-		       << "NPL_SF_mumu = " << NPL_SF_mumu << endl;
+		       << "NPL_SF_mumu = " << NPL_SF_mumu << std::endl;
 
 
 	//For  (number of same sign data events)- (the expected number of real same sign events with charge misidentification)
@@ -9653,7 +9643,7 @@ auto allCutsReport{d_dataframe.Report()};
 
 for (auto&& cutInfo: allCutsReport)
 
-{CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << endl;}
+{CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;}
 
 
 
@@ -9722,14 +9712,14 @@ process == "data_SingleMuonRunH"
 
 
 	//Filtering events that pass the double muon triggers
-	string Mass3p8Filter;
-	string mumuFilter2;
+	std::string Mass3p8Filter;
+	std::string mumuFilter2;
 
 
  	if(year == "2018"){Mass3p8Filter = "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8", mumuFilter2 = "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ";}
 	else if(year == "2017"){mumuFilter2 = "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", Mass3p8Filter = "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ";}
 	else if(year == "2016"){Mass3p8Filter = "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ"; mumuFilter2 = "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ";}
-	else{cout << "Choose the year out of 2016, 2017 or 2018" << endl;}
+	else{std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl;}
 
 
 	auto EventsPassingDoubleMuonTrigger = d_dataframe.Define("EventsPassingDoubleMuonTrigger", DoubleMuon, {"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", mumuFilter2, Mass3p8Filter})
@@ -9737,9 +9727,9 @@ process == "data_SingleMuonRunH"
 
 
 	//Filtering events that pass the muon electron triggers
-	string EmuString1;
-	string EmuString2;
-	string EmuString3;
+	std::string EmuString1;
+	std::string EmuString2;
+	std::string EmuString3;
 
 	if(year == "2016"){
 
@@ -9755,7 +9745,7 @@ process == "data_SingleMuonRunH"
                 EmuString3 = "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
 
         }
-	else{cout << "Choose a year out of 2016, 2017 or 2018" << endl;}
+	else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
  	
 
 	
@@ -9765,10 +9755,10 @@ process == "data_SingleMuonRunH"
 
 
 
-	//Strings for output file names
-	string Name_ee = "EventsPassingDoubleElectronTrigger_" + process + "_" + year + ".root";
-	string Name_mumu = "EventsPassingDoubleMuonTrigger_" + process + "_" + year + ".root";
-	string Name_emu = "EventsPassingElectronMuonTrigger_" + process + "_" + year + ".root";
+	//std::strings for output file names
+	std::string Name_ee = "EventsPassingDoubleElectronTrigger_" + process + "_" + year + ".root";
+	std::string Name_mumu = "EventsPassingDoubleMuonTrigger_" + process + "_" + year + ".root";
+	std::string Name_emu = "EventsPassingElectronMuonTrigger_" + process + "_" + year + ".root";
 
 
 	//Saving events that pass the double electron triggers and their event numbers
@@ -9807,11 +9797,11 @@ process == "data_SingleMuonRunH"
 
 
         //Filtering events that pass the single electron triggers 
-	string SingleElectronTrigger1;
-	string SingleElectronTrigger2;
-	string SingleElectronTrigger3;
-	string SingleElectronTrigger4;
-        string SingleElectronTrigger5;
+	std::string SingleElectronTrigger1;
+	std::string SingleElectronTrigger2;
+	std::string SingleElectronTrigger3;
+	std::string SingleElectronTrigger4;
+        std::string SingleElectronTrigger5;
 
 	if(year == "2016"){
 
@@ -9839,7 +9829,7 @@ process == "data_SingleMuonRunH"
                 SingleElectronTrigger5 = "HLT_Ele32_WPTight_Gsf_L1DoubleEG";
 
 	}
-	else{cout << "Please choose a year out of 2016, 2017 or 2018" << endl;}
+	else{std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl;}
 
 
 /* 2nd 4th 5th for 2016
@@ -9862,9 +9852,9 @@ const bool& HLT_Ele27_WPTight_Gsf
 
 
 
-        //Strings for output file names
-        string Name_electron = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
-        string Name_muon = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
+        //std::strings for output file names
+        std::string Name_electron = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
+        std::string Name_muon = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
 
 
         //Saving events that pass the single electron triggers and their event numbers
@@ -9889,11 +9879,11 @@ if(process != "data_EGRunB" &&
 
 
 	//Preventing double counting of single and double lepton datasets 
-	string ee_file = "EventsPassingDoubleElectronTrigger_" + process + "_" + year + ".root";
-	string mumu_file = "EventsPassingDoubleMuonTrigger_" + process + "_" + year + ".root";
-	string emu_file = "EventsPassingElectronMuonTrigger_" + process + "_" + year + ".root";
-	string e_file = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
-	string mu_file = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
+	std::string ee_file = "EventsPassingDoubleElectronTrigger_" + process + "_" + year + ".root";
+	std::string mumu_file = "EventsPassingDoubleMuonTrigger_" + process + "_" + year + ".root";
+	std::string emu_file = "EventsPassingElectronMuonTrigger_" + process + "_" + year + ".root";
+	std::string e_file = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
+	std::string mu_file = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
 
 	TFile * ee_file_Open = new TFile(ee_file.c_str(), "READ");
 	TFile * mumu_file_Open = new TFile(mumu_file.c_str(), "READ");
@@ -10038,18 +10028,18 @@ if(process != "data_EGRunB" &&
 //Using the golden ison file to filter events
 auto GoldenJsonReader{[&year](){
 
- string GoldenJsonFileName;
+ std::string GoldenJsonFileName;
 
  if(year == "2016"){GoldenJsonFileName = "../ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt";}
  else if(year == "2017"){GoldenJsonFileName = "../ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt";}
  else if(year == "2018"){GoldenJsonFileName = "../ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt";}
- else{cout << "Choose the year out of 2016, 2017 or 2018" << endl;}
+ else{std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl;}
 
 
- ifstream myReadFile;
+ std::ifstream myReadFile;
  myReadFile.open(GoldenJsonFileName);
  static char output[100];
- vector<string> GoldenJsonOutput{};
+ std::vector<std::string> GoldenJsonOutput{};
   
 
  if (myReadFile.is_open()) {
@@ -10072,11 +10062,11 @@ return GoldenJsonOutput;
 
 auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
 
-  vector<char> out{};
+  std::vector<char> out{};
 
   for(int i = 0; i < (GoldenJsonReader()).size(); i++){
 
-  	string element = GoldenJsonReader().at(i);
+  	std::string element = GoldenJsonReader().at(i);
 
   	for(int j = 0; j < element.size(); j++){
 
@@ -10096,7 +10086,7 @@ auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
 auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
 
   
- vector<char> EventsVector{}; 
+ std::vector<char> EventsVector{}; 
 
  for(int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
 
@@ -10140,11 +10130,11 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 											
 
 					}
-					else{cout << "GoldenJson_SplitChars().at((i+11)+j) and at (i+11)+(j+1) are not ']' " << endl; continue;}
+					else{std::cout << "GoldenJson_SplitChars().at((i+11)+j) and at (i+11)+(j+1) are not ']' " << std::endl; continue;}
 
 
 				}
-				else{cout << "GoldenJson_SplitChars().at(i+10) is not '[' " << endl; continue;}
+				else{std::cout << "GoldenJson_SplitChars().at(i+10) is not '[' " << std::endl; continue;}
 
 
 			}	
@@ -10153,7 +10143,7 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 		else{continue;}
 
 	}
-	else{cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << endl;}
+	else{std::cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << std::endl;}
 
 
  }
@@ -10164,11 +10154,11 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 
 auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
- vector<int> RunNumAndEvents{};
+ std::vector<int> RunNumAndEvents{};
 
  RunNumAndEvents.push_back(InputRunNumber);
 
- vector<char> Runs = RunNumberCheck(InputRunNumber);
+ std::vector<char> Runs = RunNumberCheck(InputRunNumber);
 
 
  for(int i = 0; i < Runs.size(); i++){
@@ -10250,7 +10240,7 @@ auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& Inp
 
 
                         }
-                       else{cout << "error" << endl;}
+                       else{std::cout << "error" << std::endl;}
 
  		}	
  		else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 3 digit number
@@ -10323,7 +10313,7 @@ auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& Inp
 
 
                         }
-                       else{cout << "error" << endl;}
+                       else{std::cout << "error" << std::endl;}
 
  		}
  		else if(isdigit( Runs.at(i+1) ) && //For the min value being a 2 digit number
@@ -10393,7 +10383,7 @@ auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& Inp
 
 
                                 }
-				else{cout << "error" <<  "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << endl;}
+				else{std::cout << "error" <<  "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
 
    	}
 	else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 1 digit number
@@ -10462,10 +10452,10 @@ auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& Inp
 
 
                         }
-                       else{cout << "error" << endl;}
+                       else{std::cout << "error" << std::endl;}
 
  		}	
-		else{cout << "INSIDE THE ELSE STATEMENT" << '\n' << "Runs.at(i) = " << Runs.at(i) << '\n' << "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << endl;}
+		else{std::cout << "INSIDE THE ELSE STATEMENT" << '\n' << "Runs.at(i) = " << Runs.at(i) << '\n' << "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
 
 
 	}	 
@@ -10972,8 +10962,8 @@ int nbins = 40;
 
 double W_stddev_ee, Top_stddev_ee, W_stddev_mumu, Top_stddev_mumu;
 
-string Filename;
-string tZq_WAndTop_Filename; 
+std::string Filename;
+std::string tZq_WAndTop_Filename; 
 
 
 	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
@@ -10991,7 +10981,7 @@ string tZq_WAndTop_Filename;
 	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){ 
 	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 	else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
 
 
@@ -11017,7 +11007,7 @@ tZq_WAndTop_File->Close();
 
 //Write the nominal mass and resolution values to a text file
 
-string filenamestring_variable;
+std::string filenamestring_variable;
 
 if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
 	filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL.txt";
@@ -11034,18 +11024,18 @@ else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
 else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 	filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL_ttbarCR.txt";	
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{filenamestring_variable = "Resolution_" + process + "_" + year + ".txt";}
 
 
 
-ofstream Resolution;
+std::ofstream Resolution;
 Resolution.open(filenamestring_variable.c_str());
 
 Resolution << "W_stddev_ee: " << W_stddev_ee << '\n'
 	   << "Top_stddev_ee: " << Top_stddev_ee << '\n'
 	   << "W_stddev_mumu: " << W_stddev_mumu << '\n'
-           << "Top_stddev_mumu: " << Top_stddev_mumu << '\n' << endl;
+           << "Top_stddev_mumu: " << Top_stddev_mumu << '\n' << std::endl;
 
 
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
@@ -11065,7 +11055,7 @@ auto chi2_ee{[&W_stddev_ee, &Top_stddev_ee](const float& w_mass, const float& To
   //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
 
   	if(w_mass > LowerBound && w_mass < UpperBound){return chi2;}	
-	else{cout << "w_mass is not within 5 sigma of the mean W mass value" << endl;}	
+	else{std::cout << "w_mass is not within 5 sigma of the mean W mass value" << std::endl;}	
 
 
 }};
@@ -11089,7 +11079,7 @@ auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const flo
   //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
 
         if(w_mass > LowerBound && w_mass < UpperBound){return chi2;}
-        else{cout << "w_mass is not within 5 sigma of the mean W mass value" << endl; float Zero = 0.0; return Zero;}	
+        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value" << std::endl; float Zero = 0.0; return Zero;}	
 	
 
 }};
@@ -11099,7 +11089,7 @@ auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const flo
 
 
 
-string Chi2Range_string, BlindedHistosRootFile;
+std::string Chi2Range_string, BlindedHistosRootFile;
 
 if(blinding == true){
 
@@ -11217,20 +11207,20 @@ if(blinding == true){
 	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL_ttbarCR.txt";
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 	else{Chi2Range_string = "Chi2Range_" + process + "_" + year + ".txt";}
 
 
 	
 
-	ofstream Chi2Range;
+	std::ofstream Chi2Range;
 	Chi2Range.open(Chi2Range_string.c_str());
 
 
 	Chi2Range << "MinChi2_ee: " << MinChi2_ee << '\n'
                   << "MaxChi2_ee: " << MaxChi2_ee << '\n'
 		  << "MinChi2_mumu: " << MinChi2_mumu << '\n'
-                  << "MaxChi2_mumu: " << MaxChi2_mumu << endl;
+                  << "MaxChi2_mumu: " << MaxChi2_mumu << std::endl;
 
 
 	auto chi2_filter_ee{[&MaxChi2_ee, &MinChi2_ee](const float& chi2_ee){
@@ -11264,8 +11254,8 @@ if(blinding == true){
 
 
 	 //snapshots to save the histograms to output root files
-        string OutRootFile_ee = "Results_" + process + "_" + year + "_ee_Blinded.root";
-        string OutRootFile_mumu = "Results_" + process + "_" + year + "_mumu_Blinded.root";
+        std::string OutRootFile_ee = "Results_" + process + "_" + year + "_ee_Blinded.root";
+        std::string OutRootFile_mumu = "Results_" + process + "_" + year + "_mumu_Blinded.root";
 
 	auto snapshot_ee = Blinding_ee_filtered.Snapshot("Events", OutRootFile_ee.c_str(), ".*");
 	auto snapshot_mumu = Blinding_mumu_filtered.Snapshot("Events", OutRootFile_mumu.c_str(), ".*");
@@ -11274,8 +11264,8 @@ if(blinding == true){
 }
 else{
 
- string OutRootFile_ee_unblinded = "Results_" + process + "_" + year + "_ee.root";
- string OutRootFile_mumu_unblinded = "Results_" + process + "_" + year + "_mumu.root";
+ std::string OutRootFile_ee_unblinded = "Results_" + process + "_" + year + "_ee.root";
+ std::string OutRootFile_mumu_unblinded = "Results_" + process + "_" + year + "_mumu.root";
 
  auto snapshot_ee_unblinded = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Snapshot("Events", OutRootFile_ee_unblinded.c_str(), ".*");
  auto snapshot_mumu_unblinded = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Snapshot("Events", OutRootFile_mumu_unblinded.c_str(), ".*");
@@ -11286,7 +11276,7 @@ else{
 
 //m top vs m W
 
-string TwoDHistoFileName;
+std::string TwoDHistoFileName;
 
 if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
 	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + "_NPL.root";	
@@ -11303,7 +11293,7 @@ else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
 else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_" + year + ".root";
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << endl;}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + ".root";}
 
 
@@ -11336,12 +11326,12 @@ auto allCutsReport{d_dataframe.Report()};
 
 for (auto&& cutInfo: allCutsReport)
 
-{CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << endl;}
+{CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;}
 
 
 
 }
-else{cout << "Please select data or MC" << endl;}
+else{std::cout << "Please select data or MC" << std::endl;}
 
 
 
@@ -11358,10 +11348,10 @@ else{cout << "Please select data or MC" << endl;}
 
 
 
-auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_Up, const bool& alphaS_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
-  vector<string> Processes;
+  std::vector<std::string> Processes;
 
   if(year == "2016"){
 
@@ -11412,7 +11402,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 
 
  }
- else{cout << "Error: Choose a year out of 2016, 2017 or 2018" << endl;}
+ else{std::cout << "Error: Choose a year out of 2016, 2017 or 2018" << std::endl;}
 
 
 
@@ -11430,7 +11420,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 
 
 //NPL background estimation
-auto Hadd(const string& year, const bool& blinding){
+auto Hadd(const std::string& year, const bool& blinding){
 
   //tZq (signal), tHq, ttW, ttZ, WZ are used for the ratio
 
@@ -11481,7 +11471,7 @@ auto Hadd(const string& year, const bool& blinding){
                 gSystem->Exec("hadd Results_AllData_2018_mumu_NPL_Blinded.root Results_data_*_2018_mumu_NPL_Blinded.root");
 
         }
-        else{cout << "Choose a year out of 2016, 2017 or 2018" << endl;} 
+        else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;} 
 
 
   }
@@ -11533,7 +11523,7 @@ auto Hadd(const string& year, const bool& blinding){
 
 
         }
-        else{cout << "Choose a year out of 2016, 2017 or 2018" << endl;}
+        else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
 
 
   }
@@ -11545,29 +11535,28 @@ auto Hadd(const string& year, const bool& blinding){
 
 
 
-auto NPLROOTFile_Creator2(const string& year, const bool& blinding){
+auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
  Hadd(year, blinding);
 
  TFile* AllMC_ee, AllMC_mumu, AllData_ee, AllData_mumu, MCRatio_ee, MCRatio_mumu;
 
  if(blinding == true){
-
-        AllMC_ee = TFile::Open("Results_AllMC_" + year + "_ee_NPL_Blinded.root", "READ");
-        AllMC_mumu = TFile::Open("Results_AllMC_" + year + "_mumu_NPL_Blinded.root", "READ");
-	AllData_ee = TFile::Open("Results_AllData_" + year + "_ee_NPL_Blinded.root", "READ");
-        AllData_mumu = TFile::Open("Results_AllData_" + year + "_mumu_NPL_Blinded.root", "READ");
-	MCRatio_ee = TFile::Open("Results_MCRatio_" + year + "_ee_NPL_Blinded.root", "READ");
-        MCRatio_mumu = TFile::Open("Results_MCRatio_" + year + "_mumu_NPL_Blinded.root", "READ");
+        AllMC_ee = new TFile{"Results_AllMC_" + year + "_ee_NPL_Blinded.root", "READ"};
+        AllMC_mumu = new TFile{"Results_AllMC_" + year + "_mumu_NPL_Blinded.root", "READ"};
+	AllData_ee = new TFile{"Results_AllData_" + year + "_ee_NPL_Blinded.root", "READ"};
+        AllData_mumu = new TFile{"Results_AllData_" + year + "_mumu_NPL_Blinded.root", "READ"};
+	MCRatio_ee = new TFile{"Results_MCRatio_" + year + "_ee_NPL_Blinded.root", "READ"};
+        MCRatio_mumu = new TFile{"Results_MCRatio_" + year + "_mumu_NPL_Blinded.root", "READ"};
 
  }
  else{
-	AllMC_ee = TFile::Open("Results_AllMC_" + year + "_ee_NPL.root", "READ");
-	AllMC_mumu = TFile::Open("Results_AllMC_" + year + "_mumu_NPL.root", "READ");
-	AllData_ee = TFile::Open("Results_AllData_" + year + "_ee_NPL.root", "READ");
-        AllData_mumu = TFile::Open("Results_AllData_" + year + "_mumu_NPL.root", "READ");
-	MCRatio_ee = TFile::Open("Results_MCRatio_" + year + "_ee_NPL.root", "READ");
-        MCRatio_mumu = TFile::Open("Results_MCRatio_" + year + "_mumu_NPL.root", "READ");
+	AllMC_ee = new TFile{"Results_AllMC_" + year + "_ee_NPL.root", "READ"};
+	AllMC_mumu = new TFile{"Results_AllMC_" + year + "_mumu_NPL.root", "READ"};
+	AllData_ee = new TFile{"Results_AllData_" + year + "_ee_NPL.root", "READ"};
+        AllData_mumu = new TFile{"Results_AllData_" + year + "_mumu_NPL.root", "READ"};
+	MCRatio_ee = new TFile{"Results_MCRatio_" + year + "_ee_NPL.root", "READ"};
+        MCRatio_mumu = new TFile{"Results_MCRatio_" + year + "_mumu_NPL.root", "READ"};
 
  }
  
@@ -11586,8 +11575,8 @@ auto NPLROOTFile_Creator2(const string& year, const bool& blinding){
 
  int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetNEntries();
  int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetNEntries();
- int h_NMC_SS_NonPrompt_ee = h_h_NMC_SS_NonPrompt_ee->GetNEntries();
- int h_NMC_SS_NonPrompt_mumu = h_h_NMC_SS_NonPrompt_mumu->GetNEntries();
+ int h_NMC_SS_NonPrompt_ee = h_NMC_SS_NonPrompt_ee->GetNEntries();
+ int h_NMC_SS_NonPrompt_mumu = h_NMC_SS_NonPrompt_mumu->GetNEntries();
 
  int ratio_ee = NMC_OS_NonPrompt_ee / NMC_SS_NonPrompt_ee;
  int ratio_mumu = NMC_OS_NonPrompt_mumu / NMC_SS_NonPrompt_mumu;
@@ -11607,7 +11596,7 @@ auto NPLROOTFile_Creator2(const string& year, const bool& blinding){
 
 
  //Saving the histograms to an output file
- string NPL_output_file;
+ std::string NPL_output_file;
 
  if(blinding == true){NPL_output_file = "NPL_ee_output_" + year + "_" + "Blinded.root";}
  else{NPL_output_file = "NPL_ee_output_" + year + ".root";}
@@ -11640,14 +11629,14 @@ void fulleventselectionAlgo::fulleventselection(){
 
   time_t now = time(0);
   tm* localtm = localtime(&now);
-  cout << "The script started running:" << " " << asctime(localtm) << endl;
+  std::cout << "The script started running:" << " " << asctime(localtm) << std::endl;
 
 
 //  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, alphaS_up, alphaS_down, isr_up, isr_down, fsr_up, fsr_down);
 
 
   bool blinding = true;
-  string year = "2017";
+  std::string year = "2017";
   bool NPL = false;
   bool ZPlusJetsCR = false; 
   bool ttbarCR = false;
@@ -11758,7 +11747,7 @@ void fulleventselectionAlgo::fulleventselection(){
   //Printing out the time the script finished running
   time_t now2 = time(0);
   tm* localtm2 = localtime(&now2);
-  cout << "The script finished running at: " << asctime(localtm2) << endl;
+  std::cout << "The script finished running at: " << asctime(localtm2) << std::endl;
 
 
 
