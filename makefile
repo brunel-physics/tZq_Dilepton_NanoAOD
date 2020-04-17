@@ -10,8 +10,7 @@ EXECUTABLES = $(patsubst src/%.cxx,bin/%.exe,${EXECUTABLE_SOURCES})
 
 LIBRARY_PATH = 	-L$(shell root-config --libdir) \
 		-Llib \
-		-L/scratch/shared/sw/yaml-cpp/0.6.2/x86_64-slc6-gcc82-opt/lib \
-		-L/cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/lib
+                -L/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/lib \
 
 LIBRARIES = 	$(shell root-config --libs) \
 		-lLHAPDF \
@@ -23,9 +22,7 @@ LIBRARIES = 	$(shell root-config --libs) \
 #		-lyaml-cpp \
 
 INCLUDE_PATH = 	-Iinclude  \
-		-isystem/cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/include \
-		-isystem/scratch/shared/sw/yaml-cpp/0.6.2/x86_64-slc6-gcc82-opt/include \
-		-isystem/scratch/shared/include \
+                -isystem/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/include \
 		-isystem$(shell root-config --incdir) \
 
 # Do NOT use -O3, it breaks MVA input creation
@@ -64,7 +61,7 @@ endif
 LINK_LIBRARY_FLAGS = -shared -rdynamic ${LIBRARY_PATH} ${LIBRARIES}
 LINK_EXECUTABLE_FLAGS = -rdynamic ${LIBRARY_PATH} ${LIBRARIES} \
 			-lTQZanalysisTools \
-			-Wl,-R/scratch/shared/lib,-Rlib,-R../lib,-R${PWD}/lib,-R/scratch/shared/sw/yaml-cpp/0.6.2/x86_64-slc6-gcc82-opt/lib,--enable-new-dtags
+			-Wl,-Rlib,-R../lib,-R${PWD}/lib,--enable-new-dtags
 
 .PHONY: all _all clean _cleanall build _buildall install _installall rpm _rpmall test _testall spec_update
 
