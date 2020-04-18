@@ -5098,28 +5098,28 @@ std::vector<std::string> mumu_strings = {
 
 
 
-std::vector<std::string> deltaR_JetE_strings{
+std::vector<std::string> deltaR_JetE_strings = {
 JetEtaInput,
 JetPhiInput,
 "z_lep_eta",
 "z_lep_phi"
 };
 
-std::vector<std::string> deltaR_JetMu_strings{
+std::vector<std::string> deltaR_JetMu_strings = {
 JetEtaInput,
 JetPhiInput,
 "z_lep_eta",
 "z_lep_phi"
 };
 
-std::vector<std::string> deltaR_j1j2_strings{
+std::vector<std::string> deltaR_j1j2_strings = {
 "LeadingJetEta",
 "LeadingJetPhi",
 "SubleadingJetEta",
 "SubleadingJetPhi",
 };
 
-std::vector<std::string> InvMass_AllJets_strings{
+std::vector<std::string> InvMass_AllJets_strings = {
 "LeadingJetpT",
 "SubleadingJetpT",
 "ThirdJetpT",
@@ -5139,7 +5139,8 @@ std::vector<std::string> InvMass_AllJets_strings{
 "nJet"
 };
 
-std::vector<std::string> InvMass_3Jets_strings{
+
+std::vector<std::string> InvMass_3Jets_strings = {
 "LeadingJetpT",
 "SubleadingJetpT",
 "ThirdJetpT",
@@ -5416,7 +5417,7 @@ std::vector<std::string> deltaR_W_Z_strings = {
 "RecoZPhi"
 };
 
-std::vector<std::string> RecoZ_strings_ee{
+std::vector<std::string> RecoZstrings_ee{
 "nElectron",
 "LeadingElectron_pT",
 "LeadingElectronEta",
@@ -5428,7 +5429,7 @@ std::vector<std::string> RecoZ_strings_ee{
 "SubleadingElectronMass"
 };
 
-std::vector<std::string> RecoZ_strings_mumu{
+std::vector<std::string> RecoZstrings_mumu = {
 "nMuon",
 "LeadingMuon_pT",
 "LeadingMuonEta",
@@ -5457,7 +5458,7 @@ std::vector<std::string> TotalPt_System_strings = {
 "JetPtSum"
 };
 
-std::vector<std::string> TotalPt_System_strings_data = {
+std::vector<std::string> TotalPt_Systemstrings_data = {
 "RecoZPt",
 "w_pair_pt",
 "Top_Pt",
@@ -5514,28 +5515,28 @@ std::vector<std::string> MinDeltaPhi_strings = {
 JetPhiInput
 };
 
-std::vector<std::string> dR_LeadingLepton_LeadingBJet_strings_ee = {
+std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_ee = {
 "bjeteta",
 "LeadingElectronEta",
 "bjetphi",
 "LeadingElectronPhi"
 };
 
-std::vector<std::string> dR_SubleadingLepton_LeadingBJet_strings_ee = {
+std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_ee = {
 "bjeteta",
 "SubleadingElectronEta",
 "bjetphi",
 "SubleadingElectronPhi"
 };
 
-std::vector<std::string> dR_LeadingLepton_LeadingBJet_strings_mumu = {
+std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_mumu = {
 "bjeteta",
 "LeadingMuonEta",
 "bjetphi",
 "LeadingMuonPhi"
 };
 
-std::vector<std::string> dR_SubleadingLepton_LeadingBJet_strings_mumu = {
+std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_mumu = {
 "bjeteta",
 "SubleadingMuonEta",
 "bjetphi",
@@ -6005,7 +6006,7 @@ auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mu
 if(ttbarCR == false && process != "Data_triggerSF" && process != "MC_triggerSF"){
 
 	d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
-	d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_§cut_mumu_strings, "lepton cut (mumu)");
+	d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
 
 }
 else if(ttbarCR == false && (process == "Data_triggerSF" || process == "MC_triggerSF")){
@@ -6595,7 +6596,7 @@ else{
                                           .Define("z_lep_mass", "Electron_mass[TightElectrons]")
                                           .Define("z_lep_pt", "Electron_pt[TightElectrons]")
                                           .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                          .Define("RecoZ", RecoZ, RecoZ_strings_ee)
+                                          .Define("RecoZ", RecoZ, RecoZstrings_ee)
                                           .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                           .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                           .Define("RecoZEta", TLorentzVectorEta, {"RecoZ"})
@@ -6623,7 +6624,7 @@ else{
                                                 .Define("z_lep_mass", "MuonMass_RochCorr")
                                                 .Define("z_lep_pt", "MuonPt_RochCorr")
                                                 .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                                .Define("RecoZ", RecoZ, RecoZ_strings_mumu)
+                                                .Define("RecoZ", RecoZ, RecoZstrings_mumu)
                                                 .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                                 .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                                 .Define("RecoZEta", TLorentzVectorPt, {"RecoZ"})
@@ -8616,8 +8617,8 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
                                                                                         .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 											.Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 											.Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_ee)
-											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_ee)
+											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_ee)
+											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_ee)
 											.Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_ee)
                                                                                         .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_ee)		
 										    	.Define("MET", MET_function, {"MET_sumEt"})
@@ -8672,8 +8673,8 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 											    .Define("dPhi_Z_Top", DeltaPhi_function2, {"Top_Phi", "RecoZPhi"})
 											    .Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 										            .Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_mumu)
-                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_mumu)
+											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_mumu)
+                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_mumu)
 											    .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_mumu)
 											    .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_mumu)
 											    .Define("MET", MET_function, {"MET_sumEt"})
@@ -8803,7 +8804,7 @@ else{
 
 //Lambda function for the event weight column
 
-float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
@@ -8842,7 +8843,7 @@ float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_e
 
 
 
-float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down, &MuonSFTest_ID_sys_stat, &MuonSFTest_Iso_sys_stat](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_syst, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_stat, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
 
   float EventWeight;
@@ -10591,7 +10592,7 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                           .Define("z_lep_mass", "Electron_mass[TightElectrons]")
                                           .Define("z_lep_pt", "Electron_pt[TightElectrons]")
                                           .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                          .Define("RecoZ", RecoZ, RecoZ_strings_ee)
+                                          .Define("RecoZ", RecoZ, RecoZstrings_ee)
                                           .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                           .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                           .Define("RecoZEta", TLorentzVectorEta, {"RecoZ"})
@@ -10604,7 +10605,7 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                               .Define("z_lep_mass", "Muon_mass[TightMuons]")
                                               .Define("z_lep_pt", "Muon_pt[TightMuons]")
                                               .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                              .Define("RecoZ", RecoZ, RecoZ_strings_mumu)
+                                              .Define("RecoZ", RecoZ, RecoZstrings_mumu)
                                               .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                               .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                               .Define("RecoZEta", TLorentzVectorPt, {"RecoZ"})
@@ -10849,8 +10850,8 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
                                                                                         .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 											.Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 											.Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_ee)
-											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_ee)
+											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_ee)
+											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_ee)
 											.Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_ee)
                                                                                         .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_ee)		
 										    	.Define("MET", MET_function, {"MET_sumEt"})
@@ -10875,7 +10876,7 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
                                                                             	        .Define("RecoZHT", HT_double, {"RecoZPt"})
                                                                             		.Define("dPhi_W_Z", DeltaPhi_function4, {"w_pair_phi", "RecoZPhi"})
 											.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
-                                                                                        .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings_data)
+                                                                                        .Define("TotalPt_System", TotalPt_System, TotalPt_Systemstrings_data)
                                                                                         .Define("TotalEta_System", TotalEta_System, TotalEta_System_strings)
                                                                                         .Define("TotalPhi_System", TotalPhi_System, TotalPhi_System_strings)
                                                                                         .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
@@ -10908,8 +10909,8 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 											    .Define("dPhi_Z_Top", DeltaPhi_function2, {"Top_Phi", "RecoZPhi"})
 											    .Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 										            .Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_mumu)
-                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_mumu)
+											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_mumu)
+                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_mumu)
 											    .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_mumu)
 											    .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_mumu)
 											    .Define("MET", MET_function, {"MET_sumEt"})
@@ -10938,7 +10939,7 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
                                                                                 	    .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
                                                                                 	    .Define("dPhi_W_Z", DeltaPhi_function4, {"w_pair_phi", "RecoZPhi"})
 											    .Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
-                                                                                            .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings_data)
+                                                                                            .Define("TotalPt_System", TotalPt_System, TotalPt_Systemstrings_data)
                                                                                             .Define("TotalEta_System", TotalEta_System, TotalEta_System_strings)
                                                                                             .Define("TotalPhi_System", TotalPhi_System, TotalPhi_System_strings)
                                                                                             .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
@@ -11540,27 +11541,47 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
  Hadd(year, blinding);
 
- TFile* AllMC_ee, AllMC_mumu, AllData_ee, AllData_mumu, MCRatio_ee, MCRatio_mumu;
+ TFile* AllMC_ee;
+ TFile* AllMC_mumu;
+ TFile* AllData_ee;
+ TFile* AllData_mumu;
+ TFile* MCRatio_ee;
+ TFile* MCRatio_mumu;
+
+ std::string AllMC_ee_File;
+ std::string AllMC_mumu_File;
+ std::string AllData_ee_File;
+ std::string AllData_mumu_File;
+ std::string MCRatio_ee_File;
+ std::string MCRatio_mumu_File;
 
  if(blinding == true){
-        AllMC_ee = new TFile("Results_AllMC_" + year + "_ee_NPL_Blinded.root", "READ");
-        AllMC_mumu = new TFile("Results_AllMC_" + year + "_mumu_NPL_Blinded.root", "READ");
-	AllData_ee = new TFile("Results_AllData_" + year + "_ee_NPL_Blinded.root", "READ");
-        AllData_mumu = new TFile("Results_AllData_" + year + "_mumu_NPL_Blinded.root", "READ");
-	MCRatio_ee = new TFile("Results_MCRatio_" + year + "_ee_NPL_Blinded.root", "READ");
-        MCRatio_mumu = new TFile("Results_MCRatio_" + year + "_mumu_NPL_Blinded.root", "READ");
 
+ 	AllMC_ee_File = "Results_AllMC_" + year + "_ee_NPL_Blinded.root";
+	AllMC_mumu_File = "Results_AllMC_" + year + "_mumu_NPL_Blinded.root";
+	AllData_ee_File = "Results_AllData_" + year + "_ee_NPL_Blinded.root";
+	AllData_mumu_File = "Results_AllData_" + year + "_mumu_NPL_Blinded.root";
+	MCRatio_ee_File = "Results_MCRatio_" + year + "_ee_NPL_Blinded.root";
+	MCRatio_mumu_File = "Results_MCRatio_" + year + "_mumu_NPL_Blinded.root";
  }
  else{
-	AllMC_ee = new TFile("Results_AllMC_" + year + "_ee_NPL.root", "READ");
-	AllMC_mumu = new TFile("Results_AllMC_" + year + "_mumu_NPL.root", "READ");
-	AllData_ee = new TFile("Results_AllData_" + year + "_ee_NPL.root", "READ");
-        AllData_mumu = new TFile("Results_AllData_" + year + "_mumu_NPL.root", "READ");
-	MCRatio_ee = new TFile("Results_MCRatio_" + year + "_ee_NPL.root", "READ");
-        MCRatio_mumu = new TFile("Results_MCRatio_" + year + "_mumu_NPL.root", "READ");
+
+	AllMC_ee_File = "Results_AllMC_" + year + "_ee_NPL.root";
+        AllMC_mumu_File = "Results_AllMC_" + year + "_mumu_NPL.root";
+        AllData_ee_File = "Results_AllData_" + year + "_ee_NPL.root";
+        AllData_mumu_File = "Results_AllData_" + year + "_mumu_NPL.root";
+        MCRatio_ee_File = "Results_MCRatio_" + year + "_ee_NPL.root";
+        MCRatio_mumu_File = "Results_MCRatio_" + year + "_mumu_NPL.root";
 
  }
  
+ AllMC_ee = new TFile(AllMC_ee_File.c_str(), "READ");
+ AllMC_mumu = new TFile(AllMC_mumu_File.c_str(), "READ");
+ AllData_ee = new TFile(AllData_ee_File.c_str(), "READ");
+ AllData_mumu = new TFile(AllData_mumu_File.c_str(), "READ");
+ MCRatio_ee = new TFile(MCRatio_ee_File.c_str(), "READ");
+ MCRatio_mumu = new TFile(MCRatio_mumu_File.c_str(), "READ");
+
 
  //For the subtraction between data and MC
  TH1* h_NData_SS_ee = (TH1*)AllData_ee->GetObjectChecked("SameSign", "TH1"); 
@@ -11590,8 +11611,11 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
  for(int i = 0; i < nbins; i++){
 
-	h_NData_OS_NonPrompt_ee->SetBinContent(i) = ( ( h_NData_SS_ee->GetBinContent(i) - h_NMC_SS_ee->GetBinContent(i) ) * ratio_ee);
-   	h_NData_OS_NonPrompt_mumu->SetBinContent(i) = ( ( h_NData_SS_mumu->GetBinContent(i) - h_NMC_SS_mumu->GetBinContent(i) ) * ratio_mumu);  
+	double ee_content = ( ( h_NData_SS_ee->GetBinContent(i) - h_NMC_SS_ee->GetBinContent(i) ) * ratio_ee);
+	double mumu_content = ( ( h_NData_SS_mumu->GetBinContent(i) - h_NMC_SS_mumu->GetBinContent(i) ) * ratio_mumu);
+
+	h_NData_OS_NonPrompt_ee->SetBinContent(i,ee_content);
+   	h_NData_OS_NonPrompt_mumu->SetBinContent(i, mumu_content);
 
  }
 
