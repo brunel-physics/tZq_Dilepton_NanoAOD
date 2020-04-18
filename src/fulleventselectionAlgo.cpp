@@ -2175,7 +2175,7 @@ const float& Object2_phi
 
 
 
-auto tightjets_function{[&year](
+auto tight_jets_function{[&year](
 
 const floats& Jet_pt_Selection,
 const floats& Jet_eta_Selection,
@@ -2475,133 +2475,279 @@ auto bjet_cut{[](const ints& bjets) {
 auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
 
 
-	bool check;
+	bools check;
 
         int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
 		if(GenPart_pdgId.at(i) == 5 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-			check = 1;				
+			check.push_back(1);				
 		}
+		else{check.push_back(0);}
 	}
 
-	return tight_jets && check;
+	std::vector<size_t> results;
+  	floats output{};
 
+  	auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+ 	while (it != std::end(check)) {
+     		results.emplace_back(std::distance(std::begin(check), it));
+     	it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+  	}
+
+  	for(int i = 0; i < results.size(); i++){
+        	output.push_back( tight_jets.at( results.at(i) ) );
+  	}
+
+
+  	return output;
+	
 }};
+
 
 auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 	
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) == 4 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+			check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
+
 
 }};
 
+
+
 auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
         
-	bool check;
+	bools check;
 
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) > 0 && GenPart_pdgId.at(i) < 4 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+			check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
+
 
 }};
 
+
+
 auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
 	
-	bool check;
+	bools check;
 
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) == 21 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 }};
+
+
 
 //For the denominators
 auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) == 5 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 
 }};
 
+
 auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) == 4 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 }};
 
+
+
+
 auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) > 0 && GenPart_pdgId.at(i) < 4 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
+
 
 }};
 
+
+
 auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
                 if(GenPart_pdgId.at(i) == 21 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 }};
+
+
 
 
 
@@ -5570,28 +5716,28 @@ JetPhiInput,
 std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
 "LeadingJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 }; 
 
 std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
 "SubleadingJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 };
 
 std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
 "ThirdJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 };
 
 std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
 "FourthJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 };
 
@@ -6684,20 +6830,20 @@ else{
                                                        .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
                                                        .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                                        .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-                                                       .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
-                                                       .Filter(jet_selection_function, {"tightjets"}, "jet cut (ee channel)");
+                                                       .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
+                                                       .Filter(jet_selection_function, {"tight_jets"}, "jet cut (ee channel)");
 
 
-  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
-                                                                  .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
                                                                   .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                                                   .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
                                                                   .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
@@ -6766,19 +6912,19 @@ else{
                                                            .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
                                                            .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                                            .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-                                                           .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
-                                                           .Filter(jet_selection_function, {"tightjets"}, "jet cut (mumu channel)");
+                                                           .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
+                                                           .Filter(jet_selection_function, {"tight_jets"}, "jet cut (mumu channel)");
 
-   auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+   auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
-                                                                      .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
                                                                       .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                                                       .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
                                                                       .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
@@ -8921,7 +9067,7 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
 					     .Define("DummyColumnBJet", DummyColumnFunction, {"bjetpt"})
 					     .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
-					     .Define("nonbjets", nonbjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+					     .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                              .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                              .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
   					     .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
@@ -8948,7 +9094,7 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 				 		 .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
 						 .Define("DummyColumnBJet", DummyColumnFunction, {"bjetpt"})
 						 .Define("CMSBTagSF", CMSNonBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
-                                                 .Define("nonbjets", nonbjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+                                                 .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                  .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                                  .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
                                                  .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
@@ -10652,11 +10798,11 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 					 	     .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
 					 	     .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                          	     .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-					 	     .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
-					 	     .Filter(jet_selection_function, {"tightjets"}, "jet cut (ee channel)");
+					 	     .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
+					 	     .Filter(jet_selection_function, {"tight_jets"}, "jet cut (ee channel)");
   
 
-  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
                                                                   .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 
@@ -10700,10 +10846,10 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 					                 .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
 					                 .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                                          .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-				                         .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
-				                         .Filter(jet_selection_function, {"tightjets"}, "jet cut (mumu channel)");
+				                         .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
+				                         .Filter(jet_selection_function, {"tight_jets"}, "jet cut (mumu channel)");
 
-  auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
                                                                       .Filter(bjet_cut, {"bjets"}, "b jet cut (mumu channel)"); 
 
