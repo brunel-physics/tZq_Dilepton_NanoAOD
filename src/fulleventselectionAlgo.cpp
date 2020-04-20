@@ -2175,7 +2175,7 @@ const float& Object2_phi
 
 
 
-auto tightjets_function{[&year](
+auto tight_jets_function{[&year](
 
 const floats& Jet_pt_Selection,
 const floats& Jet_eta_Selection,
@@ -2475,133 +2475,279 @@ auto bjet_cut{[](const ints& bjets) {
 auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
 
 
-	bool check;
+	bools check;
 
         int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
-		if(GenPart_pdgId.at(i) == 5 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-			check = 1;				
+		if( abs(GenPart_pdgId.at(i)) == 5 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
+			check.push_back(1);				
 		}
+		else{check.push_back(0);}
 	}
 
-	return tight_jets && check;
+	std::vector<size_t> results;
+  	floats output{};
 
+  	auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+ 	while (it != std::end(check)) {
+     		results.emplace_back(std::distance(std::begin(check), it));
+     	it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+  	}
+
+  	for(int i = 0; i < results.size(); i++){
+        	output.push_back( tight_jets.at( results.at(i) ) );
+  	}
+
+
+  	return output;
+	
 }};
+
 
 auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 	
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 4 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) == 4 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
+			check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
+
 
 }};
+
+
 
 auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
         
-	bool check;
+	bools check;
 
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) > 0 && GenPart_pdgId.at(i) < 4 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) > 0 && abs(GenPart_pdgId.at(i)) < 4 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
+			check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
+
 
 }};
 
+
+
 auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
 	
-	bool check;
+	bools check;
 
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 21 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) == 21 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 }};
+
+
 
 //For the denominators
 auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 5 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) == 5 && abs(etas.at(i)) < MaxTrackerEta){
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 
 }};
+
 
 auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 4 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) == 4 && abs(etas.at(i)) < MaxTrackerEta){
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 }};
+
+
+
 
 auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) > 0 && GenPart_pdgId.at(i) < 4 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) > 0 && abs(GenPart_pdgId.at(i)) < 4 && abs(etas.at(i)) < MaxTrackerEta){
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
+
 
 }};
+
+
 
 auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bool check;
+	bools check;
 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 21 && etas.at(i) < MaxTrackerEta){
-                        check = 1;
+                if( abs(GenPart_pdgId.at(i)) == 21 && abs(etas.at(i)) < MaxTrackerEta){
+                        check.push_back(1);
                 }
+                else{check.push_back(0);}
         }
 
-        return tight_jets && check;
+        std::vector<size_t> results;
+        floats output{};
+
+        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
+
+        while (it != std::end(check)) {
+                results.emplace_back(std::distance(std::begin(check), it));
+        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
+        }
+
+        for(int i = 0; i < results.size(); i++){
+                output.push_back( tight_jets.at( results.at(i) ) );
+        }
+
+
+        return output;
 
 }};
+
+
 
 
 
@@ -2676,7 +2822,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -2689,7 +2835,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -2702,7 +2848,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -2715,7 +2861,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -5098,28 +5244,28 @@ std::vector<std::string> mumu_strings = {
 
 
 
-std::vector<std::string> deltaR_JetE_strings{
+std::vector<std::string> deltaR_JetE_strings = {
 JetEtaInput,
 JetPhiInput,
 "z_lep_eta",
 "z_lep_phi"
 };
 
-std::vector<std::string> deltaR_JetMu_strings{
+std::vector<std::string> deltaR_JetMu_strings = {
 JetEtaInput,
 JetPhiInput,
 "z_lep_eta",
 "z_lep_phi"
 };
 
-std::vector<std::string> deltaR_j1j2_strings{
+std::vector<std::string> deltaR_j1j2_strings = {
 "LeadingJetEta",
 "LeadingJetPhi",
 "SubleadingJetEta",
 "SubleadingJetPhi",
 };
 
-std::vector<std::string> InvMass_AllJets_strings{
+std::vector<std::string> InvMass_AllJets_strings = {
 "LeadingJetpT",
 "SubleadingJetpT",
 "ThirdJetpT",
@@ -5139,7 +5285,8 @@ std::vector<std::string> InvMass_AllJets_strings{
 "nJet"
 };
 
-std::vector<std::string> InvMass_3Jets_strings{
+
+std::vector<std::string> InvMass_3Jets_strings = {
 "LeadingJetpT",
 "SubleadingJetpT",
 "ThirdJetpT",
@@ -5416,7 +5563,7 @@ std::vector<std::string> deltaR_W_Z_strings = {
 "RecoZPhi"
 };
 
-std::vector<std::string> RecoZ_strings_ee{
+std::vector<std::string> RecoZstrings_ee{
 "nElectron",
 "LeadingElectron_pT",
 "LeadingElectronEta",
@@ -5428,7 +5575,7 @@ std::vector<std::string> RecoZ_strings_ee{
 "SubleadingElectronMass"
 };
 
-std::vector<std::string> RecoZ_strings_mumu{
+std::vector<std::string> RecoZstrings_mumu = {
 "nMuon",
 "LeadingMuon_pT",
 "LeadingMuonEta",
@@ -5457,7 +5604,7 @@ std::vector<std::string> TotalPt_System_strings = {
 "JetPtSum"
 };
 
-std::vector<std::string> TotalPt_System_strings_data = {
+std::vector<std::string> TotalPt_Systemstrings_data = {
 "RecoZPt",
 "w_pair_pt",
 "Top_Pt",
@@ -5514,28 +5661,28 @@ std::vector<std::string> MinDeltaPhi_strings = {
 JetPhiInput
 };
 
-std::vector<std::string> dR_LeadingLepton_LeadingBJet_strings_ee = {
+std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_ee = {
 "bjeteta",
 "LeadingElectronEta",
 "bjetphi",
 "LeadingElectronPhi"
 };
 
-std::vector<std::string> dR_SubleadingLepton_LeadingBJet_strings_ee = {
+std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_ee = {
 "bjeteta",
 "SubleadingElectronEta",
 "bjetphi",
 "SubleadingElectronPhi"
 };
 
-std::vector<std::string> dR_LeadingLepton_LeadingBJet_strings_mumu = {
+std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_mumu = {
 "bjeteta",
 "LeadingMuonEta",
 "bjetphi",
 "LeadingMuonPhi"
 };
 
-std::vector<std::string> dR_SubleadingLepton_LeadingBJet_strings_mumu = {
+std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_mumu = {
 "bjeteta",
 "SubleadingMuonEta",
 "bjetphi",
@@ -5569,28 +5716,28 @@ JetPhiInput,
 std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
 "LeadingJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 }; 
 
 std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
 "SubleadingJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 };
 
 std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
 "ThirdJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 };
 
 std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
 "FourthJetpT",
 "Jet_btagCSVV2",
-"tightjets",
+"tight_jets",
 JetEtaInput
 };
 
@@ -6005,7 +6152,7 @@ auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mu
 if(ttbarCR == false && process != "Data_triggerSF" && process != "MC_triggerSF"){
 
 	d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
-	d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_§cut_mumu_strings, "lepton cut (mumu)");
+	d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
 
 }
 else if(ttbarCR == false && (process == "Data_triggerSF" || process == "MC_triggerSF")){
@@ -6595,7 +6742,7 @@ else{
                                           .Define("z_lep_mass", "Electron_mass[TightElectrons]")
                                           .Define("z_lep_pt", "Electron_pt[TightElectrons]")
                                           .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                          .Define("RecoZ", RecoZ, RecoZ_strings_ee)
+                                          .Define("RecoZ", RecoZ, RecoZstrings_ee)
                                           .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                           .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                           .Define("RecoZEta", TLorentzVectorEta, {"RecoZ"})
@@ -6623,7 +6770,7 @@ else{
                                                 .Define("z_lep_mass", "MuonMass_RochCorr")
                                                 .Define("z_lep_pt", "MuonPt_RochCorr")
                                                 .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                                .Define("RecoZ", RecoZ, RecoZ_strings_mumu)
+                                                .Define("RecoZ", RecoZ, RecoZstrings_mumu)
                                                 .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                                 .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                                 .Define("RecoZEta", TLorentzVectorPt, {"RecoZ"})
@@ -6683,20 +6830,20 @@ else{
                                                        .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
                                                        .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                                        .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-                                                       .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
-                                                       .Filter(jet_selection_function, {"tightjets"}, "jet cut (ee channel)");
+                                                       .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
+                                                       .Filter(jet_selection_function, {"tight_jets"}, "jet cut (ee channel)");
 
 
-  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
-                                                                  .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
                                                                   .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                                                   .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
                                                                   .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
@@ -6765,19 +6912,19 @@ else{
                                                            .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
                                                            .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                                            .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-                                                           .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
-                                                           .Filter(jet_selection_function, {"tightjets"}, "jet cut (mumu channel)");
+                                                           .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
+                                                           .Filter(jet_selection_function, {"tight_jets"}, "jet cut (mumu channel)");
 
-   auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+   auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
-                                                                      .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tightjets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tightjets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
                                                                       .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                                                       .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
                                                                       .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
@@ -8616,8 +8763,8 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
                                                                                         .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 											.Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 											.Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_ee)
-											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_ee)
+											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_ee)
+											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_ee)
 											.Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_ee)
                                                                                         .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_ee)		
 										    	.Define("MET", MET_function, {"MET_sumEt"})
@@ -8672,8 +8819,8 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 											    .Define("dPhi_Z_Top", DeltaPhi_function2, {"Top_Phi", "RecoZPhi"})
 											    .Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 										            .Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_mumu)
-                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_mumu)
+											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_mumu)
+                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_mumu)
 											    .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_mumu)
 											    .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_mumu)
 											    .Define("MET", MET_function, {"MET_sumEt"})
@@ -8803,7 +8950,7 @@ else{
 
 //Lambda function for the event weight column
 
-float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &ME_Up, &ME_Down, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const float& genWeight){
 
 
   float EventWeight;
@@ -8827,6 +8974,8 @@ float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_e
 
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee));}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) );}
+  else if(ME_Up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee) * genWeight;}
+  else if(ME_Down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee) * genWeight;}
   else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMax );}
   else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2);}
@@ -8841,7 +8990,8 @@ float EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_e
 }}; 
 
 
-float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+
+auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &ME_Up, &ME_Down, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_stat, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const float& genWeight){
 
 
   float EventWeight;
@@ -8868,8 +9018,10 @@ float EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Unce
 
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up);}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down );}
-  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_mumu * PdfMax );}
-  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_mumu * PdfMin );}
+  else if(ME_Up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * genWeight;}
+  else if(ME_Down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * genWeight;}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMax );}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2);}
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0);}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3);}
@@ -8919,7 +9071,7 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
 					     .Define("DummyColumnBJet", DummyColumnFunction, {"bjetpt"})
 					     .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
-					     .Define("nonbjets", nonbjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+					     .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                              .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                              .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
   					     .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
@@ -8937,7 +9089,7 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("EGammaSF_egammaEffReco", EGammaSF_egammaEffReco, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("EGammaSF_egammaEffReco_Sys", EGammaSF_egammaEffReco_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("ReturnedPSWeight", PSWeight, {PSWeightString_ee, "Electron_pt_Selection"})
-					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP"});
+					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP", "genWeight"});
 								      
 
 
@@ -8946,7 +9098,7 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 				 		 .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
 						 .Define("DummyColumnBJet", DummyColumnFunction, {"bjetpt"})
 						 .Define("CMSBTagSF", CMSNonBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
-                                                 .Define("nonbjets", nonbjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+                                                 .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                  .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                                  .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
                                                  .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
@@ -8966,7 +9118,7 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 						 .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
                                                  .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
 						 .Define("ReturnedPSWeight", PSWeight, {PSWeightString_mumu, "MuonPt_RochCorr"})
-                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP"});
+                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP", "genWeight"});
 				
 
 
@@ -9321,8 +9473,8 @@ else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
 else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
 else if(ME_Up == true){branch = "ME_Up";}
 else if(ME_Down == true){branch = "ME_Down";}
-else if(alphaS_up == true){branch = "alphaS_Up";}
-else if(alphaS_down == true){branch = "alphaS_Down";}
+else if(alphaS_up == true){branch = "alphaS_up";}
+else if(alphaS_down == true){branch = "alphaS_down";}
 else if(isr_up == true){branch = "isr_up";}
 else if(isr_down == true){branch = "isr_down";}
 else if(fsr_up == true){branch = "fsr_up";}
@@ -10590,7 +10742,7 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                           .Define("z_lep_mass", "Electron_mass[TightElectrons]")
                                           .Define("z_lep_pt", "Electron_pt[TightElectrons]")
                                           .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                          .Define("RecoZ", RecoZ, RecoZ_strings_ee)
+                                          .Define("RecoZ", RecoZ, RecoZstrings_ee)
                                           .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                           .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                           .Define("RecoZEta", TLorentzVectorEta, {"RecoZ"})
@@ -10603,7 +10755,7 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                               .Define("z_lep_mass", "Muon_mass[TightMuons]")
                                               .Define("z_lep_pt", "Muon_pt[TightMuons]")
                                               .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                              .Define("RecoZ", RecoZ, RecoZ_strings_mumu)
+                                              .Define("RecoZ", RecoZ, RecoZstrings_mumu)
                                               .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
                                               .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
                                               .Define("RecoZEta", TLorentzVectorPt, {"RecoZ"})
@@ -10650,11 +10802,11 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 					 	     .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
 					 	     .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                          	     .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-					 	     .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
-					 	     .Filter(jet_selection_function, {"tightjets"}, "jet cut (ee channel)");
+					 	     .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_e"})
+					 	     .Filter(jet_selection_function, {"tight_jets"}, "jet cut (ee channel)");
   
 
-  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
                                                                   .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 
@@ -10698,10 +10850,10 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 					                 .Define("InvMass3Jets", InvMass_3Jets, InvMass_3Jets_strings)
 					                 .Define("JetEtaSum", JetEtaSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                                          .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-				                         .Define("tightjets", tightjets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
-				                         .Filter(jet_selection_function, {"tightjets"}, "jet cut (mumu channel)");
+				                         .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
+				                         .Filter(jet_selection_function, {"tight_jets"}, "jet cut (mumu channel)");
 
-  auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tightjets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
                                                                       .Filter(bjet_cut, {"bjets"}, "b jet cut (mumu channel)"); 
 
@@ -10848,8 +11000,8 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
                                                                                         .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 											.Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 											.Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_ee)
-											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_ee)
+											.Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_ee)
+											.Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_ee)
 											.Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_ee)
                                                                                         .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_ee)		
 										    	.Define("MET", MET_function, {"MET_sumEt"})
@@ -10874,7 +11026,7 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
                                                                             	        .Define("RecoZHT", HT_double, {"RecoZPt"})
                                                                             		.Define("dPhi_W_Z", DeltaPhi_function4, {"w_pair_phi", "RecoZPhi"})
 											.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
-                                                                                        .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings_data)
+                                                                                        .Define("TotalPt_System", TotalPt_System, TotalPt_Systemstrings_data)
                                                                                         .Define("TotalEta_System", TotalEta_System, TotalEta_System_strings)
                                                                                         .Define("TotalPhi_System", TotalPhi_System, TotalPhi_System_strings)
                                                                                         .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
@@ -10907,8 +11059,8 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 											    .Define("dPhi_Z_Top", DeltaPhi_function2, {"Top_Phi", "RecoZPhi"})
 											    .Define("MinDeltaR", MinDeltaR, MinDeltaR_strings)
 										            .Define("MinDeltaPhi", MinDeltaPhi, MinDeltaPhi_strings)
-											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJet_strings_mumu)
-                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJet_strings_mumu)
+											    .Define("dR_LeadingLepton_LeadingBJet", dR_LeadingLepton_LeadingBJet, dR_LeadingLepton_LeadingBJetstrings_mumu)
+                                                                                            .Define("dR_SubleadingLepton_LeadingBJet", dR_SubleadingLepton_LeadingBJet, dR_SubleadingLepton_LeadingBJetstrings_mumu)
 											    .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Leadinglepton_BJet_string_mumu)
 											    .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, DeltaPhi_Subleadinglepton_BJet_string_mumu)
 											    .Define("MET", MET_function, {"MET_sumEt"})
@@ -10937,7 +11089,7 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
                                                                                 	    .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
                                                                                 	    .Define("dPhi_W_Z", DeltaPhi_function4, {"w_pair_phi", "RecoZPhi"})
 											    .Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
-                                                                                            .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings_data)
+                                                                                            .Define("TotalPt_System", TotalPt_System, TotalPt_Systemstrings_data)
                                                                                             .Define("TotalEta_System", TotalEta_System, TotalEta_System_strings)
                                                                                             .Define("TotalPhi_System", TotalPhi_System, TotalPhi_System_strings)
                                                                                             .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
@@ -11348,7 +11500,7 @@ else{std::cout << "Please select data or MC" << std::endl;}
 
 
 
-auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_Up, const bool& alphaS_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& alphaS_up, const bool& alphaS_down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
   std::vector<std::string> Processes;
@@ -11428,47 +11580,47 @@ auto Hadd(const std::string& year, const bool& blinding){
 
  	if(year == "2016"){
 
-                gSystem->Exec("hadd Results_MCRatio_2016_ee_NPL_Blinded.root Results_t*q_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_ee_NPL_Blinded.root Results_Diboson_WZ_*_2016_ee_NPL_Blinded.root");
+                system("hadd Results_MCRatio_2016_ee_NPL_Blinded.root Results_t*q_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_ee_NPL_Blinded.root Results_Diboson_WZ_*_2016_ee_NPL_Blinded.root");
 	
-		gSystem->Exec("hadd Results_MCRatio_2016_mumu_NPL_Blinded.root Results_t*q_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2016_mumu_NPL_Blinded.root");
+		system("hadd Results_MCRatio_2016_mumu_NPL_Blinded.root Results_t*q_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2016_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2016_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllMC_2016_ee_NPL_Blinded.root Results_MC_*_2016_ee_NPL_Blinded.root");
+		system("hadd Results_AllMC_2016_ee_NPL_Blinded.root Results_MC_*_2016_ee_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllMC_2016_mumu_NPL_Blinded.root Results_MC_*_2016_mumu_NPL_Blinded.root");
+		system("hadd Results_AllMC_2016_mumu_NPL_Blinded.root Results_MC_*_2016_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllData_2016_ee_NPL_Blinded.root Results_data_*_2016_ee_NPL_Blinded.root");
+		system("hadd Results_AllData_2016_ee_NPL_Blinded.root Results_data_*_2016_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllData_2016_mumu_NPL_Blinded.root Results_data_*_2016_mumu_NPL_Blinded.root");
+                system("hadd Results_AllData_2016_mumu_NPL_Blinded.root Results_data_*_2016_mumu_NPL_Blinded.root");
 
         }
         else if(year == "2017"){
          
-	        gSystem->Exec("hadd Results_MCRatio_2017_ee_NPL_Blinded.root Results_t*q_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_ee_NPL_Blinded.root Results_Diboson_WZ_*_2017_ee_NPL_Blinded.root");
+	        system("hadd Results_MCRatio_2017_ee_NPL_Blinded.root Results_t*q_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_ee_NPL_Blinded.root Results_Diboson_WZ_*_2017_ee_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_MCRatio_2017_mumu_NPL_Blinded.root Results_t*q_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2017_mumu_NPL_Blinded.root");        
+		system("hadd Results_MCRatio_2017_mumu_NPL_Blinded.root Results_t*q_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2017_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2017_mumu_NPL_Blinded.root");        
 
-		gSystem->Exec("hadd Results_AllMC_2017_ee_NPL_Blinded.root Results_MC_*_2017_ee_NPL_Blinded.root");
+		system("hadd Results_AllMC_2017_ee_NPL_Blinded.root Results_MC_*_2017_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllMC_2017_mumu_NPL_Blinded.root Results_MC_*_2017_mumu_NPL_Blinded.root");
+                system("hadd Results_AllMC_2017_mumu_NPL_Blinded.root Results_MC_*_2017_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllData_2017_ee_NPL_Blinded.root Results_data_*_2017_ee_NPL_Blinded.root");
+		system("hadd Results_AllData_2017_ee_NPL_Blinded.root Results_data_*_2017_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllData_2017_mumu_NPL_Blinded.root Results_data_*_2017_mumu_NPL_Blinded.root");
+                system("hadd Results_AllData_2017_mumu_NPL_Blinded.root Results_data_*_2017_mumu_NPL_Blinded.root");
 
 	}
         else if(year == "2018"){
         
-	        gSystem->Exec("hadd Results_MCRatio_2018_ee_NPL_Blinded.root Results_t*q_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_ee_NPL_Blinded.root Results_Diboson_WZ_*_2018_ee_NPL_Blinded.root");
+	        system("hadd Results_MCRatio_2018_ee_NPL_Blinded.root Results_t*q_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_ee_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_ee_NPL_Blinded.root Results_Diboson_WZ_*_2018_ee_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_MCRatio_2018_mumu_NPL_Blinded.root Results_t*q_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2018_mumu_NPL_Blinded.root");
+		system("hadd Results_MCRatio_2018_mumu_NPL_Blinded.root Results_t*q_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarW_*_2018_mumu_NPL_Blinded.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL_Blinded.root Results_Diboson_WZ_*_2018_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllMC_2018_ee_NPL_Blinded.root Results_MC_*_2018_ee_NPL_Blinded.root");
+		system("hadd Results_AllMC_2018_ee_NPL_Blinded.root Results_MC_*_2018_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllMC_2018_mumu_NPL_Blinded.root Results_MC_*_2018_mumu_NPL_Blinded.root");
+                system("hadd Results_AllMC_2018_mumu_NPL_Blinded.root Results_MC_*_2018_mumu_NPL_Blinded.root");
 
-		gSystem->Exec("hadd Results_AllData_2018_ee_NPL_Blinded.root Results_data_*_2018_ee_NPL_Blinded.root");
+		system("hadd Results_AllData_2018_ee_NPL_Blinded.root Results_data_*_2018_ee_NPL_Blinded.root");
 
-                gSystem->Exec("hadd Results_AllData_2018_mumu_NPL_Blinded.root Results_data_*_2018_mumu_NPL_Blinded.root");
+                system("hadd Results_AllData_2018_mumu_NPL_Blinded.root Results_data_*_2018_mumu_NPL_Blinded.root");
 
         }
         else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;} 
@@ -11479,47 +11631,47 @@ auto Hadd(const std::string& year, const bool& blinding){
 
   	if(year == "2016"){
  
-                gSystem->Exec("hadd Results_MCRatio_2016_ee_NPL.root Results_t*q_2016_ee_NPL.root Results_ttbarV_ttbarW_*_2016_ee_NPL.root Results_ttbarV_ttbarZ_*_2016_ee_NPL.root Results_Diboson_WZ_*_2016_ee_NPL.root");
+                system("hadd Results_MCRatio_2016_ee_NPL.root Results_t*q_2016_ee_NPL.root Results_ttbarV_ttbarW_*_2016_ee_NPL.root Results_ttbarV_ttbarZ_*_2016_ee_NPL.root Results_Diboson_WZ_*_2016_ee_NPL.root");
  
-		gSystem->Exec("hadd Results_MCRatio_2016_mumu_NPL.root Results_t*q_2016_mumu_NPL.root Results_ttbarV_ttbarW_*_2016_mumu_NPL.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL.root Results_Diboson_WZ_*_2016_mumu_NPL.root"); 
+		system("hadd Results_MCRatio_2016_mumu_NPL.root Results_t*q_2016_mumu_NPL.root Results_ttbarV_ttbarW_*_2016_mumu_NPL.root Results_ttbarV_ttbarZ_*_2016_mumu_NPL.root Results_Diboson_WZ_*_2016_mumu_NPL.root"); 
 
-		gSystem->Exec("hadd Results_AllMC_2016_ee_NPL.root Results_MC_*_2016_ee_NPL.root");
+		system("hadd Results_AllMC_2016_ee_NPL.root Results_MC_*_2016_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllMC_2016_mumu_NPL.root Results_MC_*_2016_mumu_NPL.root");
+                system("hadd Results_AllMC_2016_mumu_NPL.root Results_MC_*_2016_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllData_2016_ee_NPL.root Results_data_*_2016_ee_NPL.root");
+		system("hadd Results_AllData_2016_ee_NPL.root Results_data_*_2016_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllData_2016_mumu_NPL.root Results_data_*_2016_mumu_NPL.root");
+                system("hadd Results_AllData_2016_mumu_NPL.root Results_data_*_2016_mumu_NPL.root");
 
          }
         else if(year == "2017"){
         
-	        gSystem->Exec("hadd Results_MCRatio_2017_ee_NPL.root Results_t*q_2017_ee_NPL.root Results_ttbarV_ttbarW_*_2017_ee_NPL.root Results_ttbarV_ttbarZ_*_2017_ee_NPL.root Results_Diboson_WZ_*_2017_ee_NPL.root");
+	        system("hadd Results_MCRatio_2017_ee_NPL.root Results_t*q_2017_ee_NPL.root Results_ttbarV_ttbarW_*_2017_ee_NPL.root Results_ttbarV_ttbarZ_*_2017_ee_NPL.root Results_Diboson_WZ_*_2017_ee_NPL.root");
      
-		gSystem->Exec("hadd Results_MCRatio_2017_mumu_NPL.root Results_t*q_2017_mumu_NPL.root Results_ttbarV_ttbarW_*_2017_mumu_NPL.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL.root Results_Diboson_WZ_*_2017_mumu_NPL.root");
+		system("hadd Results_MCRatio_2017_mumu_NPL.root Results_t*q_2017_mumu_NPL.root Results_ttbarV_ttbarW_*_2017_mumu_NPL.root Results_ttbarV_ttbarZ_*_2017_mumu_NPL.root Results_Diboson_WZ_*_2017_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllMC_2017_ee_NPL.root Results_MC_*_2017_ee_NPL.root");
+		system("hadd Results_AllMC_2017_ee_NPL.root Results_MC_*_2017_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllMC_2017_mumu_NPL.root Results_MC_*_2017_mumu_NPL.root");
+                system("hadd Results_AllMC_2017_mumu_NPL.root Results_MC_*_2017_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllData_2017_ee_NPL.root Results_data_*_2017_ee_NPL.root");
+		system("hadd Results_AllData_2017_ee_NPL.root Results_data_*_2017_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllData_2017_mumu_NPL.root Results_data_*_2017_mumu_NPL.root")
+                system("hadd Results_AllData_2017_mumu_NPL.root Results_data_*_2017_mumu_NPL.root");
 
         }
         else if(year == "2018"){
 
-                gSystem->Exec("hadd Results_MCRatio_2018_ee_NPL.root Results_t*q_2018_ee_NPL.root Results_ttbarV_ttbarW_*_2018_ee_NPL.root Results_ttbarV_ttbarZ_*_2018_ee_NPL.root Results_Diboson_WZ_*_2018_ee_NPL.root");
+                system("hadd Results_MCRatio_2018_ee_NPL.root Results_t*q_2018_ee_NPL.root Results_ttbarV_ttbarW_*_2018_ee_NPL.root Results_ttbarV_ttbarZ_*_2018_ee_NPL.root Results_Diboson_WZ_*_2018_ee_NPL.root");
 
-		gSystem->Exec("hadd Results_MCRatio_2018_mumu_NPL.root Results_t*q_2018_mumu_NPL.root Results_ttbarV_ttbarW_*_2018_mumu_NPL.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL.root Results_Diboson_WZ_*_2018_mumu_NPL.root");
+		system("hadd Results_MCRatio_2018_mumu_NPL.root Results_t*q_2018_mumu_NPL.root Results_ttbarV_ttbarW_*_2018_mumu_NPL.root Results_ttbarV_ttbarZ_*_2018_mumu_NPL.root Results_Diboson_WZ_*_2018_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllMC_2018_ee_NPL.root Results_MC_*_2018_ee_NPL.root");
+		system("hadd Results_AllMC_2018_ee_NPL.root Results_MC_*_2018_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllMC_2018_mumu_NPL.root Results_MC_*_2018_mumu_NPL.root");
+                system("hadd Results_AllMC_2018_mumu_NPL.root Results_MC_*_2018_mumu_NPL.root");
 
-		gSystem->Exec("hadd Results_AllData_2018_ee_NPL.root Results_data_*_2018_ee_NPL.root");
+		system("hadd Results_AllData_2018_ee_NPL.root Results_data_*_2018_ee_NPL.root");
 
-                gSystem->Exec("hadd Results_AllData_2018_mumu_NPL.root Results_data_*_2018_mumu_NPL.root")
+                system("hadd Results_AllData_2018_mumu_NPL.root Results_data_*_2018_mumu_NPL.root");
 
 
         }
@@ -11539,27 +11691,47 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
  Hadd(year, blinding);
 
- TFile* AllMC_ee, AllMC_mumu, AllData_ee, AllData_mumu, MCRatio_ee, MCRatio_mumu;
+ TFile* AllMC_ee;
+ TFile* AllMC_mumu;
+ TFile* AllData_ee;
+ TFile* AllData_mumu;
+ TFile* MCRatio_ee;
+ TFile* MCRatio_mumu;
+
+ std::string AllMC_ee_File;
+ std::string AllMC_mumu_File;
+ std::string AllData_ee_File;
+ std::string AllData_mumu_File;
+ std::string MCRatio_ee_File;
+ std::string MCRatio_mumu_File;
 
  if(blinding == true){
-        AllMC_ee = new TFile{"Results_AllMC_" + year + "_ee_NPL_Blinded.root", "READ"};
-        AllMC_mumu = new TFile{"Results_AllMC_" + year + "_mumu_NPL_Blinded.root", "READ"};
-	AllData_ee = new TFile{"Results_AllData_" + year + "_ee_NPL_Blinded.root", "READ"};
-        AllData_mumu = new TFile{"Results_AllData_" + year + "_mumu_NPL_Blinded.root", "READ"};
-	MCRatio_ee = new TFile{"Results_MCRatio_" + year + "_ee_NPL_Blinded.root", "READ"};
-        MCRatio_mumu = new TFile{"Results_MCRatio_" + year + "_mumu_NPL_Blinded.root", "READ"};
 
+ 	AllMC_ee_File = "Results_AllMC_" + year + "_ee_NPL_Blinded.root";
+	AllMC_mumu_File = "Results_AllMC_" + year + "_mumu_NPL_Blinded.root";
+	AllData_ee_File = "Results_AllData_" + year + "_ee_NPL_Blinded.root";
+	AllData_mumu_File = "Results_AllData_" + year + "_mumu_NPL_Blinded.root";
+	MCRatio_ee_File = "Results_MCRatio_" + year + "_ee_NPL_Blinded.root";
+	MCRatio_mumu_File = "Results_MCRatio_" + year + "_mumu_NPL_Blinded.root";
  }
  else{
-	AllMC_ee = new TFile{"Results_AllMC_" + year + "_ee_NPL.root", "READ"};
-	AllMC_mumu = new TFile{"Results_AllMC_" + year + "_mumu_NPL.root", "READ"};
-	AllData_ee = new TFile{"Results_AllData_" + year + "_ee_NPL.root", "READ"};
-        AllData_mumu = new TFile{"Results_AllData_" + year + "_mumu_NPL.root", "READ"};
-	MCRatio_ee = new TFile{"Results_MCRatio_" + year + "_ee_NPL.root", "READ"};
-        MCRatio_mumu = new TFile{"Results_MCRatio_" + year + "_mumu_NPL.root", "READ"};
+
+	AllMC_ee_File = "Results_AllMC_" + year + "_ee_NPL.root";
+        AllMC_mumu_File = "Results_AllMC_" + year + "_mumu_NPL.root";
+        AllData_ee_File = "Results_AllData_" + year + "_ee_NPL.root";
+        AllData_mumu_File = "Results_AllData_" + year + "_mumu_NPL.root";
+        MCRatio_ee_File = "Results_MCRatio_" + year + "_ee_NPL.root";
+        MCRatio_mumu_File = "Results_MCRatio_" + year + "_mumu_NPL.root";
 
  }
  
+ AllMC_ee = new TFile(AllMC_ee_File.c_str(), "READ");
+ AllMC_mumu = new TFile(AllMC_mumu_File.c_str(), "READ");
+ AllData_ee = new TFile(AllData_ee_File.c_str(), "READ");
+ AllData_mumu = new TFile(AllData_mumu_File.c_str(), "READ");
+ MCRatio_ee = new TFile(MCRatio_ee_File.c_str(), "READ");
+ MCRatio_mumu = new TFile(MCRatio_mumu_File.c_str(), "READ");
+
 
  //For the subtraction between data and MC
  TH1* h_NData_SS_ee = (TH1*)AllData_ee->GetObjectChecked("SameSign", "TH1"); 
@@ -11573,10 +11745,10 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
  TH1* h_NMC_SS_NonPrompt_ee = (TH1*)MCRatio_ee->GetObjectChecked("SameSign", "TH1");
  TH1* h_NMC_SS_NonPrompt_mumu = (TH1*)MCRatio_mumu->GetObjectChecked("SameSign", "TH1");
 
- int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetNEntries();
- int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetNEntries();
- int h_NMC_SS_NonPrompt_ee = h_NMC_SS_NonPrompt_ee->GetNEntries();
- int h_NMC_SS_NonPrompt_mumu = h_NMC_SS_NonPrompt_mumu->GetNEntries();
+ int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetEntries();
+ int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetEntries();
+ int NMC_SS_NonPrompt_ee = h_NMC_SS_NonPrompt_ee->GetEntries();
+ int NMC_SS_NonPrompt_mumu = h_NMC_SS_NonPrompt_mumu->GetEntries();
 
  int ratio_ee = NMC_OS_NonPrompt_ee / NMC_SS_NonPrompt_ee;
  int ratio_mumu = NMC_OS_NonPrompt_mumu / NMC_SS_NonPrompt_mumu;
@@ -11589,8 +11761,11 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
  for(int i = 0; i < nbins; i++){
 
-	h_NData_OS_NonPrompt_ee->SetBinContent.at(i) = ( ( h_NData_SS_ee->GetBinContent.at(i) - h_NMC_SS_ee->GetBinContent.at(i) ) * ratio_ee);
-   	h_NData_OS_NonPrompt_mumu->SetBinContent.at(i) = ( ( h_NData_SS_mumu->GetBinContent.at(i) - h_NMC_SS_mumu->GetBinContent.at(i) ) * ratio_mumu);  
+	double ee_content = ( ( h_NData_SS_ee->GetBinContent(i) - h_NMC_SS_ee->GetBinContent(i) ) * ratio_ee);
+	double mumu_content = ( ( h_NData_SS_mumu->GetBinContent(i) - h_NMC_SS_mumu->GetBinContent(i) ) * ratio_mumu);
+
+	h_NData_OS_NonPrompt_ee->SetBinContent(i,ee_content);
+   	h_NData_OS_NonPrompt_mumu->SetBinContent(i, mumu_content);
 
  }
 
@@ -11612,7 +11787,7 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
  h_NMC_OS_NonPrompt_ee->Write();
  h_NMC_OS_NonPrompt_mumu->Write();
  h_NMC_SS_NonPrompt_ee->Write();
- h_NMC_SS_NonPrompt_mumu->Wtite();
+ h_NMC_SS_NonPrompt_mumu->Write();
 
 
  NPL_output->Close();
@@ -11709,6 +11884,8 @@ void fulleventselectionAlgo::fulleventselection(){
 	//fsr_down  
 	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
+	}
+
 
   }
   else{
@@ -11722,16 +11899,16 @@ void fulleventselectionAlgo::fulleventselection(){
 	//Nominal
 	if(blinding == true){
 
-		fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-		fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	}
 	else{
 
-		fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-        	fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        	fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	}
 
