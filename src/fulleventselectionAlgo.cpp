@@ -2480,7 +2480,7 @@ auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const fl
         int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
-		if(GenPart_pdgId.at(i) == 5 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
+		if( abs(GenPart_pdgId.at(i)) == 5 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
 			check.push_back(1);				
 		}
 		else{check.push_back(0);}
@@ -2513,7 +2513,7 @@ auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const f
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 4 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) == 4 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
 			check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2548,7 +2548,7 @@ auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, con
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
 	for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) > 0 && GenPart_pdgId.at(i) < 4 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) > 0 && abs(GenPart_pdgId.at(i)) < 4 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
 			check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2583,7 +2583,7 @@ auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const f
 	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 21 && btags.at(i) > 0.8838f && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) == 21 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
                         check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2618,7 +2618,7 @@ auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& 
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 5 && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) == 5 && abs(etas.at(i)) < MaxTrackerEta){
                         check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2652,7 +2652,7 @@ auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints&
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 4 && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) == 4 && abs(etas.at(i)) < MaxTrackerEta){
                         check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2687,7 +2687,7 @@ auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const i
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) > 0 && GenPart_pdgId.at(i) < 4 && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) > 0 && abs(GenPart_pdgId.at(i)) < 4 && abs(etas.at(i)) < MaxTrackerEta){
                         check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2722,7 +2722,7 @@ auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints&
 	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
 
         for(int i = 0; i < size; i++){
-                if(GenPart_pdgId.at(i) == 21 && etas.at(i) < MaxTrackerEta){
+                if( abs(GenPart_pdgId.at(i)) == 21 && abs(etas.at(i)) < MaxTrackerEta){
                         check.push_back(1);
                 }
                 else{check.push_back(0);}
@@ -2822,7 +2822,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -2835,7 +2835,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -2848,7 +2848,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
@@ -2861,7 +2861,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (Jet_eta_Selection < MaxTrackerEta);
+  return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
 
