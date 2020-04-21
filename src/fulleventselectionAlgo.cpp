@@ -58,7 +58,7 @@ double linereader_JetSmear(const int& LineNumber){
    using namespace std;
 
 
-   fstream file("../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt");
+   fstream file("./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt");
    GotoLine(file, LineNumber);
 
    std::string line;
@@ -130,9 +130,9 @@ const ints& Muon_nTrackerLayers){
 
 	std::string RoccoTextFile;
 
-	if(year == "2016"){RoccoTextFile = "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt";}
-	else if(year == "2017"){RoccoTextFile = "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2017.txt";}
-	else if(year == "2018"){RoccoTextFile = "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2018.txt";}
+	if(year == "2016"){RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt";}
+	else if(year == "2017"){RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2017.txt";}
+	else if(year == "2018"){RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2018.txt";}
 	else{std::cout << "Error for rochester corrections: choose a year out of 2016, 2017 or 2018." << std::endl;}
 
 
@@ -2472,278 +2472,71 @@ auto bjet_cut{[](const ints& bjets) {
 
 //Lambda functions between lines 1211 and 1242 are only for calculating b-tagging efficiency
 //For the numerators
-auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
+auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+	std::cout << "btags.size() = " << btags.size() << std::endl;
+   	std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 
-	bools check;
-
-        int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
-
-	for(int i = 0; i < size; i++){
-		if( abs(GenPart_pdgId.at(i)) == 5 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
-			check.push_back(1);				
-		}
-		else{check.push_back(0);}
-	}
-
-	std::vector<size_t> results;
-  	floats output{};
-
-  	auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
- 	while (it != std::end(check)) {
-     		results.emplace_back(std::distance(std::begin(check), it));
-     	it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-  	}
-
-  	for(int i = 0; i < results.size(); i++){
-        	output.push_back( tight_jets.at( results.at(i) ) );
-  	}
-
-
-  	return output;
+	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
 }};
 
 
-auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
+auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
-	bools check;
-	
-	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
-
-	for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) == 4 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
-			check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
-
+       return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
 
 
 
-auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
+auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
         
-	bools check;
-
-	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
-
-	for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) > 0 && abs(GenPart_pdgId.at(i)) < 4 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
-			check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
-
+      return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
 
 
 
-auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& GenPart_pdgId) {
-	
-	bools check;
-
-	int size = (btags.size() < GenPart_pdgId.size()) ? btags.size() : GenPart_pdgId.size();
-
-        for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) == 21 && btags.at(i) > 0.8838f && abs(etas.at(i)) < MaxTrackerEta){
-                        check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
+auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+                
+      return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
 
 
 
 //For the denominators
-auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
+auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	bools check;
-
-	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
-
-        for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) == 5 && abs(etas.at(i)) < MaxTrackerEta){
-                        check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
-
+	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
 
 }};
 
 
-auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
 
-	bools check;
+auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
-
-        for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) == 4 && abs(etas.at(i)) < MaxTrackerEta){
-                        check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
+	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
 
 }};
 
 
 
 
-auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
+auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	bools check;
-
-	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
-
-        for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) > 0 && abs(GenPart_pdgId.at(i)) < 4 && abs(etas.at(i)) < MaxTrackerEta){
-                        check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
-
+	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
 
 }};
 
 
 
-auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& GenPart_pdgId) {
+auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	bools check;
-
-	int size = (etas.size() < GenPart_pdgId.size()) ? etas.size() : GenPart_pdgId.size();
-
-        for(int i = 0; i < size; i++){
-                if( abs(GenPart_pdgId.at(i)) == 21 && abs(etas.at(i)) < MaxTrackerEta){
-                        check.push_back(1);
-                }
-                else{check.push_back(0);}
-        }
-
-        std::vector<size_t> results;
-        floats output{};
-
-        auto it = std::find_if(std::begin(check), std::end(check), [](int i){return i == 1;});
-
-        while (it != std::end(check)) {
-                results.emplace_back(std::distance(std::begin(check), it));
-        it = std::find_if(std::next(it), std::end(check), [](int i){return i == 1;});
-        }
-
-        for(int i = 0; i < results.size(); i++){
-                output.push_back( tight_jets.at( results.at(i) ) );
-        }
-
-
-        return output;
+        return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
 
 }};
 
@@ -3485,28 +3278,28 @@ const floats& Jet_pt) {
   
   if(year == "2016"){
 
-  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
   	else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2017"){
 
-	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2018"){
 
-  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
   	else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
@@ -3640,28 +3433,28 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
 
    if(year == "2016"){
 
-        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2017"){
 
-        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
   else if(year == "2018"){
 
-        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "../ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
@@ -4128,12 +3921,12 @@ auto EGammaFunction{[](const std::string& year, const std::string& type, const f
 
   		if(type == "egammaEff" || type == "egammaEffSys"){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
 
 		}
 		else if(type == "egammaEffReco" || type == "egammaEffRecoSys"){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
 
 		}
 
@@ -4144,17 +3937,17 @@ auto EGammaFunction{[](const std::string& year, const std::string& type, const f
 
 		if( (type == "egammaEffReco" || type == "egammaEffRecoSys") && (pt.at(i) > 20) ){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
 
 		}
 		else if( (type == "egammaEffReco" || type == "egammaEffRecoSys") && (pt.at(i) <= 20) ){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
 
 		}
 		else if(type == "egammaEff" || type == "egammaEffSys"){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
 
 		}
 
@@ -4165,12 +3958,12 @@ auto EGammaFunction{[](const std::string& year, const std::string& type, const f
 
 		if(type == "egammaEff" || type == "egammaEffSys"){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
 
 		}
 		else if(type == "egammaEffReco" || type == "egammaEffRecoSys"){
 
-			inputfile = new TFile("../ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
 		}
 		else{std::cout << "No EGamma SF input file found (2018)" << std::endl;}
@@ -4284,24 +4077,24 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
   	if(type == "ID" || type == "ID sys"){
 
 		//Muon ID file (runs BCDEF)
-		inputfile_RunsBCDEF = new TFile("/home/eepgkkc/ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
+		inputfile_RunsBCDEF = new TFile("/home/eepgk./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
 		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio", "TH2");
 
 
                 //Muon ID file (runs GH)
-                inputfile_RunsGH = new TFile("/home/eepgkkc/ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
+                inputfile_RunsGH = new TFile("/home/eepgk./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
                 histo_RunsGH = (TH2*)inputfile_RunsGH->GetObjectChecked("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio", "TH2");
 
         } 
 	else if(type == "Iso" || type == "Iso sys"){
         
                 //Muon ISO file (runs BCDEF)
-                inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
+                inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
                 histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("TightISO_TightID_pt_eta/pt_abseta_ratio", "TH2");
                 
 
                 //Muon ISO file (runs GH)
-                inputfile_RunsGH = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
+                inputfile_RunsGH = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
                 histo_RunsGH = (TH2*)inputfile_RunsGH->GetObjectChecked("TightISO_TightID_pt_eta/pt_abseta_ratio", "TH2");
 
         }
@@ -4313,54 +4106,54 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
   	if(type == "ID"){
 
   		//Muon ID file
-  		inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
+  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightID_DEN_genTracks_pt_abseta", "TH2");  
 
   	}
  	 else if(type == "ID sys"){
 
   		//Muon ID sys file
-  		inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightID_DEN_genTracks_pt_abseta", "TH2");
 
   	}
  	 else if(type == "ID sys (stat)"){
 
         	//Muon ID sys (stat)
-        	inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+        	inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightID_DEN_genTracks_pt_abseta_stat", "TH2");
 
   	}
   	else if(type == "ID sys (syst)"){
  
         	//Muon ID sys (syst)
-        	inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+        	inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightID_DEN_genTracks_pt_abseta_syst", "TH2");
 
   	}
   	else if(type == "Iso"){
 
   		//Muon Iso file
-  		inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
+  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta", "TH2"); 
 
   	}
   	else if(type == "Iso sys"){
   
   		//Muon Iso sys file
-  		inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta", "TH2");
 
   	}
   	else if(type == "Iso sys (stat)"){
 
-   		inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+   		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
   		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat", "TH2");
   
   	}
   	else if(type == "Iso sys (syst)"){
 
-  		inputfile_RunsBCDEF = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
 		histo_RunsBCDEF = (TH2*)inputfile_RunsBCDEF->GetObjectChecked("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst", "TH2"); 
   
   	}
@@ -4372,7 +4165,7 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
 	if(type == "ID" || type == "ID sys"){
 
                 //Muon ID file (runs ABCD)
-		inputfile_RunsABCD = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
+		inputfile_RunsABCD = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
                 histo_RunsABCD = (TH2*)inputfile_RunsABCD->GetObjectChecked("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio", "TH2");
 
 
@@ -4380,7 +4173,7 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
         else if(type == "Iso" || type == "Iso sys"){
 
                 //Muon ISO file (runs ABCD)
-                inputfile_RunsABCD = new TFile("../ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
+                inputfile_RunsABCD = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
                 histo_RunsABCD = (TH2*)inputfile_RunsABCD->GetObjectChecked("TightISO_TightID_pt_eta/pt_abseta_ratio", "TH2");
 
 
@@ -5816,34 +5609,34 @@ auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event
 
 //Pile up modelling
 //2016
-TFile *dataPileupFile_2016 = new TFile("../ScaleFactors/PileUp/2016/truePileupTest.root", "READ");
+TFile *dataPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest.root", "READ");
 TH1F *dataPU_2016 = (TH1F*)(dataPileupFile_2016->Get("pileup")->Clone());
-TFile *mcPileupFile_2016 = new TFile("../ScaleFactors/PileUp/2016/pileupMC.root", "READ");
+TFile *mcPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
 TH1F* mcPU_2016 = (TH1F*)(mcPileupFile_2016->Get("pileup")->Clone());
 
 //2016 part 1
-TFile *dataPileupFile_2016_part1 = new TFile("../ScaleFactors/PileUp/2016/truePileupTest_part1.root", "READ");
+TFile *dataPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part1.root", "READ");
 TH1F *dataPU_2016_part1 = (TH1F*)(dataPileupFile_2016_part1->Get("pileup")->Clone());
-TFile *mcPileupFile_2016_part1 = new TFile("../ScaleFactors/PileUp/2016/pileupMC.root", "READ");
+TFile *mcPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
 TH1F* mcPU_2016_part1 = (TH1F*)(mcPileupFile_2016_part1->Get("pileup")->Clone());
 
 //2016 part 2
-TFile *dataPileupFile_2016_part2 = new TFile("../ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
+TFile *dataPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
 TH1F *dataPU_2016_part2 = (TH1F*)(dataPileupFile_2016_part2->Get("pileup")->Clone());
-TFile *mcPileupFile_2016_part2 = new TFile("../ScaleFactors/PileUp/2016/pileupMC.root", "READ");
+TFile *mcPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
 TH1F* mcPU_2016_part2 = (TH1F*)(mcPileupFile_2016_part2->Get("pileup")->Clone());
 
 //2017
-TFile *dataPileupFile_2017 = new TFile("../ScaleFactors/PileUp/2017/truePileupTest.root", "READ");
+TFile *dataPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupTest.root", "READ");
 TH1F *dataPU_2017 = (TH1F*)(dataPileupFile_2017->Get("pileup")->Clone());
-TFile *mcPileupFile_2017 = new TFile("../ScaleFactors/PileUp/2017/pileupMC.root", "READ");
+TFile *mcPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/pileupMC.root", "READ");
 TH1F* mcPU_2017 = (TH1F*)(mcPileupFile_2017->Get("pileup")->Clone());
 
 
 //2018
-TFile *dataPileupFile_2018 = new TFile("../ScaleFactors/PileUp/2018/MyDataPileupHistogram2018.root", "READ");
+TFile *dataPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogram2018.root", "READ");
 TH1F *dataPU_2018 = (TH1F*)(dataPileupFile_2018->Get("pileup")->Clone());
-TFile *mcPileupFile_2018 = new TFile("../ScaleFactors/PileUp/2018/pileupMC2018.root", "READ");
+TFile *mcPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/pileupMC2018.root", "READ");
 TH1F* mcPU_2018 = (TH1F*)(mcPileupFile_2018->Get("pileup")->Clone());
 
 
@@ -5851,20 +5644,20 @@ TH1F* mcPU_2018 = (TH1F*)(mcPileupFile_2018->Get("pileup")->Clone());
 
 //Systematic files
 //2016
-TFile *systUpFile_2016 = new TFile("../ScaleFactors/PileUp/2016/truePileupUp.root", "READ");
+TFile *systUpFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp.root", "READ");
 TH1F *pileupUpHist_2016 = (TH1F*)(systUpFile_2016->Get("pileup")->Clone());
-TFile *systDownFile_2016 = new TFile("../ScaleFactors/PileUp/2016/truePileupDown.root", "READ");
+TFile *systDownFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown.root", "READ");
 TH1F *pileupDownHist_2016 = (TH1F*)(systDownFile_2016->Get("pileup")->Clone());
 //part 1
-TFile *systUpFile_2016_part1 = new TFile("../ScaleFactors/PileUp/2016/truePileupUp_part1.root", "READ");
+TFile *systUpFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part1.root", "READ");
 TH1F *pileupUpHist_2016_part1 = (TH1F*)(systUpFile_2016_part1->Get("pileup")->Clone());
-TFile *systDownFile_2016_part1 = new TFile("../ScaleFactors/PileUp/2016/truePileupDown_part1.root", "READ");
+TFile *systDownFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part1.root", "READ");
 TH1F *pileupDownHist_2016_part1 = (TH1F*)(systDownFile_2016_part1->Get("pileup")->Clone());
 
 //part 2
-TFile *systUpFile_2016_part2 = new TFile("../ScaleFactors/PileUp/2016/truePileupUp_part2.root", "READ");
+TFile *systUpFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part2.root", "READ");
 TH1F *pileupUpHist_2016_part2 = (TH1F*)(systUpFile_2016_part2->Get("pileup")->Clone());
-TFile *systDownFile_2016_part2 = new TFile("../ScaleFactors/PileUp/2016/truePileupDown_part2.root", "READ");
+TFile *systDownFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part2.root", "READ");
 TH1F *pileupDownHist_2016_part2 = (TH1F*)(systDownFile_2016_part2->Get("pileup")->Clone());
 
 
@@ -5888,9 +5681,9 @@ puReweight_2016_part2->SetDirectory(nullptr);
 
 
 // 2017
-TFile *systUpFile_2017 = new TFile("../ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
+TFile *systUpFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
 TH1F *pileupUpHist_2017 = (TH1F*)(systUpFile_2017->Get("pileup")->Clone());
-TFile *systDownFile_2017 = new TFile("../ScaleFactors/PileUp/2017/truePileupDown.root", "READ");
+TFile *systDownFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupDown.root", "READ");
 TH1F *pileupDownHist_2017 = (TH1F*)(systDownFile_2017->Get("pileup")->Clone());
 
 
@@ -5901,9 +5694,9 @@ puReweight_2017->Divide(mcPU_2017);
 puReweight_2017->SetDirectory(nullptr);
 
 //2018
-TFile *systUpFile_2018 = new TFile("../ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
+TFile *systUpFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
 TH1F *pileupUpHist_2018 = (TH1F*)(systUpFile_2018->Get("pileup")->Clone());
-TFile *systDownFile_2018 = new TFile("../ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleDown2018.root", "READ");
+TFile *systDownFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleDown2018.root", "READ");
 TH1F *pileupDownHist_2018 = (TH1F*)(systDownFile_2018->Get("pileup")->Clone());
 
 
@@ -6653,6 +6446,8 @@ else{
 
 	TurnOnCurvesFile->Close();
 
+	return;
+
   } //end of if statement for trigger SF processes
 
 
@@ -6836,14 +6631,14 @@ else{
 
   auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
-                                                                  .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
-                                                                  .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                  .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
+                                                                  .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
                                                                   .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                                                   .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
                                                                   .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
@@ -6917,14 +6712,14 @@ else{
 
    auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
-                                                                      .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
-                                                                      .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "GenPart_pdgId"})
+                                                                      .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
+                                                                      .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
                                                                       .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                                                       .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
                                                                       .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
@@ -7384,7 +7179,7 @@ auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, cons
   for(int j = 0; j < GenPart_pdgId.size(); j++){
 
 
-	CSVReader reader("../ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
+	CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 	std::vector<std::vector<std::string> > dataList = reader.getData();
         
 	std::vector<std::string> OutputVec{}; 
@@ -10182,9 +9977,9 @@ auto GoldenJsonReader{[&year](){
 
  std::string GoldenJsonFileName;
 
- if(year == "2016"){GoldenJsonFileName = "../ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt";}
- else if(year == "2017"){GoldenJsonFileName = "../ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt";}
- else if(year == "2018"){GoldenJsonFileName = "../ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt";}
+ if(year == "2016"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt";}
+ else if(year == "2017"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt";}
+ else if(year == "2018"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt";}
  else{std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl;}
 
 
