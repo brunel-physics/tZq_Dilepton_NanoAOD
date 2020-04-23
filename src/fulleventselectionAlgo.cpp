@@ -11138,24 +11138,426 @@ if(process == "tZq"){
 
 std::string tZq_WAndTop_Filename; 
 
+if(PU_ScaleUp == true){
 
-if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
-}
-else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + year + ".root";
-}
-else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
-}
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){ 
-	 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
-}
-else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){ 
-	 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
-}
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
+	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PU_ScaleUp" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PU_ScaleUp" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PU_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PU_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_PU_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PU_ScaleUp" + year + ".root";}
+
+
+  }
+  else if(PU_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PU_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PU_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PU_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PU_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_PU_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PU_ScaleDown" + year + ".root";}
+
+
+  }
+  else if(BTag_ScaleUp == true){
+        
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_BTag_ScaleUp" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_BTag_ScaleUp" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_BTag_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_BTag_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_BTag_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_BTag_ScaleUp" + year + ".root";}
+
+  
+  }
+  else if(BTag_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_BTag_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_BTag_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_BTag_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_BTag_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_BTag_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_BTag_ScaleDown" + year + ".root";}
+
+
+  }
+  else if(JetSmearing_ScaleUp == true){
+       
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetSmearing_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetSmearing_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetSmearing_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetSmearing_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetSmearing_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetSmearing_ScaleUp" + year + ".root";}
+
+
+  }
+  else if(JetSmearing_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetSmearing_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetSmearing_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetSmearing_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetSmearing_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetSmearing_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetSmearing_ScaleDown" + year + ".root";}
+
+
+  }
+  else if(JetResolution_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetResolution_ScaleUp" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetResolution_ScaleUp" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetResolution_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetResolution_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetResolution_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetResolution_ScaleUp" + year + ".root";}
+
+
+  }
+  else if(JetResolution_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetResolution_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetResolution_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetResolution_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetResolution_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetResolution_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetResolution_ScaleDown" + year + ".root";}
+
+
+  }
+  else if(LeptonEfficiencies_ScaleUp == true){
+  
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_LeptonEfficiencies_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_LeptonEfficiencies_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleUp" + year + ".root";}
+
+
+  }
+  else if(LeptonEfficiencies_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_LeptonEfficiencies_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_LeptonEfficiencies_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleDown" + year + ".root";}
+
+
+  }
+  else if(PDF_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PDF_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PDF_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PDF_ScaleUp" + year + ".root";
+        }       
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PDF_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleUp" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PDF_ScaleUp" + year + ".root";}
+
+
+  }
+  else if(PDF_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PDF_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PDF_ScaleDown" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PDF_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PDF_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_PDF_ScaleDown" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PDF_ScaleDown" + year + ".root";}
+
+
+  }
+  else if(ME_Up == true){
+  
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ME_Up" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_ME_Up" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_ME_Up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_ME_Up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_ME_Up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ME_Up" + year + ".root";}
+
+
+  }
+  else if(ME_Down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ME_Down" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_ME_Down" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_ME_Down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_ME_Down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_ME_Down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ME_Down" + year + ".root";}
+
+
+  }
+  else if(isr_up == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_isr_up" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_isr_up" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_isr_up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_isr_up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_isr_up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_isr_up" + year + ".root";}
+
+
+  }
+  else if(isr_down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_isr_down" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_isr_down" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_isr_down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_isr_down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_isr_down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_isr_down" + year + ".root";}
+
+
+  }
+  else if(fsr_up == true){
+  
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_fsr_up" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_fsr_up" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_fsr_up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_fsr_up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_fsr_up" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_fsr_up" + year + ".root";}
+
+
+  }
+  else if(fsr_down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_fsr_down" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_fsr_down" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_fsr_down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_fsr_down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_fsr_down" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_fsr_down" + year + ".root";}
+
+
+  }
+  else{
+	
+	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
+	}
+	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + year + ".root";
+	}
+	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
+	}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){ 
+	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
+	}
+	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){ 
+	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
+	}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+	else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
+
+  }
+
+
+
         
 
 
@@ -13330,423 +13732,26 @@ double W_stddev_ee, Top_stddev_ee, W_stddev_mumu, Top_stddev_mumu;
 std::string Filename;
 std::string tZq_WAndTop_Filename; 
 
-  if(PU_ScaleUp == true){
-
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PU_ScaleUp" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PU_ScaleUp" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PU_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PU_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_PU_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PU_ScaleUp" + year + ".root";}
 
 
-  }
-  else if(PU_ScaleDown == true){
+if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+        tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
+}
+else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+        tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + year + ".root";
+}
+else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+        tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
+}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+         tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
+}
+else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+         tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
+}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
 
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PU_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PU_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PU_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PU_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_PU_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PU_ScaleDown" + year + ".root";}
-
-
-  }
-  else if(BTag_ScaleUp == true){
-        
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_BTag_ScaleUp" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_BTag_ScaleUp" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_BTag_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_BTag_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_BTag_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_BTag_ScaleUp" + year + ".root";}
-
-  
-  }
-  else if(BTag_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_BTag_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_BTag_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_BTag_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_BTag_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_BTag_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_BTag_ScaleDown" + year + ".root";}
-
-
-  }
-  else if(JetSmearing_ScaleUp == true){
-       
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetSmearing_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetSmearing_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetSmearing_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetSmearing_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetSmearing_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetSmearing_ScaleUp" + year + ".root";}
-
-
-  }
-  else if(JetSmearing_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetSmearing_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetSmearing_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetSmearing_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetSmearing_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetSmearing_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetSmearing_ScaleDown" + year + ".root";}
-
-
-  }
-  else if(JetResolution_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetResolution_ScaleUp" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetResolution_ScaleUp" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetResolution_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetResolution_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetResolution_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetResolution_ScaleUp" + year + ".root";}
-
-
-  }
-  else if(JetResolution_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetResolution_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_JetResolution_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_JetResolution_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_JetResolution_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_JetResolution_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetResolution_ScaleDown" + year + ".root";}
-
-
-  }
-  else if(LeptonEfficiencies_ScaleUp == true){
-  
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_LeptonEfficiencies_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_LeptonEfficiencies_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleUp" + year + ".root";}
-
-
-  }
-  else if(LeptonEfficiencies_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_LeptonEfficiencies_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_LeptonEfficiencies_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleDown" + year + ".root";}
-
-
-  }
-  else if(PDF_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PDF_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PDF_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PDF_ScaleUp" + year + ".root";
-        }       
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PDF_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleUp" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PDF_ScaleUp" + year + ".root";}
-
-
-  }
-  else if(PDF_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PDF_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_PDF_ScaleDown" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_PDF_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_PDF_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_PDF_ScaleDown" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PDF_ScaleDown" + year + ".root";}
-
-
-  }
-  else if(ME_Up == true){
-  
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ME_Up" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_ME_Up" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_ME_Up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_ME_Up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_ME_Up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ME_Up" + year + ".root";}
-
-
-  }
-  else if(ME_Down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ME_Down" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_ME_Down" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_ME_Down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_ME_Down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_ME_Down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ME_Down" + year + ".root";}
-
-
-  }
-  else if(isr_up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_isr_up" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_isr_up" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_isr_up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_isr_up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_isr_up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_isr_up" + year + ".root";}
-
-
-  }
-  else if(isr_down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_isr_down" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_isr_down" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_isr_down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_isr_down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_isr_down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_isr_down" + year + ".root";}
-
-
-  }
-  else if(fsr_up == true){
-  
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_fsr_up" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_fsr_up" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_fsr_up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_fsr_up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_fsr_up" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_fsr_up" + year + ".root";}
-
-
-  }
-  else if(fsr_down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_fsr_down" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_fsr_down" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_fsr_down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_fsr_down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_fsr_down" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_fsr_down" + year + ".root";}
-
-
-  }
-  else{
-	
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
-	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){ 
-	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){ 
-	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
-
-  }
 
 
 TFile* tZq_WAndTop_File = TFile::Open(tZq_WAndTop_Filename.c_str(), "READ");
