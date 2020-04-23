@@ -37,7 +37,7 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ZPlusJets_PtBinned_650ToInf"){NumberOfSimEvents = 430691; cross_section = 0.040981055;}
         else if(process == "ZPlusJets_PtBinned_650ToInf_ext1"){NumberOfSimEvents = 599665; cross_section = 0.040981055;}
         else if(process == "ZPlusJets_PtBinned_650ToInf_ext2"){NumberOfSimEvents = 597526; cross_section = 0.040981055;}
-	else if(process == "ttbar_2l2nu"){NumberOfSimEvents = 0; cross_section = 0;}
+	else if(process == "ttbar_2l2nu"){NumberOfSimEvents = 65852400; cross_section = 687.1;}
 	else if(process == "ttbar_madgraph"){NumberOfSimEvents = 6068369; cross_section = 56.86;}	
 	else if(process == "ttbar_madgraph_ext"){NumberOfSimEvents = 24767666; cross_section = 56.86;}
 	else if(process == "ttbar_TTToHadronic"){NumberOfSimEvents = 0; cross_section = 0;}
