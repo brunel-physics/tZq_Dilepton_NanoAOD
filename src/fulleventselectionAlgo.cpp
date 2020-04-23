@@ -296,6 +296,31 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
                         	system("mkdir BlindedResults_2016");
                         	system("mv *2016*.root BlindedResults_2016");
 				system("mv *2016*.txt BlindedResults_2016");
+				system("mkdir BTagEffPlots");
+				system("mkdir Chi2Range");
+				system("mkdir CutFlowReport");
+				system("mkdir Resolution");
+				system("mkdir Results");
+				system("mkdir TriggerSF");
+				system("mkdir GaussianFit");
+				system("mkdir mW_versus_mTop");
+				system("mv BTagEffPlots BlindedResults_2016/");
+                                system("mv Chi2Range BlindedResults_2016/");
+                                system("mv CutFlowReport BlindedResults_2016/");
+                                system("mv Resolution BlindedResults_2016/");
+                                system("mv Results BlindedResults_2016/");
+                                system("mv TriggerSF BlindedResults_2016/");
+                                system("mv GaussianFit BlindedResults_2016/");
+                                system("mv mW_versus_mTop BlindedResults_2016/");
+				system("mv BlindedResults_2016/BTagEffPlots_*.root BlindedResults_2016/BTagEffPlots");
+				system("mv BlindedResults_2016/Chi2Range_*.txt BlindedResults_2016/Chi2Range");
+				system("mv BlindedResults_2016/CutFlowReport_*.txt BlindedResults_2016/CutFlowReport");
+				system("mv BlindedResults_2016/Resolution_*.txt BlindedResults_2016/Resolution");
+				system("mv BlindedResults_2016/Results_*.root BlindedResults_2016/Results");
+				system("mv BlindedResults_2016/TurnOnCurves_*.root BlindedResults_2016/TriggerSF");
+				system("mv BlindedResults_2016/TriggerSF_*.txt BlindedResults_2016/TriggerSF");
+				system("mv BlindedResults_2016/*_GaussianFit_*.root BlindedResults_2016/GaussianFit");
+				system("mv BlindedResults_2016/*_mW_mTop_*.root BlindedResults_2016/mW_versus_mTop");
 
 			}
 			else{
@@ -303,7 +328,31 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 				system("mkdir BlindedResults_NPL_2016");
                         	system("mv *NPL*.root BlindedResults_NPL_2016");
                         	system("mv *NPL*.root BlindedResults_NPL_2016");
-
+				system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_NPL_2016/");
+                                system("mv Chi2Range BlindedResults_NPL_2016/");
+                                system("mv CutFlowReport BlindedResults_NPL_2016/");
+                                system("mv Resolution BlindedResults_NPL_2016/");
+                                system("mv Results BlindedResults_NPL_2016/");
+                                system("mv TriggerSF BlindedResults_NPL_2016/");
+                                system("mv GaussianFit BlindedResults_NPL_2016/");
+                                system("mv mW_versus_mTop BlindedResults_NPL_2016/");
+				system("mv UnblindedResults_NPL_2016/BTagEffPlots_*.root BlindedResults_NPL_2016/BTagEffPlots");
+                                system("mv BlindedResults_NPL_2016/Chi2Range_*.txt BlindedResults_NPL_2016/Chi2Range");
+                                system("mv BlindedResults_NPL_2016/CutFlowReport_*.txt BlindedResults_NPL_2016/CutFlowReport");
+                                system("mv BlindedResults_NPL_2016/Resolution_*.txt BlindedResults_NPL_2016/Resolution");
+                                system("mv BlindedResults_NPL_2016/Results_*.root BlindedResults_NPL_2016/Results");
+                                system("mv BlindedResults_NPL_2016/TurnOnCurves_*.root BlindedResults_NPL_2016/TriggerSF");
+                                system("mv BlindedResults_NPL_2016/TriggerSF_*.txt BlindedResults_NPL_2016/TriggerSF");
+				system("mv BlindedResults_NPL_2016/*_GaussianFit_*.root BlindedResults_NPL_2016/GaussianFit");
+                                system("mv BlindedResults_NPL_2016/*_mW_mTop_*.root BlindedResults_NPL_2016/mW_versus_mTop");
 
 			}
 	
@@ -315,6 +364,32 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
                         	system("mkdir UnblindedResults_2016");
                         	system("mv *2016*.root UnblindedResults_2016");
 				system("mv *2016*.txt UnblindedResults_2016");
+				system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_2016/");
+                                system("mv Chi2Range UnblindedResults_2016/");
+                                system("mv CutFlowReport UnblindedResults_2016/");
+                                system("mv Resolution UnblindedResults_2016/");
+                                system("mv Results UnblindedResults_2016/");
+                                system("mv TriggerSF UnblindedResults_2016/");
+                                system("mv GaussianFit UnblindedResults_2016/");
+                                system("mv mW_versus_mTop UnblindedResults_2016/");
+                                system("mv UnblindedResults_2016/BTagEffPlots_*.root UnblindedResults_2016/BTagEffPlots");
+                                system("mv UnblindedResults_2016/Chi2Range_*.txt UnblindedResults_2016/Chi2Range");
+                                system("mv UnblindedResults_2016/CutFlowReport_*.txt UnblindedResults_2016/CutFlowReport");
+                                system("mv UnblindedResults_2016/Resolution_*.txt UnblindedResults_2016/Resolution");
+                                system("mv UnblindedResults_2016/Results_*.root UnblindedResults_2016/Results");
+                                system("mv UnblindedResults_2016/TurnOnCurves_*.root UnblindedResults_2016/TriggerSF");
+                                system("mv UnblindedResults_2016/TriggerSF_*.txt UnblindedResults_2016/TriggerSF");
+				system("mv UnblindedResults_2016/*_GaussianFit_*.root UnblindedResults_2016/GaussianFit");
+                                system("mv UnblindedResults_2016/*_mW_mTop_*.root UnblindedResults_2016/mW_versus_mTop");
+
 
 			}
 			else{
@@ -322,6 +397,32 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 				system("mkdir UnblindedResults_NPL_2016");
                         	system("mv *NPL*.root UnblindedResults_NPL_2016");
                         	system("mv *NPL*.txt UnblindedResults_NPL_2016");
+				system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_NPL_2016/");
+                                system("mv Chi2Range UnblindedResults_NPL_2016/");
+                                system("mv CutFlowReport UnblindedResults_NPL_2016/");
+                                system("mv Resolution UnblindedResults_NPL_2016/");
+                                system("mv Results UnblindedResults_NPL_2016/");
+                                system("mv TriggerSF UnblindedResults_NPL_2016/");
+                                system("mv GaussianFit UnblindedResults_NPL_2016/");
+                                system("mv mW_versus_mTop UnblindedResults_NPL_2016/");
+                                system("mv UnblindedResults_NPL_2016/BTagEffPlots_*.root UnblindedResults_NPL_2016/BTagEffPlots");
+                                system("mv UnblindedResults_NPL_2016/Chi2Range_*.txt UnblindedResults_NPL_2016/Chi2Range");
+                                system("mv UnblindedResults_NPL_2016/CutFlowReport_*.txt UnblindedResults_NPL_2016/CutFlowReport");
+                                system("mv UnblindedResults_NPL_2016/Resolution_*.txt UnblindedResults_NPL_2016/Resolution");
+                                system("mv UnblindedResults_NPL_2016/Results_*.root UnblindedResults_NPL_2016/Results");
+                                system("mv UnblindedResults_NPL_2016/TurnOnCurves_*.root UnblindedResults_NPL_2016/TriggerSF");
+                                system("mv UnblindedResults_NPL_2016/TriggerSF_*.txt UnblindedResults_NPL_2016/TriggerSF");
+				system("mv UnblindedResults_NPL_2016/*_GaussianFit_*.root UnblindedResults_NPL_2016/GaussianFit");
+                                system("mv UnblindedResults_NPL_2016/*_mW_mTop_*.root UnblindedResults_NPL_2016/mW_versus_mTop");
+				
 
 			}
 
@@ -336,16 +437,68 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 
 			if(NPL == false){
 
-                        	system("mkdir BlindedResults_2017");
-                        	system("mv *2017*.root BlindedResults_2017");
-				system("mv *2017*.txt BlindedResults_2017");
+				system("mkdir BlindedResults_2017");
+                                system("mv *2017*.root BlindedResults_2017");
+                                system("mv *2017*.txt BlindedResults_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_2017/");
+                                system("mv Chi2Range BlindedResults_2017/");
+                                system("mv CutFlowReport BlindedResults_2017/");
+                                system("mv Resolution BlindedResults_2017/");
+                                system("mv Results BlindedResults_2017/");
+                                system("mv TriggerSF BlindedResults_2017/");
+                                system("mv GaussianFit BlindedResults_2017/");
+                                system("mv mW_versus_mTop BlindedResults_2017/");
+                                system("mv BlindedResults_2017/BTagEffPlots_*.root BlindedResults_2017/BTagEffPlots");
+                                system("mv BlindedResults_2017/Chi2Range_*.txt BlindedResults_2017/Chi2Range");
+                                system("mv BlindedResults_2017/CutFlowReport_*.txt BlindedResults_2017/CutFlowReport");
+                                system("mv BlindedResults_2017/Resolution_*.txt BlindedResults_2017/Resolution");
+                                system("mv BlindedResults_2017/Results_*.root BlindedResults_2017/Results");
+                                system("mv BlindedResults_2017/TurnOnCurves_*.root BlindedResults_2017/TriggerSF");
+                                system("mv BlindedResults_2017/TriggerSF_*.txt BlindedResults_2017/TriggerSF");
+				system("mv BlindedResults_2017/*_GaussianFit_*.root BlindedResults_2017/GaussianFit");
+                                system("mv BlindedResults_2017/*_mW_mTop_*.root BlindedResults_2017/mW_versus_mTop");
+			
 
 			}
 			else{
 			
 				system("mkdir BlindedResults_NPL_2017");
-                        	system("mv *NPL*.root BlindedResults_NPL_2017");
-                        	system("mv *NPL*.txt BlindedResults_NPL_2017");
+                                system("mv *NPL*.root BlindedResults_NPL_2017");
+                                system("mv *NPL*.root BlindedResults_NPL_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_NPL_2017/");
+                                system("mv Chi2Range BlindedResults_NPL_2017/");
+                                system("mv CutFlowReport BlindedResults_NPL_2017/");
+                                system("mv Resolution BlindedResults_NPL_2017/");
+                                system("mv Results BlindedResults_NPL_2017/");
+                                system("mv TriggerSF BlindedResults_NPL_2017/");
+                                system("mv GaussianFit BlindedResults_NPL_2017/");
+                                system("mv mW_versus_mTop BlindedResults_NPL_2017/");
+                                system("mv UnblindedResults_NPL_2017/BTagEffPlots_*.root BlindedResults_NPL_2017/BTagEffPlots");
+                                system("mv BlindedResults_NPL_2017/Chi2Range_*.txt BlindedResults_NPL_2017/Chi2Range");
+                                system("mv BlindedResults_NPL_2017/CutFlowReport_*.txt BlindedResults_NPL_2017/CutFlowReport");
+                                system("mv BlindedResults_NPL_2017/Resolution_*.txt BlindedResults_NPL_2017/Resolution");
+                                system("mv BlindedResults_NPL_2017/Results_*.root BlindedResults_NPL_2017/Results");
+                                system("mv BlindedResults_NPL_2017/TurnOnCurves_*.root BlindedResults_NPL_2017/TriggerSF");
+                                system("mv BlindedResults_NPL_2017/TriggerSF_*.txt BlindedResults_NPL_2017/TriggerSF");
+				system("mv BlindedResults_NPL_2017/*_GaussianFit_*.root BlindedResults_NPL_2017/GaussianFit");
+                                system("mv BlindedResults_NPL_2017/*_mW_mTop_*.root BlindedResults_NPL_2017/mW_versus_mTop");
+			
 
 			}
 
@@ -354,17 +507,69 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 
 			if(NPL == false){
 
-                        	system("mkdir UnblindedResults_2017");
-                        	system("mv *2017*.root UnblindedResults_2017");
-				system("mv *2017*.txt UnblindedResults_2017");
+				system("mkdir UnblindedResults_2017");
+                                system("mv *2017*.root UnblindedResults_2017");
+                                system("mv *2017*.txt UnblindedResults_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_2017/");
+                                system("mv Chi2Range UnblindedResults_2017/");
+                                system("mv CutFlowReport UnblindedResults_2017/");
+                                system("mv Resolution UnblindedResults_2017/");
+                                system("mv Results UnblindedResults_2017/");
+                                system("mv TriggerSF UnblindedResults_2017/");
+                                system("mv GaussianFit UnblindedResults_2017/");
+                                system("mv mW_versus_mTop UnblindedResults_2017/");
+                                system("mv UnblindedResults_2017/BTagEffPlots_*.root UnblindedResults_2017/BTagEffPlots");
+                                system("mv UnblindedResults_2017/Chi2Range_*.txt UnblindedResults_2017/Chi2Range");
+                                system("mv UnblindedResults_2017/CutFlowReport_*.txt UnblindedResults_2017/CutFlowReport");
+                                system("mv UnblindedResults_2017/Resolution_*.txt UnblindedResults_2017/Resolution");
+                                system("mv UnblindedResults_2017/Results_*.root UnblindedResults_2017/Results");
+                                system("mv UnblindedResults_2017/TurnOnCurves_*.root UnblindedResults_2017/TriggerSF");
+                                system("mv UnblindedResults_2017/TriggerSF_*.txt UnblindedResults_2017/TriggerSF");
+				system("mv UnblindedResults_2017/*_GaussianFit_*.root UnblindedResults_2017/GaussianFit");
+                                system("mv UnblindedResults_2017/*_mW_mTop_*.root UnblindedResults_2017/mW_versus_mTop");
+
 
 			}
 			else{
 
 				system("mkdir UnblindedResults_NPL_2017");
-                        	system("mv *NPL*.root UnblindedResults_NPL_2017");
-                        	system("mv *NPL*.txt UnblindedResults_NPL_2017");
-		
+                                system("mv *NPL*.root UnblindedResults_NPL_2017");
+                                system("mv *NPL*.txt UnblindedResults_NPL_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_NPL_2017/");
+                                system("mv Chi2Range UnblindedResults_NPL_2017/");
+                                system("mv CutFlowReport UnblindedResults_NPL_2017/");
+                                system("mv Resolution UnblindedResults_NPL_2017/");
+                                system("mv Results UnblindedResults_NPL_2017/");
+                                system("mv TriggerSF UnblindedResults_NPL_2017/");
+                                system("mv GaussianFit UnblindedResults_NPL_2017/");
+                                system("mv mW_versus_mTop UnblindedResults_NPL_2017/");
+                                system("mv UnblindedResults_NPL_2017/BTagEffPlots_*.root UnblindedResults_NPL_2017/BTagEffPlots");
+                                system("mv UnblindedResults_NPL_2017/Chi2Range_*.txt UnblindedResults_NPL_2017/Chi2Range");
+                                system("mv UnblindedResults_NPL_2017/CutFlowReport_*.txt UnblindedResults_NPL_2017/CutFlowReport");
+                                system("mv UnblindedResults_NPL_2017/Resolution_*.txt UnblindedResults_NPL_2017/Resolution");
+                                system("mv UnblindedResults_NPL_2017/Results_*.root UnblindedResults_NPL_2017/Results");
+			        system("mv UnblindedResults_NPL_2017/TurnOnCurves_*.root UnblindedResults_NPL_2017/TriggerSF");
+                                system("mv UnblindedResults_NPL_2017/TriggerSF_*.txt UnblindedResults_NPL_2017/TriggerSF");                        
+				system("mv UnblindedResults_NPL_2017/*_GaussianFit_*.root UnblindedResults_NPL_2017/GaussianFit");
+                                system("mv UnblindedResults_NPL_2017/*_mW_mTop_*.root UnblindedResults_NPL_2017/mW_versus_mTop");
+	
+	
 			}
 
 
@@ -378,16 +583,68 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 			
 			if(NPL == false){
 
-                        	system("mkdir BlindedResults_2018");
-                        	system("mv *2018*.root BlindedResults_2018");
-				system("mv *2018*.txt BlindedResults_2018");
-			
+				system("mkdir BlindedResults_2018");
+                                system("mv *2018*.root BlindedResults_2018");
+                                system("mv *2018*.txt BlindedResults_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_2018/");
+                                system("mv Chi2Range BlindedResults_2018/");
+                                system("mv CutFlowReport BlindedResults_2018/");
+                                system("mv Resolution BlindedResults_2018/");
+                                system("mv Results BlindedResults_2018/");
+                                system("mv TriggerSF BlindedResults_2018/");
+                                system("mv GaussianFit BlindedResults_2018/");
+                                system("mv mW_versus_mTop BlindedResults_2018/");
+                                system("mv BlindedResults_2018/BTagEffPlots_*.root BlindedResults_2018/BTagEffPlots");
+                                system("mv BlindedResults_2018/Chi2Range_*.txt BlindedResults_2018/Chi2Range");
+                                system("mv BlindedResults_2018/CutFlowReport_*.txt BlindedResults_2018/CutFlowReport");
+                                system("mv BlindedResults_2018/Resolution_*.txt BlindedResults_2018/Resolution");
+                                system("mv BlindedResults_2018/Results_*.root BlindedResults_2018/Results");
+                                system("mv BlindedResults_2018/TurnOnCurves_*.root BlindedResults_2018/TriggerSF");
+                                system("mv BlindedResults_2018/TriggerSF_*.txt BlindedResults_2018/TriggerSF");
+				system("mv BlindedResults_2018/*_GaussianFit_*.root BlindedResults_2018/GaussianFit");
+                                system("mv BlindedResults_2018/*_mW_mTop_*.root BlindedResults_2018/mW_versus_mTop");		
+
+	
 			}
 			else{
 
 				system("mkdir BlindedResults_NPL_2018");
-                        	system("mv *NPL*.root BlindedResults_NPL_2018");
-                        	system("mv *NPL*.txt BlindedResults_NPL_2018");
+                                system("mv *NPL*.root BlindedResults_NPL_2018");
+                                system("mv *NPL*.root BlindedResults_NPL_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_NPL_2018/");
+                                system("mv Chi2Range BlindedResults_NPL_2018/");
+                                system("mv CutFlowReport BlindedResults_NPL_2018/");
+                                system("mv Resolution BlindedResults_NPL_2018/");
+                                system("mv Results BlindedResults_NPL_2018/");
+                                system("mv TriggerSF BlindedResults_NPL_2018/");
+                                system("mv GaussianFit BlindedResults_NPL_2018/");
+                                system("mv mW_versus_mTop BlindedResults_NPL_2018/");
+                                system("mv UnblindedResults_NPL_2018/BTagEffPlots_*.root BlindedResults_NPL_2018/BTagEffPlots");
+                                system("mv BlindedResults_NPL_2018/Chi2Range_*.txt BlindedResults_NPL_2018/Chi2Range");
+                                system("mv BlindedResults_NPL_2018/CutFlowReport_*.txt BlindedResults_NPL_2018/CutFlowReport");
+                                system("mv BlindedResults_NPL_2018/Resolution_*.txt BlindedResults_NPL_2018/Resolution");
+                                system("mv BlindedResults_NPL_2018/Results_*.root BlindedResults_NPL_2018/Results");
+                                system("mv BlindedResults_NPL_2018/TurnOnCurves_*.root BlindedResults_NPL_2018/TriggerSF");
+                                system("mv BlindedResults_NPL_2018/TriggerSF_*.txt BlindedResults_NPL_2018/TriggerSF");
+				system("mv BlindedResults_NPL_2018/*_GaussianFit_*.root BlindedResults_NPL_2018/GaussianFit");
+                                system("mv BlindedResults_NPL_2018/*_mW_mTop_*.root BlindedResults_NPL_2018/mW_versus_mTop");
+		
 
 			}
 
@@ -397,16 +654,69 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 
 			if(NPL == false){
 
-                        	system("mkdir UnblindedResults_2018");
-                        	system("mv *2018*.root UnblindedResults_2018");
-				system("mv *2018*.txt UnblindedResults_2018");
+				system("mkdir UnblindedResults_2018");
+                                system("mv *2018*.root UnblindedResults_2018");
+                                system("mv *2018*.txt UnblindedResults_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_2018/");
+                                system("mv Chi2Range UnblindedResults_2018/");
+                                system("mv CutFlowReport UnblindedResults_2018/");
+                                system("mv Resolution UnblindedResults_2018/");
+                                system("mv Results UnblindedResults_2018/");
+                                system("mv TriggerSF UnblindedResults_2018/");
+                                system("mv GaussianFit UnblindedResults_2018/");
+                                system("mv mW_versus_mTop UnblindedResults_2018/");
+                                system("mv UnblindedResults_2018/BTagEffPlots_*.root UnblindedResults_2018/BTagEffPlots");
+                                system("mv UnblindedResults_2018/Chi2Range_*.txt UnblindedResults_2018/Chi2Range");
+                                system("mv UnblindedResults_2018/CutFlowReport_*.txt UnblindedResults_2018/CutFlowReport");
+                                system("mv UnblindedResults_2018/Resolution_*.txt UnblindedResults_2018/Resolution");
+                                system("mv UnblindedResults_2018/Results_*.root UnblindedResults_2018/Results");
+                                system("mv UnblindedResults_2018/TurnOnCurves_*.root UnblindedResults_2018/TriggerSF");
+                                system("mv UnblindedResults_2018/TriggerSF_*.txt UnblindedResults_2018/TriggerSF");
+				system("mv UnblindedResults_2018/*_GaussianFit_*.root UnblindedResults_2018/GaussianFit");
+                                system("mv UnblindedResults_2018/*_mW_mTop_*.root UnblindedResults_2018/mW_versus_mTop");
+
+
 
 			}
 			else{
 
 				system("mkdir UnblindedResults_NPL_2018");
-                        	system("mv *NPL*.root UnblindedResults_NPL_2018");
-                        	system("mv *NPL*.txt UnblindedResults_NPL_2018");
+                                system("mv *NPL*.root UnblindedResults_NPL_2018");
+                                system("mv *NPL*.txt UnblindedResults_NPL_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_NPL_2018/");
+                                system("mv Chi2Range UnblindedResults_NPL_2018/");
+                                system("mv CutFlowReport UnblindedResults_NPL_2018/");
+                                system("mv Resolution UnblindedResults_NPL_2018/");
+                                system("mv Results UnblindedResults_NPL_2018/");
+                                system("mv TriggerSF UnblindedResults_NPL_2018/");
+                                system("mv GaussianFit UnblindedResults_NPL_2018/");
+                                system("mv mW_versus_mTop UnblindedResults_NPL_2018/");
+                                system("mv UnblindedResults_NPL_2018/BTagEffPlots_*.root UnblindedResults_NPL_2018/BTagEffPlots");
+                                system("mv UnblindedResults_NPL_2018/Chi2Range_*.txt UnblindedResults_NPL_2018/Chi2Range");
+                                system("mv UnblindedResults_NPL_2018/CutFlowReport_*.txt UnblindedResults_NPL_2018/CutFlowReport");
+                                system("mv UnblindedResults_NPL_2018/Resolution_*.txt UnblindedResults_NPL_2018/Resolution");
+                                system("mv UnblindedResults_NPL_2018/Results_*.root UnblindedResults_NPL_2018/Results");
+                                system("mv UnblindedResults_NPL_2018/TurnOnCurves_*.root UnblindedResults_NPL_2018/TriggerSF");
+                                system("mv UnblindedResults_NPL_2018/TriggerSF_*.txt UnblindedResults_NPL_2018/TriggerSF");
+				system("mv UnblindedResults_NPL_2018/*_GaussianFit_*.root UnblindedResults_NPL_2018/GaussianFit");
+                                system("mv UnblindedResults_NPL_2018/*_mW_mTop_*.root UnblindedResults_NPL_2018/mW_versus_mTop");
+
 
 			}
 
@@ -558,55 +868,61 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 std::vector<std::string> input_files;
 std::ofstream CutFlowReport;
-
 std::string cutflowstring;
 
-if(blinding == false){
 
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-        	cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL.txt";
+if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
+
+	if(blinding == false){
+
+		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+        		cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL.txt";
+		}
+		else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+			cutflowstring = "CutFlowReport_" + process + "_" + year + "_ZPlusJetsCR.txt";
+		}
+		else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+			cutflowstring = "CutFlowReport_" + process + "_" + year + "_ttbarCR.txt";
+		}
+		else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+			cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ZPlusJetsCR.txt";
+		}
+		else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+			cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ttbarCR.txt";
+		}
+		else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+		else{cutflowstring = "CutFlowReport_" + process + "_" + year + ".txt";}
+
 	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-		cutflowstring = "CutFlowReport_" + process + "_" + year + "_ZPlusJetsCR.txt";
+	else{
+
+		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                	cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_Blinded.txt";
+        	}
+        	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                	cutflowstring = "CutFlowReport_" + process + "_" + year + "_ZPlusJetsCR_Blinded.txt";
+        	}
+        	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                	cutflowstring = "CutFlowReport_" + process + "_" + year + "_ttbarCR_Blinded.txt";
+        	}
+        	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                	cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ZPlusJetsCR_Blinded.txt";
+        	}
+        	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                	cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ttbarCR_Blinded.txt";
+        	}
+        	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        	else{cutflowstring = "CutFlowReport_" + process + "_" + year + "_Blinded.txt";}
+
+
 	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-		cutflowstring = "CutFlowReport_" + process + "_" + year + "_ttbarCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-		cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ZPlusJetsCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-		cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ttbarCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{cutflowstring = "CutFlowReport_" + process + "_" + year + ".txt";}
+
+
+	CutFlowReport.open(cutflowstring.c_str());
+
 
 }
-else{
 
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_Blinded.txt";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                cutflowstring = "CutFlowReport_" + process + "_" + year + "_ZPlusJetsCR_Blinded.txt";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                cutflowstring = "CutFlowReport_" + process + "_" + year + "_ttbarCR_Blinded.txt";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ZPlusJetsCR_Blinded.txt";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                cutflowstring = "CutFlowReport_" + process + "_" + year + "_NPL_ttbarCR_Blinded.txt";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{cutflowstring = "CutFlowReport_" + process + "_" + year + "_Blinded.txt";}
-
-
-}
-
-
-CutFlowReport.open(cutflowstring.c_str());
 
 if(year == "2016"){
 
@@ -883,7 +1199,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 5);
+auto d_dataframe = d.Range(0, 10);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -2473,11 +2789,6 @@ auto bjet_cut{[](const ints& bjets) {
 //Lambda functions between lines 1211 and 1242 are only for calculating b-tagging efficiency
 //For the numerators
 auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
-	std::cout << "btags.size() = " << btags.size() << std::endl;
-   	std::cout << "etas.size() = " << etas.size() << std::endl;
-        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 
 	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
@@ -4852,7 +5163,7 @@ MET_triggers= {
 };
 
 }
-else if(year == "2017"){
+else if(year == "2017" || year == "2018"){
 
 MET_triggers= {
 
@@ -4893,7 +5204,7 @@ MET_triggers= {
 };
 
 }
-else{std::cout << "include MET triggers for 2018" << std::endl;}
+else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;}
 
 
 //dummy lambda function
@@ -9004,6 +9315,131 @@ auto ReweightFunction_bools{[](const bools& variable, const float& EventWeight){
 }};
 
 
+auto ReweightFunction_TLorentzVector{[](const TLorentzVector& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+
+auto ReweightFunction_vector_TLorentzVector{[](const std::vector<TLorentzVector>& variable, const float& EventWeight){
+
+	std::vector<TLorentzVector> outVec{};
+
+	for(int i = 0; i < variable.size(); i++){
+
+		auto Pt = (variable.at(i)).Pt() * EventWeight;
+		auto Eta = (variable.at(i)).Eta() * EventWeight;
+		auto Phi = (variable.at(i)).Phi() * EventWeight;	
+		auto Mass = (variable.at(i)).M() * EventWeight;
+
+		TLorentzVector newVec{};
+		newVec.SetPtEtaPhiM(Pt, Eta, Phi, Mass);
+
+		outVec.push_back(newVec);
+
+	}
+
+        return outVec;
+
+}};
+
+
+auto ReweightFunction_long{[](const long& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+
+auto ReweightFunction_UInt{[](const UInt_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+
+auto ReweightFunction_ULong64_t{[](const ULong64_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Float_t{[](const Float_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Int_t{[](const Int_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Double_t{[](const Double_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Bool_t{[](const Bool_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_UChar_t{[](const UChar_t& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Float_t_RVec{[](const ROOT::VecOps::RVec<Float_t>& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Int_t_RVec{[](const ROOT::VecOps::RVec<Int_t>& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+
+auto ReweightFunction_Double_t_RVec{[](const ROOT::VecOps::RVec<Double_t>& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_Bool_t_RVec{[](const ROOT::VecOps::RVec<Bool_t>& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
+auto ReweightFunction_UChar_t_RVec{[](const ROOT::VecOps::RVec<UChar_t>& variable, const float& EventWeight){
+
+        auto newVariable = (variable * EventWeight);
+        return newVariable;
+
+}};
+
 
 auto colNames_ee = d_WeightedEvents_ee.GetColumnNames();
 auto colNames_mumu = d_WeightedEvents_mumu.GetColumnNames();
@@ -9019,15 +9455,29 @@ for(auto i = 0u; i < colNames_ee.size(); i++){
 
 
 	if(colType == "float"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_float, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "floats"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_floats, {colNames_ee.at(i), "EventWeight"}));}
-	if(colType == "int"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_int, {colNames_ee.at(i), "EventWeight"}));}
-        else if(colType == "ints"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_ints, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<float>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_floats, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "int"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_int, {colNames_ee.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<int>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_ints, {colNames_ee.at(i), "EventWeight"}));}
 	else if(colType == "double"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_double, {colNames_ee.at(i), "EventWeight"}));}
-        else if(colType == "doubles"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_doubles, {colNames_ee.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<double>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_doubles, {colNames_ee.at(i), "EventWeight"}));}
 	else if(colType == "bool"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bool, {colNames_ee.at(i), "EventWeight"}));}
-        else if(colType == "bools"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bools, {colNames_ee.at(i), "EventWeight"}));}
-	else{std::cout << "ERROR: The column type is: " << colType << std::endl; break;}
-
+        else if(colType == "ROOT::VecOps::RVec<bool>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bools, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "TLorentzVector"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_TLorentzVector, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "vector<TLorentzVector>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_vector_TLorentzVector, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "long"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_long, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "UInt_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_UInt, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ULong64_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_ULong64_t, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "Float_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Float_t, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "Int_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Int_t, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "UChar_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_UChar_t, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "Double_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Double_t, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "Bool_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Bool_t, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<Float_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Float_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<Int_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Int_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<Double_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Double_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<Bool_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Bool_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<UChar_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_UChar_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
+	else{std::cout << "ERROR: The column type is = " << colType << std::endl; break;}
 
 
 }
@@ -9040,16 +9490,30 @@ for(auto i = 0u; i < colNames_mumu.size(); i++){
 
 
 	if(colType == "float"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_float, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "floats"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_floats, {colNames_mumu.at(i), "EventWeight"}));}
-        if(colType == "int"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_int, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ints"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_ints, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<float>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_floats, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "int"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_int, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<int>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_ints, {colNames_mumu.at(i), "EventWeight"}));}
         else if(colType == "double"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_double, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "doubles"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_doubles, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<double>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_doubles, {colNames_mumu.at(i), "EventWeight"}));}
 	else if(colType == "bool"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bool, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "bools"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bools, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<bool>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bools, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "TLorentzVector"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_TLorentzVector, {colNames_mumu.at(i), "EventWeight"}));}
+ 	else if(colType == "vector<TLorentzVector>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_vector_TLorentzVector, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "long"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_long, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "UInt_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_UInt, {colNames_mumu.at(i), "EventWeight"}));}
+	 else if(colType == "UChar_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_UChar_t, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "ULong64_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_ULong64_t, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "Float_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Float_t, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "Int_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Int_t, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "Double_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Double_t, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "Bool_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Bool_t, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<Float_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Float_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<Int_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Int_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
+        else if(colType == "ROOT::VecOps::RVec<Double_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Double_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<Bool_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Bool_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
+	else if(colType == "ROOT::VecOps::RVec<UChar_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_UChar_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
         else{std::cout << "ERROR: The column type is: " << colType << std::endl; break;}
 
-      
   
 }
 
@@ -9537,7 +10001,6 @@ TwoDHistoFile->Close();
 //}
 
 
-
 //NPL estimation
 if(NPL == true){
 
@@ -9584,15 +10047,21 @@ if(NPL == true){
 
 
 
-//Print cut report
-auto allCutsReport{d_dataframe.Report()};
+if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ttbar" && process != "Data_triggerSF"){
+
+	//Print cut report
+	auto allCutsReport = d_dataframe.Report();
 
 
-for (auto&& cutInfo: allCutsReport)
+	for (auto&& cutInfo: allCutsReport){
 
-{CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;}
+		std::cout << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+		CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+
+	}
 
 
+}
 
 												
 
@@ -11222,6 +11691,7 @@ else{
 
 
 //m top vs m W
+std::cout << "m top vs m W" << std::endl;
 
 std::string TwoDHistoFileName;
 
@@ -11302,7 +11772,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 
   if(year == "2016"){
 
-        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
+        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF"/*, "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
 		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
                      "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
@@ -11318,12 +11788,12 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
                      "data_SingleElectronRunG", "data_SingleElectronRunH", "data_DoubleMuonRunB", "data_DoubleMuonRunC", "data_DoubleMuonRunD",
                      "data_DoubleMuonRunE", "data_SingleElectronRunF", "data_SingleElectronRunG", "data_DoubleMuonRunH", "data_SingleMuonRunB",
                      "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF", "data_SingleMuonRunG",
-                     "data_SingleMuonRunH"};
+                     "data_SingleMuonRunH"*/};
 
  }
   else if(year == "2017"){
 
-  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq"/*, "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
@@ -11332,12 +11802,12 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
 		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
-		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", "data_SingleMuonRunC", 			   		   "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"};
+		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", "data_SingleMuonRunC", 			   		   "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"*/};
 
  }
  else if(year == "2018"){
 
-	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF"/*, "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
                      "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
                      "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q",
@@ -11345,7 +11815,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
                      "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",
                      "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", 
 		     "data_EGRunB", "data_EGRunC", "data_EGRunD", "data_DoubleMuonRunB", "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_SingleMuonRunB", 
-		     "data_SingleMuonRunC", "data_SingleMuonRunD"};
+		     "data_SingleMuonRunC", "data_SingleMuonRunD"*/};
 
 
  }
@@ -11606,115 +12076,121 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
   bool blinding = true;
-  std::string year = "2017";
   bool NPL = false;
   bool ZPlusJetsCR = false; 
   bool ttbarCR = false;
 
+  std::string year = "2018";
+  
+
   //Nominal
- fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+/*
+ 	if(NPL == false){
 
- if(NPL == false){
+		//PU_ScaleUp
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//PU_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//PU_ScaleDown
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//PU_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//BTag_ScaleUp
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//BTag_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//BTag_ScaleDown
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//BTag_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetSmearing_ScaleUp
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//JetSmearing_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetSmearing_ScaleDown
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//JetSmearing_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetResolution_ScaleUp
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//JetResolution_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetResolution_ScaleDown
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
-	//JetResolution_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+		//LeptonEfficiencies_ScaleUp
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
-	//LeptonEfficiencies_ScaleUp
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+		//LeptonEfficiencies_ScaleDown
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
 
-	//LeptonEfficiencies_ScaleDown
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+		//PDF_ScaleUp 
+        	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
 
-	//PDF_ScaleUp 
-        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+        	//PDF_ScaleDown 
+        	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
 
-        //PDF_ScaleDown 
-        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+		//ME_Up
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
 
-	//ME_Up
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+		//ME_Down
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
 
-	//ME_Down
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+		//alphaS_up
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
 
-	//alphaS_up
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
-
-	//alphaS_down
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);
+		//alphaS_down
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);
 
 
-   	if(year == "2017" || year == "2018"){
+   		if(year == "2017" || year == "2018"){
 
-	//isr_up
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+		//isr_up
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
-	//isr_down
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+		//isr_down
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
-	//fsr_up
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+		//fsr_up
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
-	//fsr_down  
-	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+		//fsr_down  
+		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+
+		}
+
+
+  	}
+  	else{
+
+
+		//Creating the NPL root file
+		NPLROOTFile_Creator2(year.at(i), blinding);
+
+
+		//Running over the NPL root file
+		//Nominal
+		if(blinding == true){
+
+			fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+			fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+		}
+		else{
+
+			fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+        		fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+		}
+
+
 
 	}
 
+*/
 
-  }
-  else{
-
-
-	//Creating the NPL root file
-	for(int i = 0; i < year.size(); i++){NPLROOTFile_Creator2(year, blinding);}
-
-
-	//Running over the NPL root file
-	//Nominal
-	if(blinding == true){
-
-		fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-		fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-	}
-	else{
-
-		fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-        	fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-	}
-
-
-
-}
 
 
   //Saving the outputs to a directory
   DirectoryCreator(year, blinding, NPL);
 
+ 
 
   //Printing out the time the script finished running
   time_t now2 = time(0);
