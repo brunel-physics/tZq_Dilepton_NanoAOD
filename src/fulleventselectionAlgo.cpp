@@ -11392,26 +11392,423 @@ if(blinding == true){
 	}
 		
 
+	if(PU_ScaleUp == true){
+
+		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleUp_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleUp_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleUp_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleUp_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){	
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleUp_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleUp_" + year + ".txt";}
 
 
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-      		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL.txt";
 	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-      		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_ZPlusJetsCR.txt";
-	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_ttbarCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL_ZPlusJetsCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-		Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL_ttbarCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{Chi2Range_string = "Chi2Range_" + process + "_" + year + ".txt";}
+	else if(PU_ScaleDown == true){
 
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleDown_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleDown_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleDown_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleDown_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleDown_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_PU_ScaleDown_" + year + ".txt";}
+
+
+        }
+	else if(BTag_ScaleUp == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleUp_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleUp_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleUp_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleUp_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleUp_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleUp_" + year + ".txt";}
+
+
+        }
+        else if(BTag_ScaleDown == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleDown_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleDown_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleDown_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleDown_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleDown_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_BTag_ScaleDown_" + year + ".txt";}
+
+
+        }
+	else if(JetSmearing_ScaleUp == true){
+        
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleUp_" + year + "_NPL.txt";
+                }       
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleUp_" + year + "_ZPlusJetsCR.txt";
+                }       
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleUp_" + year + "_ttbarCR.txt";
+                }       
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleUp_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleUp_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleUp_" + year + ".txt";}
+
+
+        }
+        else if(JetSmearing_ScaleDown == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleDown_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleDown_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleDown_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleDown_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleDown_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_JetSmearing_ScaleDown_" + year + ".txt";}
+
+
+        }
+	else if(JetResolution_ScaleUp == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleUp_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleUp_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleUp_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleUp_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleUp_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleUp_" + year + ".txt";}
+
+
+        }
+        else if(JetResolution_ScaleDown == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + ".txt";}
+
+
+        }
+	else if(LeptonEfficiencies_ScaleUp == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleUp_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleUp_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleUp_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleUp_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleUp_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleUp_" + year + ".txt";}
+
+
+        }
+        else if(LeptonEfficiencies_ScaleDown == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleDown_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleDown_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleDown_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleDown_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_LeptonEfficiencies_ScaleDown_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_JetResolution_ScaleDown_" + year + ".txt";}
+
+
+        }
+	else if(PDF_ScaleUp == true){
+                
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleUp_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleUp_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleUp_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleUp_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleUp_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleUp_" + year + ".txt";}
+
+        
+        }
+        else if(PDF_ScaleDown == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleDown_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleDown_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleDown_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleDown_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleDown_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_PDF_ScaleDown_" + year + ".txt";}
+
+
+        }
+	else if(ME_Up == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Up_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Up_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Up_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Up_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Up_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_ME_Up_" + year + ".txt";}
+                
+                
+        }
+        else if(ME_Down == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + ".txt";}
+
+
+        }
+	else if(isr_up == true){
+        
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_up_" + year + "_NPL.txt";
+                }       
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_up_" + year + "_ZPlusJetsCR.txt";
+                }       
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_up_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_up_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_up_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_isr_up_" + year + ".txt";}
+
+
+        }
+        else if(isr_down == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_down_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_down_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_down_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_down_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_isr_down_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_isr_down_" + year + ".txt";}
+
+
+        }
+	else if(fsr_up == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_up_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_up_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_up_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_up_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_up_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_fsr_up_" + year + ".txt";}
+                        
+                
+        }       
+        else if(fsr_down == true){
+                
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_down_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_down_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_down_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_down_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_fsr_down_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_fsr_down_" + year + ".txt";}
+
+
+        }
+	else{
+
+		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+      			Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL.txt";
+		}
+		else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+      			Chi2Range_string = "Chi2Range_" + process + "_" + year + "_ZPlusJetsCR.txt";
+		}
+		else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+			Chi2Range_string = "Chi2Range_" + process + "_" + year + "_ttbarCR.txt";
+		}
+		else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+			Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL_ZPlusJetsCR.txt";
+		}
+		else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+			Chi2Range_string = "Chi2Range_" + process + "_" + year + "_NPL_ttbarCR.txt";
+		}
+		else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+		else{Chi2Range_string = "Chi2Range_" + process + "_" + year + ".txt";}
+
+	}
 
 	
 
