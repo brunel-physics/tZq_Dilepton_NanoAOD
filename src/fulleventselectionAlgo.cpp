@@ -1564,7 +1564,7 @@ if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && pro
                                 cutflowstring = "CutFlowReport_" + process + "_ME_Up_" + year + "_NPL_ZPlusJetsCR_Blinded.txt";
                         }
                         else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                                _cutflowstring = "CutFlowReport_" + process + "_ME_Up_" + year + "_NPL_ttbarCR_Blinded.txt";
+                                cutflowstring = "CutFlowReport_" + process + "_ME_Up_" + year + "_NPL_ttbarCR_Blinded.txt";
                         }
                         else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
                         else{cutflowstring = "CutFlowReport_" + process + "_ME_Up_" + year + "Blinded.txt";}
@@ -1745,9 +1745,9 @@ if(year == "2016"){
 	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk2/nanoAOD_2016/ST_tbarW/*"};}
 	else if(process == "SingleTop_tHq"){input_files = {"/data/disk2/nanoAOD_2016/tHq/*"};}
 	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk2/nanoAOD_2016/tZq_W_lept_Z_had/*"};} 
-	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWLL_NanoAODv5/*"};} 
-	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_2l2nu_NanoAODv5/*"};}
-	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph_NanoAODv5/*"};}
+	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWLL/*"};} 
+	else if(process == "ttbar_inc"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*"};}
+	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph/*"};}
 	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic/*"};}
 	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic/*"};}
 	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_aMCatNLO/*"};}
@@ -1830,8 +1830,8 @@ if(year == "2016"){
 	else if(process == "data_SingleElectronRunG"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"};}
         else if(process == "data_SingleElectronRunH"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_2l2nu/*.root"};}
-	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk2/nanoAOD_2016/DYJetsToLL_NanoAODv5/*", "/data/disk2/nanoAOD_2016/DYJetsToLL_ext_NanoAODv5/*", "/data/disk2/nanoAOD_2016/DYJetsToLL_M10to50/*"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"};}
+	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets*/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2016_Blinded.root"};}
 	else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2016_Blinded.root"};}
 	else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2016.root"};}
@@ -1907,7 +1907,7 @@ else if(year == "2017"){
         else if(process == "data_SingleElectronRunE"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"};}
         else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_*/*.root"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2017_Blinded.root"};}
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"};}
@@ -1971,7 +1971,7 @@ else if(year == "2018"){
         else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"};}
         else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root", "/data/disk1/nanoAOD_2018/METRun2018E/*.root", "/data/disk1/nanoAOD_2018/METRun2018F/*.root"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu/*.root"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_*/*.root"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2018_Blinded.root"};}
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"};}
@@ -4979,7 +4979,7 @@ auto NormalisationFactorFunction{[&process, &year](){
 				    "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1", 
 				    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1", 
 				    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph", "ttbar_madgraph_ext", "ttbar_TTToHadronic", 
-				    "ttbar_TTToSemileptonic", "ttbar_atMCaNLO", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp", 
+				    "ttbar_TTToSemileptonic", "ttbar_atMCaNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp", 
 				    "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_schannel", "ttbar_hdampUP", 
 				    "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", "SingleTop_tchannel_top_hdampUP", 
 				    "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext",
@@ -5913,7 +5913,7 @@ std::vector<std::string> MET_triggers;
 
 if(year == "2016"){ 
 
-MET_triggers= {
+MET_triggers = {
 
   "HLT_MET200", 
   "HLT_MET250", 
@@ -5954,7 +5954,7 @@ MET_triggers= {
 }
 else if(year == "2017" || year == "2018"){
 
-MET_triggers= {
+MET_triggers = {
 
   "HLT_PFMET120_PFMHT120_IDTight",
   "HLT_PFMET120_PFMHT120_IDTight",
@@ -5997,9 +5997,9 @@ else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;
 
 
 //dummy lambda function
-auto DummyBool{[](const bool& HLT_ZeroBias_part7){
+auto DummyBool{[](const bool& dummyinput){
 
-  return HLT_ZeroBias_part7 > 0;
+  return dummyinput > 0;
 
 }};
 
@@ -6948,7 +6948,7 @@ process != "data_SingleMuonRunH"
 ){
   
   //Filtering events that pass the ee selection criteria
-  auto d_ee_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_ZeroBias_part7"})
+  auto d_ee_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
 					       .Define("PU", PU_function, {"PV_npvs"})
                                            .Define("TightElectrons", TightElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
                                           .Define("Electron_pt_Selection", select<floats>, {"Electron_pt", "TightElectrons"})
@@ -6982,7 +6982,7 @@ process != "data_SingleMuonRunH"
 
 
 
-auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_ZeroBias_part7"})
+auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
 					       .Define("PU", PU_function, {"PV_npvs"})
                                                .Define("TightMuons", TightMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
                                                .Define("Muon_pt_Selection", select<floats>, {"Muon_pt", "TightMuons"})
@@ -7007,7 +7007,7 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
                                                .Define("SubleadingMuonEta", SubleadingVariable, {"Muon_eta_Selection"});
         
 
-     auto d_emu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_ZeroBias_part7"})
+     auto d_emu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
 						   .Define("PU", PU_function, {"PV_npvs"})
                                            	   .Define("TightElectronsEmu", TightElectronsFunctionEmu, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
 						   .Define("LooseMuonsEmu", LooseMuonsFunctionEmu, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
@@ -14838,23 +14838,408 @@ std::cout << "m top vs m W" << std::endl;
 
 std::string TwoDHistoFileName;
 
-if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + "_NPL.root";	
+
+if(PU_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PU_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PU_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PU_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PU_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PU_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PU_ScaleUp_" + year + ".root";}
+
 }
-else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_" + year + ".root";
+else if(PU_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PU_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PU_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PU_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PU_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PU_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PU_ScaleDown_" + year + ".root";}
+
 }
-else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_" + year + ".root";
+else if(BTag_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_BTag_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_BTag_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_BTag_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_BTag_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_BTag_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_BTag_ScaleUp_" + year + ".root";}
+
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_" + year + ".root";
+else if(BTag_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_BTag_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_BTag_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_BTag_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_BTag_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_BTag_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_BTag_ScaleDown_" + year + ".root";}
+
 }
-else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-	TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_" + year + ".root";
+else if(JetSmearing_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetSmearing_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetSmearing_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetSmearing_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetSmearing_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetSmearing_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetSmearing_ScaleUp_" + year + ".root";}
+
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + ".root";}
+else if(JetSmearing_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetSmearing_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetSmearing_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetSmearing_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetSmearing_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetSmearing_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetSmearing_ScaleDown_" + year + ".root";}
+
+}
+else if(JetResolution_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetResolution_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetResolution_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetResolution_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetResolution_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetResolution_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetResolution_ScaleUp_" + year + ".root";}
+
+}
+else if(JetResolution_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetResolution_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetResolution_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetResolution_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetResolution_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetResolution_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetResolution_ScaleDown_" + year + ".root";}
+
+}
+else if(LeptonEfficiencies_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_LeptonEfficiencies_ScaleUp_" + year + ".root";}
+
+}
+else if(LeptonEfficiencies_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_LeptonEfficiencies_ScaleDown_" + year + ".root";}
+
+}
+else if(PDF_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PDF_ScaleUp_" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PDF_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PDF_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PDF_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PDF_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PDF_ScaleUp_" + year + ".root";}
+
+}
+else if(PDF_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PDF_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PDF_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PDF_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PDF_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PDF_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PDF_ScaleDown_" + year + ".root";}
+
+}
+else if(ME_Up == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ME_Up_" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_ME_Up_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_ME_Up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_ME_Up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_ME_Up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Up_" + year + ".root";}
+
+}
+else if(ME_Down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ME_Down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_ME_Down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_ME_Down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_ME_Down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_ME_Down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Down_" + year + ".root";}
+
+}
+else if(isr_up == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_isr_up_" + year + ".root";
+        }       
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_isr_up_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_isr_up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_isr_up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_isr_up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_isr_up_" + year + ".root";}
+
+}
+else if(isr_down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_isr_down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_isr_down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_isr_down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_isr_down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_isr_down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_isr_down_" + year + ".root";}
+
+}
+else if(fsr_up == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_fsr_up_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_fsr_up_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_fsr_up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_fsr_up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_fsr_up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_fsr_up_" + year + ".root";}
+
+}
+else if(fsr_down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_fsr_down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_fsr_down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_fsr_down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_fsr_down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_fsr_down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_fsr_down_" + year + ".root";}
+
+}
+else{
+
+	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_" + year + ".root";	
+	}
+	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_" + year + ".root";
+	}
+	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_" + year + ".root";
+	}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_" + year + ".root";
+	}
+	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_" + year + ".root";
+	}
+	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+	else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + ".root";}
+
+}
+
+
 
 
 
@@ -14917,7 +15302,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 
         Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq"/*, "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
 		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
-                     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
+                     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
                      "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q",
                      "VV_WZTo2L2Q", "VV_WZTo3LNu", "VV_WWTo1L1Nu2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VV_WGToLNuG", "VV_ZGToLLG", "VVV_WWWTo4F",
@@ -15329,7 +15714,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
   //Saving the outputs to a directory
-  for(int i = 0; i < year.size(); i+){DirectoryCreator(year, blinding, NPL);}
+  for(int i = 0; i < year.size(); i++){DirectoryCreator(year.at(i), blinding, NPL);}
 
  
 
