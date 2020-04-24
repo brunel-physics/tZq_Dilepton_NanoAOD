@@ -5913,84 +5913,43 @@ std::vector<std::string> MET_triggers;
 
 if(year == "2016"){ 
 
-MET_triggers = {
+	MET_triggers = {"HLT_MET200",
+		        "HLT_MET250",
+		        "HLT_PFMET120_PFMHT120_IDTight",
+			"HLT_PFMET170_HBHECleaned",
+			"HLT_PFHT300_PFMET100",
+			"DummyBool",
+			"DummyBool",
+			"DummyBool",
+			"DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+			"DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool"};
 
-  "HLT_MET200", 
-  "HLT_MET250", 
-  "HLT_PFMET170_HBHECleaned", 
-  "HLT_PFHT300_PFMET100",
-  //"HLT_MET105_IsoTrk50", //(not in run B)
-  //"HLT_MET120_IsoTrk50", //(not in run B) 
-  //"HLT_HT430_DisplacedDijet40_DisplacedTrack", //(not in run B)
-  //"HLT_HT650_DisplacedDijet60_Inclusive", //(not in run B)
-  //"HLT_HT750_DisplacedDijet80_Inclusive", //(not in run B)
-  //"HLT_PFMET120_PFMHT120_IDTight_HFCleaned", (not in any)
-  //"HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF", (not in any)
-  //"HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned", (not in any)
-  //"HLT_PFMET120_PFMHT120_IDTight_PFHT60", //(not in run B)
-  "HLT_PFMET120_PFMHT120_IDTight",
-  "HLT_PFMET130_PFMHT130_IDTight",
-  "HLT_PFMET140_PFMHT140_IDTight",
-  //"HLT_PFMET200_HBHE_BeamHaloCleaned", //(not in run B)
-  //"HLT_PFMET250_HBHECleaned", //(not in run B)
-  //"HLT_PFMET300_HBHECleaned", //(not in run B)
-  //"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned", (not in any)
-  //"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF", (not in any)
-  //"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60", //(not in run B)
-  "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-  //"HLT_PFMETNoMu130_PFMHTNoMu130_IDTight", //(not in run B)
-  //"HLT_PFMETNoMu140_PFMHTNoMu140_IDTight", //(not in run B)
-  "HLT_PFHT1050",
-  "HLT_PFHT180",
-  "HLT_PFHT500_PFMET100_PFMHT100_IDTight",
-  "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-  "HLT_PFHT700_PFMET85_PFMHT85_IDTight",
-  "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-  "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
-  "HLT_PFHT800_PFMET85_PFMHT85_IDTight"
-
-};
 
 }
 else if(year == "2017" || year == "2018"){
 
-MET_triggers = {
-
-  "HLT_PFMET120_PFMHT120_IDTight",
-  "HLT_PFMET120_PFMHT120_IDTight",
-  "HLT_PFMET120_PFMHT120_IDTight",
-  "HLT_PFMET120_PFMHT120_IDTight",
-  //"HLT_MET105_IsoTrk50", //(not in run B)
-  //"HLT_MET120_IsoTrk50", //(not in run B) 
-  //"HLT_HT430_DisplacedDijet40_DisplacedTrack", //(not in run B)
-  //"HLT_HT650_DisplacedDijet60_Inclusive", //(not in run B)
-  //"HLT_HT750_DisplacedDijet80_Inclusive", //(not in run B)
-  //"HLT_PFMET120_PFMHT120_IDTight_HFCleaned", (not in any)
-  //"HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF", (not in any)
-  //"HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned", (not in any)
-  //"HLT_PFMET120_PFMHT120_IDTight_PFHT60", //(not in run B)
-  "HLT_PFMET120_PFMHT120_IDTight",
-  "HLT_PFMET130_PFMHT130_IDTight",
-  "HLT_PFMET140_PFMHT140_IDTight",
-  //"HLT_PFMET200_HBHE_BeamHaloCleaned", //(not in run B)
-  //"HLT_PFMET250_HBHECleaned", //(not in run B)
-  //"HLT_PFMET300_HBHECleaned", //(not in run B)
-  //"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned", (not in any)
-  //"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF", (not in any)
-  //"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60", //(not in run B)
-  "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-  //"HLT_PFMETNoMu130_PFMHTNoMu130_IDTight", //(not in run B)
-  //"HLT_PFMETNoMu140_PFMHTNoMu140_IDTight", //(not in run B)
-  "HLT_PFHT1050",
-  "HLT_PFHT180",
-  "HLT_PFHT500_PFMET100_PFMHT100_IDTight",
-  "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-  "HLT_PFHT700_PFMET85_PFMHT85_IDTight",
-  "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-  "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
-  "HLT_PFHT800_PFMET85_PFMHT85_IDTight"
-
-};
+	MET_triggers = {"DummyBool",
+			"DummyBool",
+			"DummyBool",
+                        "DummyBool",
+			"DummyBool",
+			"HLT_PFMET130_PFMHT130_IDTight",
+			"HLT_PFMET140_PFMHT140_IDTight",
+			"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+			"HLT_PFHT1050",
+			"HLT_PFHT180",
+			"HLT_PFHT500_PFMET100_PFMHT100_IDTight",
+			"HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+			"HLT_PFHT700_PFMET85_PFMHT85_IDTight",
+			"HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+			"HLT_PFHT800_PFMET75_PFMHT75_IDTight",
+			"HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
 
 }
 else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;}
@@ -6025,7 +5984,8 @@ if(year == "2016"){
 	"HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
 	"HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
 	"HLT_IsoMu24", //single muon (all years)
-	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only)
+//	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only) branch not present
+	"DummyBool",
 	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
 	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
 	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
