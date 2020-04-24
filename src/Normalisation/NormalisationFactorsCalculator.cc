@@ -43,6 +43,7 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ttbar_TTToHadronic"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ttbar_TTToSemileptonic"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ttbar_atMCaNLO"){NumberOfSimEvents = 43768838; cross_section = 722.8;}
+	else if(process == "ttbar_inc"){NumberOfSimEvents = 76857480; cross_section = 730.6;}
 	else if(process == "SingleTop_tchannel_top"){NumberOfSimEvents = 67105876; cross_section = 136.02;}
         else if(process == "SingleTop_tchannel_top_ScaleUp"){NumberOfSimEvents = 5992440; cross_section = 136.02;}
 	else if(process == "SingleTop_tchannel_top_ScaleDown"){NumberOfSimEvents = 64352832; cross_section = 136.02;} 	
@@ -142,6 +143,7 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ttbar_TTToHadronic"){NumberOfSimEvents = 130091218; cross_section = 377.96;}
 	else if(process == "ttbar_TTToSemileptonic"){NumberOfSimEvents = 110014744; cross_section = 365.34;}
 	else if(process == "ttbar_atMCaNLO"){NumberOfSimEvents = 154280331; cross_section = 722.8;}
+	else if(process == "ttbar_inc"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "SingleTop_tchannel_top"){NumberOfSimEvents = 122630600; cross_section = 136.02;}
         else if(process == "SingleTop_tchannel_top_ScaleUp"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "SingleTop_tchannel_top_ScaleDown"){NumberOfSimEvents = 0; cross_section = 0;} 	
@@ -241,6 +243,7 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ttbar_TTToHadronic"){NumberOfSimEvents = 133664000; cross_section = 377.96;}
 	else if(process == "ttbar_TTToSemileptonic"){NumberOfSimEvents = 101550000; cross_section = 365.34;}
 	else if(process == "ttbar_atMCaNLO"){NumberOfSimEvents = 142155064; cross_section = 831.76;}
+	else if(process == "ttbar_inc"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "SingleTop_tchannel_top"){NumberOfSimEvents = 154307600; cross_section = 136.02;}
         else if(process == "SingleTop_tchannel_top_ScaleUp"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "SingleTop_tchannel_top_ScaleDown"){NumberOfSimEvents = 0; cross_section = 0;} 	
@@ -326,13 +329,15 @@ void NormalisationFactorsCalculator2(const string& year){
   normfilename = "NormalisationFactors_" + year + ".txt";
   NormalisationFactors.open(normfilename.c_str());
 
-  vector<string> Samples = {"tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_aMCatNLO", 
+  vector<string> Samples = {"tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", 
+			    "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_aMCatNLO", 
 			    "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext", "ZPlusJets_PtBinned_0To50", 
 			    "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250", "ZPlusJets_PtBinned_100To250_ext1", 
 			    "ZPlusJets_PtBinned_100To250_ext2", "ZPlusJets_PtBinned_100To250_ext5", "ZPlusJets_PtBinned_250To400", "ZPlusJets_PtBinned_250To400_ext1", 
 			    "ZPlusJets_PtBinned_250To400_ext2", "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1", 
 			    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1", "ZPlusJets_PtBinned_650ToInf_ext2", 
-			    "ttbar_2l2nu", "ttbar_madgraph", "ttbar_madgraph_ext", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_atMCaNLO", "SingleTop_tchannel_top", 
+			    "ttbar_2l2nu", "ttbar_madgraph", "ttbar_madgraph_ext", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_atMCaNLO", "ttbar_inc" 
+			    "SingleTop_tchannel_top", 
 			    "SingleTop_tchannel_top_ScaleUp", "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_tchannel_antitop_ScaleUp", 
 			    "SingleTop_tchannel_antitop_ScaleUp", "SingleTop_schannel", "ttbar_hdampUP", "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", 
 			    "SingleTop_tchannel_top_hdampUP", "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext", "ttbar_fsr_UP", 
