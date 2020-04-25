@@ -15850,7 +15850,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
   	//Nominal
   	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-/*
+
  		if(NPL == false){
 
 			//PU_ScaleUp
@@ -15903,21 +15903,22 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
 
-   			if(year == "2017" || year == "2018"){
+   			if(year.at(i) == "2017" || year.at(i) == "2018"){
 
-			//isr_up
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+				//isr_up
+				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
-			//isr_down
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+				//isr_down
+				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
-			//fsr_up
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+				//fsr_up
+				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
-			//fsr_down  
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+				//fsr_down  
+				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
 			}
+
 
 
   		}
@@ -15949,7 +15950,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 		}
 
-*/
+
 
   }//end of for loop
 
