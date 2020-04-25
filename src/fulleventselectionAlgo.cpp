@@ -1995,7 +1995,7 @@ else if(year == "2017"){
         else if(process == "data_SingleElectronRunE"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"};}
         else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_*/*.root"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root", "/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*", "/data/disk0/nanoAOD_2017/TTToHadronic/*", "/data/disk0/nanoAOD_2017/TTToSemileptonic/*", "/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2017_Blinded.root"};}
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"};}
@@ -2018,8 +2018,8 @@ else if(year == "2018"){
 	else if(process == "SingleTop_tHq"){input_files = {"/data/disk1/nanoAOD_2018/tHq/*"};}
 	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk1/nanoAOD_2018/tZq_W_lept_Z_had/*"};} 
 	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk1/nanoAOD_2018/tWZ_tWLL_NanoAODv5/*"};} 
-	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu_NanoAODv5/*"};}
-	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph_NanoAODv5/*"};}
+	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu/*"};}
+	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph/*"};}
 	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic/*"};}
 	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic/*"};}
 	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO/*"};}
@@ -2059,7 +2059,7 @@ else if(year == "2018"){
         else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"};}
         else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_*/*.root"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root", "/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*", "/data/disk0/nanoAOD_2017/TTToHadronic/*", "/data/disk0/nanoAOD_2017/TTToSemileptonic/*", "/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2018_Blinded.root"};}
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"};}
@@ -2246,11 +2246,11 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
  if(year == "2016"){
 
-	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
-               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
-               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+	return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
+               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
+               //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||   (branch not present in MET)
 	       HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
-               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 ||
+               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || (branch not present in MET)
                HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0;
 
 
