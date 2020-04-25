@@ -843,7 +843,7 @@ double linereader(const int& LineNumber, const std::string& year){
 
 
 
-void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
 
@@ -1166,6 +1166,50 @@ if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && pro
                         }
                         else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
                         else{cutflowstring = "CutFlowReport_" + process + "_ME_Down_" + year + ".txt";}
+
+
+                }
+		else if(MET_Up == true){
+
+                        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_NPL.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_ZPlusJetsCR.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_ttbarCR.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_NPL_ZPlusJetsCR.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_NPL_ttbarCR.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                        else{cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + ".txt";}
+
+
+                }
+                else if(MET_Down == true){
+
+                        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_NPL.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_ZPlusJetsCR.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_ttbarCR.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_NPL_ZPlusJetsCR.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_NPL_ttbarCR.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                        else{cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + ".txt";}
 
 
                 }
@@ -1593,6 +1637,50 @@ if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && pro
 
 
                 }
+		else if(MET_Up == true){
+
+                        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_NPL_Blinded.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_ZPlusJetsCR_Blinded.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_ttbarCR_Blinded.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_NPL_ZPlusJetsCR_Blinded.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "_NPL_ttbarCR_Blinded.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                        else{cutflowstring = "CutFlowReport_" + process + "_MET_Up_" + year + "Blinded.txt";}
+
+
+                }
+                else if(MET_Down == true){
+
+                        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_NPL_Blinded.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_ZPlusJetsCR_Blinded.txt";
+                        }
+                        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_ttbarCR_Blinded.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_NPL_ZPlusJetsCR_Blinded.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                                cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_NPL_ttbarCR_Blinded.txt";
+                        }
+                        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                        else{cutflowstring = "CutFlowReport_" + process + "_MET_Down_" + year + "_Blinded.txt";}
+
+
+                }
 		else if(isr_up == true){
 
                         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
@@ -1829,7 +1917,7 @@ if(year == "2016"){
         else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
 	else if(process == "data_SingleElectronRunG"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"};}
         else if(process == "data_SingleElectronRunH"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"};}
-	else if(process == "Data_triggerSF"){input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root"};}
+	else if(process == "Data_triggerSF"){input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root", "/data/disk2/nanoAOD_2016/METRun2016G/*.root", "/data/disk2/nanoAOD_2016/METRun2016H/*.root"};}
 	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets*/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2016_Blinded.root"};}
@@ -1970,7 +2058,7 @@ else if(year == "2018"){
 	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"};}
         else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"};}
         else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"};}
-	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root", "/data/disk1/nanoAOD_2018/METRun2018E/*.root", "/data/disk1/nanoAOD_2018/METRun2018F/*.root"};}
+	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"};}
 	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_*/*.root"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2018_Blinded.root"};}
@@ -2158,9 +2246,9 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
  if(year == "2016"){
 
-	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
-               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
-               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
+	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
 	       HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
                HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 ||
                HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0;
@@ -5977,17 +6065,21 @@ if(year == "2016"){
 	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
 	"DummyBool", //double muon (for 2017 and 2018)
 	"DummyBool", //single muon (for 2017 only)
-	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+//	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+//	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+	"DummyBool",
+	"DummyBool",
+	"DummyBool",
 	"HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
 	"HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
 	"HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
 	"HLT_IsoMu24", //single muon (all years)
-//	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only) branch not present
+//	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
 	"DummyBool",
 	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
+	"DummyBool",
 	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
 	"DummyBool" //double muon (for 2018 only)
 
@@ -7025,7 +7117,8 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
 
 
 
-  if(process == "MC_triggerSF_ttbar" || process == "MC_triggerSF_ZPlusJets" || process == "Data_triggerSF"){
+  if( (process == "MC_triggerSF_ttbar" || process == "MC_triggerSF_ZPlusJets" || process == "Data_triggerSF") &&
+      (PU_ScaleUp == false && PU_ScaleDown == false && BTag_ScaleUp == false && BTag_ScaleDown == false && JetSmearing_ScaleUp == false && JetSmearing_ScaleDown == false && JetResolution_ScaleUp == false && JetResolution_ScaleDown == false && LeptonEfficiencies_ScaleUp == false && LeptonEfficiencies_ScaleDown == false && PDF_ScaleUp == false && PDF_ScaleDown == false && ME_Up == false && ME_Down == false && MET_Up == false && MET_Down == false && isr_up == false && isr_down == false && fsr_up == false && fsr_down == false) ){
 
 	auto d_emu_selection = d_emu_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");
 
@@ -7571,20 +7664,21 @@ else{
   else{SF_Uncert_emu = SF_LowerUncert_emu;}
 
 
+  if(PU_ScaleUp == false && PU_ScaleDown == false && BTag_ScaleUp == false && BTag_ScaleDown == false && JetSmearing_ScaleUp == false && JetSmearing_ScaleDown == false && JetResolution_ScaleUp == false && JetResolution_ScaleDown == false && LeptonEfficiencies_ScaleUp == false && LeptonEfficiencies_ScaleDown == false && PDF_ScaleUp == false && PDF_ScaleDown == false && ME_Up == false && ME_Down == false && MET_Up == false && MET_Down == false && isr_up == false && isr_down == false && fsr_up == false && fsr_down == false){
+
+  	std::string TriggerSF_ScaleFactors = "TriggerSF_ScaleFactors_" + year + ".txt";
+  	std::ofstream TriggerSF_ScaleFactors_File;
+  	TriggerSF_ScaleFactors_File.open(TriggerSF_ScaleFactors.c_str());
+
+  	TriggerSF_ScaleFactors_File << SF_ee << '\n'
+			      	    << SF_mumu << '\n'
+			      	    << SF_emu << '\n' 
+			      	    << SF_Uncert_ee << '\n'
+			     	    << SF_Uncert_mumu << '\n'
+			      	    << SF_Uncert_emu << '\n' << std::endl;
 
 
-  std::string TriggerSF_ScaleFactors = "TriggerSF_ScaleFactors_" + year + ".txt";
-  std::ofstream TriggerSF_ScaleFactors_File;
-  TriggerSF_ScaleFactors_File.open(TriggerSF_ScaleFactors.c_str());
-
-  TriggerSF_ScaleFactors_File << SF_ee << '\n'
-			      << SF_mumu << '\n'
-			      << SF_emu << '\n' 
-			      << SF_Uncert_ee << '\n'
-			      << SF_Uncert_mumu << '\n'
-			      << SF_Uncert_emu << '\n' << std::endl;
-
-
+  }
 
 
   //Filtering events with a reconstructed Z boson
@@ -8098,6 +8192,48 @@ if(blinding == false){
                 else{BTagEffOutput = "BTagEffPlots_" + process + "_ME_Down_" + year + ".root";}
 
         }
+	else if(MET_Up == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_NPL.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_ZPlusJetsCR.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_ttbarCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_NPL_ZPlusJetsCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_NPL_ttbarCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + ".root";}
+
+        }
+        else if(MET_Down == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_NPL.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_ZPlusJetsCR.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_ttbarCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_NPL_ZPlusJetsCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_NPL_ttbarCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + ".root";}
+
+        }
 	else if(isr_up == true){
 
                 if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
@@ -8500,6 +8636,48 @@ else{
                 }
                 else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
                 else{BTagEffOutput = "BTagEffPlots_" + process + "_ME_Down_" + year + "_Blinded.root";}
+
+        }
+	else if(MET_Up == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_NPL_Blinded.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_ZPlusJetsCR_Blinded.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_ttbarCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_NPL_ZPlusJetsCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_NPL_ttbarCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{BTagEffOutput = "BTagEffPlots_" + process + "_MET_Up_" + year + "_Blinded.root";}
+
+        }
+        else if(MET_Down == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_Blinded_NPL.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_ZPlusJetsCR_Blinded.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_ttbarCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_NPL_ZPlusJetsCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_NPL_ttbarCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{BTagEffOutput = "BTagEffPlots_" + process + "_MET_Down_" + year + "_Blinded.root";}
 
         }
 	else if(isr_up == true){
@@ -11648,6 +11826,8 @@ else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
 else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
 else if(ME_Up == true){branch = "ME_Up";}
 else if(ME_Down == true){branch = "ME_Down";}
+else if(MET_Up == true){branch = "MET_Up";}
+else if(MET_Down == true){branch = "MET_Down";}
 else if(isr_up == true){branch = "isr_up";}
 else if(isr_down == true){branch = "isr_down";}
 else if(fsr_up == true){branch = "fsr_up";}
@@ -12059,6 +12239,50 @@ if(blinding == true){
                 }
                 else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
                 else{Chi2Range_string = "Chi2Range_" + process + "_ME_Down_" + year + ".txt";}
+
+
+        }
+	else if(MET_Up == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Up_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Up_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Up_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Up_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Up_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_MET_Up_" + year + ".txt";}
+
+
+        }
+        else if(MET_Down == true){
+
+                if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Down_" + year + "_NPL.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Down_" + year + "_ZPlusJetsCR.txt";
+                }
+                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Down_" + year + "_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Down_" + year + "_NPL_ZPlusJetsCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                        Chi2Range_string = "Chi2Range_" + process + "_MET_Down_" + year + "_NPL_ttbarCR.txt";
+                }
+                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{Chi2Range_string = "Chi2Range_" + process + "_MET_Down_" + year + ".txt";}
 
 
         }
@@ -12560,6 +12784,48 @@ else if(ME_Down == true){
         else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Down_" + year + ".root";}
 
 }
+else if(MET_Up == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_MET_Up_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_MET_Up_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_MET_Up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_MET_Up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_MET_Up_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_MET_Up_" + year + ".root";}
+
+}
+else if(MET_Down == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_MET_Down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_MET_Down_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_MET_Down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_MET_Down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_MET_Down_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_MET_Down_" + year + ".root";}
+
+}
 else if(isr_up == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
@@ -12837,29 +13103,38 @@ process == "data_SingleMuonRunH"
 
 	//Filtering events that pass the muon electron triggers
 	std::string EmuString1;
-	std::string EmuString2;
-	std::string EmuString3;
+        std::string EmuString2;
+        std::string EmuString3;
+	std::string EmuString4;
+	std::string EmuString5;
+	std::string EmuString6;
 
 	if(year == "2016"){
 
-		EmuString1 = "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"; 
-		EmuString2 = "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL"; 
-		EmuString3 = "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL";
+		EmuString1 = "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ";
+                EmuString2 = "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
+                EmuString3 = "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
+		EmuString4 = "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"; 
+		EmuString5 = "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL"; 
+		EmuString6 = "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL";
 
 	}
 	else if(year == "2017" || year == "2018"){
 
-                EmuString1 = "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ";
+		EmuString1 = "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ";
                 EmuString2 = "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
                 EmuString3 = "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
+                EmuString4 = "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ";
+                EmuString5 = "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
+                EmuString6 = "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ";
 
         }
 	else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
  	
 
 	
-	auto EventsPassingElectronMuonTrigger = d_dataframe.Define("EventsPassingElectronMuonTrigger", MuonElectron, {"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", EmuString1, EmuString2, EmuString3})
-							   .Filter(MuonElectron, {"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", EmuString1, EmuString2, EmuString3});
+	auto EventsPassingElectronMuonTrigger = d_dataframe.Define("EventsPassingElectronMuonTrigger", MuonElectron, {EmuString1, EmuString2, EmuString3, EmuString4, EmuString5, EmuString6})
+							   .Filter(MuonElectron, {EmuString1, EmuString2, EmuString3, EmuString4, EmuString5, EmuString6});
 
 
 
@@ -15253,7 +15528,7 @@ else{std::cout << "Please select data or MC" << std::endl;}
 
 
 
-auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
   std::vector<std::string> Processes;
@@ -15314,7 +15589,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 //looping over the process names
   for(int i = 0; i < Processes.size(); i++){
 
-  	fulleventselection_calculator(Processes.at(i), blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, isr_up, isr_down, fsr_up, fsr_down);
+  	fulleventselection_calculator(Processes.at(i), blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
   }
 
@@ -15560,7 +15835,7 @@ void fulleventselectionAlgo::fulleventselection(){
   std::cout << "The script started running:" << " " << asctime(localtm) << std::endl;
 
 
-//  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, isr_up, isr_down, fsr_up, fsr_down);
+//  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
 
   bool blinding = true;
@@ -15574,66 +15849,73 @@ void fulleventselectionAlgo::fulleventselection(){
   for(int i = 0; i < year.size(); i++){
 
   	//Nominal
-  	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+  	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 /*
  		if(NPL == false){
 
 			//PU_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//PU_ScaleDown
 			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//BTag_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//BTag_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//JetSmearing_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//JetSmearing_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//JetResolution_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//JetResolution_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			//LeptonEfficiencies_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
 			//LeptonEfficiencies_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
 
 			//PDF_ScaleUp 
-        		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+        		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
 
         		//PDF_ScaleDown 
-        		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+        		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
 
 			//ME_Up
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
 
 			//ME_Down
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+
+			//MET_Up
+                        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+
+                        //MET_Down
+                        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
+
 
 
    			if(year == "2017" || year == "2018"){
 
 			//isr_up
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
 			//isr_down
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
 			//fsr_up
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
 			//fsr_down  
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
 			}
 
@@ -15650,16 +15932,16 @@ void fulleventselectionAlgo::fulleventselection(){
 			//Nominal
 			if(blinding == true){
 
-				fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			}
 			else{
 
-				fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-        			fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        			fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 			}
 
