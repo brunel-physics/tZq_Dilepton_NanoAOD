@@ -846,6 +846,34 @@ double linereader(const int& LineNumber, const std::string& year){
 void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
+std::cout << '\n' << std::endl;
+std::cout << "The process is: " << process << std::endl;
+std::cout << "Blinding is: " << blinding << std::endl;
+std::cout << "NPL is: " << NPL << std::endl;
+std::cout << "ZPlusJetsCR is: " << ZPlusJetsCR << std::endl;
+std::cout << "ttbarCR is: " << ttbarCR << std::endl;
+std::cout << "The year is: " << year << std::endl;
+std::cout << "PU_ScaleUp is: " << PU_ScaleUp << std::endl;
+std::cout << "PU_ScaleDown is: " << PU_ScaleDown << std::endl;
+std::cout << "BTag_ScaleUp is: " << BTag_ScaleUp << std::endl;
+std::cout << "BTag_ScaleDown is: " << BTag_ScaleDown << std::endl;
+std::cout << "JetSmearing_ScaleUp is: " << JetSmearing_ScaleUp << std::endl;
+std::cout << "JetSmearing_ScaleDown is: " << JetSmearing_ScaleDown << std::endl;
+std::cout << "JetResolution_ScaleUp is: " << JetResolution_ScaleUp << std::endl;
+std::cout << "JetResolution_ScaleDown is: " << JetResolution_ScaleDown << std::endl;
+std::cout << "LeptonEfficiencies_ScaleUp is: " << LeptonEfficiencies_ScaleUp << std::endl;
+std::cout << "LeptonEfficiencies_ScaleDown is: " << LeptonEfficiencies_ScaleDown << std::endl;
+std::cout << "PDF_ScaleUp is: " << PDF_ScaleUp << std::endl;
+std::cout << "PDF_ScaleDown is: " << PDF_ScaleDown << std::endl;
+std::cout << "ME_Up is: " << ME_Up << std::endl;
+std::cout << "ME_Down is: " << ME_Down << std::endl;
+std::cout << "MET_Up is: " << MET_Up << std::endl;
+std::cout << "MET_Down is: " << MET_Down << std::endl;
+std::cout << "isr_up is: " << isr_up << std::endl;
+std::cout << "isr_down is: " << isr_down << std::endl;
+std::cout << "fsr_up is: " << fsr_up << std::endl;
+std::cout << "fsr_down is: " << fsr_down << std::endl;
+std::cout << '\n' << std::endl;
 
 
 //EnableImplicitMT();
@@ -7117,8 +7145,7 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
 
 
 
-  if( (process == "MC_triggerSF_ttbar" || process == "MC_triggerSF_ZPlusJets" || process == "Data_triggerSF") &&
-      (PU_ScaleUp == false && PU_ScaleDown == false && BTag_ScaleUp == false && BTag_ScaleDown == false && JetSmearing_ScaleUp == false && JetSmearing_ScaleDown == false && JetResolution_ScaleUp == false && JetResolution_ScaleDown == false && LeptonEfficiencies_ScaleUp == false && LeptonEfficiencies_ScaleDown == false && PDF_ScaleUp == false && PDF_ScaleDown == false && ME_Up == false && ME_Down == false && MET_Up == false && MET_Down == false && isr_up == false && isr_down == false && fsr_up == false && fsr_down == false) ){
+  if( (process == "MC_triggerSF_ttbar" || process == "MC_triggerSF_ZPlusJets" || process == "Data_triggerSF") ){
 
 	auto d_emu_selection = d_emu_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");
 
@@ -7508,8 +7535,9 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
         else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + ".root";}
 
-}
-else{
+	}
+	else{
+
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_Blinded.root";
@@ -7530,7 +7558,7 @@ else{
         else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_Blinded.root";}
 
 
-}		
+	}		
 
 
 	TFile* TurnOnCurvesFile = new TFile(TurnOnCurvesOutput.c_str(), "RECREATE");
@@ -11219,7 +11247,9 @@ double W_stddev_ee, Top_stddev_ee, W_stddev_mumu, Top_stddev_mumu;
 
 std::string Filename;
 
+
 if(process == "tZq"){
+
 
   if(PU_ScaleUp == true){
 
@@ -11394,6 +11424,50 @@ if(process == "tZq"){
         }
         else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{Filename = process + "_AfterFullSelection_GaussianFit_JetResolution_ScaleDown_" + year + ".root";}
+
+
+  }
+  else if(LeptonEfficiencies_ScaleUp == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                Filename = process + "_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                Filename = process + "_AfterFullSelection_GaussianFit_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                Filename = process + "_AfterFullSelection_GaussianFit_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                Filename = process + "_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                Filename = process + "_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{Filename = process + "_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleUp_" + year + ".root";}
+
+
+  }
+  else if(LeptonEfficiencies_ScaleDown == true){
+
+        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+                Filename = process + "_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                Filename = process + "_AfterFullSelection_GaussianFit_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                Filename = process + "_AfterFullSelection_GaussianFit_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                Filename = process + "_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+               Filename = process + "_AfterFullSelection_GaussianFit_NPL_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
+        }
+        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else{Filename = process + "_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleDown_" + year + ".root";}
 
 
   }
@@ -11618,6 +11692,9 @@ if(process == "tZq"){
 
   }
   else{
+
+	std::cout << "inside the else statement for nominal" << std::endl;
+
 	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
         	Filename = process + "_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
 	}
@@ -11637,6 +11714,8 @@ if(process == "tZq"){
 	else{Filename = process + "_AfterFullSelection_GaussianFit_" + year + ".root";}
 
   }
+
+  std::cout << "Filename = " << Filename << std::endl;
 
 
 	TFile* FittedHistosOutput = new TFile(Filename.c_str(), "RECREATE");
@@ -11694,8 +11773,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PU_ScaleUp_" + year + ".root";}
 
 
-  }
-  else if(PU_ScaleDown == true){
+}
+else if(PU_ScaleDown == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PU_ScaleDown_" + year + ".root";
@@ -11716,8 +11795,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PU_ScaleDown_" + year + ".root";}
 
 
-  }
-  else if(BTag_ScaleUp == true){
+}
+else if(BTag_ScaleUp == true){
         
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_BTag_ScaleUp_" + year + ".root";
@@ -11738,8 +11817,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_BTag_ScaleUp_" + year + ".root";}
 
   
-  }
-  else if(BTag_ScaleDown == true){
+}
+else if(BTag_ScaleDown == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_BTag_ScaleDown_" + year + ".root";
@@ -11760,8 +11839,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_BTag_ScaleDown_" + year + ".root";}
 
 
-  }
-  else if(JetSmearing_ScaleUp == true){
+}
+else if(JetSmearing_ScaleUp == true){
        
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetSmearing_ScaleUp_" + year + ".root";
@@ -11782,8 +11861,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetSmearing_ScaleUp_" + year + ".root";}
 
 
-  }
-  else if(JetSmearing_ScaleDown == true){
+}
+else if(JetSmearing_ScaleDown == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetSmearing_ScaleDown_" + year + ".root";
@@ -11804,8 +11883,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetSmearing_ScaleDown_" + year + ".root";}
 
 
-  }
-  else if(JetResolution_ScaleUp == true){
+}
+else if(JetResolution_ScaleUp == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetResolution_ScaleUp_" + year + ".root";
@@ -11826,8 +11905,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetResolution_ScaleUp_" + year + ".root";}
 
 
-  }
-  else if(JetResolution_ScaleDown == true){
+}
+else if(JetResolution_ScaleDown == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_JetResolution_ScaleDown_" + year + ".root";
@@ -11848,8 +11927,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_JetResolution_ScaleDown_" + year + ".root";}
 
 
-  }
-  else if(LeptonEfficiencies_ScaleUp == true){
+}
+else if(LeptonEfficiencies_ScaleUp == true){
   
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleUp_" + year + ".root";
@@ -11870,8 +11949,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleUp_" + year + ".root";}
 
 
-  }
-  else if(LeptonEfficiencies_ScaleDown == true){
+}
+else if(LeptonEfficiencies_ScaleDown == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_LeptonEfficiencies_ScaleDown_" + year + ".root";
@@ -11892,8 +11971,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_LeptonEfficiencies_ScaleDown_" + year + ".root";}
 
 
-  }
-  else if(PDF_ScaleUp == true){
+}
+else if(PDF_ScaleUp == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PDF_ScaleUp_" + year + ".root";
@@ -11914,8 +11993,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PDF_ScaleUp_" + year + ".root";}
 
 
-  }
-  else if(PDF_ScaleDown == true){
+}
+else if(PDF_ScaleDown == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_PDF_ScaleDown_" + year + ".root";
@@ -11936,8 +12015,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_PDF_ScaleDown_" + year + ".root";}
 
 
-  }
-  else if(ME_Up == true){
+}
+else if(ME_Up == true){
   
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ME_Up_" + year + ".root";
@@ -11958,8 +12037,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ME_Up_" + year + ".root";}
 
 
-  }
-  else if(ME_Down == true){
+}
+else if(ME_Down == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ME_Down_" + year + ".root";
@@ -11980,8 +12059,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ME_Down_" + year + ".root";}
 
 
-  }
-  else if(isr_up == true){
+}
+else if(isr_up == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_isr_up_" + year + ".root";
@@ -12002,8 +12081,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_isr_up_" + year + ".root";}
 
 
-  }
-  else if(isr_down == true){
+}
+else if(isr_down == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_isr_down_" + year + ".root";
@@ -12024,8 +12103,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_isr_down_" + year + ".root";}
 
 
-  }
-  else if(fsr_up == true){
+}
+else if(fsr_up == true){
   
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_fsr_up_" + year + ".root";
@@ -12046,8 +12125,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_fsr_up_" + year + ".root";}
 
 
-  }
-  else if(fsr_down == true){
+}
+else if(fsr_down == true){
 
         if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
                 tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_fsr_down_" + year + ".root";
@@ -12068,8 +12147,8 @@ if(PU_ScaleUp == true){
         else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_fsr_down_" + year + ".root";}
 
 
-  }
-  else{
+}
+else{
 	
 	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
 		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
@@ -12093,7 +12172,7 @@ if(PU_ScaleUp == true){
 
 
 
-        
+std::cout << "tZq_WAndTop_Filename = " << tZq_WAndTop_Filename << std::endl;        
 
 
 TFile* tZq_WAndTop_File = new TFile{tZq_WAndTop_Filename.c_str(), "READ"};
@@ -14745,6 +14824,8 @@ double W_stddev_ee, Top_stddev_ee, W_stddev_mumu, Top_stddev_mumu;
 
 std::string Filename;
 std::string tZq_WAndTop_Filename; 
+
+
 
 
 
