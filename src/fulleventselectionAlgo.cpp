@@ -10800,8 +10800,6 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
 
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee));}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) );}
-  else if(ME_Up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee) * genWeight;}
-  else if(ME_Down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee) * genWeight;}
   else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMax );}
   else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2);}
@@ -10844,8 +10842,6 @@ auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncer
 
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up);}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down );}
-  else if(ME_Up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * genWeight;}
-  else if(ME_Down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * genWeight;}
   else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMax );}
   else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMin );}
   else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2);}
@@ -10948,31 +10944,100 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 				
 
 
+//lambda function for implementing the MET uncertainties
+auto METUncertFunction{[&MET_Up, &MET_Down](
+
+const floats& MET_MetUnclustEnUpDeltaX, 
+const floats& MET_MetUnclustEnUpDeltaY, 
+const floats& MET_MetUnclustEnDownDeltaX, 
+const floats& MET_MetUnclustEnDownDeltaY,
+const floats& MET_phi,
+const floats& MET_sumEt,
+std::vector<TLorentzVector> SmearedJet4Momentum,
+const floats& Jet_pt, 
+const floats& Jet_eta, 
+const floats& Jet_phi, 
+const floats& Jet_mass){
 
 
-auto TopPtEventWeightFunction{[](const doubles& Top_Pt, const float& EventWeight){
+  std::vector<TLorentzVector> metVec{};
+  std::vector<TLorentzVector> UnsmearedJet{};
+  floats SmearedJetPxVec;
+  floats SmearedJetPyVec;
+  floats UnsmearedJetPx;
+  floats UnsmearedJetPy;
 
-  doubles weight(Top_Pt.size(), EventWeight);
-  return weight;
+  for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
+
+  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
+  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
+   
+
+  for(int i = 0; i < SmearedJet4Momentum.size(); i++){
+ 
+  	float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
+	float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
+ 	SmearedJetPxVec.push_back(SmearedJetPx);
+	SmearedJetPyVec.push_back(SmearedJetPy);
+
+  }
+
+  
+  //For the nominal MET and MET uncertainties
+  
+  floats UnclusteredEnergyUp = sqrt( pow(MET_MetUnclustEnUpDeltaX, 2) + pow(MET_MetUnclustEnUpDeltaY, 2) );
+  floats UnclusteredEnergyDown = sqrt( pow(MET_MetUnclustEnDownDeltaX, 2) + pow(MET_MetUnclustEnDownDeltaY, 2) );
+
+  for(int i = 0; i < MET_phi.size(); i++){
+
+  	if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
+  	else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
+  	else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
+
+ }
+
+ //Propagating the jet smearing to the MET
+ 
+ for(int i = 0; i < SmearedJetPxVec.size(); i++){
+ 
+ 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
+        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
+ 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() - SmearedJetPxVec.at(i));
+        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() - SmearedJetPyVec.at(i));
+ 
+ }
+
+
+  return metVec;
 
 }};
 
 
-auto MuonPtEventWeightFunction{[](const floats& pt, const float& EventWeight){
-
- floats weight(pt.size(), EventWeight);
- return weight;
-
-}};
 
 
-auto d_WeightedEvents_ee_2 = d_WeightedEvents_ee.Define("TopPtEventWeight", TopPtEventWeightFunction, {"Top_Pt", "EventWeight"})
-						.Define("ReweightedTopPtEventWeight", TopPtEventWeightFunction, {"ReweightedTopPt", "EventWeight"});
+std::vector<std::string> MET_uncert_strings = {
 
-auto d_WeightedEvents_mumu_2 = d_WeightedEvents_mumu.Define("TopPtEventWeight", TopPtEventWeightFunction, {"Top_Pt", "EventWeight"})
-						    .Define("ReweightedTopPtEventWeight", TopPtEventWeightFunction, {"ReweightedTopPt", "EventWeight"})
-						    .Define("MuonPtEventWeight", MuonPtEventWeightFunction, {"Muon_pt_Selection", "EventWeight"})
-                                                    .Define("MuonPtEventWeight_RochCorr", MuonPtEventWeightFunction, {"MuonPt_RochCorr", "EventWeight"});
+"MET_MetUnclustEnUpDeltaX",
+"MET_MetUnclustEnUpDeltaY",
+"MET_MetUnclustEnUpDeltaX", //need to change 
+"MET_MetUnclustEnUpDeltaY", //need to change
+"MET_phi",
+"MET_sumEt",
+"SmearedJet4Momentum",
+"Jet_pt",
+"Jet_eta",
+"Jet_phi",
+"Jet_mass"
+
+};
+
+
+//Defining the new MET column
+auto d_WeightedEvents_withMET_ee = d_WeightedEvents_ee.Define("newMET", METUncertFunction, MET_uncert_strings);
+auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METUncertFunction, MET_uncert_strings);
+
+
+
 
 
 //Applying the event weights to the RDataFrame columns
@@ -11161,16 +11226,16 @@ auto ReweightFunction_UChar_t_RVec{[](const ROOT::VecOps::RVec<UChar_t>& variabl
 }};
 
 
-auto colNames_ee = d_WeightedEvents_ee.GetColumnNames();
-auto colNames_mumu = d_WeightedEvents_mumu.GetColumnNames();
+auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
+auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
 
-auto d_ReweightedEvents_ee = std::make_unique<RNode>(d_WeightedEvents_ee);
-auto d_ReweightedEvents_mumu = std::make_unique<RNode>(d_WeightedEvents_mumu);
+auto d_ReweightedEvents_ee = std::make_unique<RNode>(d_WeightedEvents_withMET_ee);
+auto d_ReweightedEvents_mumu = std::make_unique<RNode>(d_WeightedEvents_withMET_mumu);
 
 
 for(auto i = 0u; i < colNames_ee.size(); i++){
 
-        auto colType = d_WeightedEvents_ee.GetColumnType(colNames_ee.at(i));
+        auto colType = d_WeightedEvents_withMET_ee.GetColumnType(colNames_ee.at(i));
         std::string ReweightedColumnName_ee = colNames_ee.at(i) + "_" + "Weighted";
 
 
@@ -11205,7 +11270,7 @@ for(auto i = 0u; i < colNames_ee.size(); i++){
 
 for(auto i = 0u; i < colNames_mumu.size(); i++){
 
-        auto colType = d_WeightedEvents_mumu.GetColumnType(colNames_mumu.at(i));
+        auto colType = d_WeightedEvents_withMET_mumu.GetColumnType(colNames_mumu.at(i));
         std::string ReweightedColumnName_mumu = colNames_mumu.at(i) + "_" + "Weighted";
 
 
