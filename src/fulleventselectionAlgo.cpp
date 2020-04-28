@@ -19,8 +19,9 @@
 #include "fulleventselectionAlgo.hpp"
 
 
-fulleventselectionAlgo::fulleventselectionAlgo()
-{
+fulleventselectionAlgo::fulleventselectionAlgo( externalLHEToken_{consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))} ){
+
+
 }
 
 
@@ -10785,6 +10786,7 @@ else{
 
 //For ME_Up and ME_Down
 ints SummedWeights(14, 0);
+edm::Handle<LHEEventProduct> EventHandle;
 
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
