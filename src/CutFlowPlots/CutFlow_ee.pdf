@@ -1,0 +1,49 @@
+{
+//========= Macro generated from object: h_tZq_ee/tZq
+//========= by ROOT version6.16/00
+   
+   TH1F *h_tZq_ee__1 = new TH1F("h_tZq_ee__1","tZq",5,0,5);
+   h_tZq_ee__1->SetBinContent(1,562887);
+   h_tZq_ee__1->SetBinContent(2,521633);
+   h_tZq_ee__1->SetBinContent(3,235657);
+   h_tZq_ee__1->SetBinContent(4,161562);
+   h_tZq_ee__1->SetBinContent(5,73375);
+   h_tZq_ee__1->SetBinError(1,562887);
+   h_tZq_ee__1->SetBinError(2,521633);
+   h_tZq_ee__1->SetBinError(3,235657);
+   h_tZq_ee__1->SetBinError(4,161562);
+   h_tZq_ee__1->SetBinError(5,73375);
+   h_tZq_ee__1->SetEntries(5);
+   h_tZq_ee__1->SetStats(0);
+
+   Int_t ci;      // for color index setting
+   TColor *color; // for color definition with alpha
+   ci = TColor::GetColor("#0000ff");
+   h_tZq_ee__1->SetFillColor(ci);
+
+   ci = TColor::GetColor("#0000ff");
+   h_tZq_ee__1->SetLineColor(ci);
+   h_tZq_ee__1->GetXaxis()->SetTitle("Cut");
+   h_tZq_ee__1->GetXaxis()->SetBinLabel(1,"lepton");
+   h_tZq_ee__1->GetXaxis()->SetBinLabel(2,"z mass");
+   h_tZq_ee__1->GetXaxis()->SetBinLabel(3,"jets");
+   h_tZq_ee__1->GetXaxis()->SetBinLabel(4,"bjets");
+   h_tZq_ee__1->GetXaxis()->SetBinLabel(5,"w mass");
+   h_tZq_ee__1->GetXaxis()->SetLabelFont(42);
+   h_tZq_ee__1->GetXaxis()->SetLabelSize(0.035);
+   h_tZq_ee__1->GetXaxis()->SetTitleSize(0.035);
+   h_tZq_ee__1->GetXaxis()->SetTitleOffset(1.5);
+   h_tZq_ee__1->GetXaxis()->SetTitleFont(42);
+   h_tZq_ee__1->GetYaxis()->SetTitle("Events");
+   h_tZq_ee__1->GetYaxis()->SetLabelFont(42);
+   h_tZq_ee__1->GetYaxis()->SetLabelSize(0.035);
+   h_tZq_ee__1->GetYaxis()->SetTitleSize(0.035);
+   h_tZq_ee__1->GetYaxis()->SetTitleOffset(1);
+   h_tZq_ee__1->GetYaxis()->SetTitleFont(42);
+   h_tZq_ee__1->GetZaxis()->SetLabelFont(42);
+   h_tZq_ee__1->GetZaxis()->SetLabelSize(0.035);
+   h_tZq_ee__1->GetZaxis()->SetTitleSize(0.035);
+   h_tZq_ee__1->GetZaxis()->SetTitleOffset(1);
+   h_tZq_ee__1->GetZaxis()->SetTitleFont(42);
+   h_tZq_ee__1->Draw("");
+}

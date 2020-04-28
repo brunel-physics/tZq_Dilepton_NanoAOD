@@ -1,0 +1,11 @@
+Event cleaning filter	27611672	27611672	100 %
+lepton cut (ee)	27611672	1006010	3.64342 %
+lepton cut (mumu)	27611672	2060882	7.46381 %
+Z mass cut (ee channel)	1006010	930371	92.4813 %
+Z mass cut (mumu channel)	2060882	1901237	92.2536 %
+jet cut (ee channel)	930371	70816	7.61159 %
+b jet cut (ee channel)	70816	16248	22.944 %
+jet cut (mumu channel)	1901237	166937	8.78044 %
+b jet cut (ee channel)	166937	35294	21.1421 %
+W mass cut (ee channel)	16248	7899	48.6152 %
+W mass cut (mumu channel)	35294	16952	48.0308 %
