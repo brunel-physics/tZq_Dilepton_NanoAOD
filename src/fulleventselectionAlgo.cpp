@@ -19,7 +19,7 @@
 #include "fulleventselectionAlgo.hpp"
 
 
-fulleventselectionAlgo::fulleventselectionAlgo( externalLHEToken_{consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))} ){
+fulleventselectionAlgo::fulleventselectionAlgo(){
 
 
 }
@@ -10786,20 +10786,47 @@ else{
 
 //For ME_Up and ME_Down
 ints SummedWeights(14, 0);
-edm::Handle<LHEEventProduct> EventHandle;
+
+auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+
+  float PdfMin = 1.0;
+  float PdfMax = 1.0;
+
+  //For the min and max Pdf weights
+  for(int i = 0; i < LHEPdfWeight.size(); i++){
+
+        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(i);
+
+        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
+        else{continue;}
+
+        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
+        else{continue;}
+
+  }
+
+
+  if(PDF_ScaleUp == true){return PdfMax;}
+  else if(PDF_ScaleDown == true){return PdfMin;}
+  else{float One = 1.0; return One;}
+
+
+}};
+
 
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP;
 
-  for(int i = 0; i < pdf.size(); i++){ pdf >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;}
-  for(int i = 0; i < pdf.size(); i++){ ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++;}
-  for(int i = 0; i < pdf.size(); i++){ ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++;}
-  for(int i = 0; i < pdf.size(); i++){  >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++;}
-  for(int i = 0; i < pdf.size(); i++){ ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++;}
-  for(int i = 0; i < pdf.size(); i++){ ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++;}
-  for(int i = 0; i < pdf.size(); i++){  >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++;}
+  for(int i = 0; i < pdf.size(); i++){ pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
+  
+  ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
+  ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
+  (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
+  ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++; //fsr up
+  ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
+  (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
 
 
   //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
@@ -10827,41 +10854,48 @@ auto ME_histo_function{[&SummedWeights](){
 }};
 
 
+//SFs for ME up and down
+auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
+
+
+ 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
+
+	if(ME_Up == true){
+
+		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
+                return generatorWeight_ScaleUp; 
+	
+	}
+	else if(ME_Down == true){	
+
+		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
+		return generatorWeight_ScaleDown; 
+
+	}
+	else{	float generatorWeight = (TotalNumPositive / ME_numerator_histo.at(4)) * ( CalculatedNominalWeight / abs(CalculatedNominalWeight) ); return generatorWeight; }
+
+}};
+
 
 
 //Lambda function for the event weight column
 
-auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &ME_Up, &ME_Down, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const float& genWeight){
+auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &ME_Up, &ME_Down, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& eGammaSF_egammaEff, const float& eGammaSF_egammaEffReco, const float& eGammaSF_egammaEff_Sys, const float& eGammaSF_egammaEffReco_Sys, const floats& ReturnedPSWeight, const float& CalculatedGeneratorWeight, const float& CalculatedNominalWeight){
 
 
   float EventWeight;
 
-  double PdfMin = 1.0;
-  double PdfMax = 1.0;
-
-  //For the min and max Pdf weights
-  for(int i = 0; i < LHEPdfWeight.size(); i++){
-
-  	float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(i);
-
-	if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
-	else{continue;}
-
-	if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
-        else{continue;}
-	
-  }
 
 
-  if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee));}
-  else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) );}
-  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMax );}
-  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * PdfMin );}
-  else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2);}
-  else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(0);}
-  else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(3);}
-  else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(1);}
-  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee);}
+  if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee) * CalculatedGeneratorWeight);}
+  else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) * CalculatedGeneratorWeight);}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * CalculatedNominalWeight * CalculatedGeneratorWeight);}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * CalculatedNominalWeight * CalculatedGeneratorWeight);}
+  else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(2) * CalculatedGeneratorWeight;}
+  else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(0) * CalculatedGeneratorWeight;}
+  else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(3) * CalculatedGeneratorWeight;}
+  else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(1) * CalculatedGeneratorWeight;}
+  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee) * CalculatedGeneratorWeight;}
   
 
   return EventWeight;
@@ -10870,7 +10904,7 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
 
 
 
-auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &ME_Up, &ME_Down, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_stat, const floats& ReturnedPSWeight, const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const float& genWeight){
+auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncert_mumu, &LeptonEfficiencies_ScaleUp, &LeptonEfficiencies_ScaleDown, &PDF_ScaleUp, &PDF_ScaleDown, &ME_Up, &ME_Down, &isr_up, &isr_down, &fsr_up, &fsr_down](const float& PU, const float& BTagWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_stat, const floats& ReturnedPSWeight, const float& CalculatedGeneratorWeight, const float& CalculatedNominalWeight){
 
 
   float EventWeight;
@@ -10878,33 +10912,18 @@ auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncer
   float SF_up = SF_mumu + SF_Uncert_mumu;
   float SF_down = SF_mumu - SF_Uncert_mumu;
 
-  double PdfMin = 1.0;
-  double PdfMax = 1.0;
-
-  //For the min and max Pdf weights
-  for(int i = 0; i < LHEPdfWeight.size(); i++){
-
-        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(i);
-
-        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
-        else{continue;}
-
-        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
-        else{continue;}
-  
-  }
 
 
-  if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up);}
-  else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down );}
-  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMax );}
-  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * PdfMin );}
-  else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2);}
-  else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0);}
-  else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3);}
-  else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(1);}
+  if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * SF_up) * CalculatedGeneratorWeight;}
+  else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * SF_down ) * CalculatedGeneratorWeight;}
+  else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * CalculatedNominalWeight ) * CalculatedGeneratorWeight;}
+  else if(PDF_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight *  MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * CalculatedNominalWeight ) * CalculatedGeneratorWeight;}
+  else if(isr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(2) * CalculatedGeneratorWeight;}
+  else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0) * CalculatedGeneratorWeight;}
+  else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3) * CalculatedGeneratorWeight;}
+  else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(1) * CalculatedGeneratorWeight;}
 
-  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu );}
+  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * CalculatedGeneratorWeight;}
 
 
   return EventWeight;
@@ -10966,9 +10985,11 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("EGammaSF_egammaEffReco", EGammaSF_egammaEffReco, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("EGammaSF_egammaEffReco_Sys", EGammaSF_egammaEffReco_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("ReturnedPSWeight", PSWeight, {PSWeightString_ee, "Electron_pt_Selection"})
+					     .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					     .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
-					     .Define("ME_numerator_histo", ME_histo_function, {" "})
-					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP", "genWeight"});
+					     .Define("ME_numerator_histo", ME_histo_function, {})
+					     .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"})
+					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight", "CalculatedGeneratorWeight", "CalculatedNominalWeight"});
 								      
 
 
@@ -10997,9 +11018,11 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 						 .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
                                                  .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
 						 .Define("ReturnedPSWeight", PSWeight, {PSWeightString_mumu, "MuonPt_RochCorr"})
+					   	 .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 						 .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
-						 .Define("ME_numerator_histo", ME_histo_function, {" "})
-                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "LHEPdfWeight", "LHEWeight_originalXWGTUP", "genWeight"});
+						 .Define("ME_numerator_histo", ME_histo_function, {})
+						 .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"})
+                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "CalculatedGeneratorWeight", "CalculatedNominalWeight"});
 				
 
 
@@ -11008,8 +11031,6 @@ auto METUncertFunction{[&MET_Up, &MET_Down](
 
 const floats& MET_MetUnclustEnUpDeltaX, 
 const floats& MET_MetUnclustEnUpDeltaY, 
-const floats& MET_MetUnclustEnDownDeltaX, 
-const floats& MET_MetUnclustEnDownDeltaY,
 const floats& MET_phi,
 const floats& MET_sumEt,
 std::vector<TLorentzVector> SmearedJet4Momentum,
@@ -11018,6 +11039,9 @@ const floats& Jet_eta,
 const floats& Jet_phi, 
 const floats& Jet_mass){
 
+  std::vector<TLorentzVector> metVecOriginal{};
+  floats metVecOriginal_px;
+  floats metVecOriginal_py;
 
   std::vector<TLorentzVector> metVec{};
   std::vector<TLorentzVector> UnsmearedJet{};
@@ -11026,12 +11050,15 @@ const floats& Jet_mass){
   floats UnsmearedJetPx;
   floats UnsmearedJetPy;
 
+  //TLorentzVector for unsmeared jets
   for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
 
+  //Obtaining the px and py of unsmeared jets
   for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
   for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
    
 
+  //Obtaining the px and py of smeared jets
   for(int i = 0; i < SmearedJet4Momentum.size(); i++){
  
   	float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
@@ -11041,11 +11068,24 @@ const floats& Jet_mass){
 
   }
 
-  
+  //Original MET vector
+  for(int i = 0; i < MET_phi.size(); i++){ 
+
+	(metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i)); 
+	metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
+	metVecOriginal_py.push_back( (metVecOriginal.at(i)).Py() );
+
+  }
+
+  floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
+  floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
+  floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
+  floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;  
+
   //For the nominal MET and MET uncertainties
   
-  floats UnclusteredEnergyUp = sqrt( pow(MET_MetUnclustEnUpDeltaX, 2) + pow(MET_MetUnclustEnUpDeltaY, 2) );
-  floats UnclusteredEnergyDown = sqrt( pow(MET_MetUnclustEnDownDeltaX, 2) + pow(MET_MetUnclustEnDownDeltaY, 2) );
+  floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
+  floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
 
   for(int i = 0; i < MET_phi.size(); i++){
 
@@ -11078,8 +11118,6 @@ std::vector<std::string> MET_uncert_strings = {
 
 "MET_MetUnclustEnUpDeltaX",
 "MET_MetUnclustEnUpDeltaY",
-"MET_MetUnclustEnUpDeltaX", //need to change 
-"MET_MetUnclustEnUpDeltaY", //need to change
 "MET_phi",
 "MET_sumEt",
 "SmearedJet4Momentum",
@@ -15152,7 +15190,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 
   if(year == "2016"){
 
-        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq"/*, "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
+        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
 		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
                      "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
@@ -15168,12 +15206,12 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
                      "data_SingleElectronRunG", "data_SingleElectronRunH", "data_DoubleMuonRunB", "data_DoubleMuonRunC", "data_DoubleMuonRunD",
                      "data_DoubleMuonRunE", "data_SingleElectronRunF", "data_SingleElectronRunG", "data_DoubleMuonRunH", "data_SingleMuonRunB",
                      "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF", "data_SingleMuonRunG",
-                     "data_SingleMuonRunH"*/};
+                     "data_SingleMuonRunH"};
 
  }
   else if(year == "2017"){
 
-  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq"/*, "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
@@ -15182,12 +15220,12 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
 		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
-		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", "data_SingleMuonRunC", 			   		   "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"*/};
+		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", "data_SingleMuonRunC", 			   		   "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"};
 
  }
  else if(year == "2018"){
 
-	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq"/*, "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
                      "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
                      "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q",
@@ -15195,7 +15233,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
                      "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",
                      "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", 
 		     "data_EGRunB", "data_EGRunC", "data_EGRunD", "data_DoubleMuonRunB", "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_SingleMuonRunB", 
-		     "data_SingleMuonRunC", "data_SingleMuonRunD"*/};
+		     "data_SingleMuonRunC", "data_SingleMuonRunD"};
 
 
  }
@@ -15456,8 +15494,11 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
   bool blinding = true;
-  bool NPL = false;
-  bool ZPlusJetsCR = false; 
+  std::vector<bool> NPL = {false, true};
+//  std::vector<bool> ZPlusJetsCR = {false, true}; 
+//  std::vector<bool> ttbarCR = {false, true};
+
+  bool ZPlusJetsCR = false;
   bool ttbarCR = false;
 
   std::vector<std::string> year = {"2016", "2017", "2018"};
@@ -15465,116 +15506,127 @@ void fulleventselectionAlgo::fulleventselection(){
 
   for(int i = 0; i < year.size(); i++){
 
-  	//Nominal
-  	fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+	for(int j = 0; j < NPL.size(); j++){
 
- 		if(NPL == false){
+  		//Nominal
+  		fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//PU_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+ 			if(NPL.at(i) == false){
 
-			//PU_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				//PU_ScaleUp
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//BTag_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				//PU_ScaleDown
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//BTag_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				//BTag_ScaleUp
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//JetSmearing_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				//BTag_ScaleDown
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//JetSmearing_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				//JetSmearing_ScaleUp
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//JetResolution_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				//JetSmearing_ScaleDown
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//JetResolution_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+				//JetResolution_ScaleUp
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//LeptonEfficiencies_ScaleUp
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+				//JetResolution_ScaleDown
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			//LeptonEfficiencies_ScaleDown
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+				//LeptonEfficiencies_ScaleUp
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
-			//PDF_ScaleUp 
-        		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+				//LeptonEfficiencies_ScaleDown
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
 
-        		//PDF_ScaleDown 
-        		fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+				//PDF_ScaleUp 
+        			fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
 
-			//ME_Up
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+        			//PDF_ScaleDown 
+        			fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
 
-			//ME_Down
-			fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+				//ME_Up
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
 
-			//MET_Up
-                        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+				//ME_Down
+				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
 
-                        //MET_Down
-                        fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
+				//MET_Up
+                        	fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+
+                        	//MET_Down
+                        	fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
+
+
+   				if(year.at(i) == "2017" || year.at(i) == "2018"){
+
+					//isr_up
+					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+
+					//isr_down
+					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+
+					//fsr_up
+					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+
+					//fsr_down  
+					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+
+				}
 
 
 
-   			if(year.at(i) == "2017" || year.at(i) == "2018"){
+  			}
+  			else{
 
-				//isr_up
-				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
-				//isr_down
-				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+				//Creating the NPL root file
+				NPLROOTFile_Creator2(year.at(i), blinding);
 
-				//fsr_up
-				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
-				//fsr_down  
-				fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+				//Running over the NPL root file
+				//Nominal
+				if(blinding == true){
+
+					fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+					fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+				}
+				else{
+
+					fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+        				fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+
+				}
+
+
 
 			}
 
 
 
-  		}
-  		else{
+  	}//end of for loop for NPL
 
-
-			//Creating the NPL root file
-			NPLROOTFile_Creator2(year.at(i), blinding);
-
-
-			//Running over the NPL root file
-			//Nominal
-			if(blinding == true){
-
-				fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-			}
-			else{
-
-				fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-        			fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-			}
-
-
-
-		}
-
-
-
-  }//end of for loop
+  }//end of for loop for year
 
 
 
   //Saving the outputs to a directory
-  for(int i = 0; i < year.size(); i++){DirectoryCreator(year.at(i), blinding, NPL);}
+  for(int i = 0; i < year.size(); i++){
+
+	for(int j = 0; j < NPL.size(); j++){
+
+		DirectoryCreator(year.at(i), blinding, NPL.at(j));
+
+	}
+
+  }
 
  
 
