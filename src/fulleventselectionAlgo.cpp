@@ -1843,8 +1843,8 @@ if(year == "2016"){
 
 	if(process == "tZq"){input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"};}
 	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_aMCatNLO/*"};}
-	else if(process == "ZPlusJets_M10ToM50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_aMCatNLO/*"};}
-	else if(process == "ZPlusJets_M10ToM50_aMCatNLO_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_ext_aMCatNLO/*"};}
+	else if(process == "ZPlusJets_M10To50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_aMCatNLO/*"};}
+	else if(process == "ZPlusJets_M10To50_aMCatNLO_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_ext_aMCatNLO/*"};}
 	else if(process == "ZPlusJets_M50_Madgraph"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_Madgraph/*"};}
 	else if(process == "ZPlusJets_M50_Madgraph_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_Madgraph_ext/*"};}
 	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph/*"};}
@@ -1865,43 +1865,39 @@ if(year == "2016"){
         else if(process == "ZPlusJets_PtBinned_650ToInf_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext1/*"};}
         else if(process == "ZPlusJets_PtBinned_650ToInf_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext2/*"};}
 	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top/*"};}
-	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_tbar/*"};}
+	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop/*"};}
 	else if(process == "SingleTop_schannel"){input_files = {"/data/disk2/nanoAOD_2016/ST_schannel/*"};}
-	else if(process == "SingleTop_tW"){input_files = {"/data/disk2/nanoAOD_2016/ST_tW/*"};}
-	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk2/nanoAOD_2016/ST_tbarW/*"};}
+	else if(process == "SingleTop_tW"){input_files = {"/data/disk2/nanoAOD_2016/tW_top/*"};}
+	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar/*"};}
 	else if(process == "SingleTop_tHq"){input_files = {"/data/disk2/nanoAOD_2016/tHq/*"};}
-	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk2/nanoAOD_2016/tZq_W_lept_Z_had/*"};} 
 	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWLL/*"};} 
 	else if(process == "ttbar_inc"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*"};}
 	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph/*"};}
-	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic/*"};}
-	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic/*"};}
 	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_aMCatNLO/*"};}
-	else if(process == "VV_ZZTo2Q2Nu"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2Q2Nu/*"};}
 	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Nu/*"};}
 	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Q/*"};}
 	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo4L/*"};}
 	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk2/nanoAOD_2016/WZTo1L1Nu2Q/*"};}
 	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk2/nanoAOD_2016/WZTo2L2Q/*"};}
-	else if(process == "VV_WZTo3LNu"){input_files = {"/data/disk2/nanoAOD_2016/WZTo3LNu/*"};}
 	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk2/nanoAOD_2016/WWTo1L1Nu2Q/*"};}
 	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk2/nanoAOD_2016/WWTo2L2Nu/*"};}
 	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ/*"};}
 	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk2/nanoAOD_2016/WGToLNuG/*"};}
 	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk2/nanoAOD_2016/ZGToLLG/*"};}
 	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F/*"};}
-	else if(process == "VVV_WWZTo4F"){input_files = {"/data/disk2/nanoAOD_2016/WWZTo4F/*"};}
+	else if(process == "VVV_WWZ"){input_files = {"/data/disk2/nanoAOD_2016/WWZ/*"};}
 	else if(process == "VVV_WZZ"){input_files = {"/data/disk2/nanoAOD_2016/WZZ/*"};}
 	else if(process == "VVV_ZZZ"){input_files = {"/data/disk2/nanoAOD_2016/ZZZ/*"};}
 	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu/*"};}
 	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/*"};}
 	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToQQ/*"};}
 	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk2/nanoAOD_2016/ttgamma/*"};}
-	else if(process == "ttbarV_ttZToLL"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLL/*"};}
 	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"};}
 	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk2/nanoAOD_2016/ttHTobb/*"};}
 	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb/*"};}
 	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu/*"};}
+ 	else if(process == "ttbarV_ttZToLLNuNu_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext2/*"};}
+	else if(process == "ttbarV_ttZToLLNuNu_ext3"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext3/*"};}
 	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"};}
 	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ_ext/*"};}
 	else if(process == "TT_hdampUP"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP/*"};}
@@ -1911,7 +1907,7 @@ if(year == "2016"){
 	else if(process == "ST_tchannel_top_hdampup"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampup/*"};}
 	else if(process == "ST_tchannel_top_hdampdown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampdown/*"};}
 	else if(process == "ST_tchannel_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleUp/*"};}
-	else if(process == "ST_tchannel_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleDown/*"};}
+	else if(process == "ST_tchannel_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleDown_NanoAODv6/*"};}
 	else if(process == "tW_tbar_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleUp/*"};}
 	else if(process == "tW_tbar_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleDown/*"};}
 	else if(process == "tW_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleUp/*"};}
@@ -15190,17 +15186,17 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 
   if(year == "2016"){
 
-        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
-		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
-                     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_schannel",
+        Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
+		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph",
+                     "ttbar_madgraph_NanoAODv5", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
-                     "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q",
-                     "VV_WZTo2L2Q", "VV_WZTo3LNu", "VV_WWTo1L1Nu2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VV_WGToLNuG", "VV_ZGToLLG", "VVV_WWWTo4F",
-                     "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",
-                     "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
-                     "TT_hdampUP", "TT_hdampUP_ext", "TT_hdampDOWN", "TT_hdampDOWN_ext", "ST_tchannel_top_hdampup", "ST_tchannel_top_hdampdown",
+                     "SingleTop_tWZ_tWll","VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q",
+                     "VV_WZTo2L2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VVV_WWWTo4F",
+                     "VVV_WWZ", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", 
+                     "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToLLNuNu_ext2", "ttbarV_ttZToLLNuNu_ext3", "ttbarV_ttZToQQ",
+                     "TT_hdampUP", "TT_hdampUP_ext", "TT_hdampDOWN", "TT_hdampDOWN_ext", */ /*"ST_tchannel_top_hdampup", "ST_tchannel_top_hdampdown",
                      "ST_tchannel_top_ScaleUp", "ST_tchannel_top_ScaleDown", "tW_tbar_ScaleUp", "tW_tbar_ScaleDown", "tW_top_ScaleUp", "tW_top_ScaleDown",
-                     "TT_isr_UP", "TT_isr_DOWN", "TT_isr_DOWN_ext", "TT_fsr_UP", "TT_fsr_UP_ext", "TT_fsr_DOWN", "TT_fsr_DOWN_ext", "data_DoubleEGRunB",
+                     "TT_isr_UP", "TT_isr_DOWN", "TT_isr_DOWN_ext", "TT_fsr_UP", "TT_fsr_UP_ext", "TT_fsr_DOWN", "TT_fsr_DOWN_ext",*/ "data_DoubleEGRunB",
                      "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_DoubleEGRunG", "data_DoubleEGRunH",
                      "data_SingleElectronRunB", "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF",
                      "data_SingleElectronRunG", "data_SingleElectronRunH", "data_DoubleMuonRunB", "data_DoubleMuonRunC", "data_DoubleMuonRunD",
