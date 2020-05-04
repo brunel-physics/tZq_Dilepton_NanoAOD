@@ -2110,7 +2110,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 5);
+auto d_dataframe = d.Range(0, 1000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -12048,6 +12048,7 @@ auto chi2_mumu{[&process](const float& w_mass, const float& Top_Mass){
 std::string Chi2Range_string;
 std::string branch;
 
+std::cout << "before branch names" << std::endl;
 
 if(NPL == true){branch = "NPL";}
 else if(ZPlusJetsCR == true){branch = "ZPlusJetsCR";}
@@ -12075,13 +12076,16 @@ else if(fsr_down == true){branch = "fsr_down";}
 else{branch = "NominalValues";}
 
 
-
+std::cout << "before blinding equals true" << std::endl;
 
 if(blinding == true){
+
+  std::cout << "before defining the chi2 column" << std::endl;
 
 	auto Blinding_ee =  d_ReweightedEvents_ee->Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
 	auto Blinding_mumu =  d_ReweightedEvents_mumu->Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
+  std::cout << "before the chi2 histograms" << std::endl;
 
 	auto h_chi2_ee = Blinding_ee.Histo1D({"h_chi2_ee", "#chi^{2}", nbins, 0, 15}, "chi2");
 	auto h_chi2_mumu = Blinding_mumu.Histo1D({"h_chi2_mumu", "#chi^{2}", nbins, 0, 15}, "chi2");
@@ -12093,6 +12097,9 @@ if(blinding == true){
 	//Need to run tZq first to get the number of simulated signal events
 	
 	if(process == "tZq"){
+
+		std::cout << "before counting the blinding data frames" << std::endl;
+
 		NumberOfSimulatedEvents_ee = *( Blinding_ee.Count() );
 		NumberOfSimulatedEvents_mumu = *( Blinding_mumu.Count() );	
 	}
@@ -12105,7 +12112,7 @@ if(blinding == true){
         int LastChi2Entry_mumu = h_chi2_mumu->FindLastBinAbove();
         int MiddleBin_mumu = (LastChi2Entry_mumu - FirstChi2Entry_mumu) / 2;
 
-
+	std::cout << "before nested for loop for chi2 (ee)" << std::endl;
 
 	for(int i = FirstChi2Entry_ee; i < MiddleBin_ee; i++){
 		for(int j = LastChi2Entry_ee; j > MiddleBin_ee-1; j++){
@@ -12127,6 +12134,7 @@ if(blinding == true){
 
 
 			if(NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee){
+				std::cout << "inside NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee" << std::endl;
                                 MinChi2_ee = Min_ee;
                                 MaxChi2_ee = Max_ee;
 				break;
@@ -12140,13 +12148,16 @@ if(blinding == true){
 
 	}
 
-
+	std::cout << "before nested for loop for chi2 (mumu)" << std::endl;
 
 	for(int i = FirstChi2Entry_mumu; i < MiddleBin_mumu; i++){
                 for(int j = LastChi2Entry_mumu; j > MiddleBin_mumu-1; j++){
 
+			std::cout << "before Chi2Cut_mumu" << std::endl;
 
 			auto Chi2Cut_mumu{[&h_chi2_mumu, &i, &j](const float& Chi2){
+
+				std::cout << "inside Chi2Cut_mumu" << std::endl;
 
                                 Min_mumu = h_chi2_mumu->GetBinContent(i);
                                 Max_mumu = h_chi2_mumu->GetBinContent(j);
@@ -12155,23 +12166,28 @@ if(blinding == true){
 
                         }};
 
-	
+			std::cout << "after Chi2Cut_mumu" << std::endl;	
+
 			auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"});
 			auto histo_NumberOfChi2Entries_mumu = AfterChi2Cut_mumu.Histo1D("AfterChi2Cut_mumu");
 			int NumberOfChi2Entries_mumu = histo_NumberOfChi2Entries_mumu->GetEntries();				
 
 
+			std::cout << "before NumberOfChi2Entries_mumu" << std::endl;
+
 			if(NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu){
+				std::cout << "inside NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu" << std::endl;
 				MinChi2_mumu = Min_mumu; 
                                 MaxChi2_mumu = Max_mumu;
 				break;
 			}
-			else{continue;}
+			else{std::cout << "MinChi2_mumu" << std::endl; std::cout << "MaxChi2_mumu" << std::endl; continue;}
 
 		}
 
 	}
 		
+    	std::cout << "before naming the chi2 text file" << std::endl;
 
 	if(PU_ScaleUp == true){
 
@@ -12645,6 +12661,7 @@ if(blinding == true){
 		  << "MinChi2_mumu: " << MinChi2_mumu << '\n'
                   << "MaxChi2_mumu: " << MaxChi2_mumu << std::endl;
 
+	std::cout << "before chi2 filter ee" << std::endl;
 
 	auto chi2_filter_ee{[](const float& chi2_ee){
 
@@ -12657,6 +12674,7 @@ if(blinding == true){
 
 	}};
 
+	std::cout << "before chi2 filter mumu" << std::endl;
 
 	auto chi2_filter_mumu{[](const float& chi2_mumu){
 
@@ -12669,7 +12687,7 @@ if(blinding == true){
 
         }};
 
-
+	
 	auto Blinding_ee_filtered = Blinding_ee.Filter(chi2_filter_ee, {"chi2"}, "chi squared filter (ee)");
 	auto Blinding_mumu_filtered = Blinding_mumu.Filter(chi2_filter_mumu, {"chi2"}, "chi squared filter (mumu)");
 
@@ -12677,8 +12695,8 @@ if(blinding == true){
 
 	//snapshots to save the histograms to output root files
 	std::string OutRootFile_ee;
-	std::string OutRootFile_mumu;
-  
+	std::string OutRootFile_mumu;  
+
         if(NPL == false){
   
       		OutRootFile_ee  = "Results_MC_" + process + "_" + year + "_ee_Blinded.root";
@@ -12695,9 +12713,13 @@ if(blinding == true){
 	ROOT::RDF::RSnapshotOptions opts;
         opts.fMode = "UPDATE";
 
+	std::cout << "before snapshot" << std::endl;
+
         auto snapshot_ee = Blinding_ee_filtered.Snapshot(branch.c_str(), OutRootFile_ee.c_str(), ".*", opts);
         auto snapshot_mumu = Blinding_mumu_filtered.Snapshot(branch.c_str(), OutRootFile_mumu.c_str(), ".*", opts);
 	
+	std::cout << "after snapshot" << std::endl;
+
 
 }
 else{
@@ -12725,479 +12747,9 @@ else{
 
 }
 
-//m top vs m W
-
-std::string TwoDHistoFileName;
-
-if(PU_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PU_ScaleUp_" + year + ".root";}
-
-}
-else if(PU_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PU_ScaleDown_" + year + ".root";}
-
-}
-else if(BTag_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_BTag_ScaleUp_" + year + ".root";}
-
-}
-else if(BTag_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_BTag_ScaleDown_" + year + ".root";}
-
-}
-else if(JetSmearing_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetSmearing_ScaleUp_" + year + ".root";}
-
-}
-else if(JetSmearing_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetSmearing_ScaleDown_" + year + ".root";}
-
-}
-else if(JetResolution_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetResolution_ScaleUp_" + year + ".root";}
-
-}
-else if(JetResolution_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetResolution_ScaleDown_" + year + ".root";}
-
-}
-else if(LeptonEfficiencies_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_LeptonEfficiencies_ScaleUp_" + year + ".root";}
-
-}
-else if(LeptonEfficiencies_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_LeptonEfficiencies_ScaleDown_" + year + ".root";}
-
-}
-else if(PDF_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PDF_ScaleUp_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PDF_ScaleUp_" + year + ".root";}
-
-}
-else if(PDF_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PDF_ScaleDown_" + year + ".root";}
-
-}
-else if(ME_Up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ME_Up_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Up_" + year + ".root";}
-
-}
-else if(ME_Down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ME_Down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Down_" + year + ".root";}
-
-}
-else if(MET_Up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_MET_Up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_MET_Up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_MET_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_MET_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_MET_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_MET_Up_" + year + ".root";}
-
-}
-else if(MET_Down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_MET_Down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_MET_Down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_MET_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_MET_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_MET_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_MET_Down_" + year + ".root";}
-
-}
-else if(isr_up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_isr_up_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_isr_up_" + year + ".root";}
-
-}
-else if(isr_down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_isr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_isr_down_" + year + ".root";}
-
-}
-else if(fsr_up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_fsr_up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_fsr_up_" + year + ".root";}
-
-}
-else if(fsr_down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_fsr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_fsr_down_" + year + ".root";}
-
-}
-else{
-
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_" + year + ".root";	
-	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + ".root";}
-
-}
 
 
-
-TFile* TwoDHistoFile = new TFile(TwoDHistoFileName.c_str(), "RECREATE");
-TwoDHistoFile->cd();
-
-
-
-auto h_mW_mTop_ee = d_WeightedEvents_ee.Histo2D({"h_mW_mTop_ee", "Invariant mass of the W boson candidate vs invariant mass of the top quark candidate (ee)", nbins, 0, 200, nbins, 0, 200}, "w_mass", "InvTopMass");
-
-auto h_mW_mTop_mumu = d_WeightedEvents_mumu.Histo2D({"h_mW_mTop_mumu", "Invariant mass of the W boson candidate vs invariant mass of the top quark candidate (mumu)", nbins, 0, 200, nbins, 0, 200}, "w_mass", "InvTopMass");
-
-
-h_mW_mTop_ee->GetXaxis()->SetTitle("m_{W}");
-h_mW_mTop_ee->GetYaxis()->SetTitle("m_{T}");
-h_mW_mTop_ee->SetFillColor(kBlue);
-h_mW_mTop_ee->Draw("COLZ");
-h_mW_mTop_ee->Write();
-h_mW_mTop_mumu->GetXaxis()->SetTitle("m_{W}");
-h_mW_mTop_mumu->GetYaxis()->SetTitle("m_{T}");
-h_mW_mTop_mumu->SetFillColor(kBlue);
-h_mW_mTop_mumu->Draw("COLZ");
-h_mW_mTop_mumu->Write();
-TwoDHistoFile->Close();
-
-
-//}
-
+std::cout << "before NPL estimation" << std::endl;
 
 //NPL estimation
 if(NPL == true){
@@ -14719,435 +14271,6 @@ else{
 
 
 
-//m top vs m W
-std::cout << "m top vs m W" << std::endl;
-
-std::string TwoDHistoFileName;
-
-
-if(PU_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PU_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PU_ScaleUp_" + year + ".root";}
-
-}
-else if(PU_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PU_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PU_ScaleDown_" + year + ".root";}
-
-}
-else if(BTag_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_BTag_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_BTag_ScaleUp_" + year + ".root";}
-
-}
-else if(BTag_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_BTag_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_BTag_ScaleDown_" + year + ".root";}
-
-}
-else if(JetSmearing_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetSmearing_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetSmearing_ScaleUp_" + year + ".root";}
-
-}
-else if(JetSmearing_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetSmearing_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetSmearing_ScaleDown_" + year + ".root";}
-
-}
-else if(JetResolution_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetResolution_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetResolution_ScaleUp_" + year + ".root";}
-
-}
-else if(JetResolution_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_JetResolution_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_JetResolution_ScaleDown_" + year + ".root";}
-
-}
-else if(LeptonEfficiencies_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_LeptonEfficiencies_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_LeptonEfficiencies_ScaleUp_" + year + ".root";}
-
-}
-else if(LeptonEfficiencies_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_LeptonEfficiencies_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_LeptonEfficiencies_ScaleDown_" + year + ".root";}
-
-}
-else if(PDF_ScaleUp == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PDF_ScaleUp_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PDF_ScaleUp_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PDF_ScaleUp_" + year + ".root";}
-
-}
-else if(PDF_ScaleDown == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_PDF_ScaleDown_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_PDF_ScaleDown_" + year + ".root";}
-
-}
-else if(ME_Up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ME_Up_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_ME_Up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Up_" + year + ".root";}
-
-}
-else if(ME_Down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ME_Down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_ME_Down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ME_Down_" + year + ".root";}
-
-}
-else if(isr_up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_isr_up_" + year + ".root";
-        }       
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_isr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_isr_up_" + year + ".root";}
-
-}
-else if(isr_down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_isr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_isr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_isr_down_" + year + ".root";}
-
-}
-else if(fsr_up == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_fsr_up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_fsr_up_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_fsr_up_" + year + ".root";}
-
-}
-else if(fsr_down == true){
-
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_fsr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_fsr_down_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_fsr_down_" + year + ".root";}
-
-}
-else{
-
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_" + year + ".root";	
-	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-		TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_NPL_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{TwoDHistoFileName = process + "_AfterFullSelection_mW_mTop_" + year + ".root";}
-
-}
-
-
-
-
-
-TFile* TwoDHistoFile = new TFile(TwoDHistoFileName.c_str(), "RECREATE");
-TwoDHistoFile->cd();
-
-auto h_mW_mTop_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Histo2D({"h_mW_mTop_ee", "Invariant mass of the W boson candidate vs invariant mass of the top quark candidate (ee)", nbins, 0, 200, nbins, 0, 200}, {"w_mass"}, {"InvTopMass"});
-
-auto h_mW_mTop_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Histo2D({"h_mW_mTop_mumu", "Invariant mass of the W boson candidate vs invariant mass of the top quark candidate (mumu)", nbins, 0, 200, nbins, 0, 200}, {"w_mass"}, {"InvTopMass"});
-
-h_mW_mTop_ee->GetXaxis()->SetTitle("m_{W}");
-h_mW_mTop_ee->GetYaxis()->SetTitle("m_{T}");
-h_mW_mTop_ee->SetFillColor(kBlue);
-h_mW_mTop_ee->Draw("COLZ");
-h_mW_mTop_ee->Write();
-h_mW_mTop_mumu->GetXaxis()->SetTitle("m_{W}");
-h_mW_mTop_mumu->GetYaxis()->SetTitle("m_{T}");
-h_mW_mTop_mumu->SetFillColor(kBlue);
-h_mW_mTop_mumu->Draw("COLZ");
-h_mW_mTop_mumu->Write();
-TwoDHistoFile->Close();
-
 
 
 
@@ -15490,14 +14613,14 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
   bool blinding = true;
-  std::vector<bool> NPL = {false, true};
+  std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
 
   bool ZPlusJetsCR = false;
   bool ttbarCR = false;
 
-  std::vector<std::string> year = {"2016", "2017", "2018"};
+  std::vector<std::string> year = {/*"2016", */"2017"/*, "2018"*/};
   
 
   for(int i = 0; i < year.size(); i++){
