@@ -10779,6 +10779,13 @@ else{
 }
 
 
+std::cout << "before the first snapshot" << std::endl;
+
+std::string UnweightedOutput_ee = "unweighted_" + process + "_" + year + "_ee.root";
+std::string UnweightedOutput_mumu = "unweighted_" + process + "_" + year + "_mumu.root";
+
+
+std::cout << "after the first snapshot mumu" << std::endl;
 
 //For ME_Up and ME_Down
 ints SummedWeights(14, 0);
@@ -11131,269 +11138,6 @@ auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METU
 
 
 
-
-
-//Applying the event weights to the RDataFrame columns
-auto ReweightFunction_float{[](const float& variable, const float& EventWeight){
-
-	auto newVariable = (variable * EventWeight);
-	return newVariable;
-
-}};
-
-auto ReweightFunction_floats{[](const floats& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-    
-}};
-
-
-auto ReweightFunction_double{[](const double& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-    
-}}; 
-
-auto ReweightFunction_doubles{[](const doubles& variable, const float& EventWeight){
-    
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-    
-}};
-
-auto ReweightFunction_int{[](const int& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-    
-}}; 
-
-auto ReweightFunction_ints{[](const ints& variable, const float& EventWeight){
-    
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-    
-}};
-
-
-auto ReweightFunction_bool{[](const bool& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_bools{[](const bools& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-
-auto ReweightFunction_TLorentzVector{[](const TLorentzVector& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-
-auto ReweightFunction_vector_TLorentzVector{[](const std::vector<TLorentzVector>& variable, const float& EventWeight){
-
-	std::vector<TLorentzVector> outVec{};
-
-	for(int i = 0; i < variable.size(); i++){
-
-		auto Pt = (variable.at(i)).Pt() * EventWeight;
-		auto Eta = (variable.at(i)).Eta() * EventWeight;
-		auto Phi = (variable.at(i)).Phi() * EventWeight;	
-		auto Mass = (variable.at(i)).M() * EventWeight;
-
-		TLorentzVector newVec{};
-		newVec.SetPtEtaPhiM(Pt, Eta, Phi, Mass);
-
-		outVec.push_back(newVec);
-
-	}
-
-        return outVec;
-
-}};
-
-
-auto ReweightFunction_long{[](const long& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-
-auto ReweightFunction_UInt{[](const UInt_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-
-auto ReweightFunction_ULong64_t{[](const ULong64_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Float_t{[](const Float_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Int_t{[](const Int_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Double_t{[](const Double_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Bool_t{[](const Bool_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_UChar_t{[](const UChar_t& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Float_t_RVec{[](const ROOT::VecOps::RVec<Float_t>& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Int_t_RVec{[](const ROOT::VecOps::RVec<Int_t>& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-
-auto ReweightFunction_Double_t_RVec{[](const ROOT::VecOps::RVec<Double_t>& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_Bool_t_RVec{[](const ROOT::VecOps::RVec<Bool_t>& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-auto ReweightFunction_UChar_t_RVec{[](const ROOT::VecOps::RVec<UChar_t>& variable, const float& EventWeight){
-
-        auto newVariable = (variable * EventWeight);
-        return newVariable;
-
-}};
-
-
-auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
-auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
-
-auto d_ReweightedEvents_ee = std::make_unique<RNode>(d_WeightedEvents_withMET_ee);
-auto d_ReweightedEvents_mumu = std::make_unique<RNode>(d_WeightedEvents_withMET_mumu);
-
-
-for(auto i = 0u; i < colNames_ee.size(); i++){
-
-        auto colType = d_WeightedEvents_withMET_ee.GetColumnType(colNames_ee.at(i));
-        std::string ReweightedColumnName_ee = colNames_ee.at(i) + "_" + "Weighted";
-
-
-	if(colType == "float"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_float, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<float>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_floats, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "int"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_int, {colNames_ee.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<int>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_ints, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "double"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_double, {colNames_ee.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<double>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_doubles, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "bool"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bool, {colNames_ee.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<bool>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_bools, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "TLorentzVector"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_TLorentzVector, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "vector<TLorentzVector>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_vector_TLorentzVector, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "long"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_long, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "UInt_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_UInt, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ULong64_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_ULong64_t, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "Float_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Float_t, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "Int_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Int_t, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "UChar_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_UChar_t, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "Double_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Double_t, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "Bool_t"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Bool_t, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<Float_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Float_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<Int_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Int_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<Double_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Double_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<Bool_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_Bool_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<UChar_t>"){d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(ReweightedColumnName_ee.c_str(), ReweightFunction_UChar_t_RVec, {colNames_ee.at(i), "EventWeight"}));}
-	else{std::cout << "ERROR: The column type is = " << colType << std::endl; break;}
-
-
-}
-
-
-for(auto i = 0u; i < colNames_mumu.size(); i++){
-
-        auto colType = d_WeightedEvents_withMET_mumu.GetColumnType(colNames_mumu.at(i));
-        std::string ReweightedColumnName_mumu = colNames_mumu.at(i) + "_" + "Weighted";
-
-
-	if(colType == "float"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_float, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<float>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_floats, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "int"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_int, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<int>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_ints, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "double"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_double, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<double>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_doubles, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "bool"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bool, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<bool>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_bools, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "TLorentzVector"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_TLorentzVector, {colNames_mumu.at(i), "EventWeight"}));}
- 	else if(colType == "vector<TLorentzVector>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_vector_TLorentzVector, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "long"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_long, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "UInt_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_UInt, {colNames_mumu.at(i), "EventWeight"}));}
-	 else if(colType == "UChar_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_UChar_t, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "ULong64_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_ULong64_t, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "Float_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Float_t, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "Int_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Int_t, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "Double_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Double_t, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "Bool_t"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Bool_t, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<Float_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Float_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<Int_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Int_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
-        else if(colType == "ROOT::VecOps::RVec<Double_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Double_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<Bool_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_Bool_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
-	else if(colType == "ROOT::VecOps::RVec<UChar_t>"){d_ReweightedEvents_mumu = std::make_unique<RNode>(d_ReweightedEvents_mumu->Define(ReweightedColumnName_mumu.c_str(), ReweightFunction_UChar_t_RVec, {colNames_mumu.at(i), "EventWeight"}));}
-        else{std::cout << "ERROR: The column type is: " << colType << std::endl; break;}
-
-  
-}
 
 
 int nbins = 40;
@@ -11878,10 +11622,10 @@ if(process == "tZq"){
         FittedHistosOutput->cd();
 
 
-	auto h_WMass_ee = d_ReweightedEvents_ee->Histo1D({"h_WMass_ee", "Mass distribution of the W mass candidate (ee channel)", nbins, 0, 150}, "w_mass");
-	auto h_InvTopMass_ee = d_ReweightedEvents_ee->Histo1D({"h_InvTopMass_ee", "Mass distribution of the top candidate (ee channel)", nbins, 0, 500}, "InvTopMass");
-	auto h_WMass_mumu = d_ReweightedEvents_mumu->Histo1D({"h_WMass_mumu", "Mass distribution of the W mass candidate (mumu channel)", nbins, 0, 150}, "w_mass");
-	auto h_InvTopMass_mumu = d_ReweightedEvents_mumu->Histo1D({"h_InvTopMass_mumu", "Mass distribution of the top candidate (mumu channel)", nbins, 0, 500}, "InvTopMass");
+	auto h_WMass_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_WMass_ee", "Mass distribution of the W mass candidate (ee channel)", nbins, 0, 150}, "w_mass");
+	auto h_InvTopMass_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_InvTopMass_ee", "Mass distribution of the top candidate (ee channel)", nbins, 0, 500}, "InvTopMass");
+	auto h_WMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_WMass_mumu", "Mass distribution of the W mass candidate (mumu channel)", nbins, 0, 150}, "w_mass");
+	auto h_InvTopMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_InvTopMass_mumu", "Mass distribution of the top candidate (mumu channel)", nbins, 0, 500}, "InvTopMass");
 
 	h_WMass_ee->Fit("gaus");
 	h_InvTopMass_ee->Fit("gaus");
@@ -12076,14 +11820,24 @@ else if(fsr_down == true){branch = "fsr_down";}
 else{branch = "NominalValues";}
 
 
+//Creating RVecs for the weights (must be the same size as the RVec for each variable)
+auto NewWeight_floats{[](const floats& variable, const float& weight){
+
+  floats NewWeight(variable.size(), weight);
+  return NewWeight;
+
+}};
+
+
+
 std::cout << "before blinding equals true" << std::endl;
 
 if(blinding == true){
 
   std::cout << "before defining the chi2 column" << std::endl;
 
-	auto Blinding_ee =  d_ReweightedEvents_ee->Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
-	auto Blinding_mumu =  d_ReweightedEvents_mumu->Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
+	auto Blinding_ee =  d_WeightedEvents_withMET_ee.Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
+	auto Blinding_mumu =  d_WeightedEvents_withMET_mumu.Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
   std::cout << "before the chi2 histograms" << std::endl;
 
@@ -12693,7 +12447,8 @@ if(blinding == true){
 
 
 
-	//snapshots to save the histograms to output root files
+
+	//Saving the histograms to output root files
 	std::string OutRootFile_ee;
 	std::string OutRootFile_mumu;  
 
@@ -12710,29 +12465,53 @@ if(blinding == true){
 
 	}
 
-	ROOT::RDF::RSnapshotOptions opts;
-        opts.fMode = "UPDATE";
+	auto colNames_ee = Blinding_ee_filtered.GetColumnNames();
+	auto colNames_mumu = Blinding_mumu_filtered.GetColumnNames();
 
-	std::cout << "before snapshot" << std::endl;
+	auto N_Columns_ee = colNames_ee.size();
+	auto N_Columns_mumu = colNames_mumu.size();
 
-        auto snapshot_ee = Blinding_ee_filtered.Snapshot(branch.c_str(), OutRootFile_ee.c_str(), ".*", opts);
-        auto snapshot_mumu = Blinding_mumu_filtered.Snapshot(branch.c_str(), OutRootFile_mumu.c_str(), ".*", opts);
+	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
+	ROOT::RDF::RResultPtr<TH1D> histo_ee[] = {};
+
+	for(int i = 0; i < N_Columns_ee; i++){
+		
+		auto ColName = colNames_ee.at(i);
+		histo_ee[i] = Blinding_ee_filtered.Histo1D(ColName.c_str(), "EventWeight");
+
+	}	
 	
-	std::cout << "after snapshot" << std::endl;
+	output_ee->Close();
+
+	TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "UPDATE");
+	ROOT::RDF::RResultPtr<TH1D> histo_mumu[] = {};
+
+        for(int i = 0; i < N_Columns_mumu; i++){
+
+                auto ColName = colNames_mumu.at(i);
+                histo_mumu[i] = Blinding_mumu_filtered.Histo1D(ColName.c_str(), "EventWeight");
+
+        }
+
+        output_mumu->Close();
 
 
 }
 else{
+
+	std::cout << "inside the else statment for when blinding is false" << std::endl;
 
 	std::string OutRootFile_ee_unblinded;
 	std::string OutRootFile_mumu_unblinded;
 
 
 	if(NPL == false){
+		std::cout << "NPL is false" << std::endl;
 		OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + year + "_ee.root";
 		OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + year + "_mumu.root";
 	}
 	else{
+		std::cout << "NPL is true" << std::endl;
 		OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + year + "_ee_NPL.root";
         	OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + year + "_mumu_NPL.root";
 	}
@@ -12741,8 +12520,81 @@ else{
 	ROOT::RDF::RSnapshotOptions opts;
 	opts.fMode = "UPDATE";
 
-	auto snapshot_ee_unblinded = d_ReweightedEvents_ee->Snapshot(branch.c_str(), OutRootFile_ee_unblinded.c_str(), ".*", opts);
-	auto snapshot_mumu_unblinded = d_ReweightedEvents_ee->Snapshot(branch.c_str(), OutRootFile_mumu_unblinded.c_str(), ".*", opts);
+	std::cout << "before snapshot unblinded" << std::endl;
+
+	auto colNames_ee_unblinded = d_WeightedEvents_withMET_ee.GetColumnNames();
+        auto colNames_mumu_unblinded = d_WeightedEvents_withMET_mumu.GetColumnNames();
+	
+        auto N_Columns_ee_unblinded = colNames_ee_unblinded.size();
+        auto N_Columns_mumu_unblinded = colNames_mumu_unblinded.size();
+
+	auto d_ReweightedEvents_ee = std::make_unique<RNode>(d_WeightedEvents_withMET_ee);
+        auto d_ReweightedEvents_mumu = std::make_unique<RNode>(d_WeightedEvents_withMET_mumu);
+
+
+        TFile * output_ee_unblinded = new TFile(OutRootFile_ee_unblinded.c_str(), "UPDATE");
+        ROOT::RDF::RResultPtr<TH1D> histo_ee_unblinded[] = {};
+
+
+        for(int i = 0; i < N_Columns_ee_unblinded; i++){
+
+		std::cout << "inside the for loop for ee" << std::endl;
+		std::cout << "i = " << i << std::endl;
+		std::cout << "N_Columns_ee_unblinded = " << N_Columns_ee_unblinded << std::endl;
+	
+                auto ColName_unblinded = colNames_ee_unblinded.at(i);
+		std::cout << "ColName_unblinded = " << ColName_unblinded << std::endl;
+		auto colType = d_WeightedEvents_withMET_ee.GetColumnType(colNames_ee_unblinded.at(i));	
+		std::cout << "colType = " << colType << std::endl;
+	
+		std::string WeightColumnName_ee = ColName_unblinded + "_" + "Weight";
+
+		if(colType == "ROOT::VecOps::RVec<float>"){
+
+			std::cout << "inside if" << std::endl;
+
+			d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(WeightColumnName_ee.c_str(), NewWeight_floats, {ColName_unblinded, "EventWeight"}));
+
+			histo_ee_unblinded[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName_unblinded, WeightColumnName_ee.c_str());
+
+		}
+		else{
+
+			std::cout << "inside else" << std::endl;		
+			histo_ee_unblinded[i] = std::make_unique<RNode>(d_ReweightedEvents_ee->Histo1D(ColName_unblinded, "EventWeight"));
+			std::cout << "after the histo in the else statement" << std::endl;
+
+		}
+		
+
+
+        } //end of for loop
+
+
+        output_ee_unblinded->Close();
+
+	std::cout << "after closing the output ee blinded" << std::endl;
+
+
+
+
+        TFile * output_mumu_unblinded = new TFile(OutRootFile_mumu_unblinded.c_str(), "UPDATE");
+	ROOT::RDF::RResultPtr<TH1D> histo_mumu_unblinded[] = {}; 
+
+        for(int i = 0; i < N_Columns_mumu_unblinded; i++){
+
+                auto ColName_unblinded = colNames_mumu_unblinded.at(i);
+                histo_mumu_unblinded[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName_unblinded.c_str(), "EventWeight");
+
+        }
+
+        output_mumu_unblinded->Close();
+
+
+//	auto snapshot_ee_unblinded = d_ReweightedEvents_ee->Snapshot(branch.c_str(), OutRootFile_ee_unblinded.c_str(), "w_mass", opts);
+//	auto snapshot_mumu_unblinded = d_ReweightedEvents_mumu->Snapshot(branch.c_str(), OutRootFile_mumu_unblinded.c_str(), "w_mass", opts);
+
+	std::cout << "after snapshot unblinded" << std::endl;
 
 
 }
@@ -12797,21 +12649,17 @@ if(NPL == true){
 
 
 
-if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ttbar" && process != "Data_triggerSF"){
+//Print cut report
+auto allCutsReport = d_dataframe.Report();
 
-	//Print cut report
-	auto allCutsReport = d_dataframe.Report();
+for (auto&& cutInfo: allCutsReport){
 
-
-	for (auto&& cutInfo: allCutsReport){
-
-		std::cout << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-		CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-
-	}
-
+	std::cout << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+	CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
 
 }
+
+
 
 												
 
@@ -14612,7 +14460,7 @@ void fulleventselectionAlgo::fulleventselection(){
 //  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
 
-  bool blinding = true;
+  bool blinding = false;
   std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
