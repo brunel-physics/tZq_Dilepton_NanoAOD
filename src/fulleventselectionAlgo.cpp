@@ -2110,7 +2110,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 1000);
+auto d_dataframe = d.Range(0, 10000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -10779,13 +10779,7 @@ else{
 }
 
 
-std::cout << "before the first snapshot" << std::endl;
 
-std::string UnweightedOutput_ee = "unweighted_" + process + "_" + year + "_ee.root";
-std::string UnweightedOutput_mumu = "unweighted_" + process + "_" + year + "_mumu.root";
-
-
-std::cout << "after the first snapshot mumu" << std::endl;
 
 //For ME_Up and ME_Down
 ints SummedWeights(14, 0);
@@ -11135,9 +11129,6 @@ std::vector<std::string> MET_uncert_strings = {
 //Defining the new MET column
 auto d_WeightedEvents_withMET_ee = d_WeightedEvents_ee.Define("newMET", METUncertFunction, MET_uncert_strings);
 auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METUncertFunction, MET_uncert_strings);
-
-
-
 
 
 int nbins = 40;
@@ -12472,24 +12463,28 @@ if(blinding == true){
 	auto N_Columns_mumu = colNames_mumu.size();
 
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_ee[] = {};
+	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
 	for(int i = 0; i < N_Columns_ee; i++){
 		
 		auto ColName = colNames_ee.at(i);
 		histo_ee[i] = Blinding_ee_filtered.Histo1D(ColName.c_str(), "EventWeight");
+		output_ee->cd();
+        	histo_ee[i]->Write();
 
 	}	
-	
+
 	output_ee->Close();
 
 	TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_mumu[] = {};
+	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
         for(int i = 0; i < N_Columns_mumu; i++){
 
                 auto ColName = colNames_mumu.at(i);
                 histo_mumu[i] = Blinding_mumu_filtered.Histo1D(ColName.c_str(), "EventWeight");
+		output_mumu->cd();
+                histo_mumu[i]->Write();
 
         }
 
@@ -12522,79 +12517,48 @@ else{
 
 	std::cout << "before snapshot unblinded" << std::endl;
 
-	auto colNames_ee_unblinded = d_WeightedEvents_withMET_ee.GetColumnNames();
-        auto colNames_mumu_unblinded = d_WeightedEvents_withMET_mumu.GetColumnNames();
-	
-        auto N_Columns_ee_unblinded = colNames_ee_unblinded.size();
-        auto N_Columns_mumu_unblinded = colNames_mumu_unblinded.size();
+	//ee
+	auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
+        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
 
-	auto d_ReweightedEvents_ee = std::make_unique<RNode>(d_WeightedEvents_withMET_ee);
-        auto d_ReweightedEvents_mumu = std::make_unique<RNode>(d_WeightedEvents_withMET_mumu);
-
+        auto N_Columns_ee = colNames_ee.size();
+        auto N_Columns_mumu = colNames_mumu.size();
 
         TFile * output_ee_unblinded = new TFile(OutRootFile_ee_unblinded.c_str(), "UPDATE");
-        ROOT::RDF::RResultPtr<TH1D> histo_ee_unblinded[] = {};
+	output_ee_unblinded->cd();
+        ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
+        for(int i = 0; i < N_Columns_ee; i++){
 
-        for(int i = 0; i < N_Columns_ee_unblinded; i++){
+                auto ColName = colNames_ee.at(i);
+                histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
+         //       histo_ee[i]->Write();
 
-		std::cout << "inside the for loop for ee" << std::endl;
-		std::cout << "i = " << i << std::endl;
-		std::cout << "N_Columns_ee_unblinded = " << N_Columns_ee_unblinded << std::endl;
-	
-                auto ColName_unblinded = colNames_ee_unblinded.at(i);
-		std::cout << "ColName_unblinded = " << ColName_unblinded << std::endl;
-		auto colType = d_WeightedEvents_withMET_ee.GetColumnType(colNames_ee_unblinded.at(i));	
-		std::cout << "colType = " << colType << std::endl;
-	
-		std::string WeightColumnName_ee = ColName_unblinded + "_" + "Weight";
-
-		if(colType == "ROOT::VecOps::RVec<float>"){
-
-			std::cout << "inside if" << std::endl;
-
-			d_ReweightedEvents_ee = std::make_unique<RNode>(d_ReweightedEvents_ee->Define(WeightColumnName_ee.c_str(), NewWeight_floats, {ColName_unblinded, "EventWeight"}));
-
-			histo_ee_unblinded[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName_unblinded, WeightColumnName_ee.c_str());
-
-		}
-		else{
-
-			std::cout << "inside else" << std::endl;		
-			histo_ee_unblinded[i] = std::make_unique<RNode>(d_ReweightedEvents_ee->Histo1D(ColName_unblinded, "EventWeight"));
-			std::cout << "after the histo in the else statement" << std::endl;
-
-		}
-		
-
-
-        } //end of for loop
+        }
 
 
         output_ee_unblinded->Close();
 
 	std::cout << "after closing the output ee blinded" << std::endl;
 
-
-
-
+	//mumu
         TFile * output_mumu_unblinded = new TFile(OutRootFile_mumu_unblinded.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_mumu_unblinded[] = {}; 
+	output_mumu_unblinded->cd();
+	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
-        for(int i = 0; i < N_Columns_mumu_unblinded; i++){
+        for(int i = 0; i < N_Columns_mumu; i++){
 
-                auto ColName_unblinded = colNames_mumu_unblinded.at(i);
-                histo_mumu_unblinded[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName_unblinded.c_str(), "EventWeight");
+                auto ColName = colNames_mumu.at(i);
+                histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
+        //        histo_mumu[i]->Write();
 
         }
 
+
         output_mumu_unblinded->Close();
+        
 
-
-//	auto snapshot_ee_unblinded = d_ReweightedEvents_ee->Snapshot(branch.c_str(), OutRootFile_ee_unblinded.c_str(), "w_mass", opts);
-//	auto snapshot_mumu_unblinded = d_ReweightedEvents_mumu->Snapshot(branch.c_str(), OutRootFile_mumu_unblinded.c_str(), "w_mass", opts);
-
-	std::cout << "after snapshot unblinded" << std::endl;
+	std::cout << "after closing the mumu file" << std::endl;
 
 
 }
@@ -12605,6 +12569,8 @@ std::cout << "before NPL estimation" << std::endl;
 
 //NPL estimation
 if(NPL == true){
+
+std::cout << "inside NPL = true" << std::endl;
 
 	//For the SF (Number of opposite-sign non prompt MC events / number of same-sign non-prompt MC events)
 	//ee
@@ -12650,15 +12616,19 @@ if(NPL == true){
 
 
 //Print cut report
+std::cout << "before print cut flow report" << std::endl;
+
 auto allCutsReport = d_dataframe.Report();
+
+std::cout << "after allCutsReport" << std::endl;
 
 for (auto&& cutInfo: allCutsReport){
 
-	std::cout << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
 	CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
 
 }
 
+std::cout << "after the for loop for cut flow report" << std::endl;
 
 
 												
