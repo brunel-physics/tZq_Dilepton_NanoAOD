@@ -10565,6 +10565,26 @@ else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_reco
 
 
 
+//Print cut report
+std::cout << "before print cut flow report" << std::endl;
+
+auto allCutsReport = d.Report();
+
+std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
+
+
+for (auto&& cutInfo: allCutsReport){
+
+        CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+
+}
+
+
+std::cout << "after the for loop for cut flow report" << std::endl;
+
+
+
+
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
 											.Define("bjetmass", bjet_variable, bjet_mass_strings)
@@ -12614,21 +12634,6 @@ std::cout << "inside NPL = true" << std::endl;
 }
 
 
-
-//Print cut report
-std::cout << "before print cut flow report" << std::endl;
-
-auto allCutsReport = d_dataframe.Report();
-
-std::cout << "after allCutsReport" << std::endl;
-
-for (auto&& cutInfo: allCutsReport){
-
-	CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-
-}
-
-std::cout << "after the for loop for cut flow report" << std::endl;
 
 
 												
