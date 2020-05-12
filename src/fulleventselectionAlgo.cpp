@@ -11840,6 +11840,16 @@ auto NewWeight_floats{[](const floats& variable, const float& weight){
 }};
 
 
+auto NewWeight_bools{[](const bools& variable, const float& weight){
+
+  floats NewWeight(variable.size(), weight);
+  return NewWeight;
+
+}};
+
+
+
+
 
 std::cout << "before blinding equals true" << std::endl;
 
@@ -11852,8 +11862,8 @@ if(blinding == true){
 
   std::cout << "before the chi2 histograms" << std::endl;
 
-	auto h_chi2_ee = Blinding_ee.Histo1D({"h_chi2_ee", "#chi^{2}", nbins, 0, 15}, "chi2");
-	auto h_chi2_mumu = Blinding_mumu.Histo1D({"h_chi2_mumu", "#chi^{2}", nbins, 0, 15}, "chi2");
+	auto h_chi2_ee = Blinding_ee.Histo1D("chi2");
+	auto h_chi2_mumu = Blinding_mumu.Histo1D("chi2");
 		
 
 	//Calculating the min and max chi2 values for the range
@@ -11878,14 +11888,26 @@ if(blinding == true){
         int MiddleBin_mumu = (LastChi2Entry_mumu - FirstChi2Entry_mumu) / 2;
 
 	std::cout << "before nested for loop for chi2 (ee)" << std::endl;
+	std::cout << "FirstChi2Entry_ee = " << FirstChi2Entry_ee << std::endl;
+        std::cout << "LastChi2Entry_ee = " << LastChi2Entry_ee << std::endl;
+        std::cout << "MiddleBin_ee = " << MiddleBin_ee << std::endl;
 
 	for(int i = FirstChi2Entry_ee; i < MiddleBin_ee; i++){
 		for(int j = LastChi2Entry_ee; j > MiddleBin_ee-1; j++){
 	
+			std::cout << "FirstChi2Entry_ee = " << FirstChi2Entry_ee << std::endl;
+			std::cout << "LastChi2Entry_ee = " << LastChi2Entry_ee << std::endl;
+			std::cout << "MiddleBin_ee = " << MiddleBin_ee << std::endl;
+
 			auto Chi2Cut_ee{[&h_chi2_ee, &i, &j](const float& Chi2){
 
 				Min_ee = h_chi2_ee->GetBinContent(i);
 				Max_ee = h_chi2_ee->GetBinContent(j);
+
+				std::cout << "i = " << i << std::endl;
+				std::cout << "j = " << j << std::endl;
+				std::cout << "Min_ee = " << Min_ee << std::endl;
+				std::cout << "Max_ee = " << Max_ee << std::endl;
 
 				return Chi2 > Min_ee && Chi2 < Max_ee;
 			
@@ -11902,6 +11924,10 @@ if(blinding == true){
 				std::cout << "inside NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee" << std::endl;
                                 MinChi2_ee = Min_ee;
                                 MaxChi2_ee = Max_ee;
+
+				std::cout << "MinChi2_ee = " << MinChi2_ee << std::endl;
+				std::cout << "MaxChi2_ee = " << MaxChi2_ee << std::endl;
+
 				break;
 			}
 			else{continue;}
@@ -11916,16 +11942,25 @@ if(blinding == true){
 	std::cout << "before nested for loop for chi2 (mumu)" << std::endl;
 
 	for(int i = FirstChi2Entry_mumu; i < MiddleBin_mumu; i++){
-                for(int j = LastChi2Entry_mumu; j > MiddleBin_mumu-1; j++){
+                for(int j = LastChi2Entry_mumu; j > MiddleBin_mumu-1; j-=1){
 
 			std::cout << "before Chi2Cut_mumu" << std::endl;
+
+			std::cout << "FirstChi2Entry_mumu = " << FirstChi2Entry_mumu << std::endl;
+                        std::cout << "LastChi2Entry_mumu = " << LastChi2Entry_mumu << std::endl;
+                        std::cout << "MiddleBin_mumu = " << MiddleBin_mumu << std::endl;
 
 			auto Chi2Cut_mumu{[&h_chi2_mumu, &i, &j](const float& Chi2){
 
 				std::cout << "inside Chi2Cut_mumu" << std::endl;
+				std::cout << "i = " << i << std::endl;
+                        	std::cout << "j = " << j << std::endl;
 
                                 Min_mumu = h_chi2_mumu->GetBinContent(i);
                                 Max_mumu = h_chi2_mumu->GetBinContent(j);
+
+				std::cout << "Min_mumu" << std::endl;
+				std::cout << "Max_mumu" << std::endl;
 
                                 return Chi2 > Min_mumu && Chi2 < Max_mumu;
 
@@ -11941,9 +11976,15 @@ if(blinding == true){
 			std::cout << "before NumberOfChi2Entries_mumu" << std::endl;
 
 			if(NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu){
+
 				std::cout << "inside NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu" << std::endl;
+
 				MinChi2_mumu = Min_mumu; 
                                 MaxChi2_mumu = Max_mumu;
+				
+				std::cout << "MinChi2_mumu = " << MinChi2_mumu << std::endl;
+                                std::cout << "MaxChi2_mumu = " << MaxChi2_mumu << std::endl;
+		
 				break;
 			}
 			else{std::cout << "MinChi2_mumu" << std::endl; std::cout << "MaxChi2_mumu" << std::endl; continue;}
@@ -12532,49 +12573,52 @@ else{
 	}
 
 
-	ROOT::RDF::RSnapshotOptions opts;
-	opts.fMode = "UPDATE";
-
-	std::cout << "before snapshot unblinded" << std::endl;
 
 	//ee
 	auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
         auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
 
-        auto N_Columns_ee = colNames_ee.size();
-        auto N_Columns_mumu = colNames_mumu.size();
+        const int N_Columns_ee = colNames_ee.size();
+        const int N_Columns_mumu = colNames_mumu.size();
+
 
         TFile * output_ee_unblinded = new TFile(OutRootFile_ee_unblinded.c_str(), "UPDATE");
-	output_ee_unblinded->cd();
-        ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
+	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
+	
 
         for(int i = 0; i < N_Columns_ee; i++){
 
+	
                 auto ColName = colNames_ee.at(i);
-                histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
-         //       histo_ee[i]->Write();
+		std::string NewColName = ColName + "_Weighted";
+
+                histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D({NewColName.c_str(), NewColName.c_str(), {}, {}, {}}, {ColName.c_str()}, {"EventWeight"});
+
+		//histo_ee[i]->Write();
 
         }
 
 
+	output_ee_unblinded->cd();
+	output_ee_unblinded->Write();
         output_ee_unblinded->Close();
 
 	std::cout << "after closing the output ee blinded" << std::endl;
 
 	//mumu
         TFile * output_mumu_unblinded = new TFile(OutRootFile_mumu_unblinded.c_str(), "UPDATE");
-	output_mumu_unblinded->cd();
 	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
         for(int i = 0; i < N_Columns_mumu; i++){
 
                 auto ColName = colNames_mumu.at(i);
                 histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
-        //        histo_mumu[i]->Write();
+                //histo_mumu[i]->Write();
 
         }
 
-
+	output_mumu_unblinded->cd();
+	output_mumu_unblinded->Write();
         output_mumu_unblinded->Close();
         
 
@@ -14435,7 +14479,7 @@ void fulleventselectionAlgo::fulleventselection(){
 //  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
 
-  bool blinding = false;
+  bool blinding = true;
   std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
