@@ -11744,19 +11744,28 @@ auto chi2_ee{[&process](const float& w_mass, const float& Top_Mass){
   float FiveSigma = 0.9999994;
   float FiveSigmaOverTwo = FiveSigma/2;
 
-  float LowerBound = W_MASS * (50 - FiveSigmaOverTwo);
-  float UpperBound = W_MASS * (1 + FiveSigmaOverTwo);
-
+  float LowerBound = W_MASS - (W_MASS * (1 - FiveSigmaOverTwo));
+  float UpperBound = W_MASS + (W_MASS * (1 - FiveSigmaOverTwo));
 
   //calculating chi2
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
 
+  std::cout << "LowerBound = " << LowerBound << std::endl;
+  std::cout << "UpperBound = " << UpperBound << std::endl;
+  std::cout << "w_mass = " << w_mass << std::endl;
 
   if(process == "tZq"){
 
   	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-  	if(w_mass > LowerBound && w_mass < UpperBound){return chi2;}	
-	else{std::cout << "w_mass is not within 5 sigma of the mean W mass value" << std::endl; float Zero = 0.0; return Zero;}
+  	if(w_mass > LowerBound && w_mass < UpperBound){
+		std::cout << "w_mass is within 5 sigma of the mean W mass value (ee)" << std::endl; 
+		return chi2;
+	}	
+	else{
+		std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
+		float zero = 0.0;
+                return zero;
+	}
 
   }
   else{return chi2;}
@@ -11775,19 +11784,28 @@ auto chi2_mumu{[&process](const float& w_mass, const float& Top_Mass){
   float FiveSigma = 0.9999994;
   float FiveSigmaOverTwo = FiveSigma/2;
 
-  float LowerBound = W_MASS * (0.50 - FiveSigmaOverTwo);
-  float UpperBound = W_MASS * (1 + FiveSigmaOverTwo);
+  float LowerBound = W_MASS - (W_MASS * (1 - FiveSigmaOverTwo));
+  float UpperBound = W_MASS + (W_MASS * (1 - FiveSigmaOverTwo));
 
 
   //calculating chi2
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
 
+  std::cout << "LowerBound = " << LowerBound << std::endl;
+  std::cout << "UpperBound = " << UpperBound << std::endl;
+  std::cout << "w_mass = " << w_mass << std::endl;
 
   if(process == "tZq"){
   
 	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-        if(w_mass > LowerBound && w_mass < UpperBound){return chi2;}
-        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value" << std::endl;}
+        if(w_mass > LowerBound && w_mass < UpperBound){
+		std::cout << "w_mass is within 5 sigma of the mean W mass value (mumu)" << std::endl; 
+		return chi2;
+	}
+        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
+	     float zero = 0.0;
+	     return zero;
+	}
 
 
   }
@@ -11865,6 +11883,11 @@ if(blinding == true){
 	auto h_chi2_ee = Blinding_ee.Histo1D("chi2");
 	auto h_chi2_mumu = Blinding_mumu.Histo1D("chi2");
 		
+	int Num_chi2_ee = *(Blinding_ee.Filter("chi2").Count());
+	int Num_chi2_mumu = *(Blinding_mumu.Filter("chi2").Count());
+
+	std::cout << "Num_chi2_ee = " << Num_chi2_ee << std::endl;
+	std::cout << "Num_chi2_mumu = " << Num_chi2_mumu << std::endl;
 
 	//Calculating the min and max chi2 values for the range
 	
@@ -11891,108 +11914,116 @@ if(blinding == true){
 	std::cout << "FirstChi2Entry_ee = " << FirstChi2Entry_ee << std::endl;
         std::cout << "LastChi2Entry_ee = " << LastChi2Entry_ee << std::endl;
         std::cout << "MiddleBin_ee = " << MiddleBin_ee << std::endl;
+	std::cout << "FirstChi2Entry_mumu = " << FirstChi2Entry_mumu << std::endl;
+        std::cout << "LastChi2Entry_mumu = " << LastChi2Entry_mumu << std::endl;
+        std::cout << "MiddleBin_mumu = " << MiddleBin_mumu << std::endl;
 
-	for(int i = FirstChi2Entry_ee; i < MiddleBin_ee; i++){
-		for(int j = LastChi2Entry_ee; j > MiddleBin_ee-1; j++){
+	std::vector<int> CutRanges_ee = {};
+
+	for(int i = 0; i < MiddleBin_ee; i++){ 
+
+		CutRanges_ee.push_back(h_chi2_ee->GetBinContent(FirstChi2Entry_ee+i)); 
+		CutRanges_ee.push_back(h_chi2_ee->GetBinContent(LastChi2Entry_ee-i));
+
+	}
+
+
+	auto Chi2Cut_ee{[&h_chi2_ee, &CutRanges_ee](const float& Chi2){return Chi2 > Min_ee && Chi2 < Max_ee;}};
+
+
+	for(int i = 0; i < CutRanges_ee.size(); i+=2){
+
+
+        	Min_ee = CutRanges_ee.at(i);
+                Max_ee = CutRanges_ee.at(i+1);
+
+                std::cout << "i = " << i << std::endl;
+		std::cout << "CutRanges_ee.size() = " << CutRanges_ee.size() << std::endl;
+                std::cout << "Min_ee = " << Min_ee << std::endl;
+                std::cout << "Max_ee = " << Max_ee << std::endl;
+
+
+		auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"});
+        	auto histo_NumberOfChi2Entries_ee = AfterChi2Cut_ee.Histo1D("AfterChi2Cut_ee");
+        	int NumberOfChi2Entries_ee = histo_NumberOfChi2Entries_ee->GetEntries();
+
+
+        	if(NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee){
+    
+    			std::cout << "inside NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee" << std::endl;
+                	MinChi2_ee = Min_ee;
+                	MaxChi2_ee = Max_ee;
+
+                	std::cout << "MinChi2_ee = " << MinChi2_ee << std::endl;
+                	std::cout << "MaxChi2_ee = " << MaxChi2_ee << std::endl;
+
+                	break;
+   
+	     	}
+        	else{continue;}	
+
+
+	} //end of for loop for CutRanges_ee
+
+
 	
-			std::cout << "FirstChi2Entry_ee = " << FirstChi2Entry_ee << std::endl;
-			std::cout << "LastChi2Entry_ee = " << LastChi2Entry_ee << std::endl;
-			std::cout << "MiddleBin_ee = " << MiddleBin_ee << std::endl;
 
-			auto Chi2Cut_ee{[&h_chi2_ee, &i, &j](const float& Chi2){
+	
+	std::vector<int> CutRanges_mumu = {};
 
-				Min_ee = h_chi2_ee->GetBinContent(i);
-				Max_ee = h_chi2_ee->GetBinContent(j);
+        for(int i = 0; i < MiddleBin_mumu; i++){
 
-				std::cout << "i = " << i << std::endl;
-				std::cout << "j = " << j << std::endl;
-				std::cout << "Min_ee = " << Min_ee << std::endl;
-				std::cout << "Max_ee = " << Max_ee << std::endl;
+                CutRanges_mumu.push_back(h_chi2_mumu->GetBinContent(FirstChi2Entry_mumu+i));
+                CutRanges_mumu.push_back(h_chi2_mumu->GetBinContent(LastChi2Entry_mumu-i));
 
-				return Chi2 > Min_ee && Chi2 < Max_ee;
-			
-			}};				
+        }
 
 
-
-			auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"});
-			auto histo_NumberOfChi2Entries_ee = AfterChi2Cut_ee.Histo1D("AfterChi2Cut_ee");
-			int NumberOfChi2Entries_ee = histo_NumberOfChi2Entries_ee->GetEntries();
+	auto Chi2Cut_mumu{[&h_chi2_mumu, &CutRanges_mumu](const float& Chi2){return Chi2 > Min_mumu && Chi2 < Max_mumu;}};
 
 
-			if(NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee){
-				std::cout << "inside NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee" << std::endl;
-                                MinChi2_ee = Min_ee;
-                                MaxChi2_ee = Max_ee;
-
-				std::cout << "MinChi2_ee = " << MinChi2_ee << std::endl;
-				std::cout << "MaxChi2_ee = " << MaxChi2_ee << std::endl;
-
-				break;
-			}
-			else{continue;}
+        for(int i = 0; i < CutRanges_mumu.size(); i+=2){
 
 
+                Min_mumu = CutRanges_mumu.at(i);
+                Max_mumu = CutRanges_mumu.at(i+1);
 
-		}
-
-
-	}
-
-	std::cout << "before nested for loop for chi2 (mumu)" << std::endl;
-
-	for(int i = FirstChi2Entry_mumu; i < MiddleBin_mumu; i++){
-                for(int j = LastChi2Entry_mumu; j > MiddleBin_mumu-1; j-=1){
-
-			std::cout << "before Chi2Cut_mumu" << std::endl;
-
-			std::cout << "FirstChi2Entry_mumu = " << FirstChi2Entry_mumu << std::endl;
-                        std::cout << "LastChi2Entry_mumu = " << LastChi2Entry_mumu << std::endl;
-                        std::cout << "MiddleBin_mumu = " << MiddleBin_mumu << std::endl;
-
-			auto Chi2Cut_mumu{[&h_chi2_mumu, &i, &j](const float& Chi2){
-
-				std::cout << "inside Chi2Cut_mumu" << std::endl;
-				std::cout << "i = " << i << std::endl;
-                        	std::cout << "j = " << j << std::endl;
-
-                                Min_mumu = h_chi2_mumu->GetBinContent(i);
-                                Max_mumu = h_chi2_mumu->GetBinContent(j);
-
-				std::cout << "Min_mumu" << std::endl;
-				std::cout << "Max_mumu" << std::endl;
-
-                                return Chi2 > Min_mumu && Chi2 < Max_mumu;
-
-                        }};
-
-			std::cout << "after Chi2Cut_mumu" << std::endl;	
-
-			auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"});
-			auto histo_NumberOfChi2Entries_mumu = AfterChi2Cut_mumu.Histo1D("AfterChi2Cut_mumu");
-			int NumberOfChi2Entries_mumu = histo_NumberOfChi2Entries_mumu->GetEntries();				
+                std::cout << "i = " << i << std::endl;
+		std::cout << "CutRanges_mumu.size() = " << CutRanges_mumu.size() << std::endl;
+                std::cout << "Min_mumu = " << Min_mumu << std::endl;
+                std::cout << "Max_mumu = " << Max_mumu << std::endl;
 
 
-			std::cout << "before NumberOfChi2Entries_mumu" << std::endl;
+                auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"});
+                auto histo_NumberOfChi2Entries_mumu = AfterChi2Cut_mumu.Histo1D("AfterChi2Cut_mumu");
+                int NumberOfChi2Entries_mumu = histo_NumberOfChi2Entries_mumu->GetEntries();
 
-			if(NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu){
 
-				std::cout << "inside NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu" << std::endl;
+                if(NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu){
+    
+                        std::cout << "inside NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu" << std::endl;
+                        MinChi2_mumu = Min_mumu;
+                        MaxChi2_mumu = Max_mumu;
 
-				MinChi2_mumu = Min_mumu; 
-                                MaxChi2_mumu = Max_mumu;
-				
-				std::cout << "MinChi2_mumu = " << MinChi2_mumu << std::endl;
-                                std::cout << "MaxChi2_mumu = " << MaxChi2_mumu << std::endl;
-		
-				break;
-			}
-			else{std::cout << "MinChi2_mumu" << std::endl; std::cout << "MaxChi2_mumu" << std::endl; continue;}
+                        std::cout << "MinChi2_mumu = " << MinChi2_mumu << std::endl;
+                        std::cout << "MaxChi2_mumu = " << MaxChi2_mumu << std::endl;
 
-		}
+                        break;
+   
+                }
+                else{continue;}
 
-	}
-		
+
+        } //end of for loop for CutRanges_mumu
+
+
+
+
+
+
+
+
+	
     	std::cout << "before naming the chi2 text file" << std::endl;
 
 	if(PU_ScaleUp == true){
