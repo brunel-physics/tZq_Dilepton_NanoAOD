@@ -2110,7 +2110,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 1000);
+auto d_dataframe = d.Range(0, 10000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -11734,10 +11734,10 @@ if(process == "tZq"){
 
 } //end of if statement for tZq
 
-
+std::vector<float> CutRanges_ee = {};
 
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
-auto chi2_ee{[&process](const float& w_mass, const float& Top_Mass){
+auto chi2_ee{[&process, &CutRanges_ee](const float& w_mass, const float& Top_Mass){
 	
 
   //5 sigma is 99.99994%
@@ -11756,6 +11756,7 @@ auto chi2_ee{[&process](const float& w_mass, const float& Top_Mass){
   	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
   	if(w_mass > LowerBound && w_mass < UpperBound){
 		std::cout << "Inside chi2_ee. Chi2 = " << chi2 << std::endl;
+		CutRanges_ee.push_back(chi2);
 		return chi2;
 	}	
 	else{
@@ -11771,10 +11772,9 @@ auto chi2_ee{[&process](const float& w_mass, const float& Top_Mass){
 }};
 
 
+std::vector<float> CutRanges_mumu = {};
 
-
-
-auto chi2_mumu{[&process](const float& w_mass, const float& Top_Mass){
+auto chi2_mumu{[&process, &CutRanges_mumu](const float& w_mass, const float& Top_Mass){
 
 
   //5 sigma is 99.99994%
@@ -11793,7 +11793,8 @@ auto chi2_mumu{[&process](const float& w_mass, const float& Top_Mass){
   
 	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
         if(w_mass > LowerBound && w_mass < UpperBound){
-		std::cout << "Inside chi2_ee. Chi2 = " << chi2 << std::endl;
+		std::cout << "Inside chi2_mumu. Chi2 = " << chi2 << std::endl;
+		CutRanges_mumu.push_back(chi2);
 		return chi2;
 	}
         else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
@@ -11870,15 +11871,6 @@ if(blinding == true){
 	auto Blinding_ee =  d_WeightedEvents_withMET_ee.Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
 	auto Blinding_mumu =  d_WeightedEvents_withMET_mumu.Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
-	TCanvas * c1 = new TCanvas("c1", "c1", 1000, 500);
-	auto h_chi2_ee = Blinding_ee.Histo1D("chi2");
-	h_chi2_ee->Draw();
-	c1->SaveAs("h_chi2_ee.pdf");
-
-	TCanvas * c2 = new TCanvas("c2", "c2", 1000, 500);
-	auto h_chi2_mumu = Blinding_mumu.Histo1D("chi2");
-	h_chi2_mumu->Draw();
-	c2->SaveAs("h_chi2_mumu.pdf");
 
 	//Calculating the min and max chi2 values for the range
 	
@@ -11894,53 +11886,52 @@ if(blinding == true){
 	}
 
 
-	int FirstChi2Entry_ee = h_chi2_ee->FindFirstBinAbove();
-	int LastChi2Entry_ee = h_chi2_ee->FindLastBinAbove();
-	int MiddleBin_ee = (LastChi2Entry_ee - FirstChi2Entry_ee) / 2;
-	int FirstChi2Entry_mumu = h_chi2_mumu->FindFirstBinAbove();
-        int LastChi2Entry_mumu = h_chi2_mumu->FindLastBinAbove();
-        int MiddleBin_mumu = (LastChi2Entry_mumu - FirstChi2Entry_mumu) / 2;
 
-	std::cout << "FirstChi2Entry_ee = " << FirstChi2Entry_ee << std::endl;
-        std::cout << "LastChi2Entry_ee = " << LastChi2Entry_ee << std::endl;
-        std::cout << "MiddleBin_ee = " << MiddleBin_ee << std::endl;
-	std::cout << "FirstChi2Entry_mumu = " << FirstChi2Entry_mumu << std::endl;
-        std::cout << "LastChi2Entry_mumu = " << LastChi2Entry_mumu << std::endl;
-        std::cout << "MiddleBin_mumu = " << MiddleBin_mumu << std::endl;
+	std::vector<float> CutRanges_ee_new = {};
 
-	std::vector<float> CutRanges_ee = {};
+	for(int i = 1; i < CutRanges_ee.size(); i++){ 
 
-	for(int i = 0; i < MiddleBin_ee; i++){ 
-
-		std::cout << "FirstChi2Entry_ee+i = " << FirstChi2Entry_ee+i << std::endl;
-		std::cout << "LastChi2Entry_ee+i = " << LastChi2Entry_ee-i << std::endl;
-
-		float first_ee = h_chi2_ee->GetBinContent(FirstChi2Entry_ee+i);
-		float last_ee = h_chi2_ee->GetBinContent(LastChi2Entry_ee-i);
+		float first_ee = CutRanges_ee.at(i);
+		float last_ee = CutRanges_ee.at(CutRanges_ee.size()-i);
 
 		std::cout << "first_ee = " << first_ee << std::endl;
 		std::cout << "last_ee = " << last_ee << std::endl;
 
-		CutRanges_ee.push_back(first_ee); 
-		CutRanges_ee.push_back(last_ee);
+	        CutRanges_ee_new.push_back(first_ee); 
+		CutRanges_ee_new.push_back(last_ee);
+		
+		if(i == CutRanges_ee.size()/2){break;}
+		else{continue;}
+
 
 	}
 
 
-	auto Chi2Cut_ee{[&CutRanges_ee](const float& Chi2){return Chi2 > Min_ee && Chi2 < Max_ee;}};
+	auto Chi2Cut_ee{[&CutRanges_ee_new](const float& Chi2){
+
+		std::cout << "inside Chi2Cut_ee" << std::endl;
+		std::cout << "Min_ee = " << Min_ee << std::endl;
+		std::cout << "Max_ee = " << Max_ee << std::endl;
+
+		return Chi2 > Min_ee && Chi2 < Max_ee;}};
 
 	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"});
         auto histo_NumberOfChi2Entries_ee = AfterChi2Cut_ee.Histo1D("AfterChi2Cut_ee");
 	int NumberOfChi2Entries_ee = histo_NumberOfChi2Entries_ee->GetEntries();
 
 
-	for(int i = 0; i < CutRanges_ee.size(); i++){std::cout << "CutRanges_ee.at(i) = " << CutRanges_ee.at(i) << std::endl;}
+	for(int i = 0; i < CutRanges_ee_new.size(); i++){std::cout << "CutRanges_ee_new.at(i) = " << CutRanges_ee_new.at(i) << std::endl;}
 
-	for(int i = 0; i < CutRanges_ee.size(); i+=2){
+	for(int i = 0; i < CutRanges_ee_new.size()-1; i+=2){
 
-        	Min_ee = CutRanges_ee.at(i);
-                Max_ee = CutRanges_ee.at(i+1);
+        	Min_ee = CutRanges_ee_new.at(i);
+                Max_ee = CutRanges_ee_new.at(i+1);
 
+		std::cout << "NumberOfChi2Entries_ee = " << NumberOfChi2Entries_ee << std::endl;
+		std::cout << "NumberOfSimulatedEvents_ee = " << NumberOfSimulatedEvents_ee << std::endl;
+		std::cout << "NumberOfChi2Entries_ee / NumberOfSimulatedEvents_ee = " << NumberOfChi2Entries_ee / NumberOfSimulatedEvents_ee << std::endl;
+		std::cout << "CutRanges_ee_new.at(i) = " << CutRanges_ee_new.at(i) << std::endl;
+		std::cout << "CutRanges_ee_new.at(i+1) = " << CutRanges_ee_new.at(i+1) << std::endl;
 
         	if(NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee){
     
@@ -11957,19 +11948,26 @@ if(blinding == true){
 	} //end of for loop for CutRanges_ee
 
 
-	
-	
-	std::vector<float> CutRanges_mumu = {};
+	std::cout << "before CutRanges_mumu_new" << std::endl;
+        std::vector<float> CutRanges_mumu_new = {};
 
-        for(int i = 0; i < MiddleBin_mumu; i++){
+	for(int i = 1; i < CutRanges_mumu.size(); i++){
 
-		float first_mumu = h_chi2_mumu->GetBinContent(FirstChi2Entry_mumu+i);
-                float last_mumu = h_chi2_mumu->GetBinContent(LastChi2Entry_mumu-i);
+                float first_mumu = CutRanges_mumu.at(i);
+                float last_mumu = CutRanges_mumu.at(CutRanges_mumu.size()-i);
 
-                CutRanges_mumu.push_back(first_mumu);                                        
-                CutRanges_mumu.push_back(last_mumu);
+                std::cout << "first_mumu = " << first_mumu << std::endl;
+                std::cout << "last_mumu = " << last_mumu << std::endl;
+
+                CutRanges_mumu_new.push_back(first_mumu);
+                CutRanges_mumu_new.push_back(last_mumu);
+
+                if(i == CutRanges_mumu.size()/2){break;}
+                else{continue;}
+
 
         }
+		
 
 
 	auto Chi2Cut_mumu{[&CutRanges_mumu](const float& Chi2){return Chi2 > Min_mumu && Chi2 < Max_mumu;}};
@@ -11978,13 +11976,13 @@ if(blinding == true){
         auto histo_NumberOfChi2Entries_mumu = AfterChi2Cut_mumu.Histo1D("AfterChi2Cut_mumu");
 	int NumberOfChi2Entries_mumu = histo_NumberOfChi2Entries_mumu->GetEntries();
 
-	for(int i = 0; i < CutRanges_mumu.size(); i++){std::cout << "CutRanges_mumu.at(i) = " << CutRanges_mumu.at(i) << std::endl;}
+	for(int i = 0; i < CutRanges_mumu_new.size(); i++){std::cout << "CutRanges_mumu_new.at(i) = " << CutRanges_mumu_new.at(i) << std::endl;}
 
-        for(int i = 0; i < CutRanges_mumu.size(); i+=2){
+        for(int i = 0; i < CutRanges_mumu_new.size()-1; i+=2){
 
 
-                Min_mumu = CutRanges_mumu.at(i);
-                Max_mumu = CutRanges_mumu.at(i+1);
+                Min_mumu = CutRanges_mumu_new.at(i);
+                Max_mumu = CutRanges_mumu_new.at(i+1);
 
 
                 if(NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu){
@@ -12538,7 +12536,6 @@ if(blinding == true){
 	for(int i = 0; i < N_Columns_ee; i++){
 		
 		auto ColName = colNames_ee.at(i);
-		std::cout << "before histo_ee[i] (for blinding)" << std::endl;
 
 		if(ColName != "chi2" && ColName != "AfterChi2Cut_ee"){
 			histo_ee[i] = Blinding_ee_filtered.Histo1D(ColName.c_str(), "EventWeight");
@@ -12559,7 +12556,6 @@ if(blinding == true){
         for(int i = 0; i < N_Columns_mumu; i++){
 
                 auto ColName = colNames_mumu.at(i);
-		std::cout << "before histo_mumu[i] (for blinding)" << std::endl;
  
 		if(ColName != "chi2" && ColName != "AfterChi2Cut_mumu"){
                         histo_mumu[i] = Blinding_mumu_filtered.Histo1D(ColName.c_str(), "EventWeight");
