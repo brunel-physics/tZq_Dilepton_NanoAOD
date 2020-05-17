@@ -11889,22 +11889,23 @@ if(blinding == true){
 
 	std::vector<float> CutRanges_ee_new = {};
 
-	for(int i = 1; i < CutRanges_ee.size(); i++){ 
+	auto MaxValue_ee = *max_element(std::begin(CutRanges_ee), std::end(CutRanges_ee));
+        auto MinValue_ee = *min_element(std::begin(CutRanges_ee), std::end(CutRanges_ee));
 
-		float first_ee = CutRanges_ee.at(i);
-		float last_ee = CutRanges_ee.at(CutRanges_ee.size()-i);
+        for(auto i = 0.001; i < (CutRanges_ee.size() / 0.001); i+=0.001){
 
-		std::cout << "first_ee = " << first_ee << std::endl;
-		std::cout << "last_ee = " << last_ee << std::endl;
+                auto MaxValueMinus_ee = CutRanges_ee.at(MaxValue_ee) - i;
+                auto MinValuePlus_ee = CutRanges_ee.at(MinValue_ee) + i;
 
-	        CutRanges_ee_new.push_back(first_ee); 
-		CutRanges_ee_new.push_back(last_ee);
-		
-		if(i == CutRanges_ee.size()/2){break;}
-		else{continue;}
+                CutRanges_ee_new.push_back(MinValuePlus_ee);
+                CutRanges_ee_new.push_back(MaxValueMinus_ee);
+
+                if(i == CutRanges_ee.size()/0.002){break;}
+                else{continue;}
 
 
-	}
+        }
+
 
 
 	auto Chi2Cut_ee{[&CutRanges_ee_new](const float& Chi2){
@@ -11951,18 +11952,21 @@ if(blinding == true){
 	std::cout << "before CutRanges_mumu_new" << std::endl;
         std::vector<float> CutRanges_mumu_new = {};
 
-	for(int i = 1; i < CutRanges_mumu.size(); i++){
+	auto MaxValue_mumu = *max_element(std::begin(CutRanges_mumu), std::end(CutRanges_mumu));
+        auto MinValue_mumu = *min_element(std::begin(CutRanges_mumu), std::end(CutRanges_mumu));
 
-                float first_mumu = CutRanges_mumu.at(i);
-                float last_mumu = CutRanges_mumu.at(CutRanges_mumu.size()-i);
+	for(auto i = 0.001; i < (CutRanges_mumu.size() / 0.001); i+=0.001){
 
-                std::cout << "first_mumu = " << first_mumu << std::endl;
-                std::cout << "last_mumu = " << last_mumu << std::endl;
+		auto MaxValueMinus_mumu = CutRanges_mumu.at(MaxValue_mumu) - i;
+		auto MinValuePlus_mumu = CutRanges_mumu.at(MinValue_mumu) + i;
 
-                CutRanges_mumu_new.push_back(first_mumu);
-                CutRanges_mumu_new.push_back(last_mumu);
+		std::cout << "MaxValueMinus_mumu = " << MaxValueMinus_mumu << std::endl;
+                std::cout << "MinValuePlus_mumu = " << MinValuePlus_mumu << std::endl;
 
-                if(i == CutRanges_mumu.size()/2){break;}
+                CutRanges_mumu_new.push_back(MinValuePlus_mumu);
+                CutRanges_mumu_new.push_back(MaxValueMinus_mumu);
+
+                if(i == CutRanges_mumu.size()/0.002){break;}
                 else{continue;}
 
 
