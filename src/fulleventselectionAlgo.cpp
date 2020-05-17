@@ -11892,7 +11892,15 @@ if(blinding == true){
 	auto MaxValue_ee = *max_element(std::begin(CutRanges_ee), std::end(CutRanges_ee));
         auto MinValue_ee = *min_element(std::begin(CutRanges_ee), std::end(CutRanges_ee));
 
-        for(auto i = 0.001; i < (CutRanges_ee.size() / 0.001); i+=0.001){
+	std::cout << "MinValue_ee" << MinValue_ee << std::endl;
+	std::cout << "MaxValue_ee" << MaxValue_ee << std::endl;
+
+
+	auto size_ee = (MaxValue_ee - MinValue_ee);
+
+	std::cout << "size_ee = " << size_ee << std::endl;
+
+        for(auto i = 0.001; i < (MinValue_ee * 0.001); i+=0.001){
 
                 auto MaxValueMinus_ee = CutRanges_ee.at(MaxValue_ee) - i;
                 auto MinValuePlus_ee = CutRanges_ee.at(MinValue_ee) + i;
@@ -11900,12 +11908,7 @@ if(blinding == true){
                 CutRanges_ee_new.push_back(MinValuePlus_ee);
                 CutRanges_ee_new.push_back(MaxValueMinus_ee);
 
-                if(i == CutRanges_ee.size()/0.002){break;}
-                else{continue;}
-
-
         }
-
 
 
 	auto Chi2Cut_ee{[&CutRanges_ee_new](const float& Chi2){
@@ -11914,7 +11917,9 @@ if(blinding == true){
 		std::cout << "Min_ee = " << Min_ee << std::endl;
 		std::cout << "Max_ee = " << Max_ee << std::endl;
 
-		return Chi2 > Min_ee && Chi2 < Max_ee;}};
+		return Chi2 > Min_ee && Chi2 < Max_ee;
+
+	}};
 
 	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"});
         auto histo_NumberOfChi2Entries_ee = AfterChi2Cut_ee.Histo1D("AfterChi2Cut_ee");
@@ -11922,6 +11927,8 @@ if(blinding == true){
 
 
 	for(int i = 0; i < CutRanges_ee_new.size(); i++){std::cout << "CutRanges_ee_new.at(i) = " << CutRanges_ee_new.at(i) << std::endl;}
+
+	return;
 
 	for(int i = 0; i < CutRanges_ee_new.size()-1; i+=2){
 
@@ -11955,23 +11962,19 @@ if(blinding == true){
 	auto MaxValue_mumu = *max_element(std::begin(CutRanges_mumu), std::end(CutRanges_mumu));
         auto MinValue_mumu = *min_element(std::begin(CutRanges_mumu), std::end(CutRanges_mumu));
 
-	for(auto i = 0.001; i < (CutRanges_mumu.size() / 0.001); i+=0.001){
+	auto size_mumu = (MaxValue_mumu - MinValue_mumu);
 
-		auto MaxValueMinus_mumu = CutRanges_mumu.at(MaxValue_mumu) - i;
-		auto MinValuePlus_mumu = CutRanges_mumu.at(MinValue_mumu) + i;
+        std::cout << "size_mumu = " << size_mumu << std::endl;
 
-		std::cout << "MaxValueMinus_mumu = " << MaxValueMinus_mumu << std::endl;
-                std::cout << "MinValuePlus_mumu = " << MinValuePlus_mumu << std::endl;
+        for(auto i = 0.001; i < (MinValue_mumu * 0.001); i+=0.001){
+
+                auto MaxValueMinus_mumu = CutRanges_mumu.at(MaxValue_mumu) - i;
+                auto MinValuePlus_mumu = CutRanges_mumu.at(MinValue_mumu) + i;
 
                 CutRanges_mumu_new.push_back(MinValuePlus_mumu);
                 CutRanges_mumu_new.push_back(MaxValueMinus_mumu);
 
-                if(i == CutRanges_mumu.size()/0.002){break;}
-                else{continue;}
-
-
-        }
-		
+        }	
 
 
 	auto Chi2Cut_mumu{[&CutRanges_mumu](const float& Chi2){return Chi2 > Min_mumu && Chi2 < Max_mumu;}};
