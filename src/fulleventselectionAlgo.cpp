@@ -2114,7 +2114,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 100000);
+auto d_dataframe = d.Range(0, 10000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -12414,10 +12414,11 @@ if(blinding == true && (SBR == true || SR == true)){
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
 	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
+	std::cout << "N_Columns_ee = " << N_Columns_ee << std::endl;
+
 	for(int i = 0; i < N_Columns_ee; i++){
 
 		std::cout << "i = " << i << std::endl;
-		std::cout << "N_Columns_ee = " << std::endl;
 
 		auto ColName = colNames_ee.at(i);
 
@@ -12427,7 +12428,6 @@ if(blinding == true && (SBR == true || SR == true)){
 		else{continue;}
 	
 		output_ee->cd();
-        	histo_ee[i]->Write();
 
 	}	
 
@@ -12449,7 +12449,6 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 		output_mumu->cd();
-                histo_mumu[i]->Write();
 
         }
 
@@ -12497,7 +12496,6 @@ else{
 
                 histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D({NewColName.c_str(), NewColName.c_str(), {}, {}, {}}, {ColName.c_str()}, {"EventWeight"});
 		output_ee_unblinded->cd();
-		histo_ee[i]->Write();
 
         }
 
@@ -12514,7 +12512,6 @@ else{
                 auto ColName = colNames_mumu.at(i);
                 histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
         	output_mumu_unblinded->cd();        
-		histo_mumu[i]->Write();
 
         }
 
