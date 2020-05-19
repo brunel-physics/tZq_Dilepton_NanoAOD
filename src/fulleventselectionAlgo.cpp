@@ -735,8 +735,10 @@ float Top_stddev_ee;
 float W_stddev_mumu;
 float Top_stddev_mumu;
 
-double MaxChi2_ee, MinChi2_ee, MaxChi2_mumu, MinChi2_mumu, Min_ee, Min_mumu, Max_ee, Max_mumu;
-
+float Chi2_SR_ee;
+float Chi2_SBR_ee;
+float Chi2_SR_mumu;
+float Chi2_SBR_mumu;
 
 
 template<typename T>
@@ -853,13 +855,15 @@ double linereader(const int& LineNumber, const std::string& year){
 
 
 
-void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR, const bool& SBR, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
 std::cout << '\n' << std::endl;
 std::cout << "The process is: " << process << std::endl;
 std::cout << "Blinding is: " << blinding << std::endl;
 std::cout << "NPL is: " << NPL << std::endl;
+std::cout << "SR is: " << SR << std::endl;
+std::cout << "SBR is: " << SBR << std::endl;
 std::cout << "ZPlusJetsCR is: " << ZPlusJetsCR << std::endl;
 std::cout << "ttbarCR is: " << ttbarCR << std::endl;
 std::cout << "The year is: " << year << std::endl;
@@ -2110,7 +2114,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 10000);
+auto d_dataframe = d.Range(0, 100000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -11626,7 +11630,6 @@ if(process == "tZq"){
 
   }
 
-  std::cout << "Filename = " << Filename << std::endl;
 
 
 	TFile* FittedHistosOutput = new TFile(Filename.c_str(), "RECREATE");
@@ -11679,7 +11682,6 @@ if(process == "tZq"){
 
 
 
-	std::cout << "tZq_WAndTop_Filename = " << tZq_WAndTop_Filename << std::endl;        
 
 
 	TFile* tZq_WAndTop_File = new TFile{tZq_WAndTop_Filename.c_str(), "READ"};
@@ -11737,7 +11739,7 @@ if(process == "tZq"){
 std::vector<float> CutRanges_ee = {};
 
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
-auto chi2_ee{[&process, &CutRanges_ee](const float& w_mass, const float& Top_Mass){
+auto chi2_ee{[&process, &CutRanges_ee, &SBR](const float& w_mass, const float& Top_Mass){
 	
 
   //5 sigma is 99.99994%
@@ -11751,11 +11753,10 @@ auto chi2_ee{[&process, &CutRanges_ee](const float& w_mass, const float& Top_Mas
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
 
 
-  if(process == "tZq"){
+  if(process == "tZq" && SBR == true){
 
   	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
   	if(w_mass > LowerBound && w_mass < UpperBound){
-		std::cout << "Inside chi2_ee. Chi2 = " << chi2 << std::endl;
 		CutRanges_ee.push_back(chi2);
 		return chi2;
 	}	
@@ -11774,7 +11775,7 @@ auto chi2_ee{[&process, &CutRanges_ee](const float& w_mass, const float& Top_Mas
 
 std::vector<float> CutRanges_mumu = {};
 
-auto chi2_mumu{[&process, &CutRanges_mumu](const float& w_mass, const float& Top_Mass){
+auto chi2_mumu{[&process, &CutRanges_mumu, &SBR](const float& w_mass, const float& Top_Mass){
 
 
   //5 sigma is 99.99994%
@@ -11789,11 +11790,10 @@ auto chi2_mumu{[&process, &CutRanges_mumu](const float& w_mass, const float& Top
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
 
 
-  if(process == "tZq"){
+  if(process == "tZq" && SBR == true){
   
 	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
         if(w_mass > LowerBound && w_mass < UpperBound){
-		std::cout << "Inside chi2_mumu. Chi2 = " << chi2 << std::endl;
 		CutRanges_mumu.push_back(chi2);
 		return chi2;
 	}
@@ -11814,208 +11814,100 @@ auto chi2_mumu{[&process, &CutRanges_mumu](const float& w_mass, const float& Top
 
 
 std::string Chi2Range_string;
-std::string branch;
-
-std::cout << "before branch names" << std::endl;
-
-if(NPL == true){branch = "NPL";}
-else if(ZPlusJetsCR == true){branch = "ZPlusJetsCR";}
-else if(ttbarCR == true){branch = "ttbarCR";}
-else if(PU_ScaleUp == true){branch = "PU_ScaleUp";}
-else if(PU_ScaleDown == true){branch = "PU_ScaleDown";}
-else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp";}
-else if(BTag_ScaleDown == true){branch = "BTag_ScaleDown";}
-else if(JetSmearing_ScaleUp == true){branch = "JetSmearing_ScaleUp";}
-else if(JetSmearing_ScaleDown == true){branch = "JetSmearing_ScaleDown";}
-else if(JetResolution_ScaleUp == true){branch = "JetResolution_ScaleUp";}
-else if(JetResolution_ScaleDown == true){branch = "JetResolution_ScaleDown";}
-else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp";}
-else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown";}
-else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
-else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
-else if(ME_Up == true){branch = "ME_Up";}
-else if(ME_Down == true){branch = "ME_Down";}
-else if(MET_Up == true){branch = "MET_Up";}
-else if(MET_Down == true){branch = "MET_Down";}
-else if(isr_up == true){branch = "isr_up";}
-else if(isr_down == true){branch = "isr_down";}
-else if(fsr_up == true){branch = "fsr_up";}
-else if(fsr_down == true){branch = "fsr_down";}
-else{branch = "NominalValues";}
 
 
-//Creating RVecs for the weights (must be the same size as the RVec for each variable)
-auto NewWeight_floats{[](const floats& variable, const float& weight){
-
-  floats NewWeight(variable.size(), weight);
-  return NewWeight;
-
-}};
-
-
-auto NewWeight_bools{[](const bools& variable, const float& weight){
-
-  floats NewWeight(variable.size(), weight);
-  return NewWeight;
-
-}};
-
-
-
-
-
-
-if(blinding == true){
+//Section for experimental blinding
+if(blinding == true && (SBR == true || SR == true)){
 
 
 	auto Blinding_ee =  d_WeightedEvents_withMET_ee.Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
 	auto Blinding_mumu =  d_WeightedEvents_withMET_mumu.Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
 
-	//Calculating the min and max chi2 values for the range
-	
-	//68% of the simulated signal events
-	//Need to run tZq first to get the number of simulated signal events
-	
 	if(process == "tZq"){
-
-		std::cout << "before counting the blinding data frames" << std::endl;
-
 		NumberOfSimulatedEvents_ee = *( Blinding_ee.Filter("chi2").Count() );
 		NumberOfSimulatedEvents_mumu = *( Blinding_mumu.Filter("chi2").Count() );	
 	}
 
+	int OneSigmaOfNumEvents_ee = NumberOfSimulatedEvents_ee * 0.68;
+	int OneSigmaOfNumEvents_mumu = NumberOfSimulatedEvents_mumu * 0.68;
+
+	auto histo_chi2_ee = Blinding_ee.Histo1D("chi2");
+	auto histo_chi2_mumu = Blinding_mumu.Histo1D("chi2");
+
+	TAxis *xaxis_ee = histo_chi2_ee->GetXaxis();
+	TAxis *xaxis_mumu = histo_chi2_mumu->GetXaxis();
+
+	double MaxBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindLastBinAbove() );
+	double MinBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindFirstBinAbove() ) ;
+	double MaxBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindLastBinAbove() );
+        double MinBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindFirstBinAbove() );
+
+	int NumBins_ee = MaxBin_ee - MinBin_ee;
+	int NumBins_mumu = MaxBin_mumu - MinBin_mumu;
 
 
-	std::vector<float> CutRanges_ee_new = {};
+	auto histo_chi2_ee_rebinned = Blinding_ee.Histo1D({"histo_chi2_ee_rebinned", "histo_chi2_ee_rebinned", 2*NumBins_ee, MinBin_ee, MaxBin_ee}, {"chi2"});
+	auto histo_chi2_mumu_rebinned = Blinding_mumu.Histo1D({"histo_chi2_mumu_rebinned", "histo_chi2_mumu_rebinned", 2*NumBins_mumu, MinBin_mumu, MaxBin_mumu}, {"chi2"});
 
-	auto MaxValue_ee = *max_element(std::begin(CutRanges_ee), std::end(CutRanges_ee));
-        auto MinValue_ee = *min_element(std::begin(CutRanges_ee), std::end(CutRanges_ee));
+	TAxis * histo_chi2_ee_rebinned_x = histo_chi2_ee_rebinned->GetXaxis();
+	TAxis * histo_chi2_mumu_rebinned_x = histo_chi2_mumu_rebinned->GetXaxis();
 
-	std::cout << "MinValue_ee" << MinValue_ee << std::endl;
-	std::cout << "MaxValue_ee" << MaxValue_ee << std::endl;
+	int total_ee = 0;
+	int total_mumu = 0;
 
+	for(int i = 0; i < histo_chi2_ee_rebinned->GetEntries(); i++){
 
-	auto size_ee = (MaxValue_ee - MinValue_ee);
+		auto NumberOfEvents_ee = histo_chi2_ee_rebinned->GetBinContent(i);
+		total_ee += NumberOfEvents_ee;
 
-	std::cout << "size_ee = " << size_ee << std::endl;
+		if(total_ee >= OneSigmaOfNumEvents_ee){Chi2_SR_ee = histo_chi2_ee_rebinned_x->GetBinCenter(i); break;}
+		else{continue;}
 
-        for(auto i = 0.001; i < (MinValue_ee * 0.001); i+=0.001){
+	}
 
-                auto MaxValueMinus_ee = CutRanges_ee.at(MaxValue_ee) - i;
-                auto MinValuePlus_ee = CutRanges_ee.at(MinValue_ee) + i;
+	for(int i = 0; i < histo_chi2_mumu_rebinned->GetEntries(); i++){
 
-                CutRanges_ee_new.push_back(MinValuePlus_ee);
-                CutRanges_ee_new.push_back(MaxValueMinus_ee);
+                auto NumberOfEvents_mumu = histo_chi2_mumu_rebinned->GetBinContent(i);
+                total_mumu += NumberOfEvents_mumu;
+		
+                if(total_mumu >= OneSigmaOfNumEvents_mumu){Chi2_SR_mumu = histo_chi2_mumu_rebinned_x->GetBinCenter(i); break;}
+                else{continue;}
 
         }
 
+	std::cout << "after for loop for mumu" << std::endl;
 
-	auto Chi2Cut_ee{[&CutRanges_ee_new](const float& Chi2){
+	//chi2 range for ee
 
-		std::cout << "inside Chi2Cut_ee" << std::endl;
-		std::cout << "Min_ee = " << Min_ee << std::endl;
-		std::cout << "Max_ee = " << Max_ee << std::endl;
+	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
 
-		return Chi2 > Min_ee && Chi2 < Max_ee;
+	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
+	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
+	  else{std::cout << "SB and SR cannot both be false" << std::endl;}
 
 	}};
 
-	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"});
-        auto histo_NumberOfChi2Entries_ee = AfterChi2Cut_ee.Histo1D("AfterChi2Cut_ee");
-	int NumberOfChi2Entries_ee = histo_NumberOfChi2Entries_ee->GetEntries();
+	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"}).Filter(Chi2Cut_ee, {"chi2"});
 
+	//chi2 range for mumu
 
-	for(int i = 0; i < CutRanges_ee_new.size(); i++){std::cout << "CutRanges_ee_new.at(i) = " << CutRanges_ee_new.at(i) << std::endl;}
+        auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
 
-	return;
+          if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
+          else if(SR == true){return Chi2 < Chi2_SR_mumu;}
+          else{std::cout << "SB and SR cannot both be false" << std::endl;}
 
-	for(int i = 0; i < CutRanges_ee_new.size()-1; i+=2){
+        }};
 
-        	Min_ee = CutRanges_ee_new.at(i);
-                Max_ee = CutRanges_ee_new.at(i+1);
-
-		std::cout << "NumberOfChi2Entries_ee = " << NumberOfChi2Entries_ee << std::endl;
-		std::cout << "NumberOfSimulatedEvents_ee = " << NumberOfSimulatedEvents_ee << std::endl;
-		std::cout << "NumberOfChi2Entries_ee / NumberOfSimulatedEvents_ee = " << NumberOfChi2Entries_ee / NumberOfSimulatedEvents_ee << std::endl;
-		std::cout << "CutRanges_ee_new.at(i) = " << CutRanges_ee_new.at(i) << std::endl;
-		std::cout << "CutRanges_ee_new.at(i+1) = " << CutRanges_ee_new.at(i+1) << std::endl;
-
-        	if(NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee){
-    
-    			std::cout << "inside NumberOfChi2Entries_ee == 0.68 * NumberOfSimulatedEvents_ee" << std::endl;
-                	MinChi2_ee = Min_ee;
-                	MaxChi2_ee = Max_ee;
-
-                	break;
-   
-	     	}
-        	else{continue;}	
-
-
-	} //end of for loop for CutRanges_ee
-
-
-	std::cout << "before CutRanges_mumu_new" << std::endl;
-        std::vector<float> CutRanges_mumu_new = {};
-
-	auto MaxValue_mumu = *max_element(std::begin(CutRanges_mumu), std::end(CutRanges_mumu));
-        auto MinValue_mumu = *min_element(std::begin(CutRanges_mumu), std::end(CutRanges_mumu));
-
-	auto size_mumu = (MaxValue_mumu - MinValue_mumu);
-
-        std::cout << "size_mumu = " << size_mumu << std::endl;
-
-        for(auto i = 0.001; i < (MinValue_mumu * 0.001); i+=0.001){
-
-                auto MaxValueMinus_mumu = CutRanges_mumu.at(MaxValue_mumu) - i;
-                auto MinValuePlus_mumu = CutRanges_mumu.at(MinValue_mumu) + i;
-
-                CutRanges_mumu_new.push_back(MinValuePlus_mumu);
-                CutRanges_mumu_new.push_back(MaxValueMinus_mumu);
-
-        }	
-
-
-	auto Chi2Cut_mumu{[&CutRanges_mumu](const float& Chi2){return Chi2 > Min_mumu && Chi2 < Max_mumu;}};
-
-	auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"});
-        auto histo_NumberOfChi2Entries_mumu = AfterChi2Cut_mumu.Histo1D("AfterChi2Cut_mumu");
-	int NumberOfChi2Entries_mumu = histo_NumberOfChi2Entries_mumu->GetEntries();
-
-	for(int i = 0; i < CutRanges_mumu_new.size(); i++){std::cout << "CutRanges_mumu_new.at(i) = " << CutRanges_mumu_new.at(i) << std::endl;}
-
-        for(int i = 0; i < CutRanges_mumu_new.size()-1; i+=2){
-
-
-                Min_mumu = CutRanges_mumu_new.at(i);
-                Max_mumu = CutRanges_mumu_new.at(i+1);
-
-
-                if(NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu){
-    
-                        std::cout << "inside NumberOfChi2Entries_mumu == 0.68 * NumberOfSimulatedEvents_mumu" << std::endl;
-                        MinChi2_mumu = Min_mumu;
-                        MaxChi2_mumu = Max_mumu;
-
-                        break;
-   
-                }
-                else{continue;}
-
-
-        } //end of for loop for CutRanges_mumu
-
-
-
-
-
-
-
+        auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_ee", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
+		
 
 	
-    	std::cout << "before naming the chi2 text file" << std::endl;
 
+
+
+	//Naming the chi2 text file
 	if(PU_ScaleUp == true){
 
 		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
@@ -12483,28 +12375,11 @@ if(blinding == true){
 	std::ofstream Chi2Range;
 	Chi2Range.open(Chi2Range_string.c_str());
 
-	Chi2Range << "MinChi2_ee: " << MinChi2_ee << '\n'
-                  << "MaxChi2_ee: " << MaxChi2_ee << '\n'
-		  << "MinChi2_mumu: " << MinChi2_mumu << '\n'
-                  << "MaxChi2_mumu: " << MaxChi2_mumu << std::endl;
+	Chi2Range << "Chi2_SR_ee: " << Chi2_SR_ee << '\n'
+		  << "Chi2_SBR_ee: " << Chi2_SBR_ee << '\n'
+		  << "Chi2_SR_mumu: " << Chi2_SR_mumu << '\n'
+                  << "Chi2_SBR_mumu: " << Chi2_SBR_mumu << std::endl;
 
-	std::cout << "before chi2 filter ee" << std::endl;
-
-	auto chi2_filter_ee{[](const float& chi2_ee){return chi2_ee < MaxChi2_ee && chi2_ee > MinChi2_ee;}};
-
-	std::cout << "before chi2 filter mumu" << std::endl;
-
-	auto chi2_filter_mumu{[](const float& chi2_mumu){return chi2_mumu < MaxChi2_mumu && chi2_mumu > MinChi2_mumu;}};
-
-	std::cout << "before Blinding_ee_filtered " << std::endl;
-	
-	auto Blinding_ee_filtered = AfterChi2Cut_ee.Filter(chi2_filter_ee, {"chi2"}, "chi squared filter (ee)");
-
-	std::cout << "before Blinding_mumu_filtered " << std::endl;
-
-	auto Blinding_mumu_filtered = AfterChi2Cut_mumu.Filter(chi2_filter_mumu, {"chi2"}, "chi squared filter (mumu)");
-
-	std::cout << "after Blinding_mumu_filtered " << std::endl;
 
 
 	//Saving the histograms to output root files
@@ -12524,28 +12399,30 @@ if(blinding == true){
 
 	}
 
-	std::cout << "before colNames_ee " << std::endl;
+	std::cout << "before colNames_ee" << std::endl;
 
+	auto colNames_ee = AfterChi2Cut_ee.GetColumnNames();
+	auto colNames_mumu = AfterChi2Cut_mumu.GetColumnNames();
 
-	auto colNames_ee = Blinding_ee_filtered.GetColumnNames();
-
-	std::cout << "before colNames_mumu " << std::endl;
-	auto colNames_mumu = Blinding_mumu_filtered.GetColumnNames();
+	std::cout << "before colNames_mumu" << std::endl;
 
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
 
+	std::cout << "after N_Columns_mumu" << std::endl;
+
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
-
-
 	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
 	for(int i = 0; i < N_Columns_ee; i++){
-		
+
+		std::cout << "i = " << i << std::endl;
+		std::cout << "N_Columns_ee = " << std::endl;
+
 		auto ColName = colNames_ee.at(i);
 
 		if(ColName != "chi2" && ColName != "AfterChi2Cut_ee"){
-			histo_ee[i] = Blinding_ee_filtered.Histo1D(ColName.c_str(), "EventWeight");
+			histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
 		}
 		else{continue;}
 	
@@ -12556,8 +12433,9 @@ if(blinding == true){
 
 	output_ee->Close();
 
-	TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "UPDATE");
+	std::cout << "before output_mumu" << std::endl;
 
+	TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "UPDATE");
 	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
         for(int i = 0; i < N_Columns_mumu; i++){
@@ -12565,7 +12443,7 @@ if(blinding == true){
                 auto ColName = colNames_mumu.at(i);
  
 		if(ColName != "chi2" && ColName != "AfterChi2Cut_mumu"){
-                        histo_mumu[i] = Blinding_mumu_filtered.Histo1D(ColName.c_str(), "EventWeight");
+                        histo_mumu[i] = AfterChi2Cut_mumu.Histo1D(ColName.c_str(), "EventWeight");
                 }
                 else{continue;}
 
@@ -12589,12 +12467,10 @@ else{
 
 
 	if(NPL == false){
-		std::cout << "NPL is false" << std::endl;
 		OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + year + "_ee.root";
 		OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + year + "_mumu.root";
 	}
 	else{
-		std::cout << "NPL is true" << std::endl;
 		OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + year + "_ee_NPL.root";
         	OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + year + "_mumu_NPL.root";
 	}
@@ -12620,17 +12496,14 @@ else{
 		std::string NewColName = ColName + "_Weighted";
 
                 histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D({NewColName.c_str(), NewColName.c_str(), {}, {}, {}}, {ColName.c_str()}, {"EventWeight"});
-
-		//histo_ee[i]->Write();
+		output_ee_unblinded->cd();
+		histo_ee[i]->Write();
 
         }
 
 
-	output_ee_unblinded->cd();
-	output_ee_unblinded->Write();
         output_ee_unblinded->Close();
 
-	std::cout << "after closing the output ee blinded" << std::endl;
 
 	//mumu
         TFile * output_mumu_unblinded = new TFile(OutRootFile_mumu_unblinded.c_str(), "UPDATE");
@@ -12640,17 +12513,13 @@ else{
 
                 auto ColName = colNames_mumu.at(i);
                 histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
-                //histo_mumu[i]->Write();
+        	output_mumu_unblinded->cd();        
+		histo_mumu[i]->Write();
 
         }
 
-	output_mumu_unblinded->cd();
-	output_mumu_unblinded->Write();
         output_mumu_unblinded->Close();
         
-
-	std::cout << "after closing the mumu file" << std::endl;
-
 
 }
 
@@ -14103,40 +13972,28 @@ auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const flo
 
 std::string Chi2Range_string, BlindedHistosRootFile;
 
-if(blinding == true){
+if(blinding == true && (SBR == true || SR == true)){
 
 	auto Blinding_ee =  d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
 	auto Blinding_mumu =  d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
-	auto h_chi2_ee = Blinding_ee.Histo1D({"h_chi2", "#chi^{2}", nbins, 0, 15}, {"chi2"});
-        auto h_chi2_mumu = Blinding_mumu.Histo1D({"h_chi2", "#chi^{2}", nbins, 0, 15}, {"chi2"});
 
+	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee){
 
-
-
-	auto chi2_filter_ee{[](const float& chi2_ee){
-
-		bool check;
-
-		if(chi2_ee < MaxChi2_ee && chi2_ee > MinChi2_ee){
-			return check == true;
-		}
-		else{return check == false;}
+		if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
+		else if(SR == true){return chi2_ee < Chi2_SR_ee;}
+		else{std::cout << "SR and SBR cannot both be false" << std::endl;}
 
 	}};
 
 
-	auto chi2_filter_mumu{[](const float& chi2_mumu){
-
-                bool check;
-
-                if(chi2_mumu < MaxChi2_mumu && chi2_mumu > MinChi2_mumu){
-                        return check == true;
-                }
-                else{return check == false;}
-
-        }};	
-
+	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumu){
+                
+                if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
+                else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
+                else{std::cout << "SR and SBR cannot both be false" << std::endl;}
+        
+        }};
 
 
 	auto Blinding_ee_filtered = Blinding_ee.Filter(chi2_filter_ee, {"chi2"}, "chi squared filter (ee)");
@@ -14196,7 +14053,7 @@ else{std::cout << "Please select data or MC" << std::endl;}
 
 
 
-auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
+auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, const bool& SBR, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
   std::vector<std::string> Processes;
@@ -14257,7 +14114,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& ZPlu
 //looping over the process names
   for(int i = 0; i < Processes.size(); i++){
 
-  	fulleventselection_calculator(Processes.at(i), blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
+  	fulleventselection_calculator(Processes.at(i), blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
   }
 
@@ -14503,7 +14360,7 @@ void fulleventselectionAlgo::fulleventselection(){
   std::cout << "The script started running:" << " " << asctime(localtm) << std::endl;
 
 
-//  fulleventselection2(blinding, NPL, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
+//  fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
 
   bool blinding = true;
@@ -14511,6 +14368,8 @@ void fulleventselectionAlgo::fulleventselection(){
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
 
+  bool SR = true;
+  bool SBR = false;
   bool ZPlusJetsCR = false;
   bool ttbarCR = false;
 
@@ -14522,72 +14381,72 @@ void fulleventselectionAlgo::fulleventselection(){
 	for(int j = 0; j < NPL.size(); j++){
 
   		//Nominal
-  		fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+  		fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
  			if(NPL.at(i) == false){
 
 				//PU_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//PU_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//BTag_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//BTag_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//JetSmearing_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//JetSmearing_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//JetResolution_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//JetResolution_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				//LeptonEfficiencies_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
 				//LeptonEfficiencies_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
 
 				//PDF_ScaleUp 
-        			fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+        			fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
 
         			//PDF_ScaleDown 
-        			fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+        			fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
 
 				//ME_Up
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
 
 				//ME_Down
-				fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
 
 				//MET_Up
-                        	fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+                        	fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
 
                         	//MET_Down
-                        	fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
+                        	fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
 
 
    				if(year.at(i) == "2017" || year.at(i) == "2018"){
 
 					//isr_up
-					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
 					//isr_down
-					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
 					//fsr_up
-					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
 					//fsr_down  
-					fulleventselection2(blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
 				}
 
@@ -14605,16 +14464,16 @@ void fulleventselectionAlgo::fulleventselection(){
 				//Nominal
 				if(blinding == true){
 
-					fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+					fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-					fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+					fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				}
 				else{
 
-					fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+					fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-        				fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL.at(j), ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        				fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 				}
 
