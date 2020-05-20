@@ -2114,7 +2114,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 10000);
+auto d_dataframe = d.Range(0, 1000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -4839,7 +4839,7 @@ auto pT_ptcl_condition{[](const floats& pT, const floats& pT_ptcl, const ints& s
 
 
  if(PtSize == true){
- 	return abs(pT - pT_ptcl) > 3 * sigma_JER.at(0) * pT;
+ 	return abs(pT - pT_ptcl) < 3 * sigma_JER.at(0) * pT;
  }
  else{
 	ints OutputVec(pT.size(), 0);
@@ -4886,6 +4886,7 @@ const floats& phi_ptcl,
 const ints& sJER_nominal, 
 const ints& sigma_JER){
 
+
   floats cJER;
  
   bool dRCone_check = all_of(dRCone_condition(eta, phi, eta_ptcl, phi_ptcl).begin(), dRCone_condition(eta, phi, eta_ptcl, phi_ptcl).end(), [](int i){return i > 0;});
@@ -4896,8 +4897,20 @@ const ints& sigma_JER){
 
 
   if(dRCone_check == true && pT_ptcl_check == true && PtSize == true){
-	floats cJER = 1 + ( (sJER_nominal.at(0) - 1) * ( (pT - pT_ptcl) / pT ) );	
- 	return cJER;	
+	floats cJER = 1 + ( (sJER_nominal.at(0) - 1) * ( (pT - pT_ptcl) / pT ) );
+
+	floats cJER_vec{};
+
+	for(int i = 0; i < cJER.size(); i++){
+
+		if(cJER.at(i) > 0){ cJER_vec.push_back(cJER.at(i)); }
+		else{float cJER_zero = 0.0; cJER_vec.push_back(cJER_zero);}		
+
+	}
+
+
+	return cJER_vec;
+
   }
   else{
   	  float N = gRandom->Gaus(0, sJER_nominal.at(0));
@@ -10916,7 +10929,7 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(0) * CalculatedGeneratorWeight;}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(3) * CalculatedGeneratorWeight;}
   else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(1) * CalculatedGeneratorWeight;}
-  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee) * CalculatedGeneratorWeight;}
+  else{EventWeight = 1.0;/*PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * CalculatedGeneratorWeight;*/}
   
 
   return EventWeight;
@@ -10943,8 +10956,7 @@ auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncer
   else if(isr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(0) * CalculatedGeneratorWeight;}
   else if(fsr_up == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(3) * CalculatedGeneratorWeight;}
   else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * ReturnedPSWeight.at(1) * CalculatedGeneratorWeight;}
-
-  else{EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu ) * CalculatedGeneratorWeight;}
+  else{EventWeight = 1.0;/*PU * NormalisationFactorFunction() * BTagWeight * MuonSFTest_ID * MuonSFTest_Iso * SF_mumu * CalculatedGeneratorWeight;*/}
 
 
   return EventWeight;
@@ -12410,7 +12422,32 @@ if(blinding == true && (SBR == true || SR == true)){
 	auto N_Columns_mumu = colNames_mumu.size();
 
 	std::cout << "after N_Columns_mumu" << std::endl;
+	
+	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
 
+	auto h_egammaEff = AfterChi2Cut_ee.Histo1D({"h_EGammaSF_egammaEff", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
+	auto h_egammaEffReco = AfterChi2Cut_ee.Histo1D({"h_EGammaSF_egammaEffReco", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
+	auto h_BTagWeight = AfterChi2Cut_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
+	auto h_ReturnedPSWeight = AfterChi2Cut_ee.Histo1D({"h_ReturnedPSWeight", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
+	auto h_ME_SF = AfterChi2Cut_ee.Histo1D({"h_ME_SF", "ME_SF", 40, 0, 1}, "ME_SF");
+	auto h_CalculatedNominalWeight = AfterChi2Cut_ee.Histo1D({"h_CalculatedNominalWeight", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
+	auto h_CalculatedGeneratorWeight = AfterChi2Cut_ee.Histo1D({"h_CalculatedGeneratorWeight", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
+	auto h_w_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_w_mass_weighted", "w_mass", 40, 0, 150}, "w_mass", "EventWeight");
+	auto h_z_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_z_mass_weighted", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
+	
+	h_egammaEff->Write();
+	h_egammaEffReco->Write();
+	h_BTagWeight->Write();
+	h_ReturnedPSWeight->Write();
+	h_ME_SF->Write();
+	h_CalculatedNominalWeight->Write();
+	h_CalculatedGeneratorWeight->Write();
+	h_w_mass_weighted->Write();
+	h_z_mass_weighted->Write();
+	output_ee->Close();
+
+
+/*
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
 	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
@@ -12423,11 +12460,12 @@ if(blinding == true && (SBR == true || SR == true)){
 		auto ColName = colNames_ee.at(i);
 
 		if(ColName != "chi2" && ColName != "AfterChi2Cut_ee"){
+
 			histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
 		}
-		else{continue;}
+		else{histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());}
 	
-		output_ee->cd();
+//		output_ee->cd();
 
 	}	
 
@@ -12445,16 +12483,16 @@ if(blinding == true && (SBR == true || SR == true)){
 		if(ColName != "chi2" && ColName != "AfterChi2Cut_mumu"){
                         histo_mumu[i] = AfterChi2Cut_mumu.Histo1D(ColName.c_str(), "EventWeight");
                 }
-                else{continue;}
+                else{histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());}
 
 
-		output_mumu->cd();
+//		output_mumu->cd();
 
         }
 
  
        output_mumu->Close();
-
+*/
 
 }
 else{
