@@ -9024,7 +9024,7 @@ auto EffBTaggedFunction_ee{[&h_bjet_ee_num, &h_bjet_ee_denom, &NBins](const floa
 	float eff = Numerator / Denominator;
 	
 	if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
-        else{float one = 1.0; BTaggedEff.push_back(one);}
+        else{BTaggedEff.push_back(1.);}
 
 
   }
@@ -9055,7 +9055,7 @@ auto EffBTaggedFunction_mumu{[&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins](cons
         float eff = Numerator / Denominator;
 
         if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
-	else{float one = 1.0; BTaggedEff.push_back(one);}
+	else{BTaggedEff.push_back(1.);}
 
 
   }
@@ -9130,7 +9130,9 @@ auto EffNonBTaggedFunction_ee{[&h_charm_ee_num, &h_charm_ee_denom, &h_lightjets_
 
 	//total
 	float eff = eff_charm * eff_lightjets * eff_gluon;
-        NonBTaggedEff.push_back(eff);
+
+	if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
+        else{NonBTaggedEff.push_back(1.);}
 
 
   }
@@ -9190,7 +9192,9 @@ auto EffNonBTaggedFunction_mumu{[&h_charm_mumu_num, &h_charm_mumu_denom, &h_ligh
 
 	//total
 	float eff = eff_charm * eff_lightjets * eff_gluon;
-        NonBTaggedEff.push_back(eff);
+	
+	if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
+        else{NonBTaggedEff.push_back(1.);}
 
 
   }
