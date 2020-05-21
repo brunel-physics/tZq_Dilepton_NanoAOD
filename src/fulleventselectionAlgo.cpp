@@ -4897,6 +4897,10 @@ const ints& sigma_JER){
 
 
   if(dRCone_check == true && pT_ptcl_check == true && PtSize == true){
+
+	std::cout << "pT.size() = " << pT.size() << std::endl;
+	std::cout << "pT_ptcl.size() = " << pT_ptcl.size() << std::endl;
+
 	floats cJER = 1 + ( (sJER_nominal.at(0) - 1) * ( (pT - pT_ptcl) / pT ) );
 
 	floats cJER_vec{};
@@ -9019,7 +9023,8 @@ auto EffBTaggedFunction_ee{[&h_bjet_ee_num, &h_bjet_ee_denom, &NBins](const floa
 
 	float eff = Numerator / Denominator;
 	
-        BTaggedEff.push_back(eff);
+	if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+        else{float one = 1.0; BTaggedEff.push_back(one);}
 
 
   }
@@ -9049,7 +9054,8 @@ auto EffBTaggedFunction_mumu{[&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins](cons
 
         float eff = Numerator / Denominator;
 
-        BTaggedEff.push_back(eff);
+        if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+	else{float one = 1.0; BTaggedEff.push_back(one);}
 
 
   }
@@ -12447,52 +12453,6 @@ if(blinding == true && (SBR == true || SR == true)){
 	output_ee->Close();
 
 
-/*
-	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
-
-	std::cout << "N_Columns_ee = " << N_Columns_ee << std::endl;
-
-	for(int i = 0; i < N_Columns_ee; i++){
-
-		std::cout << "i = " << i << std::endl;
-
-		auto ColName = colNames_ee.at(i);
-
-		if(ColName != "chi2" && ColName != "AfterChi2Cut_ee"){
-
-			histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
-		}
-		else{histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());}
-	
-//		output_ee->cd();
-
-	}	
-
-	output_ee->Close();
-
-	std::cout << "before output_mumu" << std::endl;
-
-	TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
-
-        for(int i = 0; i < N_Columns_mumu; i++){
-
-                auto ColName = colNames_mumu.at(i);
- 
-		if(ColName != "chi2" && ColName != "AfterChi2Cut_mumu"){
-                        histo_mumu[i] = AfterChi2Cut_mumu.Histo1D(ColName.c_str(), "EventWeight");
-                }
-                else{histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());}
-
-
-//		output_mumu->cd();
-
-        }
-
- 
-       output_mumu->Close();
-*/
 
 }
 else{
@@ -12513,48 +12473,28 @@ else{
 	}
 
 
+	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "UPDATE");
+	auto h_egammaEff = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEff", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
+        auto h_egammaEffReco = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEffReco", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
+        auto h_BTagWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
+        auto h_ReturnedPSWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_ReturnedPSWeight", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
+        auto h_ME_SF = d_WeightedEvents_withMET_ee.Histo1D({"h_ME_SF", "ME_SF", 40, 0, 1}, "ME_SF");
+        auto h_CalculatedNominalWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedNominalWeight", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
+        auto h_CalculatedGeneratorWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedGeneratorWeight", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
+        auto h_w_mass_weighted = d_WeightedEvents_withMET_ee.Histo1D({"h_w_mass_weighted", "w_mass", 40, 0, 150}, "w_mass", "EventWeight");
+        auto h_z_mass_weighted = d_WeightedEvents_withMET_ee.Histo1D({"h_z_mass_weighted", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
 
-	//ee
-	auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
-        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
-
-        const int N_Columns_ee = colNames_ee.size();
-        const int N_Columns_mumu = colNames_mumu.size();
-
-
-        TFile * output_ee_unblinded = new TFile(OutRootFile_ee_unblinded.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
+        h_egammaEff->Write();
+        h_egammaEffReco->Write();
+        h_BTagWeight->Write();
+        h_ReturnedPSWeight->Write();
+        h_ME_SF->Write();
+        h_CalculatedNominalWeight->Write();
+        h_CalculatedGeneratorWeight->Write();
+        h_w_mass_weighted->Write();
+        h_z_mass_weighted->Write();
+        output_ee->Close();
 	
-
-        for(int i = 0; i < N_Columns_ee; i++){
-
-	
-                auto ColName = colNames_ee.at(i);
-		std::string NewColName = ColName + "_Weighted";
-
-                histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D({NewColName.c_str(), NewColName.c_str(), {}, {}, {}}, {ColName.c_str()}, {"EventWeight"});
-		output_ee_unblinded->cd();
-
-        }
-
-
-        output_ee_unblinded->Close();
-
-
-	//mumu
-        TFile * output_mumu_unblinded = new TFile(OutRootFile_mumu_unblinded.c_str(), "UPDATE");
-	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
-
-        for(int i = 0; i < N_Columns_mumu; i++){
-
-                auto ColName = colNames_mumu.at(i);
-                histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
-        	output_mumu_unblinded->cd();        
-
-        }
-
-        output_mumu_unblinded->Close();
-        
 
 }
 
