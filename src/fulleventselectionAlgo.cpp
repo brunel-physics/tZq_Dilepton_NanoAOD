@@ -4908,7 +4908,7 @@ const ints& sigma_JER){
 	for(int i = 0; i < cJER.size(); i++){
 
 		if(cJER.at(i) > 0){ cJER_vec.push_back(cJER.at(i)); }
-		else{float cJER_zero = 0.0; cJER_vec.push_back(cJER_zero);}		
+		else{cJER_vec.push_back(0.);}		
 
 	}
 
@@ -9236,11 +9236,11 @@ auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBT
 
 
 //reading the csv file to obtain the b tagging scale factor for each event
-auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& GenPart_pdgId){
+auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
   floats ResultVector{};
 
-  for(int j = 0; j < GenPart_pdgId.size(); j++){
+  for(int j = 0; j < Jet_partonFlavour.size(); j++){
 
 
 	CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
@@ -9258,9 +9258,9 @@ auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, cons
 
 	std::string MeasurementTypeString;
 
-	if(GenPart_pdgId.at(j) == 4 || GenPart_pdgId.at(j) == 5){MeasurementTypeString = "mujets";}
-	else if(GenPart_pdgId.at(j) > 0 && GenPart_pdgId.at(j) < 4){MeasurementTypeString = "incl";}
-	else{std::cout << "Not charm, bjet or light jet" << std::endl;}
+	if(abs(Jet_partonFlavour.at(j)) == 4 || abs(Jet_partonFlavour.at(j)) == 5){MeasurementTypeString = "mujets";}
+	else if( (abs(Jet_partonFlavour.at(j)) > 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
+	else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_partonFlavour.at(j) << std::endl;}
 
         std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
 
@@ -10401,16 +10401,16 @@ return ResultVector;
 
 
 
-auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& GenPart_pdgId){
+auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
- return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, GenPart_pdgId);
+ return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
 
 }};
 
 
-auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& GenPart_pdgId){
+auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
- return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, GenPart_pdgId);
+ return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
 }};
 
@@ -11009,11 +11009,11 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
                                              .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings)
 					     .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
 					     .Define("DummyColumnBJet", DummyColumnFunction, {"bjetpt"})
-					     .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
+					     .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
 					     .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                              .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                              .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
-  					     .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "GenPart_pdgId"})
+  					     .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
 					     .Define("EffBTagged", EffBTaggedFunction_ee, {"DummyColumnBJet", JetPtInput, JetEtaInput})
 			    		     .Define("EffNonBTagged", EffNonBTaggedFunction_ee, {"DummyColumnBJet", JetPtInput, JetEtaInput})
 					     .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
@@ -14342,7 +14342,7 @@ void fulleventselectionAlgo::fulleventselection(){
 //  fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
 
-  bool blinding = true;
+  bool blinding = false;
   std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
