@@ -2114,7 +2114,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 100000);
+auto d_dataframe = d.Range(0, 10000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -4849,17 +4849,13 @@ auto pT_ptcl_condition{[](const floats& pT, const floats& pT_ptcl, const ints& s
 
  bool PtSize = (pT.size() == pT_ptcl.size()) ? true : false;
 
- std::cout << "PtSize = " << PtSize << std::endl;
- std::cout << "pT.size() = " << pT.size() << std::endl;
- std::cout << "pT_ptcl.size() = " << pT_ptcl.size() << std::endl;
-
  if(PtSize == true){
  	return abs(pT - pT_ptcl) < 3 * sigma_JER.at(0) * pT;
  }
  else{
-	ints OutputVec(pT.size(), 0);
+	if(pT.size() < pT_ptcl.size()){ints OutputVec(pT.size(), 0); return OutputVec;}
+	else{ints OutputVec(pT_ptcl.size(), 0); return OutputVec;}
 
-	return OutputVec;
  }
 
 
@@ -10395,7 +10391,7 @@ return ResultVector;
 
 }};
 
-
+std::cout << "before CMSBTagSF" << std::endl;
 
 auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
@@ -10668,6 +10664,8 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
 											.Define("InvTopMass", inv_mass_doubles, {"Top_Pt", "Top_Eta", "Top_Phi", "Top_Mass"});
 
 
+std::cout << "before d_mumu_recoZ_jets_bjets_recoW_recoT_selection" << std::endl;
+
 
 auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
                                                                                             .Define("bjetmass", bjet_variable, bjet_mass_strings)
@@ -10736,8 +10734,13 @@ auto UnweightedTopPt{[](const doubles& pts){
 
 }};
 
+std::cout << "before d_TopReweighted_ee" << std::endl;
+
 auto d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"});
 auto d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"});
+
+auto h_WeightedTop_ee = d_TopReweighted_ee.Histo1D({"h_WeightedTop_ee", "h_WeightedTop_ee", NBins, 0, 200}, "Top_Pt");
+auto h_WeightedTop_mumu = d_TopReweighted_mumu.Histo1D({"h_WeightedTop_mumu", "h_WeightedTop_mumu", NBins, 0, 200}, "Top_Pt");
 
 
 if(process == "ttbar_2l2nu" ||
@@ -10786,32 +10789,25 @@ if(process == "ttbar_2l2nu" ||
 
 	}};
 
-	
-
-	auto ReweightedTopPt{[](
-
-		const doubles& Top_pt,
-		const doubles& TopWeight
-
-	){
-
-		doubles NewTopPt = Top_pt * TopWeight;
-		return NewTopPt;
-
-	}};
 
 
 	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
 									.Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
-									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"})
-									.Define("ReweightedTopPt", ReweightedTopPt, {"Top_Pt", "TopWeight"});
+									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 
 
 	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
                                                                             .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
-                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"})
-                                                                            .Define("ReweightedTopPt", ReweightedTopPt, {"Top_Pt", "TopWeight"});
+                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
+
+
+	
+	h_WeightedTop_ee = d_TopReweighted_ee.Histo1D({"h_WeightedTop_ee", "h_WeightedTop_ee", NBins, 0, 200}, "Top_pt", "TopWeight");
+	h_WeightedTop_mumu = d_TopReweighted_mumu.Histo1D({"h_WeightedTop_mumu", "h_WeightedTop_mumu", NBins, 0, 200}, "Top_pt", "TopWeight");
+
+	
+
 
 }
 else{
@@ -10823,6 +10819,7 @@ else{
 
 
 
+std::cout << "before NominalWeight" << std::endl;
 
 //For ME_Up and ME_Down
 ints SummedWeights(14, 0);
@@ -10853,7 +10850,7 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
 
 }};
 
-
+std::cout << "before ME_uncert_function" << std::endl;
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
@@ -10897,6 +10894,8 @@ auto ME_histo_function{[&SummedWeights](){
 //SFs for ME up and down
 auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
+
+	std::cout << "inside GeneratorWeight" << std::endl;
 
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
 
@@ -12429,30 +12428,84 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	std::cout << "after N_Columns_mumu" << std::endl;
 	
-	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "UPDATE");
+	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
 
 	auto h_egammaEff = AfterChi2Cut_ee.Histo1D({"h_EGammaSF_egammaEff", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
+
+	std::cout << "after h_egammaEff" << std::endl;
+
 	auto h_egammaEffReco = AfterChi2Cut_ee.Histo1D({"h_EGammaSF_egammaEffReco", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
+
+	std::cout << "h_egammaEffReco" << std::endl;
+
 	auto h_BTagWeight = AfterChi2Cut_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
+	
+	std::cout << "h_BTagWeight" << std::endl;
+
 	auto h_ReturnedPSWeight = AfterChi2Cut_ee.Histo1D({"h_ReturnedPSWeight", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
+
+	std::cout << "h_ReturnedPSWeight" << std::endl;
+
 	auto h_ME_SF = AfterChi2Cut_ee.Histo1D({"h_ME_SF", "ME_SF", 40, 0, 1}, "ME_SF");
+
+	std::cout << "h_ME_SF" << std::endl;
+
 	auto h_CalculatedNominalWeight = AfterChi2Cut_ee.Histo1D({"h_CalculatedNominalWeight", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
+
+	std::cout << "h_CalculatedNominalWeight" << std::endl;
+
 	auto h_CalculatedGeneratorWeight = AfterChi2Cut_ee.Histo1D({"h_CalculatedGeneratorWeight", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
+
+	std::cout << "h_CalculatedGeneratorWeight" << std::endl;
+
 	auto h_w_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_w_mass_weighted", "w_mass", 40, 0, 150}, "w_mass", "EventWeight");
+
+	std::cout << "h_w_mass_weighted" << std::endl;
+
 	auto h_z_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_z_mass_weighted", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
 	
+	std::cout << "h_z_mass_weighted" << std::endl;
+/*
 	h_egammaEff->Write();
+
+	std::cout << "h_egammaEff->Write();" << std::endl;
+
 	h_egammaEffReco->Write();
+
+	std::cout << "h_egammaEffReco->Write();" << std::endl;
+
 	h_BTagWeight->Write();
+
+	std::cout << "h_BTagWeight->Write();" << std::endl;
+
 	h_ReturnedPSWeight->Write();
+
+	std::cout << "h_ReturnedPSWeight" << std::endl;
+
 	h_ME_SF->Write();
+
+	std::cout << "h_ME_SF" << std::endl;
+	
 	h_CalculatedNominalWeight->Write();
+
+	std::cout << "h_CalculatedNominalWeight" << std::endl;
+
 	h_CalculatedGeneratorWeight->Write();
+
+	std::cout << "h_CalculatedGeneratorWeight" << std::endl;
+
 	h_w_mass_weighted->Write();
+
+	std::cout << "h_w_mass_weighted" << std::endl;
+*/
 	h_z_mass_weighted->Write();
+
+	std::cout << "h_z_mass_weighted" << std::endl;
+
+
 	output_ee->Close();
 
-
+	std::cout << "after output_ee->Close()" << std::endl;
 
 }
 else{
