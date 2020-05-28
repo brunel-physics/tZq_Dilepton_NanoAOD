@@ -2114,7 +2114,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 10000);
+auto d_dataframe = d.Range(0, 1000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -10925,7 +10925,7 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
   float EventWeight;
 
 
-
+/*
   if(LeptonEfficiencies_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee += SF_Uncert_ee) * CalculatedGeneratorWeight);}
   else if(LeptonEfficiencies_ScaleDown == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff_Sys * eGammaSF_egammaEffReco_Sys * (SF_ee -= SF_Uncert_ee) * CalculatedGeneratorWeight);}
   else if(PDF_ScaleUp == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * CalculatedNominalWeight * CalculatedGeneratorWeight);}
@@ -10936,6 +10936,11 @@ auto EventWeightFunction_ee{[&NormalisationFactorFunction, &SF_ee, &SF_Uncert_ee
   else if(fsr_down == true){EventWeight = ( PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee ) * ReturnedPSWeight.at(1) * CalculatedGeneratorWeight;}
   else{EventWeight = PU * NormalisationFactorFunction() * BTagWeight * eGammaSF_egammaEff * eGammaSF_egammaEffReco * SF_ee * CalculatedGeneratorWeight;}
   
+  std::cout << "EventWeight = " << EventWeight << std::endl;
+*/
+
+  EventWeight = PU * BTagWeight;
+  std::cout << "EventWeight = " << EventWeight << std::endl;
 
   return EventWeight;
 
@@ -10965,7 +10970,6 @@ auto EventWeightFunction_mumu{[&NormalisationFactorFunction, &SF_mumu, &SF_Uncer
 
 
   return EventWeight;
-
 
 }};
 
@@ -11893,7 +11897,6 @@ if(blinding == true && (SBR == true || SR == true)){
 
         }
 
-	std::cout << "after for loop for mumu" << std::endl;
 
 	//chi2 range for ee
 
@@ -12416,93 +12419,34 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	}
 
-	std::cout << "before colNames_ee" << std::endl;
 
 	auto colNames_ee = AfterChi2Cut_ee.GetColumnNames();
 	auto colNames_mumu = AfterChi2Cut_mumu.GetColumnNames();
 
-	std::cout << "before colNames_mumu" << std::endl;
-
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
 
-	std::cout << "after N_Columns_mumu" << std::endl;
 	
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
 
-	auto h_egammaEff = AfterChi2Cut_ee.Histo1D({"h_EGammaSF_egammaEff", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
+	auto ZMassType = AfterChi2Cut_ee.GetColumnType("z_mass");
+	auto EventWeightType = AfterChi2Cut_ee.GetColumnType("EventWeight");
 
-	std::cout << "after h_egammaEff" << std::endl;
+	auto ZMassEntries = AfterChi2Cut_ee.Filter("z_mass").Count();
+	auto EventWeightEntries = AfterChi2Cut_ee.Filter("EventWeight").Count();
 
-	auto h_egammaEffReco = AfterChi2Cut_ee.Histo1D({"h_EGammaSF_egammaEffReco", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
+	std::cout << "ZMassType = " << ZMassType << ". EventWeightType = " << EventWeightType << std::endl;
+	std::cout << "ZMassEntries = " << *ZMassEntries << ". EventWeightEntries = " << *EventWeightEntries << std::endl;
 
-	std::cout << "h_egammaEffReco" << std::endl;
-
+	//auto h_z_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_z_mass_weighted", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
+	
+	//auto h_EventWeight = AfterChi2Cut_ee.Histo1D({"h_EventWeight", "EventWeight", 40, 0, 1}, "EventWeight");
+	auto h_ZMass = AfterChi2Cut_ee.Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass");
 	auto h_BTagWeight = AfterChi2Cut_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
-	
-	std::cout << "h_BTagWeight" << std::endl;
 
-	auto h_ReturnedPSWeight = AfterChi2Cut_ee.Histo1D({"h_ReturnedPSWeight", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
-
-	std::cout << "h_ReturnedPSWeight" << std::endl;
-
-	auto h_ME_SF = AfterChi2Cut_ee.Histo1D({"h_ME_SF", "ME_SF", 40, 0, 1}, "ME_SF");
-
-	std::cout << "h_ME_SF" << std::endl;
-
-	auto h_CalculatedNominalWeight = AfterChi2Cut_ee.Histo1D({"h_CalculatedNominalWeight", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
-
-	std::cout << "h_CalculatedNominalWeight" << std::endl;
-
-	auto h_CalculatedGeneratorWeight = AfterChi2Cut_ee.Histo1D({"h_CalculatedGeneratorWeight", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
-
-	std::cout << "h_CalculatedGeneratorWeight" << std::endl;
-
-	auto h_w_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_w_mass_weighted", "w_mass", 40, 0, 150}, "w_mass", "EventWeight");
-
-	std::cout << "h_w_mass_weighted" << std::endl;
-
-	auto h_z_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_z_mass_weighted", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
-	
-	std::cout << "h_z_mass_weighted" << std::endl;
-/*
-	h_egammaEff->Write();
-
-	std::cout << "h_egammaEff->Write();" << std::endl;
-
-	h_egammaEffReco->Write();
-
-	std::cout << "h_egammaEffReco->Write();" << std::endl;
-
+	//h_EventWeight->Write();
+	h_ZMass->Write();
 	h_BTagWeight->Write();
-
-	std::cout << "h_BTagWeight->Write();" << std::endl;
-
-	h_ReturnedPSWeight->Write();
-
-	std::cout << "h_ReturnedPSWeight" << std::endl;
-
-	h_ME_SF->Write();
-
-	std::cout << "h_ME_SF" << std::endl;
-	
-	h_CalculatedNominalWeight->Write();
-
-	std::cout << "h_CalculatedNominalWeight" << std::endl;
-
-	h_CalculatedGeneratorWeight->Write();
-
-	std::cout << "h_CalculatedGeneratorWeight" << std::endl;
-
-	h_w_mass_weighted->Write();
-
-	std::cout << "h_w_mass_weighted" << std::endl;
-*/
-	h_z_mass_weighted->Write();
-
-	std::cout << "h_z_mass_weighted" << std::endl;
-
-
 	output_ee->Close();
 
 	std::cout << "after output_ee->Close()" << std::endl;
@@ -12528,51 +12472,42 @@ else{
 
 
 	//ee output distributions
-	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "UPDATE");
-	auto h_egammaEff_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEff_ee", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
-        auto h_egammaEffReco_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEffReco_ee", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
-        auto h_BTagWeight_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_BTagWeight_ee", "BTagWeight", 40, 0, 1}, "BTagWeight");
-        auto h_ReturnedPSWeight_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_ReturnedPSWeight_ee", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
-        auto h_ME_SF_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_ME_SF_ee", "ME_SF", 40, 0, 1}, "ME_SF");
-        auto h_CalculatedNominalWeight_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedNominalWeight_ee", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
-        auto h_CalculatedGeneratorWeight_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedGeneratorWeight_ee", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
-        auto h_w_mass_weighted_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_w_mass_weighted_ee", "w_mass", 40, 0, 150}, "w_mass", "EventWeight");
-        auto h_z_mass_weighted_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_z_mass_weighted_ee", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
+	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "RECREATE");
+	output_ee->cd();
 
-        h_egammaEff_ee->Write();
-        h_egammaEffReco_ee->Write();
-        h_BTagWeight_ee->Write();
-        h_ReturnedPSWeight_ee->Write();
-        h_ME_SF_ee->Write();
-        h_CalculatedNominalWeight_ee->Write();
-        h_CalculatedGeneratorWeight_ee->Write();
-        h_w_mass_weighted_ee->Write();
-        h_z_mass_weighted_ee->Write();
-        output_ee->Close();
+	auto ZWeight{[](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight){return PU * BTagWeight;}};
+        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
+
+	auto h_BTagWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
+	//auto h_EGammaSF_egammaEff = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEff", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
+	//auto h_EGammaSF_egammaEffReco = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEffReco", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
 	
+	//auto h_EGammaSF_egammaEff_Sys = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEff_Sys", "EGammaSF_egammaEff_Sys", 40, 0, 1}, "EGammaSF_egammaEff_Sys");
 
-	//mumu output distributions
-        TFile * output_mumu = new TFile(OutRootFile_mumu_unblinded.c_str(), "UPDATE");
-        auto h_MuonSFTest_ID_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_MuonSFTest_ID_mumu", "MuonSFTest_ID_mumu", 40, 0, 1}, "MuonSFTest_ID");
-        auto h_MuonSFTest_Iso_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_MuonSFTest_Iso_mumu", "MuonSFTest_Iso_mumu", 40, 0, 1}, "MuonSFTest_Iso");
-        auto h_BTagWeight_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_BTagWeight_mumu", "BTagWeight", 40, 0, 1}, "BTagWeight");
-        auto h_ReturnedPSWeight_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_ReturnedPSWeight_mumu", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
-        auto h_ME_SF_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_ME_SF_mumu", "ME_SF", 40, 0, 1}, "ME_SF");
-        auto h_CalculatedNominalWeight_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_CalculatedNominalWeight_mumu", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
-        auto h_CalculatedGeneratorWeight_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_CalculatedGeneratorWeight_mumu", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
-        auto h_w_mass_weighted_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_w_mass_weighted_mumu", "w_mass", 40, 0, 150}, "w_mass", "EventWeight");
-        auto h_z_mass_weighted_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_z_mass_weighted_mumu", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
+	//auto h_EGammaSF_egammaEffReco_Sys = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEffReco_Sys", "EGammaSF_egammaEffReco_Sys", 40, 0, 1}, "EGammaSF_egammaEffReco_Sys");
+	
+	auto h_ReturnedPSWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_ReturnedPSWeight", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
+	auto h_PU = d_WeightedEvents_withMET_ee.Histo1D({"h_PU", "PU", 40, 0, 1}, "PU");
+	//auto h_CalculatedGeneratorWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedGeneratorWeight", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
 
-        h_MuonSFTest_ID_mumu->Write();
-        h_MuonSFTest_Iso_mumu->Write();
-        h_BTagWeight_mumu->Write();
-        h_ReturnedPSWeight_mumu->Write();
-        h_ME_SF_mumu->Write();
-        h_CalculatedNominalWeight_mumu->Write();
-        h_CalculatedGeneratorWeight_mumu->Write();
-        h_w_mass_weighted_mumu->Write();
-        h_z_mass_weighted_mumu->Write();
-        output_mumu->Close();	
+	//auto h_CalculatedNominalWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedNominalWeight", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
+
+
+	//auto h_EventWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_EventWeight", "EventWeight", 40, 0, 1}, "EventWeight");
+
+	h_ZMass->Write();
+	h_BTagWeight->Write();
+	h_ReturnedPSWeight->Write();
+	h_PU->Write();
+	//h_EventWeight->Write();
+	//h_CalculatedNominalWeight->Write();
+	//h_CalculatedGeneratorWeight->Write(); //gives out of range error
+	//h_EGammaSF_egammaEff->Write(); //makes output file not open
+	//h_EGammaSF_egammaEffReco->Write();
+	//h_EGammaSF_egammaEff_Sys->Write();
+	//h_EGammaSF_egammaEffReco_Sys->Write();
+	output_ee->Close();
+	
 
 
 }
@@ -14417,7 +14352,7 @@ void fulleventselectionAlgo::fulleventselection(){
 //  fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
 
-  bool blinding = true;
+  bool blinding = false;
   std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
