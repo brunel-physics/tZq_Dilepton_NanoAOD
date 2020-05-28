@@ -10832,7 +10832,10 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
   //For the min and max Pdf weights
   for(int i = 0; i < LHEPdfWeight.size(); i++){
 
-        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(i);
+	std::cout << "LHEPdfWeight.size() = " << LHEPdfWeight.size() << std::endl;
+	std::cout << "LHEWeight_originalXWGTUP.size() = " << LHEWeight_originalXWGTUP.size() << std::endl;
+
+        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
 
         if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
         else{continue;}
@@ -12475,8 +12478,28 @@ else{
 	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "RECREATE");
 	output_ee->cd();
 
-	auto ZWeight{[&NormalisationFactorFunction, &SF_ee](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight){return PU * BTagWeight * NormalisationFactorFunction() * SF_ee;}};
-        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
+	auto ZWeight{[&NormalisationFactorFunction, &SF_ee, 			     &SF_Uncert_ee,
+		      &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+		      &PDF_ScaleUp,                 &PDF_ScaleDown,
+		      &isr_up, 			    &isr_down,
+		      &fsr_up,			    &fsr_down
+		     ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight){
+
+
+  			if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight;}
+  			else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight;}
+  			else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight;}
+  			else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight;}
+  			else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight;}
+  			else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight;}
+  			else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight;}
+  			else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight;}
+  			else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight;}
+  
+	}};
+
+
+        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
 
 
 	h_ZMass->Write();
