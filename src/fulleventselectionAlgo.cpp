@@ -9251,7 +9251,7 @@ auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, cons
 	std::string MeasurementTypeString;
 
 	if(abs(Jet_partonFlavour.at(j)) == 4 || abs(Jet_partonFlavour.at(j)) == 5){MeasurementTypeString = "mujets";}
-	else if( (abs(Jet_partonFlavour.at(j)) > 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
+	else if( (abs(Jet_partonFlavour.at(j)) >= 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
 	else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_partonFlavour.at(j) << std::endl;}
 
         std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
@@ -12475,37 +12475,11 @@ else{
 	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "RECREATE");
 	output_ee->cd();
 
-	auto ZWeight{[](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight){return PU * BTagWeight;}};
+	auto ZWeight{[&NormalisationFactorFunction, &SF_ee](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight){return PU * BTagWeight * NormalisationFactorFunction() * SF_ee;}};
         auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
 
-	auto h_BTagWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
-	//auto h_EGammaSF_egammaEff = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEff", "EGammaSF_egammaEff", 40, 0, 1}, "EGammaSF_egammaEff");
-	//auto h_EGammaSF_egammaEffReco = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEffReco", "EGammaSF_egammaEffReco", 40, 0, 1}, "EGammaSF_egammaEffReco");
-	
-	//auto h_EGammaSF_egammaEff_Sys = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEff_Sys", "EGammaSF_egammaEff_Sys", 40, 0, 1}, "EGammaSF_egammaEff_Sys");
-
-	//auto h_EGammaSF_egammaEffReco_Sys = d_WeightedEvents_withMET_ee.Histo1D({"h_EGammaSF_egammaEffReco_Sys", "EGammaSF_egammaEffReco_Sys", 40, 0, 1}, "EGammaSF_egammaEffReco_Sys");
-	
-	auto h_ReturnedPSWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_ReturnedPSWeight", "ReturnedPSWeight", 40, 0, 1}, "ReturnedPSWeight");
-	auto h_PU = d_WeightedEvents_withMET_ee.Histo1D({"h_PU", "PU", 40, 0, 1}, "PU");
-	//auto h_CalculatedGeneratorWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedGeneratorWeight", "CalculatedGeneratorWeight", 40, 0, 1}, "CalculatedGeneratorWeight");
-
-	//auto h_CalculatedNominalWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_CalculatedNominalWeight", "CalculatedNominalWeight", 40, 0, 1}, "CalculatedNominalWeight");
-
-
-	//auto h_EventWeight = d_WeightedEvents_withMET_ee.Histo1D({"h_EventWeight", "EventWeight", 40, 0, 1}, "EventWeight");
 
 	h_ZMass->Write();
-	h_BTagWeight->Write();
-	h_ReturnedPSWeight->Write();
-	h_PU->Write();
-	//h_EventWeight->Write();
-	//h_CalculatedNominalWeight->Write();
-	//h_CalculatedGeneratorWeight->Write(); //gives out of range error
-	//h_EGammaSF_egammaEff->Write(); //makes output file not open
-	//h_EGammaSF_egammaEffReco->Write();
-	//h_EGammaSF_egammaEff_Sys->Write();
-	//h_EGammaSF_egammaEffReco_Sys->Write();
 	output_ee->Close();
 	
 
