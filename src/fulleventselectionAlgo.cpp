@@ -5158,100 +5158,101 @@ auto NormalisationFactorFunction{[&process, &year](){
 
 
 
+
+
+
+
+
+//Electron selection and reconstruction SFs
+
+TFile* EGamma_inputfile;
+
+//2016
+TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+TFile* EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+
+//2017
+TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+TFile* EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+TFile* EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+
+//2018
+TFile* EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
+TFile* EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
+TFile* EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+
+
+
+
+
 //EGamma SF functions
 
-auto EGammaFunction{[](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
+auto EGammaFunction{[&EGamma_inputfile, 
+		     &EGammaEff_inputfile_2016,     	     &EGammaEffSys_inputfile_2016,
+		     &EGammaEffReco_inputfile_2016, 	     &EGammaEffRecoSys_inputfile_2016,
+		     &EGammaEff_inputfile_2017,              &EGammaEffSys_inputfile_2017, 
+		     &EGammaEffReco_LowPt_inputfile_2017,    &EGammaEffRecoSys_LowPt_inputfile_2017,
+		     &EGammaEffReco_HigherPt_inputfile_2017, &EGammaEffRecoSys_HigherPt_inputfile_2017,
+		     &EGammaEff_inputfile_2018,	             &EGammaEffSys_inputfile_2018,
+		     EGammaEffReco_inputfile_2018,	     &EGammaEffRecoSys_inputfile_2018
+		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
-  floats OutputVector{};
-  floats OutputVectorFinal{};
+   floats OutputVector{};
+   floats OutputVectorFinal{};
 
-  TFile* inputfile;
+   TH2* EGamma_histo;
 
-  for(int i = 0; i < pt.size(); i++){
+   for(int i = 0; i < pt.size(); i++){
 
   	if(year == "2016"){
-
-  		if(type == "egammaEff" || type == "egammaEffSys"){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-
-		}
-		else if(type == "egammaEffReco" || type == "egammaEffRecoSys"){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
-
-		}
-
-		else{std::cout << "No EGamma SF input file found (2016)"<< std::endl;}
-
+  		if(type == "EGammaEff"){EGamma_histo = (TH2*)EGammaEff_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
+		else if(type == "EGammaEffSys"){EGamma_histo = (TH2*)EGammaEffSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
+		else if(type == "EGammaRecoEff"){EGamma_histo = (TH2*)EGammaEffReco_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaEffRecoSys"){EGamma_histo = (TH2*)EGammaEffRecoSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
+		else{std::cout << "Type must be EGammaEff, EGammaEffSys, EGammaEffReco or EGammaEffRecoSys" << std::endl;}
   	}
   	else if(year == "2017"){
-
-		if( (type == "egammaEffReco" || type == "egammaEffRecoSys") && (pt.at(i) > 20) ){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-
-		}
-		else if( (type == "egammaEffReco" || type == "egammaEffRecoSys") && (pt.at(i) <= 20) ){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-
-		}
-		else if(type == "egammaEff" || type == "egammaEffSys"){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
-
-		}
-
-		else{std::cout << "No EGamma SF input file found (2017)" << std::endl;}
-
+        	if(type == "EGammaEff"){std::cout << "inside if" << std::endl; EGamma_histo = (TH2*)EGammaEff_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaEffSys"){EGamma_histo = (TH2*)EGammaEffSys_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaRecoEff" && pt.at(i) <= 20){EGamma_histo = (TH2*)EGammaEffReco_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGamma_histo = (TH2*)EGammaEffRecoSys_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
+		else if(type == "EGammaRecoEff" && pt.at(i) > 20){EGamma_histo = (TH2*)EGammaEffReco_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGamma_histo = (TH2*)EGammaEffRecoSys_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else{std::cout << "Type must be EGammaEff, EGammaEffSys, EGammaEffReco or EGammaEffRecoSys" << std::endl;}
   	}
-	else if(year == "2018"){
+  	else if(year == "2018"){
+        	if(type == "EGammaEff"){EGamma_histo = (TH2*)EGammaEff_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaEffSys"){EGamma_histo = (TH2*)EGammaEffSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else if(type == "EGammaRecoEff"){EGamma_histo = (TH2*)EGammaEffReco_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
+       	 	else if(type == "EGammaEffRecoSys"){EGamma_histo = (TH2*)EGammaEffRecoSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
+        	else{std::cout << "Type must be EGammaEff, EGammaEffSys, EGammaEffReco or EGammaEffRecoSys" << std::endl;}
+  	}
+  	else{std::cout << "Year must be 2016, 2017 or 2018." << std::endl;}
 
-		if(type == "egammaEff" || type == "egammaEffSys"){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
-
-		}
-		else if(type == "egammaEffReco" || type == "egammaEffRecoSys"){
-
-			inputfile = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
-
-		}
-		else{std::cout << "No EGamma SF input file found (2018)" << std::endl;}
-
-	}
-  	else{std::cout << "EGamma function is only for 2016 and 2017 so far" << std::endl;}
-
-  	TH2* histo = (TH2*)inputfile->GetObjectChecked("EGamma_SF2D", "TH2");
-
+	std::cout << "before eta condition" << std::endl;
 
   	if( abs(SuperClusterEta.at(i)) < 2.5 ){
 
-		int SuperClusterEtaBin = histo->GetXaxis()->FindBin(SuperClusterEta.at(i));
-		int PtBin = histo->GetYaxis()->FindBin(pt.at(i));
+		int SuperClusterEtaBin = EGamma_histo->GetXaxis()->FindBin(SuperClusterEta.at(i));
+		int PtBin = EGamma_histo->GetYaxis()->FindBin(pt.at(i));
 		float EGammaSF;
 
-			if(type == "egammaEffSys" || "egammaEffRecoSys"){
+		if(type == "EGammaEffSys" || "EGammaEffRecoSys"){EGammaSF = EGamma_histo->GetBinError(SuperClusterEtaBin, PtBin);}
+		else{EGammaSF = EGamma_histo->GetBinContent(SuperClusterEtaBin, PtBin);}
 
-				EGammaSF = histo->GetBinError(SuperClusterEtaBin, PtBin);
-
-			}
-
-			else{EGammaSF = histo->GetBinContent(SuperClusterEtaBin, PtBin);}
-
-
-			OutputVector.push_back(EGammaSF);
+		OutputVector.push_back(EGammaSF);
 		
-	
-
-	}
-	else{OutputVector.push_back(1.0);}
+  	}
+  	else{OutputVector.push_back(1.0);}
 
 
-  inputfile->Close();
 
-  }
+  } //end of for loop
 
 
   for(int i = 0; i < OutputVector.size(); i++){
@@ -5263,14 +5264,15 @@ auto EGammaFunction{[](const std::string& year, const std::string& type, const f
 
   return OutputVectorFinal.at(0);
 
-}}; 
+}};
 
+EGamma_inputfile->Close();
 
 
 
 auto EGammaSF_egammaEff{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "egammaEff", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(year, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
 
 }};
 
@@ -5280,7 +5282,7 @@ auto EGammaSF_egammaEff{[&year, &EGammaFunction](const floats& Electron_pt_Selec
 
 auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "egammaEffReco", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(year, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
 
 }};
 
@@ -5290,7 +5292,7 @@ auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_S
 
 auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "egammaEffSys", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(year, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
 
 }};
 
@@ -5300,9 +5302,13 @@ auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_S
 
 auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "egammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(year, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
 
 }};
+
+
+
+
 
 
 
@@ -12483,23 +12489,23 @@ else{
 		      &PDF_ScaleUp,                 &PDF_ScaleDown,
 		      &isr_up, 			    &isr_down,
 		      &fsr_up,			    &fsr_down
-		     ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight){
+		     ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff){
 
 
-  			if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight;}
-  			else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight;}
-  			else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight;}
-  			else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight;}
-  			else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight;}
-  			else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight;}
-  			else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight;}
-  			else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight;}
-  			else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight;}
+  			if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff;}
   
 	}};
 
 
-        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
+        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
 
 
 	h_ZMass->Write();
