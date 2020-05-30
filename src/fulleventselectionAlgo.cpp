@@ -5232,6 +5232,9 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo
 		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
+
+   std::cout << "inside EGammaFunction" << std::endl;
+
    floats OutputVector{};
    floats OutputVectorFinal{};
 
@@ -5374,6 +5377,8 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 //Lambda functions for lepton efficiencies
 
 auto MuonSF{[&year](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
+
+  std::cout << "inside MuonSF" << std::endl;
 
   floats AbsEta = abs(eta);
 
@@ -5738,7 +5743,7 @@ auto DummyColumnFunctionInts{[](const ints& charges){
 //PS weight lambda function
 auto PSWeight{[&year, &process](floats& PSWeight, const floats& pts){
 
-  floats Ones(pts.size(), 1.0);
+  floats Ones(4, 1.0);
 
   if(year == "2017" || year == "2018"){
 
@@ -10951,6 +10956,8 @@ ints SummedWeights(14, 0);
 
 auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
+  std::cout << "inside NominalWeight" << std::endl;
+
   float PdfMin = 1.0;
   float PdfMax = 1.0;
 
@@ -10981,10 +10988,20 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
+  std::cout << "inside ME_uncert_function" << std::endl;
+  std::cout << "LHEPdfWeight.size() = " << LHEPdfWeight.size() << std::endl;
+  std::cout << "LHEWeight_originalXWGTUP.size() = " << LHEWeight_originalXWGTUP.size() << std::endl;
+
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
-  for(int i = 0; i < pdf.size(); i++){ pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
-  
+  std::cout << "first pdf.size() = " << pdf.size() << std::endl;
+
+  if(pdf.size() > 0){
+  	for(int i = 0; i < pdf.size(); i++){ std::cout << "pdf.size() = " << pdf.size() << std::endl; pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
+  }
+
+  std::cout << "ReturnedPSWeight.size() = " << ReturnedPSWeight.size() << std::endl;
+
   ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
   ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
   (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
@@ -10992,6 +11009,7 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
   ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
   (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
 
+  std::cout << "after ReturnedPSWeight" << std::endl;
 
   //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
 
@@ -11001,6 +11019,8 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
 
   float ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
 
+  std::cout << "after float ME_SF" << std::endl;
+
   return ME_SF;
 
 }};
@@ -11009,6 +11029,8 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
 
 //Histogram for ME uncertainties
 auto ME_histo_function{[&SummedWeights](){
+
+  std::cout << "inside ME_histo_function" << std::endl;
 
   ints numerators;
 
@@ -11022,7 +11044,7 @@ auto ME_histo_function{[&SummedWeights](){
 //SFs for ME up and down
 auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
-
+	std::cout << "inside GeneratorWeight" << std::endl;
 
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
 
@@ -11165,6 +11187,8 @@ const floats& Jet_mass){
   floats SmearedJetPyVec;
   floats UnsmearedJetPx;
   floats UnsmearedJetPy;
+
+  std::cout << "inside METUncertFunction" << std::endl;
 
   //TLorentzVector for unsmeared jets
   for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
@@ -11576,6 +11600,7 @@ if(process == "tZq"){
         }
         else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
                 Filename = process + "_AfterFullSelection_GaussianFit_ZPlusJetsCR_MET_Up_" + year + ".root";
+
         }
         else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
                 Filename = process + "_AfterFullSelection_GaussianFit_ttbarCR_PDF_MET_Up_" + year + ".root";
@@ -14147,13 +14172,13 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
  }
   else if(year == "2017"){
 
-  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
 	             "VV_WZTo2L2Q", "VV_WZTo3LNu", "VV_WWTo1L1Nu2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VV_WGToLNuG", "VV_ZGToLLG", "VVV_WWWTo4F", 
 	             "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",  
-	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
+	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb",*/ "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
 		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
 		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", "data_SingleMuonRunC", 			   		   "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"};
