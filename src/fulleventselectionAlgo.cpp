@@ -5164,9 +5164,6 @@ auto NormalisationFactorFunction{[&process, &year](){
 
 
 //Electron selection and reconstruction SFs
-
-TFile* EGamma_inputfile;
-
 //2016
 TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
 TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
@@ -5175,7 +5172,8 @@ TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyC
 
 //2017
 TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
+TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
 TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
 TFile* EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
 TFile* EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
@@ -5186,64 +5184,120 @@ TFile* EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorre
 TFile* EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
+//Histograms
+//2016
+TH2* EGammaEff2016_histo = (TH2*)EGammaEff_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffSys2016_histo = (TH2*)EGammaEffSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffReco2016_histo = (TH2*)EGammaEffReco_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffRecoSys2016_histo = (TH2*)EGammaEffRecoSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
 
+//2017
+TH2* EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEff2017_histo->SetDirectory(nullptr);
+TH2* EGammaEffSys2017_histo = (TH2*)EGammaEffSys_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffReco_LowPt_2017_histo = (TH2*)EGammaEffReco_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffRecoSys_LowPt_2017_histo = (TH2*)EGammaEffRecoSys_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffReco_HigherPt_2017_histo = (TH2*)EGammaEffReco_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)EGammaEffRecoSys_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
+
+//2018
+TH2* EGammaEff2018_histo = (TH2*)EGammaEff_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffSys2018_histo = (TH2*)EGammaEffSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffReco2018_histo = (TH2*)EGammaEffReco_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffRecoSys2018_histo = (TH2*)EGammaEffRecoSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
+
+
+int Bin_EGammaEff2017_X_1 = EGammaEff2017_histo->GetXaxis()->FindBin(2.24316);
+int Bin_EGammaEff2017_Y_1 = EGammaEff2017_histo->GetYaxis()->FindBin(91.2229);
+
+std::cout << "Bin_EGammaEff2017_X_1 = " << Bin_EGammaEff2017_X_1 << std::endl;
+std::cout << "Bin_EGammaEff2017_Y_1 = " << Bin_EGammaEff2017_Y_1 << std::endl;
 
 
 
 //EGamma SF functions
 
-auto EGammaFunction{[&EGamma_inputfile, 
-		     &EGammaEff_inputfile_2016,     	     &EGammaEffSys_inputfile_2016,
-		     &EGammaEffReco_inputfile_2016, 	     &EGammaEffRecoSys_inputfile_2016,
-		     &EGammaEff_inputfile_2017,              &EGammaEffSys_inputfile_2017, 
-		     &EGammaEffReco_LowPt_inputfile_2017,    &EGammaEffRecoSys_LowPt_inputfile_2017,
-		     &EGammaEffReco_HigherPt_inputfile_2017, &EGammaEffRecoSys_HigherPt_inputfile_2017,
-		     &EGammaEff_inputfile_2018,	             &EGammaEffSys_inputfile_2018,
-		     EGammaEffReco_inputfile_2018,	     &EGammaEffRecoSys_inputfile_2018
+auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
+		     &EGammaEffReco2016_histo, 	     	     &EGammaEffRecoSys2016_histo,
+		     &EGammaEff2017_histo,                   &EGammaEffSys2017_histo, 
+		     &EGammaEffReco_LowPt_2017_histo,        &EGammaEffRecoSys_LowPt_2017_histo,
+		     &EGammaEffReco_HigherPt_2017_histo,     &EGammaEffRecoSys_HigherPt_2017_histo,
+		     &EGammaEff2018_histo,	             &EGammaEffSys2018_histo,
+		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo
 		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
    floats OutputVector{};
    floats OutputVectorFinal{};
 
-   TH2* EGamma_histo;
+   std::cout << "type = " << type << std::endl;
+   std::cout << "year = " << year << std::endl;
 
    for(int i = 0; i < pt.size(); i++){
 
-  	if(year == "2016"){
-  		if(type == "EGammaEff"){EGamma_histo = (TH2*)EGammaEff_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
-		else if(type == "EGammaEffSys"){EGamma_histo = (TH2*)EGammaEffSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
-		else if(type == "EGammaRecoEff"){EGamma_histo = (TH2*)EGammaEffReco_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaEffRecoSys"){EGamma_histo = (TH2*)EGammaEffRecoSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");}
-		else{std::cout << "Type must be EGammaEff, EGammaEffSys, EGammaEffReco or EGammaEffRecoSys" << std::endl;}
-  	}
-  	else if(year == "2017"){
-        	if(type == "EGammaEff"){std::cout << "inside if" << std::endl; EGamma_histo = (TH2*)EGammaEff_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaEffSys"){EGamma_histo = (TH2*)EGammaEffSys_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaRecoEff" && pt.at(i) <= 20){EGamma_histo = (TH2*)EGammaEffReco_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGamma_histo = (TH2*)EGammaEffRecoSys_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
-		else if(type == "EGammaRecoEff" && pt.at(i) > 20){EGamma_histo = (TH2*)EGammaEffReco_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGamma_histo = (TH2*)EGammaEffRecoSys_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else{std::cout << "Type must be EGammaEff, EGammaEffSys, EGammaEffReco or EGammaEffRecoSys" << std::endl;}
-  	}
-  	else if(year == "2018"){
-        	if(type == "EGammaEff"){EGamma_histo = (TH2*)EGammaEff_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaEffSys"){EGamma_histo = (TH2*)EGammaEffSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else if(type == "EGammaRecoEff"){EGamma_histo = (TH2*)EGammaEffReco_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
-       	 	else if(type == "EGammaEffRecoSys"){EGamma_histo = (TH2*)EGammaEffRecoSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");}
-        	else{std::cout << "Type must be EGammaEff, EGammaEffSys, EGammaEffReco or EGammaEffRecoSys" << std::endl;}
-  	}
-  	else{std::cout << "Year must be 2016, 2017 or 2018." << std::endl;}
-
 	std::cout << "before eta condition" << std::endl;
 
+	
   	if( abs(SuperClusterEta.at(i)) < 2.5 ){
 
-		int SuperClusterEtaBin = EGamma_histo->GetXaxis()->FindBin(SuperClusterEta.at(i));
-		int PtBin = EGamma_histo->GetYaxis()->FindBin(pt.at(i));
+		std::cout << "abs(SuperClusterEta.at(i)) = " << abs(SuperClusterEta.at(i)) << std::endl;
+		std::cout << "pt.at(i) = " << pt.at(i) << std::endl;
+
+		//2016
+		int Bin_EGammaEff2016 = EGammaEff2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffReco2016 = EGammaEffReco2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffRecoSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+
+		//2017
+		std::cout << "2017" << std::endl;
+		int Bin_EGammaEff2017 = EGammaEff2017_histo->FindBin(SuperClusterEta.at(i), pt.at(i));
+		std::cout << "after Bin_EGammaEff2017" << std::endl;
+		int Bin_EGammaEffSys2017 = EGammaEffSys2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffReco_LowPt_2017 = EGammaEffReco_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffRecoSys_LowPt_2017 = EGammaEffRecoSys_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffReco_HigherPt_2017 = EGammaEffReco_HigherPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffRecoSys_HigherPt_2017 = EGammaEffRecoSys_HigherPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+
+
+		//2018
+		std::cout << "2018" << std::endl;
+		int Bin_EGammaEff2018 = EGammaEff2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffReco2018 = EGammaEffReco2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffRecoSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+
+		std::cout << "EGammaSF" << std::endl;
 		float EGammaSF;
 
-		if(type == "EGammaEffSys" || "EGammaEffRecoSys"){EGammaSF = EGamma_histo->GetBinError(SuperClusterEtaBin, PtBin);}
-		else{EGammaSF = EGamma_histo->GetBinContent(SuperClusterEtaBin, PtBin);}
+		//std::cout << "Bin_EGammaEff2016 = " << Bin_EGammaEff2016 << std::endl;
+		//std::cout << "Bin_EGammaEffSys2016 = " << Bin_EGammaEffSys2016 << std::endl;
+
+		if(year == "2016"){
+			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
+			else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2016_histo->GetBinError(Bin_EGammaEffRecoSys2016);}
+			else if(type == "EGammaEff"){EGammaSF = EGammaEff2016_histo->GetBinContent(Bin_EGammaEff2016);}
+			else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2016_histo->GetBinContent(Bin_EGammaEffReco2016);}
+			else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2016" << std::endl;}
+		}
+		else if(year == "2017"){
+			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2017_histo->GetBinError(Bin_EGammaEffSys2017);}
+                        else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGammaSF = EGammaEffRecoSys_LowPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_LowPt_2017);}
+			else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGammaSF = EGammaEffRecoSys_HigherPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_HigherPt_2017);}
+                        else if(type == "EGammaEff"){std::cout << "here 2" << std::endl; EGammaSF = EGammaEff2017_histo->GetBinContent(Bin_EGammaEff2017);}
+			else if(type == "EGammaEffReco" && pt.at(i) <= 20){EGammaSF = EGammaEffReco_LowPt_2017_histo->GetBinContent(Bin_EGammaEffReco_LowPt_2017);}
+                        else if(type == "EGammaEffReco" && pt.at(i) > 20){EGammaSF = EGammaEffReco_HigherPt_2017_histo->GetBinContent(Bin_EGammaEffReco_HigherPt_2017);}
+                        else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2017" << std::endl;}
+
+		}
+		else if(year == "2018"){
+			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2018_histo->GetBinError(Bin_EGammaEffSys2018);}
+                        else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2018_histo->GetBinError(Bin_EGammaEffRecoSys2018);}
+                        else if(type == "EGammaEff"){EGammaSF = EGammaEff2018_histo->GetBinContent(Bin_EGammaEff2018);}
+                        else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2018_histo->GetBinContent(Bin_EGammaEffReco2018);}
+                        else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2018" << std::endl;}
+
+		}
+	
 
 		OutputVector.push_back(EGammaSF);
 		
@@ -5257,6 +5311,7 @@ auto EGammaFunction{[&EGamma_inputfile,
 
   for(int i = 0; i < OutputVector.size(); i++){
 
+	std::cout << "inside OutputVector for loop" << std::endl;
 	if(OutputVector.at(i) == 0){OutputVectorFinal.push_back(1.0);}
 	else{OutputVectorFinal.push_back( OutputVector.at(i) );}
 
@@ -5266,7 +5321,21 @@ auto EGammaFunction{[&EGamma_inputfile,
 
 }};
 
-EGamma_inputfile->Close();
+
+EGammaEff_inputfile_2016->Close();
+EGammaEffSys_inputfile_2016->Close();
+EGammaEffReco_inputfile_2016->Close();
+EGammaEffRecoSys_inputfile_2016->Close(); 
+EGammaEffReco_HigherPt_inputfile_2017->Close();
+EGammaEffRecoSys_HigherPt_inputfile_2017->Close();
+EGammaEffReco_LowPt_inputfile_2017->Close();
+EGammaEffRecoSys_LowPt_inputfile_2017->Close();
+EGammaEff_inputfile_2017->Close();
+EGammaEffSys_inputfile_2017->Close();
+EGammaEff_inputfile_2018->Close();
+EGammaEffSys_inputfile_2018->Close();
+EGammaEffReco_inputfile_2018->Close();
+EGammaEffRecoSys_inputfile_2018->Close();
 
 
 
