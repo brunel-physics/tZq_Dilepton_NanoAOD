@@ -12826,7 +12826,7 @@ process == "data_SingleMuonRunH"
 
 ){
 
-
+	std::cout << "before Filtering events that pass the single electron triggers" << std::endl;
 
         //Filtering events that pass the single electron triggers 
 	std::string SingleElectronTrigger1;
@@ -12874,8 +12874,12 @@ const bool& HLT_Ele25_eta2p1_WPTight_Gsf,
 const bool& HLT_Ele27_WPTight_Gsf
 */
 
+	std::cout << "before EventsPassingSingleElectronTrigger" << std::endl;
+
         auto EventsPassingSingleElectronTrigger = d_dataframe.Define("EventsPassingSingleElectronTrigger", SingleElectron, {SingleElectronTrigger1, SingleElectronTrigger2, SingleElectronTrigger3, SingleElectronTrigger4, SingleElectronTrigger5})
                                                              .Filter(SingleElectron, {SingleElectronTrigger1, SingleElectronTrigger2, SingleElectronTrigger3, SingleElectronTrigger4, SingleElectronTrigger5});
+
+	std::cout << "before //Filtering events that pass the single muon triggers" << std::endl;
 
 
         //Filtering events that pass the single muon triggers
@@ -12888,9 +12892,12 @@ const bool& HLT_Ele27_WPTight_Gsf
         std::string Name_electron = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
         std::string Name_muon = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
 
-
+	std::cout << "before Saving events that pass the single electron triggers and their event numbers" << std::endl;
+	
         //Saving events that pass the single electron triggers and their event numbers
         auto Snapshot_EventsPassingSingleElectronTrigger = EventsPassingSingleElectronTrigger.Snapshot("Events", Name_electron.c_str(), "");
+
+	std::cout << "before Saving events that pass the single muon triggers and their event numbers" << std::endl;
 
         //Saving events that pass the single muon triggers and their event numbers
         auto Snapshot_EventsPassingSingleMuonTrigger = EventsPassingSingleMuonTrigger.Snapshot("Events", Name_muon.c_str(), "");
@@ -12901,6 +12908,8 @@ const bool& HLT_Ele27_WPTight_Gsf
 }
 
 
+std::cout << "before d_DoubleCountCheck" << std::endl;
+
 auto d_DoubleCountCheck = d_EventCleaning.Define("DummyColumn3", DummyColumnFunction, {"Electron_pt"});
 
 
@@ -12909,7 +12918,8 @@ if(process != "data_EGRunB" &&
    process != "data_EGRunD"){
 
 
-
+	std::cout << "before ee_file" << std::endl;
+	
 	//Preventing double counting of single and double lepton datasets 
 	std::string ee_file = "EventsPassingDoubleElectronTrigger_" + process + "_" + year + ".root";
 	std::string mumu_file = "EventsPassingDoubleMuonTrigger_" + process + "_" + year + ".root";
@@ -12917,25 +12927,38 @@ if(process != "data_EGRunB" &&
 	std::string e_file = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
 	std::string mu_file = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
 
+	std::cout << "after mu_file" << std::endl;
+
 	TFile * ee_file_Open = new TFile(ee_file.c_str(), "READ");
 	TFile * mumu_file_Open = new TFile(mumu_file.c_str(), "READ");
 	TFile * emu_file_Open = new TFile(emu_file.c_str(), "READ");
 	TFile * e_file_Open = new TFile(e_file.c_str(), "READ");
 	TFile * mu_file_Open = new TFile(mu_file.c_str(), "READ");
 
+	std::cout << "before h_EventNumber_ee" << std::endl;
+
 	TH1* h_EventNumber_ee = (TH1*)ee_file_Open->GetObjectChecked("event", "TH1");
+	
+	std::cout << "before h_EventNumber_mumu" << std::endl;
+
 	TH1* h_EventNumber_mumu = (TH1*)mumu_file_Open->GetObjectChecked("event", "TH1");
 	TH1* h_EventNumber_emu = (TH1*)emu_file_Open->GetObjectChecked("event", "TH1");
 	TH1* h_EventNumber_e = (TH1*)ee_file_Open->GetObjectChecked("event", "TH1");
 	TH1* h_EventNumber_mu = (TH1*)mu_file_Open->GetObjectChecked("event", "TH1");
 
+	std::cout << "after h_EventNumber_mu" << std::endl;
+
 	//Returning events that have not been double-counted
 	//For ee and single electron 
 	auto DoubleCountCheck_ee_channel{[&h_EventNumber_ee, &h_EventNumber_e](){
 
+	  std::cout << "inside oubleCountCheck_ee_channel" << std::endl;
+
 	  floats EventNumbers{};
 
 	  for(int i = 0; i < h_EventNumber_ee->GetNbinsX(); i++){
+
+		std::cout << "h_EventNumber_ee->GetNbinsX() = " << h_EventNumber_ee->GetNbinsX() << std::endl;
 
 		float DoubleElectronEventNumber = h_EventNumber_ee->GetBinContent(i);
 
@@ -12956,6 +12979,8 @@ if(process != "data_EGRunB" &&
 
 	//For mumu and single muon
 	auto DoubleCountCheck_mumu_channel{[&h_EventNumber_mumu, &h_EventNumber_mu](){
+
+	  std::cout << "inside DoubleCountCheck_mumu_channel" << std::endl;
 
           floats EventNumbers{};
 
@@ -12982,6 +13007,8 @@ if(process != "data_EGRunB" &&
 	//For emu and single electron
 	auto DoubleCountCheck1_emu_channel{[&h_EventNumber_emu, &h_EventNumber_e](){
 
+	  std::cout << "inside DoubleCountCheck1_emu_channel" << std::endl;
+
           floats EventNumbers{};
 
           for(int i = 0; i < h_EventNumber_emu->GetNbinsX(); i++){
@@ -13007,6 +13034,8 @@ if(process != "data_EGRunB" &&
 	//For emu and single muon
         auto DoubleCountCheck2_emu_channel{[&h_EventNumber_emu, &h_EventNumber_mu](){
 
+	 std::cout << "inside DoubleCountCheck2_emu_channel" << std::endl;
+
           floats EventNumbers{};
 
           for(int i = 0; i < h_EventNumber_emu->GetNbinsX(); i++){
@@ -13029,7 +13058,7 @@ if(process != "data_EGRunB" &&
         }};	
 
 
-
+	std::cout << "before PreventDoubleCount_FilterFunction_Not2018" << std::endl;
 
 	auto PreventDoubleCount_FilterFunction_Not2018{[&DoubleCountCheck_ee_channel, &DoubleCountCheck_mumu_channel, &DoubleCountCheck1_emu_channel, DoubleCountCheck2_emu_channel](const unsigned int& event){
 
@@ -13037,14 +13066,18 @@ if(process != "data_EGRunB" &&
 
 	}};
 
+	std::cout << "before PreventDoubleCount_FilterFunction_2018" << std::endl;
 
 	//The double and single electron datasets for 2018 are merged. Only need to check for double counting for muons. 
 	auto PreventDoubleCount_FilterFunction_2018{[&DoubleCountCheck_mumu_channel, &DoubleCountCheck1_emu_channel, DoubleCountCheck2_emu_channel](const unsigned int& event){
+
+		std::cout << "inside PreventDoubleCount_FilterFunction_2018" << std::endl;
 
                 return (event == DoubleCountCheck_mumu_channel()) && (event == DoubleCountCheck1_emu_channel()) && (event == DoubleCountCheck2_emu_channel());
 
         }};
 
+  std::cout << "before d_DoubleCountCheck" << std::endl;
 
   auto d_DoubleCountCheck = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"});
 
@@ -13059,6 +13092,8 @@ if(process != "data_EGRunB" &&
 
 //Using the golden ison file to filter events
 auto GoldenJsonReader{[&year](){
+
+ std::cout << "GoldenJsonReader" << std::endl;
 
  std::string GoldenJsonFileName;
 
@@ -13094,6 +13129,8 @@ return GoldenJsonOutput;
 
 auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
 
+  std::cout << "inside GoldenJson_SplitChars" << std::endl;
+
   std::vector<char> out{};
 
   for(int i = 0; i < (GoldenJsonReader()).size(); i++){
@@ -13117,6 +13154,7 @@ auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
 
 auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
 
+  std::cout << "inside RunNumberCheck" << std::endl;
   
  std::vector<char> EventsVector{}; 
 
@@ -13186,6 +13224,8 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 
 auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
+ std::cout << "inside ReturnRunNumAndEventRanges" << std::endl;
+ 
  std::vector<int> RunNumAndEvents{};
 
  RunNumAndEvents.push_back(InputRunNumber);
@@ -13504,6 +13544,8 @@ auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& Inp
 
 
 auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
+
+  std::cout << "inside RunAndLumiFilterFunction" << std::endl;
 
   if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
 
@@ -14181,10 +14223,11 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
 	             "VV_WZTo2L2Q", "VV_WZTo3LNu", "VV_WWTo1L1Nu2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VV_WGToLNuG", "VV_ZGToLLG", "VVV_WWWTo4F", 
 	             "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",  
-	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb",*/ "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
+	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
 		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
-		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", "data_SingleMuonRunC", 			   		   "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"};
+		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB",*/ 
+		     "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"};
 
  }
  else if(year == "2018"){
