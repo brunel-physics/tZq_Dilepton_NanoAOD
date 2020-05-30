@@ -5186,37 +5186,43 @@ TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyC
 
 //Histograms
 //2016
-TH2* EGammaEff2016_histo = (TH2*)EGammaEff_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffSys2016_histo = (TH2*)EGammaEffSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffReco2016_histo = (TH2*)EGammaEffReco_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffRecoSys2016_histo = (TH2*)EGammaEffRecoSys_inputfile_2016->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEff2016_histo = (TH2*)(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEff2016_histo->SetDirectory(nullptr);
+TH2* EGammaEffSys2016_histo = (TH2*)(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEffSys2016_histo->SetDirectory(nullptr);
+TH2* EGammaEffReco2016_histo = (TH2*)(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEffReco2016_histo->SetDirectory(nullptr);
+TH2* EGammaEffRecoSys2016_histo = (TH2*)(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys2016_histo->SetDirectory(nullptr);
 
 //2017
 TH2* EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEff2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2017_histo = (TH2*)EGammaEffSys_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffReco_LowPt_2017_histo = (TH2*)EGammaEffReco_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffRecoSys_LowPt_2017_histo = (TH2*)EGammaEffRecoSys_LowPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffReco_HigherPt_2017_histo = (TH2*)EGammaEffReco_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)EGammaEffRecoSys_HigherPt_inputfile_2017->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEffSys2017_histo = (TH2*)(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffSys2017_histo->SetDirectory(nullptr);
+TH2* EGammaEffReco_LowPt_2017_histo = (TH2*)(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffReco_LowPt_2017_histo->SetDirectory(nullptr); 
+TH2* EGammaEffRecoSys_LowPt_2017_histo = (TH2*)(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys_LowPt_2017_histo->SetDirectory(nullptr);
+TH2* EGammaEffReco_HigherPt_2017_histo = (TH2*)(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffReco_HigherPt_2017_histo->SetDirectory(nullptr);
+TH2* EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys_HigherPt_2017_histo->SetDirectory(nullptr);
 
 //2018
-TH2* EGammaEff2018_histo = (TH2*)EGammaEff_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffSys2018_histo = (TH2*)EGammaEffSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffReco2018_histo = (TH2*)EGammaEffReco_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
-TH2* EGammaEffRecoSys2018_histo = (TH2*)EGammaEffRecoSys_inputfile_2018->GetObjectChecked("EGamma_SF2D", "TH2");
+TH2* EGammaEff2018_histo = (TH2*)(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEff2018_histo->SetDirectory(nullptr);
+TH2* EGammaEffSys2018_histo = (TH2*)(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEffSys2018_histo->SetDirectory(nullptr);
+TH2* EGammaEffReco2018_histo = (TH2*)(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEffReco2018_histo->SetDirectory(nullptr);
+TH2* EGammaEffRecoSys2018_histo = (TH2*)(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys2018_histo->SetDirectory(nullptr);
 
-
-int Bin_EGammaEff2017_X_1 = EGammaEff2017_histo->GetXaxis()->FindBin(2.24316);
-int Bin_EGammaEff2017_Y_1 = EGammaEff2017_histo->GetYaxis()->FindBin(91.2229);
-
-std::cout << "Bin_EGammaEff2017_X_1 = " << Bin_EGammaEff2017_X_1 << std::endl;
-std::cout << "Bin_EGammaEff2017_Y_1 = " << Bin_EGammaEff2017_Y_1 << std::endl;
 
 
 
 //EGamma SF functions
-
 auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
 		     &EGammaEffReco2016_histo, 	     	     &EGammaEffRecoSys2016_histo,
 		     &EGammaEff2017_histo,                   &EGammaEffSys2017_histo, 
@@ -5249,9 +5255,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
                 int Bin_EGammaEffRecoSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
 
 		//2017
-		std::cout << "2017" << std::endl;
 		int Bin_EGammaEff2017 = EGammaEff2017_histo->FindBin(SuperClusterEta.at(i), pt.at(i));
-		std::cout << "after Bin_EGammaEff2017" << std::endl;
 		int Bin_EGammaEffSys2017 = EGammaEffSys2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
 		int Bin_EGammaEffReco_LowPt_2017 = EGammaEffReco_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
 		int Bin_EGammaEffRecoSys_LowPt_2017 = EGammaEffRecoSys_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
@@ -5269,8 +5273,10 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 		std::cout << "EGammaSF" << std::endl;
 		float EGammaSF;
 
-		//std::cout << "Bin_EGammaEff2016 = " << Bin_EGammaEff2016 << std::endl;
-		//std::cout << "Bin_EGammaEffSys2016 = " << Bin_EGammaEffSys2016 << std::endl;
+		std::cout << "Bin_EGammaEff2016 = " << Bin_EGammaEff2016 << std::endl;
+		std::cout << "Bin_EGammaEffSys2016 = " << Bin_EGammaEffSys2016 << std::endl;
+		std::cout << "Bin_EGammaEffReco2016 = " << Bin_EGammaEffReco2016 << std::endl;
+		std::cout << "Bin_EGammaEffRecoSys2016 = " << Bin_EGammaEffRecoSys2016 << std::endl;
 
 		if(year == "2016"){
 			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
@@ -11101,15 +11107,14 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
  					     .Define("ProbBTagData", ProbBTagDataFunction, {"EffBTaggedProductData", "EffNonBTaggedProductData"})
 					     .Define("BTagWeight", BTagWeightFunction, {"ProbBTagMC", "ProbBTagData"})
 					     .Define("EGammaSF_egammaEff", EGammaSF_egammaEff, {"Electron_pt_Selection", "Electron_eta_Selection"})
-					     .Define("EGammaSF_egammaEff_Sys", EGammaSF_egammaEff_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
+					     .Define("EGammaSF_egammaEffSys", EGammaSF_egammaEff_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("EGammaSF_egammaEffReco", EGammaSF_egammaEffReco, {"Electron_pt_Selection", "Electron_eta_Selection"})
-					     .Define("EGammaSF_egammaEffReco_Sys", EGammaSF_egammaEffReco_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
+					     .Define("EGammaSF_egammaEffRecoSys", EGammaSF_egammaEffReco_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("ReturnedPSWeight", PSWeight, {PSWeightString_ee, "Electron_pt_Selection"})
 					     .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					     .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 					     .Define("ME_numerator_histo", ME_histo_function, {})
-					     .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"})
-					     .Define("EventWeight", EventWeightFunction_ee, {"PU","BTagWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEff_Sys", "EGammaSF_egammaEffReco_Sys", "ReturnedPSWeight", "CalculatedGeneratorWeight", "CalculatedNominalWeight"});
+					     .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"});
 								      
 
 
@@ -11141,8 +11146,7 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 					   	 .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 						 .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 						 .Define("ME_numerator_histo", ME_histo_function, {})
-						 .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"})
-                                                 .Define("EventWeight", EventWeightFunction_mumu, {"PU","BTagWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_stat", "MuonSFTest_ID_sys_syst", "MuonSFTest_Iso_sys_stat", "MuonSFTest_Iso_sys_syst", "ReturnedPSWeight", "CalculatedGeneratorWeight", "CalculatedNominalWeight"});
+						 .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"});
 				
 
 
@@ -12558,23 +12562,23 @@ else{
 		      &PDF_ScaleUp,                 &PDF_ScaleDown,
 		      &isr_up, 			    &isr_down,
 		      &fsr_up,			    &fsr_down
-		     ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff){
+		     ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys){
 
 
-  			if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff;}
-  			else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff;}
+  			if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys;}
+  			else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys;}
+  			else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
+  			else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
+  			else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
+  			else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
+  			else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
+  			else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
+  			else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco;}
   
 	}};
 
 
-        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
+        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
 
 
 	h_ZMass->Write();
