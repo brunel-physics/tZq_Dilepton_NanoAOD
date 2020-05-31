@@ -13062,6 +13062,8 @@ if(process != "data_EGRunB" &&
 
 	auto PreventDoubleCount_FilterFunction_Not2018{[&DoubleCountCheck_ee_channel, &DoubleCountCheck_mumu_channel, &DoubleCountCheck1_emu_channel, DoubleCountCheck2_emu_channel](const unsigned int& event){
 
+		std::cout << "inside PreventDoubleCount_FilterFunction_Not2018" << std::endl;
+
 		return (event == DoubleCountCheck_ee_channel()) && (event == DoubleCountCheck_mumu_channel()) && (event == DoubleCountCheck1_emu_channel()) && (event == DoubleCountCheck2_emu_channel());
 
 	}};
@@ -13081,14 +13083,17 @@ if(process != "data_EGRunB" &&
 
   auto d_DoubleCountCheck = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"});
 
+  std::cout << "before year != 2018" << std::endl;
 
   if(year != "2018"){ auto d_DoubleCountCheck = d_EventCleaning.Filter(PreventDoubleCount_FilterFunction_Not2018, {"event"}, "Double counting filter");}
   else{ auto d_DoubleCountCheck = d_EventCleaning.Filter(PreventDoubleCount_FilterFunction_2018, {"event"}, "Double counting filter");}
 
 
+  std::cout << "after else{ auto d_DoubleCountCheck" << std::endl;
+
 }
 
-
+std::cout << "before GoldenJsonReader" << std::endl;
 
 //Using the golden ison file to filter events
 auto GoldenJsonReader{[&year](){
@@ -13125,6 +13130,7 @@ return GoldenJsonOutput;
 }};
 
 
+std::cout << "before GoldenJson_SplitChars" << std::endl;
 
 
 auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
@@ -13150,7 +13156,7 @@ auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
 }};
 
 
-
+std::cout << "before RunNumberCheck" << std::endl;
 
 auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
 
@@ -13221,6 +13227,8 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 
 }};
 
+
+std::cout << "before ReturnRunNumAndEventRanges" << std::endl;
 
 auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
@@ -13542,6 +13550,7 @@ auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& Inp
 }};
 
 
+std::cout << "before RunAndLumiFilterFunction" << std::endl;
 
 auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
 
@@ -13564,6 +13573,8 @@ auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& 
 
 
 }};
+
+std::cout << "before d_GoldenJsonFilteredEvents" << std::endl;
 
 
 //Filtering events with the run numbers and lumi ranges from the golden json file
@@ -13613,12 +13624,17 @@ auto d_ee_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_functio
                                           .Define("SubleadingElectron_dxy_ECALEndcaps", SubleadingElectron_dxy_ECALEndcaps_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"});
 
 
+ std::cout << "before  d_ee_selection" << std::endl;
 
  auto d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
+
+ std::cout << "after d_ee_selection" << std::endl;
 
 if(ttbarCR == false){auto d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");}
 else{auto d_ee_selection = d_ee_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");}
 
+
+std::cout << "before d_mumu_selection_defines" << std::endl;
 
 
 //Filtering events that pass the mumu selection criteria
@@ -13651,11 +13667,17 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                              .Define("MuonPhi_RochCorr", TLorentzVectorPhi, {"MuonFourMomentum_RochCorr"})
                                              .Define("MuonMass_RochCorr", TLorentzVectorMass, {"MuonFourMomentum_RochCorr"});
 
+ std::cout << "before d_mumu_selection" << std::endl;
+
  auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
+
+ std::cout << "before if(ttbarCR == false){" << std::endl;
 
  if(ttbarCR == false){auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");}
  else{auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");}
  
+
+ std::cout << "before d_ee_recoZ_selection" << std::endl;
 
 
   //Filtering events with a reconstructed Z boson
@@ -13672,6 +13694,8 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                           .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingElectronPhi", "SubleadingElectronPhi"})
                                           .Filter(z_mass_cut, {"z_mass"}, "Z mass cut (ee channel)");
 
+ std::cout << "before d_mumu_recoZ_selection" << std::endl;
+
  auto d_mumu_recoZ_selection = d_mumu_selection.Define("z_lep_eta", "Muon_eta[TightMuons]")
                                               .Define("z_lep_phi", "Muon_phi[TightMuons]")
                                               .Define("z_lep_mass", "Muon_mass[TightMuons]")
@@ -13685,6 +13709,8 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
                                               .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingMuonPhi", "SubleadingMuonPhi"})
                                               .Filter(z_mass_cut, {"z_mass"}, "Z mass cut (mumu channel)");
 
+
+  std::cout << "before d_ee_recoZ_jets_selection" << std::endl;
 
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("LeadingJetMass", LeadingVariable, {JetMassInput})
                                          	     .Define("SubleadingJetMass", SubleadingVariable, {JetMassInput})
@@ -13728,11 +13754,14 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 					 	     .Filter(jet_selection_function, {"tight_jets"}, "jet cut (ee channel)");
   
 
+  std::cout << "before d_ee_recoZ_jets_bjets_selection" << std::endl;
+
   auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
                                                                   .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 
 
+  std::cout << "before d_mumu_recoZ_jets_selection" << std::endl; 
 
   auto d_mumu_recoZ_jets_selection = d_mumu_recoZ_selection.Define("LeadingJetMass", LeadingVariable, {JetMassInput})
                                                          .Define("SubleadingJetMass", SubleadingVariable, {JetMassInput})
@@ -13775,11 +13804,14 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 				                         .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
 				                         .Filter(jet_selection_function, {"tight_jets"}, "jet cut (mumu channel)");
 
+  std::cout << "before d_mumu_recoZ_jets_bjets_selection" << std::endl;
+
   auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
                                                                       .Filter(bjet_cut, {"bjets"}, "b jet cut (mumu channel)"); 
 
 
+  std::cout << "before Filtering events with a reconstructed W boson" << std::endl;
 
  //Filtering events with a reconstructed W boson
  auto d_ee_recoZ_jets_bjets_recoW_selection_defines = d_ee_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", JetPtInput})
@@ -13831,10 +13863,17 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_funct
 								.Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"});
 
 
+ std::cout << "before d_ee_recoZ_jets_bjets_recoW_selection" << std::endl;
+
 auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (ee channel)");
+
+ std::cout << "before ZPlusJetsCR == true" << std::endl;
 
 if(ZPlusJetsCR == true){auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut_ZPlusJetsCR, {"w_mass", "MET_sumEt"}, "W mass cut (ee channel)");}
 else{auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (ee channel)");}
+
+
+std::cout << "before d_mumu_recoZ_jets_bjets_recoW_selection_defines" << std::endl;
 
 
 auto d_mumu_recoZ_jets_bjets_recoW_selection_defines = d_mumu_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", JetPtInput})
@@ -13886,11 +13925,16 @@ auto d_mumu_recoZ_jets_bjets_recoW_selection_defines = d_mumu_recoZ_jets_bjets_s
 								    .Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"});
 
 
+std::cout << "before d_mumu_recoZ_jets_bjets_recoW_selection" << std::endl;
+
 
 auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (mumu channel)");
 
 if(ZPlusJetsCR == true){auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut_ZPlusJetsCR, {"w_mass", "MET_sumEt"}, "W mass cut (mumu channel)");}
 else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (mumu channel)");}
+
+
+std::cout << "before filtering events with a reconstructed top quark" << std::endl;
 
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
@@ -13955,6 +13999,8 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
 											.Define("InvTopMass", inv_mass_doubles, {"Top_Pt", "Top_Eta", "Top_Phi", "Top_Mass"});
 
 
+
+std::cout << "before d_mumu_recoZ_jets_bjets_recoW_recoT_selection" << std::endl;
 
 auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
                                                                                             .Define("bjetmass", bjet_variable, bjet_mass_strings)
@@ -14021,6 +14067,8 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 
 int nbins = 40;
 
+std::cout << "before Unblinded data histograms start here" << std::endl;
+
 
 
 //Unblinded data histograms start here
@@ -14029,7 +14077,7 @@ int nbins = 40;
   auto h_WMass_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Histo1D({"h_WMass_mumu", "Mass distribution of the W mass candidate (mumu channel)", nbins, 0, 150}, "w_mass");
   auto h_InvTopMass_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Histo1D({"h_InvTopMass_mumu", "Mass distribution of the top candidate (mumu channel)", nbins, 0, 500}, "InvTopMass");
 
-
+std::cout << "before chi2 for data" << std::endl;
 
 
 //Chi^2 calculation using MC samples
@@ -14061,7 +14109,7 @@ else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
 else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
 
-
+std::cout << "before tZq_WAndTop_File" << std::endl;
 
 TFile* tZq_WAndTop_File = TFile::Open(tZq_WAndTop_Filename.c_str(), "READ");
 
@@ -14079,11 +14127,13 @@ tZq_WAndTop_File->Close();
 
 
 
-
+std::cout << "before chi2_ee" << std::endl;
 
 
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
 auto chi2_ee{[&W_stddev_ee, &Top_stddev_ee](const float& w_mass, const float& Top_Mass){
+
+  std::cout << "inside chi2_ee for data" << std::endl;
 
   //calculating chi2
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
@@ -14092,8 +14142,12 @@ auto chi2_ee{[&W_stddev_ee, &Top_stddev_ee](const float& w_mass, const float& To
 }};
 
 
+std::cout << "before chi2_mumu" << std::endl;
+
 
 auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const float& Top_Mass){
+
+  std::cout << "inside chi2_mumu for data" << std::endl;
 
   //calculating chi2
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
@@ -14103,16 +14157,19 @@ auto chi2_mumu{[&W_stddev_mumu, &Top_stddev_mumu](const float& w_mass, const flo
 
 
 
-
-
+std::cout << "before Chi2Range_string for data" << std::endl;
 
 std::string Chi2Range_string, BlindedHistosRootFile;
 
 if(blinding == true && (SBR == true || SR == true)){
 
+    	std::cout << "before Blinding_ee for data" << std::endl;
+
 	auto Blinding_ee =  d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("chi2", chi2_ee, {"w_mass", "InvTopMass"});
 	auto Blinding_mumu =  d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
+
+	std::cout << "before chi2_filter_ee for data" << std::endl;
 
 	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee){
 
@@ -14122,6 +14179,8 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	}};
 
+	
+	std::cout << "before chi2_filter_mumu for data" << std::endl;
 
 	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumu){
                 
@@ -14132,10 +14191,13 @@ if(blinding == true && (SBR == true || SR == true)){
         }};
 
 
+	std::cout << "before Blinding_ee_filtered for data" << std::endl; 
+
 	auto Blinding_ee_filtered = Blinding_ee.Filter(chi2_filter_ee, {"chi2"}, "chi squared filter (ee)");
 	auto Blinding_mumu_filtered = Blinding_mumu.Filter(chi2_filter_mumu, {"chi2"}, "chi squared filter (mumu)");
 
 
+	std::cout << "before data snapshots" << std::endl;
 
 	 //snapshots to save the histograms to output root files
         std::string OutRootFile_ee = "Results_" + process + "_" + year + "_ee_Blinded.root";
@@ -14148,18 +14210,28 @@ if(blinding == true && (SBR == true || SR == true)){
 }
 else{
 
+ std::cout << "before OutRootFile_ee_unblinded for data" << std::endl;
+
  std::string OutRootFile_ee_unblinded = "Results_" + process + "_" + year + "_ee.root";
  std::string OutRootFile_mumu_unblinded = "Results_" + process + "_" + year + "_mumu.root";
 
+ std::cout << "before snapshot_ee_unblinded" << std::endl;
+
  auto snapshot_ee_unblinded = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Snapshot("Events", OutRootFile_ee_unblinded.c_str(), ".*");
- auto snapshot_mumu_unblinded = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Snapshot("Events", OutRootFile_mumu_unblinded.c_str(), ".*");
+
+ std::cout << "after snapshot_ee_unblinded" << std::endl;
+
+ //auto snapshot_mumu_unblinded = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Snapshot("Events", OutRootFile_mumu_unblinded.c_str(), ".*");
+
+
+ std::cout << "after snapshot_mumu_unblinded" << std::endl;
 
 }
 
 
 
 
-
+std::cout << "before Print cut report for data" << std::endl;
 
 //Print cut report
 auto allCutsReport{d_dataframe.Report()};
