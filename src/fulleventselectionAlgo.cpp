@@ -4601,66 +4601,57 @@ const floats& Jet_pt) {
   }
  
   file.close(); 
-  
-  bool Jet_eta_check = all_of(Jet_eta.begin(), Jet_eta.end(), [&Col1, &Col2](int i){return ( i > abs(Col1) && i < abs(Col2) );});
-  bool Jet_rho_check = all_of(Jet_rho.begin(), Jet_rho.end(), [&Col3, &Col4](int i){return ( i > abs(Col3) && i < abs(Col4) );});
-  bool Jet_pt_check = all_of(Jet_pt.begin(), Jet_pt.end(), [&Col6, &Col7](int i){return ( i > abs(Col6) && i < abs(Col7) );} );
-
  
-  if(sigmaJER == true && SF == false && up == false && down == false){
 
-        floats answer = sqrt( Col8*abs(Col8) / (Jet_pt*Jet_pt)+Col9*Col9*pow(Jet_pt,Col11)+Col10*Col10 );
+  floats AnswerVec{};
+ 
+  for(int i = 0; i < Jet_pt.size(); i++){
 
-  	if( Jet_eta_check == true && Jet_rho_check == true && Jet_pt_check == true ){
-		return answer;
-  	}
-  	else{
-		floats Vec1(answer.size(), 0.0);
-		return Vec1;}
+	if(  (Jet_eta.at(i) > abs(Col1) && Jet_eta.at(i) < abs(Col2)) && 
+	     (Jet_rho.at(0) > abs(Col3) && Jet_rho.at(0) < abs(Col4)) &&
+	     (Jet_pt.at(i) > abs(Col6) && Jet_pt.at(i) < abs(Col7) ) ){
 
-  }
-  else if(sigmaJER == false && SF == true && up == false && down == false){
+  		if(sigmaJER == true && SF == false && up == false && down == false){
+
+        		float answer = sqrt( Col8*abs(Col8) / (Jet_pt.at(i)*Jet_pt.at(i))+Col9*Col9*pow(Jet_pt.at(i),Col11)+Col10*Col10 );
+
+			AnswerVec.push_back(answer);
+
+		}
+ 	 	else if(sigmaJER == false && SF == true && up == false && down == false){
         
-	floats Col4Vec = {};
-        Col4Vec.push_back(Col4);
+        		AnswerVec.push_back(Col4);
 
- 	if(Jet_eta_check == true){
-		return Col4Vec;
+  		}
+  		else if(sigmaJER == false && SF == false && up == true && down == false){
 
-	}
-	else{	floats Vec2(Col4Vec.size(), 0.0);
-		return Vec2;}
-  }
-  else if(sigmaJER == false && SF == false && up == true && down == false){
+        		float UpValue = Col6 - Col4;
+        		AnswerVec.push_back(UpValue);
 
-        floats UpValueVec = {};
-        float UpValue = Col6 - Col4;
-        UpValueVec.push_back(UpValue);
-
-	if(Jet_eta_check == true){
-                return UpValueVec;
-
-	}
-        else{	floats Vec3(UpValueVec.size(), 0.0);
-		return Vec3;}
-  }
-  else if(sigmaJER == false && SF == false && up == false && down == true){
+		}
+  		else if(sigmaJER == false && SF == false && up == false && down == true){
 	
-        floats DownValueVec = {};
-        float DownValue = Col4 - Col5;
-        DownValueVec.push_back(DownValue);
+        		float DownValue = Col4 - Col5;
+        		AnswerVec.push_back(DownValue);
 
-        if(Jet_eta_check == true){
-                return DownValueVec;
+  		}
+  		else{std::cout << "bools cannot be all true or all false" << std::endl; std::cout << "sigmaJER = " << sigmaJER << std::endl; std::cout << "SF = " << SF << std::endl; std::cout << "up = " << up << std::endl; std::cout << "down = " << down << std::endl;} 
+
+
 	}
-        else{	floats Vec4(DownValueVec.size(), 0.0);
-		return Vec4;}
-  }
-  else{std::cout << "bools cannot be all true or all false" << std::endl; std::cout << "sigmaJER = " << sigmaJER << std::endl; std::cout << "SF = " << SF << std::endl; std::cout << "up = " << up << std::endl; std::cout << "down = " << down << std::endl;} 
+	else{AnswerVec.push_back(0.);}
 
+  
+   } //end of for loop
+
+   std::cout << "AnswerVec = " << AnswerVec << std::endl;
+
+   return AnswerVec;
 
 
 }}; 
+
+
 
 
 auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
@@ -4721,7 +4712,10 @@ const floats& Jet_rho,
 const floats& Jet_pt
 ){
 
+
   for(int i = 0; i < linecounter(SigmaJER, JetSmearScaleFactor, Up, Down) + 1; i++){
+
+		std::cout << "inside RowReader3" << std::endl;
 
 		std::string quantity; 
 
@@ -4731,9 +4725,23 @@ const floats& Jet_pt
    		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == false && Down == true){quantity = "SF (down variation)";}
    		else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
-		return RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt) > 0.0;
+
+		floats CheckVector = RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+		std::cout << "CheckVector = " << CheckVector << std::endl;
+		std::cout << "CheckVector.size() = " << CheckVector.size() << std::endl;
+
+		for(int j = 0; j < CheckVector.size(); j++){
+
+			if(CheckVector.at(j) > 0){
+				return CheckVector.at(j);
+			}
+			else{continue;}
+
+		}
 
   }
+
 
 
 }};
@@ -4829,19 +4837,18 @@ auto GreaterThanZero{[](const floats& sJER_nominal){
 
 
 //Calculating the jet smearing correction factor using the hybrid method
-auto MaxComparison{[&GreaterThanZero](const ints& sJER_nominal){
+auto MaxComparison{[&GreaterThanZero](const float& sJER_nominal){
 
- floats MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
- int size = MaximumFloats.size();
+ float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
 
- if(sJER_nominal.at(0) > 0){
-	floats MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
+ if(MaximumFloats > 0){
  	return MaximumFloats;
  }
  else{
- 	floats ZeroVec(size, 0.0);
-	return ZeroVec;
+	float zero = 0.0;
+	return zero;
  }
+
 
 }};
 
@@ -4854,8 +4861,8 @@ const floats& phi,
 const floats& pT_ptcl, 
 const floats& eta_ptcl, 
 const floats& phi_ptcl, 
-const ints& sJER_nominal, 
-const ints& sigma_JER,
+const float& sJER_nominal, 
+const float& sigma_JER,
 const ints& Jet_genJetIdx){
 
 
@@ -4865,21 +4872,24 @@ const ints& Jet_genJetIdx){
 
 	float cJER_Scaling;
 
-	float N = gRandom->Gaus(0, sJER_nominal.at(i));
+	float N = gRandom->Gaus(0, sJER_nominal);
         float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
   	if(Jet_genJetIdx.at(i) != -1){
 
 		int j = Jet_genJetIdx.at(i);
 	
+		std::cout << "i = " << i << " j = " << j << std::endl;
+                std::cout << "pT_ptcl.size() = " << pT_ptcl.size() << std::endl;
+
 		double dphi = phi.at(i) - phi_ptcl.at(j);
         	double deta = eta.at(i) - eta_ptcl.at(j);
         	double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
         	const double RCone = 0.4;
 
- 		if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER.at(i) * pT.at(i)) && (deltaR == RCone / 2) ){
+ 		if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
 
-			cJER_Scaling = 1 + ( (sJER_nominal.at(i) - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
+			cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
 			cJER_vec.push_back(cJER_Scaling);
 		
 		}
