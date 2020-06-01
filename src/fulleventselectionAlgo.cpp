@@ -4814,59 +4814,18 @@ auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const
 }};
 
 
-auto dRCone_condition{[](
-
-const floats& eta,
-const floats& phi,
-const floats& eta_ptcl,
-const floats& phi_ptcl
-
-){
-
-
-   bool PhiSize = (phi.size() == phi_ptcl.size()) ? true : false;
-   bool EtaSize = (eta.size() == eta_ptcl.size()) ? true : false;
-
-   if(PhiSize == true && EtaSize == true){
-
-        doubles dphi = phi - phi_ptcl;
-        doubles deta = eta - eta_ptcl;
-        doubles deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
-        const double RCone = 0.4;
-
-	return deltaR < RCone / 2;
-   }
-   else{
-   	ints OutputVec(eta.size(), 0);
-	return OutputVec;
-   } 
-
-
-}};
-
-
-auto pT_ptcl_condition{[](const floats& pT, const floats& pT_ptcl, const ints& sigma_JER){
-
- bool PtSize = (pT.size() == pT_ptcl.size()) ? true : false;
-
- if(PtSize == true){
- 	return abs(pT - pT_ptcl) < 3 * sigma_JER.at(0) * pT;
- }
- else{
-	if(pT.size() < pT_ptcl.size()){ints OutputVec(pT.size(), 0); return OutputVec;}
-	else{ints OutputVec(pT_ptcl.size(), 0); return OutputVec;}
-
- }
-
-
-}};
-
 
 auto GreaterThanZero{[](const floats& sJER_nominal){
 
   return (sJER_nominal*sJER_nominal - 1);
 
 }};
+
+
+
+
+
+
 
 
 //Calculating the jet smearing correction factor using the hybrid method
@@ -4887,7 +4846,7 @@ auto MaxComparison{[&GreaterThanZero](const ints& sJER_nominal){
 }};
 
 
-auto JetSmearingFunction_HybridMethod{[&dRCone_condition, &pT_ptcl_condition, &MaxComparison](
+auto JetSmearingFunction_HybridMethod{[&MaxComparison](
 
 const floats& pT,
 const floats& eta,      
@@ -4896,44 +4855,53 @@ const floats& pT_ptcl,
 const floats& eta_ptcl, 
 const floats& phi_ptcl, 
 const ints& sJER_nominal, 
-const ints& sigma_JER){
+const ints& sigma_JER,
+const ints& Jet_genJetIdx){
 
 
-  floats cJER;
+  floats cJER_vec{};
  
-  bool dRCone_check = all_of(dRCone_condition(eta, phi, eta_ptcl, phi_ptcl).begin(), dRCone_condition(eta, phi, eta_ptcl, phi_ptcl).end(), [](int i){return i > 0;});
+  for(int i = 0; i < pT.size(); i++){
 
-  bool pT_ptcl_check = all_of(pT_ptcl_condition(pT, pT_ptcl, sigma_JER).begin(), pT_ptcl_condition(pT, pT_ptcl, sigma_JER).end(), [](int i){ return i != 0;});
+	float cJER_Scaling;
 
-  bool PtSize = (pT.size() == pT_ptcl.size()) ? true : false;
+	float N = gRandom->Gaus(0, sJER_nominal.at(i));
+        float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
+  	if(Jet_genJetIdx.at(i) != -1){
 
-  if(dRCone_check == true && pT_ptcl_check == true && PtSize == true){
+		int j = Jet_genJetIdx.at(i);
+	
+		double dphi = phi.at(i) - phi_ptcl.at(j);
+        	double deta = eta.at(i) - eta_ptcl.at(j);
+        	double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
+        	const double RCone = 0.4;
 
-	floats cJER = 1 + ( (sJER_nominal.at(0) - 1) * ( (pT - pT_ptcl) / pT ) );
+ 		if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER.at(i) * pT.at(i)) && (deltaR == RCone / 2) ){
 
-	floats cJER_vec{};
+			cJER_Scaling = 1 + ( (sJER_nominal.at(i) - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
+			cJER_vec.push_back(cJER_Scaling);
+		
+		}
+		else{cJER_vec.push_back(cJER_Stochastic);}
 
-	for(int i = 0; i < cJER.size(); i++){
+  	}
+  	else{cJER_vec.push_back(cJER_Stochastic);}
 
-		if(cJER.at(i) > 0){ cJER_vec.push_back(cJER.at(i)); }
-		else{cJER_vec.push_back(0.);}		
-
-	}
-
-
-	return cJER_vec;
 
   }
-  else{
-  	  float N = gRandom->Gaus(0, sJER_nominal.at(0));
-          cJER = 1.0 + (N * MaxComparison(sJER_nominal));     
-	  return cJER; 
-  }
+
+  return cJER_vec;
   
 
-
 }};
+
+
+
+
+
+
+
 
 
 auto ApplyCJER{[](
@@ -6315,7 +6283,7 @@ else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
 else{SIGMAJER = "sigma_JER";}
 
 
-std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER};
+std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
 std::vector<std::string> ApplyCJER_strings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"};
 
 
@@ -10481,6 +10449,8 @@ return ResultVector;
 
 }};
 
+
+
 std::cout << "before CMSBTagSF" << std::endl;
 
 auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
@@ -10844,7 +10814,7 @@ if(process == "ttbar_2l2nu" ||
 
 	auto TopReweighting_topquark{[](
 
-		const int& GenPart_pdgId,
+		const ints& GenPart_pdgId,
 		const int& GenPart_statusFlags,
 		const doubles& Top_pt
 
@@ -10856,7 +10826,7 @@ if(process == "ttbar_2l2nu" ||
 
 	auto TopReweighting_antitopquark{[](
 
-		const int& GenPart_pdgId,
+		const ints& GenPart_pdgId,
 		const int& GenPart_statusFlags,
 		const doubles& Top_pt
 
@@ -10991,19 +10961,11 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
-  std::cout << "inside ME_uncert_function" << std::endl;
-  std::cout << "LHEPdfWeight.size() = " << LHEPdfWeight.size() << std::endl;
-  std::cout << "LHEWeight_originalXWGTUP.size() = " << LHEWeight_originalXWGTUP.size() << std::endl;
-
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
-  std::cout << "first pdf.size() = " << pdf.size() << std::endl;
 
-  if(pdf.size() > 0){
-  	for(int i = 0; i < pdf.size(); i++){ std::cout << "pdf.size() = " << pdf.size() << std::endl; pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
-  }
+  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
 
-  std::cout << "ReturnedPSWeight.size() = " << ReturnedPSWeight.size() << std::endl;
 
   ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
   ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
@@ -11012,7 +10974,6 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
   ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
   (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
 
-  std::cout << "after ReturnedPSWeight" << std::endl;
 
   //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
 
@@ -11021,8 +10982,6 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
 
 
   float ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
-
-  std::cout << "after float ME_SF" << std::endl;
 
   return ME_SF;
 
@@ -11033,8 +10992,6 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
 //Histogram for ME uncertainties
 auto ME_histo_function{[&SummedWeights](){
 
-  std::cout << "inside ME_histo_function" << std::endl;
-
   ints numerators;
 
   for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; std::cout << "output = " << output << std::endl; numerators.push_back(output);}
@@ -11044,10 +11001,12 @@ auto ME_histo_function{[&SummedWeights](){
 }};
 
 
+
+
+
 //SFs for ME up and down
 auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
-	std::cout << "inside GeneratorWeight" << std::endl;
 
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
 
@@ -14268,7 +14227,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
 
   if(year == "2016"){
 
-        Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
+        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
 		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph",
                      "ttbar_madgraph_NanoAODv5", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
@@ -14276,9 +14235,9 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
                      "VV_WZTo2L2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VVV_WWWTo4F",
                      "VVV_WWZ", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", 
                      "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToLLNuNu_ext2", "ttbarV_ttZToLLNuNu_ext3", "ttbarV_ttZToQQ",
-                     "TT_hdampUP", "TT_hdampUP_ext", "TT_hdampDOWN", "TT_hdampDOWN_ext", */ /*"ST_tchannel_top_hdampup", "ST_tchannel_top_hdampdown",
+                     "TT_hdampUP", "TT_hdampUP_ext", "TT_hdampDOWN", "TT_hdampDOWN_ext", "ST_tchannel_top_hdampup", "ST_tchannel_top_hdampdown",
                      "ST_tchannel_top_ScaleUp", "ST_tchannel_top_ScaleDown", "tW_tbar_ScaleUp", "tW_tbar_ScaleDown", "tW_top_ScaleUp", "tW_top_ScaleDown",
-                     "TT_isr_UP", "TT_isr_DOWN", "TT_isr_DOWN_ext", "TT_fsr_UP", "TT_fsr_UP_ext", "TT_fsr_DOWN", "TT_fsr_DOWN_ext",*/ "data_DoubleEGRunB",
+                     "TT_isr_UP", "TT_isr_DOWN", "TT_isr_DOWN_ext", "TT_fsr_UP", "TT_fsr_UP_ext", "TT_fsr_DOWN", "TT_fsr_DOWN_ext", "data_DoubleEGRunB",
                      "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_DoubleEGRunG", "data_DoubleEGRunH",
                      "data_SingleElectronRunB", "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF",
                      "data_SingleElectronRunG", "data_SingleElectronRunH", "data_DoubleMuonRunB", "data_DoubleMuonRunC", "data_DoubleMuonRunD",
@@ -14289,7 +14248,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
  }
   else if(year == "2017"){
 
-  	Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
@@ -14298,7 +14257,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
 	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
 		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
-		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB",*/ 
+		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", 
 		     "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF"};
 
  }
