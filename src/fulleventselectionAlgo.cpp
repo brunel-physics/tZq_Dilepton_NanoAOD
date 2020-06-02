@@ -4614,7 +4614,6 @@ const floats& Jet_pt) {
   		if(sigmaJER == true && SF == false && up == false && down == false){
 
         		float answer = sqrt( Col8*abs(Col8) / (Jet_pt.at(i)*Jet_pt.at(i))+Col9*Col9*pow(Jet_pt.at(i),Col11)+Col10*Col10 );
-			std::cout << "answer = " << answer << std::endl;
 			AnswerVec.push_back(answer);
 
 		}
@@ -4748,7 +4747,6 @@ const floats& Jet_pt
 
   }
 
-
   return factor;
 
 
@@ -4877,28 +4875,37 @@ const ints& Jet_genJetIdx){
 
 	float cJER_Scaling;
 
-	float N = gRandom->Gaus(0, sJER_nominal);
+	float N = gRandom->Gaus(0, sigma_JER);
+
+	std::cout << "N = " << N << std::endl;
+	std::cout << "MaxComparison(sJER_nominal) = " << MaxComparison(sJER_nominal) << std::endl;
+
         float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
 
   	if(Jet_genJetIdx.at(i) != -1){
 
 		int j = Jet_genJetIdx.at(i);
+
+			if(j < pT_ptcl.size() && j < phi_ptcl.size() && j < eta_ptcl.size()){
+
+				std::cout << "j = " << j << std::endl;
 	
-		double dphi = phi.at(i) - phi_ptcl.at(j);
-        	double deta = eta.at(i) - eta_ptcl.at(j);
-        	double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
-        	const double RCone = 0.4;
+				double dphi = phi.at(i) - phi_ptcl.at(j);
+        			double deta = eta.at(i) - eta_ptcl.at(j);
+        			double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
+        			const double RCone = 0.4;
 
- 		if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
+ 				if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
 
-			std::cout << "j = " << j << std::endl;
-
-			cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
-			cJER_vec.push_back(cJER_Scaling);
+					cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
+					cJER_vec.push_back(cJER_Scaling);
 		
-		}
-		else{cJER_vec.push_back(cJER_Stochastic);}
+				}
+				else{cJER_vec.push_back(cJER_Stochastic);}
+
+			}
+			else{cJER_vec.push_back(cJER_Stochastic);}
 
   	}
   	else{cJER_vec.push_back(cJER_Stochastic);}
@@ -4906,6 +4913,7 @@ const ints& Jet_genJetIdx){
 
   }
 
+  std::cout << "cJER_vec = " << cJER_vec << std::endl;
   return cJER_vec;
   
 
@@ -10830,7 +10838,7 @@ if(process == "ttbar_2l2nu" ||
 	auto TopReweighting_topquark{[](
 
 		const ints& GenPart_pdgId,
-		const int& GenPart_statusFlags,
+		const ints& GenPart_statusFlags,
 		const doubles& Top_pt
 
 	){
@@ -10842,7 +10850,7 @@ if(process == "ttbar_2l2nu" ||
 	auto TopReweighting_antitopquark{[](
 
 		const ints& GenPart_pdgId,
-		const int& GenPart_statusFlags,
+		const ints& GenPart_statusFlags,
 		const doubles& Top_pt
 
 	){
