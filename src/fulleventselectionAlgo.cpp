@@ -4747,6 +4747,7 @@ const floats& Jet_pt
 
   }
 
+  std::cout << "factor = " << factor << std::endl;
   return factor;
 
 
@@ -4840,8 +4841,6 @@ auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const
 //Calculating the jet smearing correction factor using the hybrid method
 auto MaxComparison{[](const float& sJER_nominal){
 
- std::cout << "sJER_nominal = " << sJER_nominal << std::endl;
-
  float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
 
  if(MaximumFloats > 0){
@@ -4870,16 +4869,14 @@ const ints& Jet_genJetIdx){
 
 
   floats cJER_vec{};
+
+  std::cout << "sJER_nominal = " << sJER_nominal << std::endl;
+  std::cout << "sigma_JER = " << sigma_JER << std::endl;
  
   for(int i = 0; i < pT.size(); i++){
 
 	float cJER_Scaling;
-
 	float N = gRandom->Gaus(0, sigma_JER);
-
-	std::cout << "N = " << N << std::endl;
-	std::cout << "MaxComparison(sJER_nominal) = " << MaxComparison(sJER_nominal) << std::endl;
-
         float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
 
@@ -4887,10 +4884,8 @@ const ints& Jet_genJetIdx){
 
 		int j = Jet_genJetIdx.at(i);
 
-			if(j < pT_ptcl.size() && j < phi_ptcl.size() && j < eta_ptcl.size()){
+			if( j < pT_ptcl.size() ){
 
-				std::cout << "j = " << j << std::endl;
-	
 				double dphi = phi.at(i) - phi_ptcl.at(j);
         			double deta = eta.at(i) - eta_ptcl.at(j);
         			double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
@@ -4913,7 +4908,6 @@ const ints& Jet_genJetIdx){
 
   }
 
-  std::cout << "cJER_vec = " << cJER_vec << std::endl;
   return cJER_vec;
   
 
@@ -10517,7 +10511,7 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
   for(int i = 0; i < size; i++){
 
-  		initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
+  	initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
 
   }
 
@@ -10843,7 +10837,11 @@ if(process == "ttbar_2l2nu" ||
 
 	){
 
-		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && Top_pt > 0;
+		std::cout << "GenPart_pdgId.size() = " << GenPart_pdgId.size() << std::endl;
+		std::cout << "GenPart_statusFlags.size() = " << GenPart_statusFlags << std::endl;
+		std::cout << "Top_pt.size() = " << Top_pt << std::endl;
+
+		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && Top_pt.at(0) > 0; //top quark pt is of size 0 anyway
 
 	}};
 
@@ -10855,7 +10853,13 @@ if(process == "ttbar_2l2nu" ||
 
 	){
 
-		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && Top_pt > 0;
+		std::cout << "inside TopReweighting_antitopquark" << std::endl;
+		std::cout << "GenPart_pdgId.size() = " << GenPart_pdgId.size() << std::endl;
+                std::cout << "GenPart_statusFlags.size() = " << GenPart_statusFlags.size() << std::endl;
+                std::cout << "Top_pt.size() = " << Top_pt.size() << std::endl;
+
+
+		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && Top_pt.at(0) > 0; //top quark pt is of size 0 anyway
 
 	}};
 
