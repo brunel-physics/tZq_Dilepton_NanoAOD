@@ -4614,7 +4614,7 @@ const floats& Jet_pt) {
   		if(sigmaJER == true && SF == false && up == false && down == false){
 
         		float answer = sqrt( Col8*abs(Col8) / (Jet_pt.at(i)*Jet_pt.at(i))+Col9*Col9*pow(Jet_pt.at(i),Col11)+Col10*Col10 );
-
+			std::cout << "answer = " << answer << std::endl;
 			AnswerVec.push_back(answer);
 
 		}
@@ -4639,12 +4639,11 @@ const floats& Jet_pt) {
 
 
 	}
-	else{AnswerVec.push_back(0.);}
+	else{float zero = 0.0; AnswerVec.push_back(zero);}
 
   
    } //end of for loop
 
-   std::cout << "AnswerVec = " << AnswerVec << std::endl;
 
    return AnswerVec;
 
@@ -4712,10 +4711,10 @@ const floats& Jet_rho,
 const floats& Jet_pt
 ){
 
+  
+  int k;
 
   for(int i = 0; i < linecounter(SigmaJER, JetSmearScaleFactor, Up, Down) + 1; i++){
-
-		std::cout << "inside RowReader3" << std::endl;
 
 		std::string quantity; 
 
@@ -4726,25 +4725,40 @@ const floats& Jet_pt
    		else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 
-		floats CheckVector = RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
 
-		std::cout << "CheckVector = " << CheckVector << std::endl;
-		std::cout << "CheckVector.size() = " << CheckVector.size() << std::endl;
+		bool check = any_of(RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).begin(),
+				    RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).end(),
+				    [](float j){return j != 0;});
 
-		for(int j = 0; j < CheckVector.size(); j++){
 
-			if(CheckVector.at(j) > 0){
-				return CheckVector.at(j);
-			}
-			else{continue;}
+		if(check == 1){k = i; break;}
+		else{continue;}
 
-		}
 
   }
 
 
+  float factor;
+
+
+  for(int i = 0; i < RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).size(); i++){
+
+	if(RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i) != 0){factor = RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i);}
+	else{continue;}
+
+  }
+
+
+  return factor;
+
 
 }};
+
+
+
+
+
+
 
 
 
@@ -4823,21 +4837,12 @@ auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const
 
 
 
-auto GreaterThanZero{[](const floats& sJER_nominal){
-
-  return (sJER_nominal*sJER_nominal - 1);
-
-}};
-
-
-
-
-
-
 
 
 //Calculating the jet smearing correction factor using the hybrid method
-auto MaxComparison{[&GreaterThanZero](const float& sJER_nominal){
+auto MaxComparison{[](const float& sJER_nominal){
+
+ std::cout << "sJER_nominal = " << sJER_nominal << std::endl;
 
  float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
 
@@ -4875,19 +4880,19 @@ const ints& Jet_genJetIdx){
 	float N = gRandom->Gaus(0, sJER_nominal);
         float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
+
   	if(Jet_genJetIdx.at(i) != -1){
 
 		int j = Jet_genJetIdx.at(i);
 	
-		std::cout << "i = " << i << " j = " << j << std::endl;
-                std::cout << "pT_ptcl.size() = " << pT_ptcl.size() << std::endl;
-
 		double dphi = phi.at(i) - phi_ptcl.at(j);
         	double deta = eta.at(i) - eta_ptcl.at(j);
         	double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
         	const double RCone = 0.4;
 
  		if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
+
+			std::cout << "j = " << j << std::endl;
 
 			cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
 			cJER_vec.push_back(cJER_Scaling);
