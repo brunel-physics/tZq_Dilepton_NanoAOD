@@ -10881,27 +10881,41 @@ if(process == "ttbar_2l2nu" ||
 	}};
 
 
+	auto NewTopPt{[](const doubles& TopWeight, const doubles& Top_Pt){
+
+		std::cout << "Top_Pt.size() = " << Top_Pt.size() << std::endl;
+
+		doubles NewPt(TopWeight.size(), Top_Pt.at(0));
+
+		return NewPt;
+
+	}};
+
+
 
 	std::cout << "before d_TopReweighted_ee" << std::endl;
 
 	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
 									.Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
-									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
+									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"})
+									.Define("NewTopPt", NewTopPt, {"TopWeight", "Top_Pt"});
 
 
 
 	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
                                                                             .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
-                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
+                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"})
+									    .Define("NewTopPt", NewTopPt, {"TopWeight", "Top_Pt"});
+
 
 	
 	std::cout << "after d_TopReweighted_mumu" << std::endl;
 
-	h_WeightedTop_ee = d_TopReweighted_ee.Histo1D({"h_WeightedTop_ee", "h_WeightedTop_ee", NBins, 0, 200}, "Top_Pt", "TopWeight");
+	h_WeightedTop_ee = d_TopReweighted_ee.Histo1D({"h_WeightedTop_ee", "h_WeightedTop_ee", NBins, 0, 200}, "NewTopPt", "TopWeight");
 
 	std::cout << "h_WeightedTop_ee" << std::endl;	
 
-	h_WeightedTop_mumu = d_TopReweighted_mumu.Histo1D({"h_WeightedTop_mumu", "h_WeightedTop_mumu", NBins, 0, 200}, "Top_Pt", "TopWeight");
+	h_WeightedTop_mumu = d_TopReweighted_mumu.Histo1D({"h_WeightedTop_mumu", "h_WeightedTop_mumu", NBins, 0, 200}, "NewTopPt", "TopWeight");
 
 	std::cout << "h_WeightedTop_mumu" << std::endl;	
 
