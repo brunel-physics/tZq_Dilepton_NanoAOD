@@ -4776,27 +4776,6 @@ auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const 
 
 auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = true;
-  bool Down = false;
-
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
-
-
-auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = false;
-  bool Down = true;
-  
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
-
 //SJER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_SF_AK4PF.txt 
 auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
@@ -4835,27 +4814,84 @@ auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const
 }};
 
 
+auto dRCone_condition{[](
+
+const floats& eta,
+const floats& phi,
+const floats& eta_ptcl,
+const floats& phi_ptcl
+
+){
 
 
+   bool PhiSize = (phi.size() == phi_ptcl.size()) ? true : false;
+   bool EtaSize = (eta.size() == eta_ptcl.size()) ? true : false;
 
-//Calculating the jet smearing correction factor using the hybrid method
-auto MaxComparison{[](const float& sJER_nominal){
+   if(PhiSize == true && EtaSize == true){
 
- float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
+        doubles dphi = phi - phi_ptcl;
+        doubles deta = eta - eta_ptcl;
+        doubles deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
+        const double RCone = 0.4;
 
- if(MaximumFloats > 0){
- 	return MaximumFloats;
+	return deltaR < RCone / 2;
+   }
+   else{
+   	ints OutputVec(eta.size(), 0);
+	return OutputVec;
+   } 
+
+
+}};
+
+
+auto pT_ptcl_condition{[](const floats& pT, const floats& pT_ptcl, const ints& sigma_JER, const int& Jet_genJetIdx){
+
+ std::cout << "Jet_genJetIdx = " << Jet_genJetIdx << std::endl;
+ std::cout << "pT.at(Jet_genJetIdx) = " << pT.at(Jet_genJetIdx) << std::endl;
+ std::cout << "pT_ptcl.at(Jet_genJetIdx) = " << pT_ptcl.at(Jet_genJetIdx) << std::endl;
+
+ bool PtSize = (pT.size() == pT_ptcl.size()) ? true : false;
+
+ if(PtSize == true){
+ 	return abs(pT - pT_ptcl) < 3 * sigma_JER.at(0) * pT;
  }
  else{
-	float zero = 0.0;
-	return zero;
+	if(pT.size() < pT_ptcl.size()){ints OutputVec(pT.size(), 0); return OutputVec;}
+	else{ints OutputVec(pT_ptcl.size(), 0); return OutputVec;}
+
  }
 
 
 }};
 
 
-auto JetSmearingFunction_HybridMethod{[&MaxComparison](
+auto GreaterThanZero{[](const floats& sJER_nominal){
+
+  return (sJER_nominal*sJER_nominal - 1);
+
+}};
+
+
+//Calculating the jet smearing correction factor using the hybrid method
+auto MaxComparison{[&GreaterThanZero](const ints& sJER_nominal){
+
+ floats MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
+ int size = MaximumFloats.size();
+
+ if(sJER_nominal.at(0) > 0){
+	floats MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
+ 	return MaximumFloats;
+ }
+ else{
+ 	floats ZeroVec(size, 0.0);
+	return ZeroVec;
+ }
+
+}};
+
+
+auto JetSmearingFunction_HybridMethod{[&dRCone_condition, &pT_ptcl_condition, &MaxComparison](
 
 const floats& pT,
 const floats& eta,      
@@ -4863,60 +4899,28 @@ const floats& phi,
 const floats& pT_ptcl, 
 const floats& eta_ptcl, 
 const floats& phi_ptcl, 
-const float& sJER_nominal, 
-const float& sigma_JER,
-const ints& Jet_genJetIdx){
+const ints& sJER_nominal, 
+const ints& sigma_JER){
 
 
-  floats cJER_vec{};
-
-  std::cout << "sJER_nominal = " << sJER_nominal << std::endl;
-  std::cout << "sigma_JER = " << sigma_JER << std::endl;
+  floats cJER;
  
-  for(int i = 0; i < pT.size(); i++){
+  bool dRCone_check = all_of(dRCone_condition(eta, phi, eta_ptcl, phi_ptcl).begin(), dRCone_condition(eta, phi, eta_ptcl, phi_ptcl).end(), [](int i){return i > 0;});
 
-	float cJER_Scaling;
-	float N = gRandom->Gaus(0, sigma_JER);
-        float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
+  bool pT_ptcl_check = all_of(pT_ptcl_condition(pT, pT_ptcl, sigma_JER).begin(), pT_ptcl_condition(pT, pT_ptcl, sigma_JER).end(), [](int i){ return i != 0;});
 
-
-  	if(Jet_genJetIdx.at(i) != -1){
-
-		int j = Jet_genJetIdx.at(i);
-
-			if( j < pT_ptcl.size() ){
-
-				double dphi = phi.at(i) - phi_ptcl.at(j);
-        			double deta = eta.at(i) - eta_ptcl.at(j);
-        			double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
-        			const double RCone = 0.4;
-
- 				if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
-
-					cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
-					cJER_vec.push_back(cJER_Scaling);
-		
-				}
-				else{cJER_vec.push_back(cJER_Stochastic);}
-
-			}
-			else{cJER_vec.push_back(cJER_Stochastic);}
-
-  	}
-  	else{cJER_vec.push_back(cJER_Stochastic);}
+  bool PtSize = (pT.size() == pT_ptcl.size()) ? true : false;
 
 
-  }
+  if(dRCone_check == true && pT_ptcl_check == true && PtSize == true){
 
-  return cJER_vec;
-  
+	floats cJER = 1 + ( (sJER_nominal.at(0) - 1) * ( (pT - pT_ptcl) / pT ) );
 
-}};
+	floats cJER_vec{};
 
+	for(int i = 0; i < cJER.size(); i++){
 
-
-
-
+		if(cJER.at(i) > 0){ cJER_vec.push_back(cJER.at(i)); }
 
 
 
@@ -5096,6 +5100,21 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
   double NewVecMass = Muon4Mo.M() * RochCorrVec.at(0);
   double NewVecPt = Muon4Mo.Pt() * RochCorrVec.at(0);
   double NewVecPhi = Muon4Mo.Phi() * RochCorrVec.at(0);
+  floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
+  return CorrectionFactor;
+
+}};
+
+
+
+
+auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec){
+
+  TLorentzVector NewVec{};
+
+  double NewVecMass = Muon4Mo.M() * RochCorrVec.at(0);
+  double NewVecPt = Muon4Mo.Pt() * RochCorrVec.at(0);
+  double NewVecPhi = Muon4Mo.Phi() * RochCorrVec.at(0);
   double NewVecEta = Muon4Mo.Eta() * RochCorrVec.at(0);
 
   NewVec.SetPtEtaPhiM(NewVecPt, NewVecEta, NewVecPhi, NewVecMass);
@@ -5132,9 +5151,6 @@ auto NormalisationFactorFunction{[&process, &year](){
 
   for(int i = 1; i < ProcessStrings.size(); i++){
 
-	std::cout << "process = " << process << std::endl;
-	std::cout << "ProcessStrings.at(i) = " << ProcessStrings.at(i) << std::endl;
-
 	if(process == ProcessStrings.at(i)){return linereader(i, year);}
 	else{continue;}
 
@@ -5155,21 +5171,6 @@ auto NormalisationFactorFunction{[&process, &year](){
 //2016
 TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
 TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-TFile* EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
-TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
-
-//2017
-TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
-TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-TFile* EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
-TFile* EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
-
-//2018
-TFile* EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
-TFile* EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
-TFile* EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
 //Histograms
@@ -5401,8 +5402,8 @@ histo_RunsBCDEF_ID_Sys_Stat_2017->SetDirectory(nullptr);
 
 //Muon ID sys (syst)
 TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-TH2* histo_RunsBCDEF_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
-histo_RunsBCDEF_Sys_Syst_2017->SetDirectory(nullptr);
+TH2* histo_RunsBCDEF_ID_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
+histo_RunsBCDEF_ID_Sys_Syst_2017->SetDirectory(nullptr);
 
 //Muon Iso file
 TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
@@ -5421,9 +5422,9 @@ TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Stat
 histo_RunsBCDEF_ISO_Sys_Stat_2017->SetDirectory(nullptr);
 
 //Muon Iso sys (syst)
-TFile* inputfile_RunsBCDEF_Iso_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-TH2* histo_RunsBCDEF_Iso_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_Iso_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
-histo_RunsBCDEF_Iso_Sys_Syst_2017->SetDirectory(nullptr);
+TFile* inputfile_RunsBCDEF_ISO_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
+histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 
 
 
@@ -5441,7 +5442,26 @@ histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
 
 
-auto MuonSF{[&year](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
+
+auto MuonSF{[
+
+&year,
+&histo_RunsBCDEF_ID_2016,
+&histo_RunsGH_ID_2016,
+&histo_RunsBCDEF_ISO_2016,
+&histo_RunsGH_ISO_2016,
+&histo_RunsBCDEF_ID_2017,
+&histo_RunsBCDEF_ID_Sys_2017,
+&histo_RunsBCDEF_ID_Sys_Stat_2017,
+&histo_RunsBCDEF_ID_Sys_Syst_2017,
+&histo_RunsBCDEF_ISO_2017,
+&histo_RunsBCDEF_ISO_Sys_2017,
+&histo_RunsBCDEF_ISO_Sys_Stat_2017,
+&histo_RunsBCDEF_ISO_Sys_Syst_2017,
+&histo_RunsABCD_ID_2018,
+&histo_RunsABCD_ISO_2018
+
+](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
   std::cout << "inside MuonSF" << std::endl;
 
@@ -5455,34 +5475,35 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
   
   for(int i = 0; i < pt.size(); i++){
 
-	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){
-
-  		int PtBin_RunsBCDEF = histo_RunsBCDEF->GetXaxis()->FindBin(pt.at(i));
-        	int AbsEtaBin_RunsBCDEF = histo_RunsBCDEF->GetYaxis()->FindBin(AbsEta.at(i));
-
-		//for 2016 and 2017
-        	float MuonSF_RunsBCDEF = histo_RunsBCDEF->GetBinContent(PtBin_RunsBCDEF, AbsEtaBin_RunsBCDEF);
-		float Error_RunsBCDEF = histo_RunsBCDEF->GetBinError(PtBin_RunsBCDEF, AbsEtaBin_RunsBCDEF);
+	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){	
 	
-		//for 2018
-		float MuonSF_RunsABCD = histo_RunsBCDEF->GetBinContent(PtBin_RunsBCDEF, AbsEtaBin_RunsBCDEF);
-                float Error_RunsABCD = histo_RunsBCDEF->GetBinError(PtBin_RunsBCDEF, AbsEtaBin_RunsBCDEF);
-
-		//for 2016
-		float Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsGH, MuonSF_RunsGH;
-		int PtBin_RunsGH, AbsEtaBin_RunsGH;
-
 
 		if(year == "2016"){
 
-			PtBin_RunsGH = histo_RunsGH->GetXaxis()->FindBin(pt.at(i));
-                	AbsEtaBin_RunsGH = histo_RunsGH->GetYaxis()->FindBin(AbsEta.at(i));
+			float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinContent( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinContent( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
 
-                	MuonSF_RunsGH = histo_RunsGH->GetBinContent(PtBin_RunsGH, AbsEtaBin_RunsGH);
-                	Error_RunsGH = histo_RunsGH->GetBinError(PtBin_RunsGH, AbsEtaBin_RunsGH);
+			float Error_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinError( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinError( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinError( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinError( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+
+			float Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsBCDEF, MuonSF_RunsBCDEF, Error_RunsGH, MuonSF_RunsGH;
+
+			if(type == "ID" || type == "ID sys"){
+				MuonSF_RunsBCDEF = MuonSF_RunsBCDEF_ID_2016; MuonSF_RunsGH = MuonSF_RunsGH_ID_2016;
+				Error_RunsBCDEF = Error_RunsBCDEF_ID_2016; Error_RunsGH = Error_RunsGH_ID_2016;
+			}
+			else if(type == "Iso" || type == "Iso sys"){
+				MuonSF_RunsBCDEF = MuonSF_RunsBCDEF_ISO_2016; MuonSF_RunsGH = MuonSF_RunsGH_ISO_2016;
+				Error_RunsBCDEF = Error_RunsBCDEF_ISO_2016; Error_RunsGH = Error_RunsGH_ISO_2016;
+			}
+			else{std::cout << "For 2016, type must be ID, ID sys, Iso or Iso sys" << std::endl;}
+
 
 			MuonSF_RunsBCDEFGH = ( (MuonSF_RunsBCDEF * lumiRunBCDEF) + (MuonSF_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
-	
 			Error_RunsBCDEFGH = ( (Error_RunsBCDEF * lumiRunBCDEF) + (Error_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
 
 
@@ -5529,27 +5550,50 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
 		}
 		else if(year == "2017"){
 
-			if(type == "ID sys (stat)" ||
-		   	   type == "ID sys (syst)" ||
-		   	   type == "Iso sys (stat)" || 
-		   	   type == "Iso sys (syst)"){
-		
-				MuonSFOutput.push_back(Error_RunsBCDEF);
-			}
-			else{MuonSFOutput.push_back(MuonSF_RunsBCDEF);}
+			float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ID_Sys_Syst_2017 =  histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_2017 =  histo_RunsBCDEF_ISO_2017->GetBinContent( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_Sys_Stat_2017 =  histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_Sys_Syst_2017 =  histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+
+
+			float Error_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinError( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinError( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinError( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			
+
+			if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ID_2017);}
+			if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ISO_2017);}
+			else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_2017);}
+			else if(type == "ID sys (stat)"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_Stat_2017);} 
+		   	else if(type == "ID sys (syst)"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_Syst_2017);}
+			else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_2017);} 
+		   	else if(type == "Iso sys (stat)"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_Stat_2017);} 
+		   	else if(type == "Iso sys (syst)"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_Syst_2017);}
+			else{std::cout << "Incorrect type for 2017 muon SF function" << std::endl;}
+
 
         	}
 		else if(year == "2018"){
 
+			float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+                        float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 
-                        if(type == "ID sys (stat)" ||
-                           type == "ID sys (syst)" ||
-                           type == "Iso sys (stat)" ||
-                           type == "Iso sys (syst)"){
-
-                                MuonSFOutput.push_back(Error_RunsABCD);
-                        }
-                        else{MuonSFOutput.push_back(MuonSF_RunsABCD);}
+                        if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsABCD_ID_2018);}
+                        else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
+                        else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsABCD_ISO_2018);}
+                        else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsABCD_ISO_2018);}
+                        else{std::cout << "Error with Muon SF type (2018)" << std::endl;}
 
                 }
 		else{std::cout << "Code only for 2016, 2017 or 2018." << std::endl;}
@@ -5579,8 +5623,8 @@ inputfile_RunsBCDEF_ID_Sys_Stat_2017->Close();
 inputfile_RunsBCDEF_ID_Sys_Syst_2017->Close();
 inputfile_RunsBCDEF_ISO_2017->Close();
 inputfile_RunsBCDEF_ISO_Sys_2017->Close();
-nputfile_RunsBCDEF_ISO_Sys_Stat_2017->Close();
-inputfile_RunsBCDEF_Iso_Sys_Syst_2017->Close();
+inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Close();
+inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Close();
 inputfile_RunsABCD_ID_2018->Close();
 inputfile_RunsABCD_ISO_2018->Close();
 
@@ -10399,6 +10443,22 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 	}	
 
 	VecForConcString.clear();
+                        float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
+
+
+		
+
+			result = (ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10)))))))))+ConcatenatedStringToFloat11;
+			
+
+		}
+		else{std::cout << "ERROR" << std::endl;}
+
+		ResultVector.push_back(result);
+
+	}	
+
+	VecForConcString.clear();
 	VecForConcString2.clear();
 	VecForConcString3.clear();
 	VecForConcString4.clear();
@@ -10424,7 +10484,8 @@ return ResultVector;
 
 
 
-std::cout << "before CMSBTagSF" << std::endl;
+
+
 
 auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
@@ -10467,7 +10528,7 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
   for(int i = 0; i < size; i++){
 
-  	initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
+  		initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
 
   }
 
@@ -10513,20 +10574,6 @@ auto d_ee_recoZ_jets_bjets_recoW_selection_defines = d_ee_recoZ_jets_bjets_selec
                  						.Define("w_pair_mass", select<floats>, {"SmearedJetMass", "w_reco_jets"})
                  						.Define("w_mass", inv_mass, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_pair_mass"})
 								.Define("WPairJet1", WPairJet1, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
-                 						.Define("WPairJet2", WPairJet2, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
-								.Define("WPairJet1Pt", TLorentzVectorPt, {"WPairJet1"})
-								.Define("WPairJet1Eta", TLorentzVectorEta, {"WPairJet1"})
-								.Define("WPairJet1Phi", TLorentzVectorPhi, {"WPairJet1"})
-								.Define("WPairJet1Mass", TLorentzVectorMass, {"WPairJet1"})
-								.Define("WPairJet2Pt", TLorentzVectorPt, {"WPairJet2"})
-                                                                .Define("WPairJet2Eta", TLorentzVectorEta, {"WPairJet2"})
-                                                                .Define("WPairJet2Phi", TLorentzVectorPhi, {"WPairJet2"})
-                                                                .Define("WPairJet2Mass", TLorentzVectorMass, {"WPairJet2"})
-								.Define("dR_WJet1_WJet2", deltaRcheck_W_function, deltaR_WJet1_WJet2_strings)
-								.Define("dWj1j2", DeltaPhi_function2, {"WPairJet1Phi", "WPairJet2Phi"})
-								.Define("dR_WJet1_LeadingE", deltaRcheck_W_function2, deltaR_WJet1_LeadingElectron_strings)
-								.Define("dR_WJet1_SubleadingE", deltaRcheck_W_function2, deltaR_WJet1_SubleadingElectron_strings)
-								.Define("dR_WJet2_LeadingE", deltaRcheck_W_function2, deltaR_WJet2_LeadingElectron_strings)
                                                                 .Define("dR_WJet2_SubleadingE", deltaRcheck_W_function2, deltaR_WJet2_SubleadingElectron_strings)
 								.Define("dR_WJet1_LeadingJet", deltaRcheck_W_function2, deltaR_WJet1_LeadingJet_strings)
                                                                 .Define("dR_WJet1_SubleadingJet", deltaRcheck_W_function2, deltaR_WJet1_SubleadingJet_strings)
@@ -10765,6 +10812,20 @@ auto UnweightedTopPt{[](const doubles& pts){
 
         return pts;
 
+                                                                                	    .Define("dPhi_Z_WPairJet1", DeltaPhi_function2, {"RecoZPhi", "WPairJet1Phi"})
+                                                                                	    .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
+                                                                                	    .Define("dPhi_W_Z", DeltaPhi_function4, {"w_pair_phi", "RecoZPhi"})
+                                                                                            .Define("TotalEta_System", TotalEta_System, TotalEta_System_strings)
+                                                                                            .Define("TotalPhi_System", TotalPhi_System, TotalPhi_System_strings)
+											    .Define("InvTopMass", inv_mass_doubles, {"Top_Pt", "Top_Eta", "Top_Phi", "Top_Mass"});
+
+
+
+//lambda functions for top quark pT reweighting
+auto UnweightedTopPt{[](const doubles& pts){
+
+        return pts;
+
 }};
 
 std::cout << "before d_TopReweighted_ee" << std::endl;
@@ -10787,35 +10848,25 @@ if(process == "ttbar_2l2nu" ||
 
 	auto TopReweighting_topquark{[](
 
-		const ints& GenPart_pdgId,
-		const ints& GenPart_statusFlags,
+		const int& GenPart_pdgId,
+		const int& GenPart_statusFlags,
 		const doubles& Top_pt
 
 	){
 
-		std::cout << "GenPart_pdgId.size() = " << GenPart_pdgId.size() << std::endl;
-		std::cout << "GenPart_statusFlags.size() = " << GenPart_statusFlags << std::endl;
-		std::cout << "Top_pt.size() = " << Top_pt << std::endl;
-
-		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && Top_pt.at(0) > 0; //top quark pt is of size 0 anyway
+		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && Top_pt > 0;
 
 	}};
 
 	auto TopReweighting_antitopquark{[](
 
-		const ints& GenPart_pdgId,
-		const ints& GenPart_statusFlags,
+		const int& GenPart_pdgId,
+		const int& GenPart_statusFlags,
 		const doubles& Top_pt
 
 	){
 
-		std::cout << "inside TopReweighting_antitopquark" << std::endl;
-		std::cout << "GenPart_pdgId.size() = " << GenPart_pdgId.size() << std::endl;
-                std::cout << "GenPart_statusFlags.size() = " << GenPart_statusFlags.size() << std::endl;
-                std::cout << "Top_pt.size() = " << Top_pt.size() << std::endl;
-
-
-		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && Top_pt.at(0) > 0; //top quark pt is of size 0 anyway
+		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && Top_pt > 0;
 
 	}};
 
@@ -10837,43 +10888,23 @@ if(process == "ttbar_2l2nu" ||
 	}};
 
 
-	auto NewTopPt{[](const doubles& TopWeight, const doubles& Top_Pt){
 
-		std::cout << "Top_Pt.size() = " << Top_Pt.size() << std::endl;
-
-		doubles NewPt(TopWeight.size(), Top_Pt.at(0));
-
-		return NewPt;
-
-	}};
-
-
-
-	std::cout << "before d_TopReweighted_ee" << std::endl;
 
 	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
 									.Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
-									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"})
-									.Define("NewTopPt", NewTopPt, {"TopWeight", "Top_Pt"});
+									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 
 
 	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
                                                                             .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "Top_Pt"})
-                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"})
-									    .Define("NewTopPt", NewTopPt, {"TopWeight", "Top_Pt"});
-
+                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 	
-	std::cout << "after d_TopReweighted_mumu" << std::endl;
 
-	h_WeightedTop_ee = d_TopReweighted_ee.Histo1D({"h_WeightedTop_ee", "h_WeightedTop_ee", NBins, 0, 200}, "NewTopPt", "TopWeight");
+	h_WeightedTop_ee = d_TopReweighted_ee.Histo1D({"h_WeightedTop_ee", "h_WeightedTop_ee", NBins, 0, 200}, "Top_Pt", "TopWeight");
+	h_WeightedTop_mumu = d_TopReweighted_mumu.Histo1D({"h_WeightedTop_mumu", "h_WeightedTop_mumu", NBins, 0, 200}, "Top_Pt", "TopWeight");
 
-	std::cout << "h_WeightedTop_ee" << std::endl;	
-
-	h_WeightedTop_mumu = d_TopReweighted_mumu.Histo1D({"h_WeightedTop_mumu", "h_WeightedTop_mumu", NBins, 0, 200}, "NewTopPt", "TopWeight");
-
-	std::cout << "h_WeightedTop_mumu" << std::endl;	
 
 	auto WeightedTop_ee_Function{[&h_WeightedTop_ee](){
 	
@@ -10909,12 +10940,8 @@ if(process == "ttbar_2l2nu" ||
 }
 else{
 
-	std::cout << "in else, before d_TopReweighted_ee" << std::endl;
-
 	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("ReweightedTopPt", UnweightedTopPt, {"Top_Pt"});
 	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("ReweightedTopPt", UnweightedTopPt, {"Top_Pt"});
-
-	std::cout << "in else, after d_TopReweighted_ee" << std::endl;
 
 }
 
@@ -10925,8 +10952,6 @@ else{
 ints SummedWeights(14, 0);
 
 auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
-
-  std::cout << "inside NominalWeight" << std::endl;
 
   float PdfMin = 1.0;
   float PdfMax = 1.0;
@@ -10958,12 +10983,14 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
+
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
+  for(int i = 0; i < pdf.size(); i++){ std::cout << "pdf.size() = " << pdf.size() << std::endl; pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
 
-  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
 
-
+  ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
+  ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
   ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
   ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
   (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
@@ -11063,9 +11090,6 @@ else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt
 
 auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
                                              .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings)
-					     .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
-					     .Define("DummyColumnBJet", DummyColumnFunction, {"bjetpt"})
-					     .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
 					     .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                              .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                              .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
@@ -14607,66 +14631,6 @@ void fulleventselectionAlgo::fulleventselection(){
 	for(int j = 0; j < NPL.size(); j++){
 
   		//Nominal
-  		fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
- 			if(NPL.at(i) == false){
-
-				//PU_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//PU_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//BTag_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//BTag_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//JetSmearing_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//JetSmearing_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//JetResolution_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//JetResolution_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				//LeptonEfficiencies_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
-
-				//LeptonEfficiencies_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
-
-				//PDF_ScaleUp 
-        			fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
-
-        			//PDF_ScaleDown 
-        			fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
-
-				//ME_Up
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
-
-				//ME_Down
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
-
-				//MET_Up
-                        	fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
-
-                        	//MET_Down
-                        	fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
-
-
-   				if(year.at(i) == "2017" || year.at(i) == "2018"){
-
-					//isr_up
-					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
-
-					//isr_down
-					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
 					//fsr_up
 					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
