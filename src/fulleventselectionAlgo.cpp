@@ -5363,6 +5363,83 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 
 
 //Lambda functions for lepton efficiencies
+//2016, ID efficiency
+TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
+TH2* histo_RunsBCDEF_ID_2016 = (TH2*)(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
+histo_RunsBCDEF_ID_2016->SetDirectory(nullptr);
+
+TFile* inputfile_RunsGH_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
+TH2* histo_RunsGH_ID_2016 = (TH2*)(inputfile_RunsGH_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
+histo_RunsGH_ID_2016->SetDirectory(nullptr);
+
+//2016, Iso efficiency
+TFile* inputfile_RunsBCDEF_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
+TH2* histo_RunsBCDEF_ISO_2016 = (TH2*)(inputfile_RunsBCDEF_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
+histo_RunsBCDEF_ISO_2016->SetDirectory(nullptr);
+
+TFile* inputfile_RunsGH_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
+TH2* histo_RunsGH_ISO_2016 = (TH2*)(inputfile_RunsGH_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
+histo_RunsGH_ISO_2016->SetDirectory(nullptr);
+
+
+
+//2017
+//Muon ID file
+TFile* inputfile_RunsBCDEF_ID_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
+TH2* histo_RunsBCDEF_ID_2017 = (TH2*)(inputfile_RunsBCDEF_ID_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
+histo_RunsBCDEF_ID_2017->SetDirectory(nullptr);
+
+//Muon ID sys file
+TFile* inputfile_RunsBCDEF_ID_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+TH2* histo_RunsBCDEF_ID_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
+histo_RunsBCDEF_ID_Sys_2017->SetDirectory(nullptr);
+
+//Muon ID sys (stat)
+TFile* inputfile_RunsBCDEF_ID_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+TH2* histo_RunsBCDEF_ID_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Stat_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
+histo_RunsBCDEF_ID_Sys_Stat_2017->SetDirectory(nullptr);
+
+//Muon ID sys (syst)
+TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+TH2* histo_RunsBCDEF_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
+histo_RunsBCDEF_Sys_Syst_2017->SetDirectory(nullptr);
+
+//Muon Iso file
+TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
+TH2* histo_RunsBCDEF_ISO_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
+histo_RunsBCDEF_ISO_2017->SetDirectory(nullptr);
+
+
+//Muon Iso sys file
+TFile* inputfile_RunsBCDEF_ISO_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+TH2* histo_RunsBCDEF_ISO_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
+histo_RunsBCDEF_ISO_Sys_2017->SetDirectory(nullptr);
+
+//Muon Iso sys (stat)
+TFile* inputfile_RunsBCDEF_ISO_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
+histo_RunsBCDEF_ISO_Sys_Stat_2017->SetDirectory(nullptr);
+
+//Muon Iso sys (syst)
+TFile* inputfile_RunsBCDEF_Iso_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+TH2* histo_RunsBCDEF_Iso_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_Iso_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
+histo_RunsBCDEF_Iso_Sys_Syst_2017->SetDirectory(nullptr);
+
+
+
+
+//2018
+//Muon ID file (runs ABCD)
+TFile* inputfile_RunsABCD_ID_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
+TH2* histo_RunsABCD_ID_2018 = (TH2*)(inputfile_RunsABCD_ID_2018->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
+histo_RunsABCD_ID_2018->SetDirectory(nullptr);
+
+//Muon ISO file (runs ABCD)
+TFile* inputfile_RunsABCD_ISO_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
+TH2* histo_RunsABCD_ISO_2018 = (TH2*)(inputfile_RunsABCD_ISO_2018->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
+histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
+
+
 
 auto MuonSF{[&year](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
@@ -5373,143 +5450,9 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
   float lumiRunBCDEF = 19713.888;
   float lumiRunGH = 16146.178;
 
-  TFile* inputfile_RunsBCDEF;
-  TFile* inputfile_RunsGH;
-  TH2* histo_RunsBCDEF;
-  TH2* histo_RunsGH;
-  TFile* inputfile_RunsABCD;
-  TH2* histo_RunsABCD;
-
-
-  if(year == "2016"){
-
-  	if(type == "ID" || type == "ID sys"){
-
-		//Muon ID file (runs BCDEF)
-		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
-		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);
-
-
-                //Muon ID file (runs GH)
-                inputfile_RunsGH = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
-                histo_RunsGH = (TH2*)(inputfile_RunsGH->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
-		histo_RunsGH->SetDirectory(nullptr);
-
-        } 
-	else if(type == "Iso" || type == "Iso sys"){
-        
-                //Muon ISO file (runs BCDEF)
-                inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
-                histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);                
-
-
-                //Muon ISO file (runs GH)
-                inputfile_RunsGH = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
-                histo_RunsGH = (TH2*)(inputfile_RunsGH->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
-		histo_RunsGH->SetDirectory(nullptr);
-
-        }
-	else{std::cout << "Please choose either ID or ISO for the type" << std::endl;}	
-
-  }
-  else if(year == "2017"){
-
-  	if(type == "ID"){
-
-  		//Muon ID file
-  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());  
-		histo_RunsBCDEF->SetDirectory(nullptr);
-
-  	}
- 	 else if(type == "ID sys"){
-
-  		//Muon ID sys file
-  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);
-
-  	}
- 	 else if(type == "ID sys (stat)"){
-
-        	//Muon ID sys (stat)
-        	inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);
-
-  	}
-  	else if(type == "ID sys (syst)"){
- 
-        	//Muon ID sys (syst)
-        	inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);
-
-  	}
-  	else if(type == "Iso"){
-
-  		//Muon Iso file
-  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr); 
-
-  	}
-  	else if(type == "Iso sys"){
-  
-  		//Muon Iso sys file
-  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);
-
-  	}
-  	else if(type == "Iso sys (stat)"){
-
-   		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-  		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
-		histo_RunsBCDEF->SetDirectory(nullptr);  
-
-  	}
-  	else if(type == "Iso sys (syst)"){
-
-  		inputfile_RunsBCDEF = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-		histo_RunsBCDEF = (TH2*)(inputfile_RunsBCDEF->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone()); 
-		histo_RunsBCDEF->SetDirectory(nullptr);  
-
-  	}
-  	else{std::cout << "Choose a function input out of: ID, ID sys, ID sys (stat), ID sys (syst), Iso sys, Iso sys (stat), Iso sys (syst)." << std::endl;}
-
-  }
-  else if(year == "2018"){
-
-	if(type == "ID" || type == "ID sys"){
-
-                //Muon ID file (runs ABCD)
-		inputfile_RunsABCD = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
-                histo_RunsABCD = (TH2*)(inputfile_RunsABCD->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
-		histo_RunsABCD->SetDirectory(nullptr);
-
-
-        }
-        else if(type == "Iso" || type == "Iso sys"){
-
-                //Muon ISO file (runs ABCD)
-                inputfile_RunsABCD = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
-                histo_RunsABCD = (TH2*)(inputfile_RunsABCD->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
-		histo_RunsABCD->SetDirectory(nullptr);
-
-
-        }
-        else{std::cout << "Please choose either ID or ISO for the type" << std::endl;}	
-
-  }
-  else{std::cout << "Select a year out of 2016, 2017 or 2018." << std::endl;}
-
- 
-
   floats MuonSFOutput{};
  
+  
   for(int i = 0; i < pt.size(); i++){
 
 	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){
@@ -5613,20 +5556,33 @@ auto MuonSF{[&year](const std::string& type, const std::string& year, const std:
 
 
 	}
-	else{std::cout << "inside else statement for pushing back muon SF output" << std::endl; auto One = 1.0; MuonSFOutput.push_back(One);}
+	else{std::cout << "inside else statement for pushing back muon SF output" << std::endl; float One = 1.0; MuonSFOutput.push_back(One);}
 
 
 
   }
 
-
-  inputfile_RunsBCDEF->Close();
-  inputfile_RunsGH->Close();
-  inputfile_RunsABCD->Close();
-
   return MuonSFOutput.at(0); 
 
 }};
+
+
+
+
+inputfile_RunsBCDEF_ID_2016->Close(); 
+inputfile_RunsGH_ID_2016->Close();
+inputfile_RunsBCDEF_ISO_2016->Close();
+inputfile_RunsGH_ISO_2016->Close();
+inputfile_RunsBCDEF_ID_2017->Close();
+inputfile_RunsBCDEF_ID_Sys_2017->Close();
+inputfile_RunsBCDEF_ID_Sys_Stat_2017->Close();
+inputfile_RunsBCDEF_ID_Sys_Syst_2017->Close();
+inputfile_RunsBCDEF_ISO_2017->Close();
+inputfile_RunsBCDEF_ISO_Sys_2017->Close();
+nputfile_RunsBCDEF_ISO_Sys_Stat_2017->Close();
+inputfile_RunsBCDEF_Iso_Sys_Syst_2017->Close();
+inputfile_RunsABCD_ID_2018->Close();
+inputfile_RunsABCD_ISO_2018->Close();
 
 
 
@@ -11272,9 +11228,66 @@ std::vector<std::string> MET_uncert_strings = {
 };
 
 
-//Defining the new MET column
-auto d_WeightedEvents_withMET_ee = d_WeightedEvents_ee.Define("newMET", METUncertFunction, MET_uncert_strings);
-auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METUncertFunction, MET_uncert_strings);
+
+
+//Event weights
+auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                           &SF_Uncert_ee,
+                     &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+                     &PDF_ScaleUp,                 &PDF_ScaleDown,
+                     &isr_up,                      &isr_down,
+                     &fsr_up,                      &fsr_down
+                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys, const float& CalculatedGeneratorWeight, const float& ME_SF){
+
+
+                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF;}
+                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF;}
+                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
+
+        }};
+
+
+
+auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                           &SF_Uncert_mumu,
+                       &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+                       &PDF_ScaleUp,                 &PDF_ScaleDown,
+                       &isr_up,                      &isr_down,
+                       &fsr_up,                      &fsr_down
+                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& CalculatedGeneratorWeight, const float& ME_SF){
+
+
+                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * CalculatedGeneratorWeight * ME_SF;}
+                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * CalculatedGeneratorWeight * ME_SF;}
+                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(2) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(0) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(3) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(1) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF;}
+
+        }};
+
+
+
+
+
+std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF"};
+
+std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF"};
+
+
+//Defining the new MET columns and the event weight columns
+auto d_WeightedEvents_withMET_ee = d_WeightedEvents_ee.Define("newMET", METUncertFunction, MET_uncert_strings)
+						      .Define("EventWeight", EventWeight_ee, EventWeight_ee_strings);
+
+auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METUncertFunction, MET_uncert_strings)
+							  .Define("EventWeight", EventWeight_mumu, EventWeight_mumu_strings);
 
 
 int nbins = 40;
@@ -11859,10 +11872,32 @@ if(process == "tZq"){
 
 } //end of if statement for tZq
 
-std::vector<float> CutRanges_ee = {};
+
+
+
+
+
+
+
+
+
 
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
-auto chi2_ee{[&process, &CutRanges_ee, &SBR](const float& w_mass, const float& Top_Mass){
+bool NominalRun;
+
+if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
+   BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
+   JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 && 
+   PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      && 
+   MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     && 
+   fsr_up == 0                && fsr_down == 0){NominalRun = true;}
+else{NominalRun = false;}
+
+
+
+std::vector<float> CutRanges_ee = {};
+
+auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
 	
 
   //5 sigma is 99.99994%
@@ -11876,7 +11911,7 @@ auto chi2_ee{[&process, &CutRanges_ee, &SBR](const float& w_mass, const float& T
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
 
 
-  if(process == "tZq" && SBR == true){
+  if(process == "tZq" && NominalRun == true && SBR == true){
 
   	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
   	if(w_mass > LowerBound && w_mass < UpperBound){
@@ -11898,7 +11933,7 @@ auto chi2_ee{[&process, &CutRanges_ee, &SBR](const float& w_mass, const float& T
 
 std::vector<float> CutRanges_mumu = {};
 
-auto chi2_mumu{[&process, &CutRanges_mumu, &SBR](const float& w_mass, const float& Top_Mass){
+auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
 
 
   //5 sigma is 99.99994%
@@ -11913,7 +11948,7 @@ auto chi2_mumu{[&process, &CutRanges_mumu, &SBR](const float& w_mass, const floa
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
 
 
-  if(process == "tZq" && SBR == true){
+  if(process == "tZq" && NominalRun == true && SBR == true){
   
 	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
         if(w_mass > LowerBound && w_mass < UpperBound){
@@ -11947,57 +11982,65 @@ if(blinding == true && (SBR == true || SR == true)){
 	auto Blinding_mumu =  d_WeightedEvents_withMET_mumu.Define("chi2", chi2_mumu, {"w_mass", "InvTopMass"});
 
 
-	if(process == "tZq"){
+	if(process == "tZq" && NominalRun == true){
+
 		NumberOfSimulatedEvents_ee = *( Blinding_ee.Filter("chi2").Count() );
 		NumberOfSimulatedEvents_mumu = *( Blinding_mumu.Filter("chi2").Count() );	
-	}
+	
 
-	int OneSigmaOfNumEvents_ee = NumberOfSimulatedEvents_ee * 0.68;
-	int OneSigmaOfNumEvents_mumu = NumberOfSimulatedEvents_mumu * 0.68;
+		int OneSigmaOfNumEvents_ee = NumberOfSimulatedEvents_ee * 0.68;
+		int OneSigmaOfNumEvents_mumu = NumberOfSimulatedEvents_mumu * 0.68;
 
-	auto histo_chi2_ee = Blinding_ee.Histo1D("chi2");
-	auto histo_chi2_mumu = Blinding_mumu.Histo1D("chi2");
+		auto histo_chi2_ee = Blinding_ee.Histo1D("chi2");
+		auto histo_chi2_mumu = Blinding_mumu.Histo1D("chi2");
 
-	TAxis *xaxis_ee = histo_chi2_ee->GetXaxis();
-	TAxis *xaxis_mumu = histo_chi2_mumu->GetXaxis();
+		TAxis *xaxis_ee = histo_chi2_ee->GetXaxis();
+		TAxis *xaxis_mumu = histo_chi2_mumu->GetXaxis();
 
-	double MaxBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindLastBinAbove() );
-	double MinBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindFirstBinAbove() ) ;
-	double MaxBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindLastBinAbove() );
-        double MinBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindFirstBinAbove() );
+		double MaxBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindLastBinAbove() );
+		double MinBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindFirstBinAbove() ) ;
+		double MaxBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindLastBinAbove() );
+        	double MinBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindFirstBinAbove() );
 
-	int NumBins_ee = MaxBin_ee - MinBin_ee;
-	int NumBins_mumu = MaxBin_mumu - MinBin_mumu;
+		int NumBins_ee = MaxBin_ee - MinBin_ee;
+		int NumBins_mumu = MaxBin_mumu - MinBin_mumu;
 
 
-	auto histo_chi2_ee_rebinned = Blinding_ee.Histo1D({"histo_chi2_ee_rebinned", "histo_chi2_ee_rebinned", 2*NumBins_ee, MinBin_ee, MaxBin_ee}, {"chi2"});
-	auto histo_chi2_mumu_rebinned = Blinding_mumu.Histo1D({"histo_chi2_mumu_rebinned", "histo_chi2_mumu_rebinned", 2*NumBins_mumu, MinBin_mumu, MaxBin_mumu}, {"chi2"});
+		auto histo_chi2_ee_rebinned = Blinding_ee.Histo1D({"histo_chi2_ee_rebinned", "histo_chi2_ee_rebinned", 2*NumBins_ee, MinBin_ee, MaxBin_ee}, {"chi2"});
+		auto histo_chi2_mumu_rebinned = Blinding_mumu.Histo1D({"histo_chi2_mumu_rebinned", "histo_chi2_mumu_rebinned", 2*NumBins_mumu, MinBin_mumu, MaxBin_mumu}, {"chi2"});
 
-	TAxis * histo_chi2_ee_rebinned_x = histo_chi2_ee_rebinned->GetXaxis();
-	TAxis * histo_chi2_mumu_rebinned_x = histo_chi2_mumu_rebinned->GetXaxis();
+		TAxis * histo_chi2_ee_rebinned_x = histo_chi2_ee_rebinned->GetXaxis();
+		TAxis * histo_chi2_mumu_rebinned_x = histo_chi2_mumu_rebinned->GetXaxis();
 
-	int total_ee = 0;
-	int total_mumu = 0;
+		int total_ee = 0;
+		int total_mumu = 0;
 
-	for(int i = 0; i < histo_chi2_ee_rebinned->GetEntries(); i++){
+		for(int i = 0; i < histo_chi2_ee_rebinned->GetEntries(); i++){
 
-		auto NumberOfEvents_ee = histo_chi2_ee_rebinned->GetBinContent(i);
-		total_ee += NumberOfEvents_ee;
+			auto NumberOfEvents_ee = histo_chi2_ee_rebinned->GetBinContent(i);
+			total_ee += NumberOfEvents_ee;
 
-		if(total_ee >= OneSigmaOfNumEvents_ee){Chi2_SR_ee = histo_chi2_ee_rebinned_x->GetBinCenter(i); break;}
-		else{continue;}
+			if(total_ee >= OneSigmaOfNumEvents_ee){Chi2_SR_ee = histo_chi2_ee_rebinned_x->GetBinCenter(i); break;}
+			else{continue;}
 
-	}
+		}
 
-	for(int i = 0; i < histo_chi2_mumu_rebinned->GetEntries(); i++){
+		for(int i = 0; i < histo_chi2_mumu_rebinned->GetEntries(); i++){
 
-                auto NumberOfEvents_mumu = histo_chi2_mumu_rebinned->GetBinContent(i);
-                total_mumu += NumberOfEvents_mumu;
+                	auto NumberOfEvents_mumu = histo_chi2_mumu_rebinned->GetBinContent(i);
+                	total_mumu += NumberOfEvents_mumu;
 		
-                if(total_mumu >= OneSigmaOfNumEvents_mumu){Chi2_SR_mumu = histo_chi2_mumu_rebinned_x->GetBinCenter(i); break;}
-                else{continue;}
+                	if(total_mumu >= OneSigmaOfNumEvents_mumu){Chi2_SR_mumu = histo_chi2_mumu_rebinned_x->GetBinCenter(i); break;}
+                	else{continue;}
 
-        }
+        	}
+
+
+	}//end of if for tZq
+
+
+
+
 
 
 	//chi2 range for ee
@@ -12528,30 +12571,26 @@ if(blinding == true && (SBR == true || SR == true)){
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
 
-	
+
+	//Writing the histograms for the ee channel to an output root file	
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
+	output_ee->cd();
 
-	auto ZMassType = AfterChi2Cut_ee.GetColumnType("z_mass");
-	auto EventWeightType = AfterChi2Cut_ee.GetColumnType("EventWeight");
-
-	auto ZMassEntries = AfterChi2Cut_ee.Filter("z_mass").Count();
-	auto EventWeightEntries = AfterChi2Cut_ee.Filter("EventWeight").Count();
-
-	std::cout << "ZMassType = " << ZMassType << ". EventWeightType = " << EventWeightType << std::endl;
-	std::cout << "ZMassEntries = " << *ZMassEntries << ". EventWeightEntries = " << *EventWeightEntries << std::endl;
-
-	//auto h_z_mass_weighted = AfterChi2Cut_ee.Histo1D({"h_z_mass_weighted", "z_mass", 40, 0, 150}, "z_mass", "EventWeight");
+	auto h_ZMass_ee = AfterChi2Cut_ee.Histo1D("z_mass", "EventWeight");
 	
-	//auto h_EventWeight = AfterChi2Cut_ee.Histo1D({"h_EventWeight", "EventWeight", 40, 0, 1}, "EventWeight");
-	auto h_ZMass = AfterChi2Cut_ee.Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass");
-	auto h_BTagWeight = AfterChi2Cut_ee.Histo1D({"h_BTagWeight", "BTagWeight", 40, 0, 1}, "BTagWeight");
-
-	//h_EventWeight->Write();
-	h_ZMass->Write();
-	h_BTagWeight->Write();
+	h_ZMass_ee->Write();
 	output_ee->Close();
 
-	std::cout << "after output_ee->Close()" << std::endl;
+
+	//Writing the histograms for the mumu channel to an output root file      
+        TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "RECREATE");
+        output_mumu->cd();
+
+        auto h_ZMass_mumu = AfterChi2Cut_mumu.Histo1D("z_mass", "EventWeight");
+
+        h_ZMass_mumu->Write();
+        output_mumu->Close();	
+
 
 }
 else{
@@ -12573,45 +12612,23 @@ else{
 
 
 
-	//ee output distributions
+	//Writing the unblinded histograms for the ee channel to an output root file
 	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "RECREATE");
 	output_ee->cd();
 
-	auto ZWeight_ee{[&NormalisationFactorFunction, &SF_ee, 			     &SF_Uncert_ee,
-		         &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
-		         &PDF_ScaleUp,                 &PDF_ScaleDown,
-		         &isr_up, 		       &isr_down,
-		         &fsr_up,		       &fsr_down
-		        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys, const float& CalculatedGeneratorWeight, const float& ME_SF){
+	auto h_ZMass_ee = d_WeightedEvents_withMET_ee.Histo1D("z_mass", "EventWeight");
 
-
-  			if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF;}
-  			else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF;}
-  			else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  			else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  			else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  			else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  			else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  			else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  			else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF;}
-  
-	}};
-
-/*
-"MuonSFTest_ID"
-"MuonSFTest_Iso"
-"MuonSFTest_ID_sys_syst"
-"MuonSFTest_ID_sys_stat"
-"MuonSFTest_Iso_sys_syst"
-"MuonSFTest_Iso_sys_stat"
-*/
-
-
-        auto h_ZMass = d_WeightedEvents_withMET_ee.Define("ZWeight", ZWeight_ee, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF"}).Histo1D({"h_ZMass", "ZMass", 40, 0, 150}, "z_mass", "ZWeight");
-
-
-	h_ZMass->Write();
+	h_ZMass_ee->Write();
 	output_ee->Close();
+
+	//Writing the unblinded histograms for the mumu channel to an output root file
+        TFile * output_mumu = new TFile(OutRootFile_mumu_unblinded.c_str(), "RECREATE");
+        output_mumu->cd();
+
+        auto h_ZMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D("z_mass", "EventWeight");
+
+        h_ZMass_mumu->Write();
+        output_mumu->Close();
 	
 
 
