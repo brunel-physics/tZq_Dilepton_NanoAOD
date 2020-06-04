@@ -1,7 +1,8 @@
 #ifndef _fulleventselectionAlgo_h_
 #define _fulleventselectionAlgo_h_
 
-class fulleventselectionAlgo : public edm::EDAnalyzer
+
+class fulleventselectionAlgo/* : public edm::EDAnalyzer*/
 {
 
   public:
@@ -11,8 +12,8 @@ class fulleventselectionAlgo : public edm::EDAnalyzer
   
   void fulleventselection();
 
-  private:
-  edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
+  //private:
+  //edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
 
 
 };
