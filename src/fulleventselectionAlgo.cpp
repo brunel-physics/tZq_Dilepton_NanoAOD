@@ -5115,20 +5115,22 @@ auto NormalisationFactorFunction{[&process, &year](){
 				    "ZPlusJets_PtBinned_250To400", "ZPlusJets_PtBinned_250To400_ext1", "ZPlusJets_PtBinned_250To400_ext2",
 				    "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1", 
 				    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1", 
-				    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph", "ttbar_madgraph_ext", "ttbar_TTToHadronic", 
-				    "ttbar_TTToSemileptonic", "ttbar_atMCaNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp", 
+				    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph_NanoAODv5", "ttbar_madgraph_ext", "ttbar_TTToHadronic", 
+				    "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp", 
 				    "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_schannel", "ttbar_hdampUP", 
 				    "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", "SingleTop_tchannel_top_hdampUP", 
 				    "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext",
 				    "ttbar_fsr_UP", "ttbar_fsr_UP_ext", "ttbar_fsr_DOWN", "ttbar_fsr_DOWN_ext", 
 				    "SingleTop_tW", "SingleTop_tW_ScaleUp", "SingleTop_tW_ScaleDown", "SingleTop_tbarW", 
 				    "SingleTop_tbarW_ScaleUp", "SingleTop_tbarW_ScaleDown", "SingleTop_tHq", "SingleTop_tZq_W_lept_Z_had", 
-				    "SingleTop_tWZ_tWll", "VV_ZZTo2l2nu", "VV_ZZTo2l2nu_ext", "VV_ZZTo2l2Q", "VV_ZZTo4L", "VV_WW1nuqq", "VV_WZTo2l2Q", 
+				    "SingleTop_tWZ_tWll", "VV_ZZTo2l2nu", "VV_ZZTo2l2nu_ext", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WW1nuqq", "VV_WZTo2L2Q", 
 				    "VV_WZTo3lNu", "VV_WZTo1l2Nu2Q", "VV_WWTo2l2Nu", "VV_WWToLNuQQ", "VV_WWToLNuQQ_ext", "VV_WGToLNuG", "VV_ZGToLLG", 
 				    "VVV_WWWTo4F", "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets", "WPlusJets_ext", "ttbarV_ttWJetsToLNu", 
 				    "ttbarV_ttWJetsToLNu_ext", "ttbarV_ttZToLLNuNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttZToLL", "ttbarV_ttZToLL_ext2", "ttbarV_ttZToLL_ext3", 
-				    "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
+				    "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
 
+
+  std::cout << "ProcessStrings.size() = " << ProcessStrings.size() << std::endl;
 
   for(int i = 1; i < ProcessStrings.size(); i++){
 
@@ -5364,24 +5366,33 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 
 //Lambda functions for lepton efficiencies
 //2016, ID efficiency
+std::cout << "before 2016, ID efficiency" << std::endl;
+
 TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
 TH2* histo_RunsBCDEF_ID_2016 = (TH2*)(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsBCDEF_ID_2016->SetDirectory(nullptr);
 
+std::cout << "before inputfile_RunsGH_ID_2016 " << std::endl;
+
 TFile* inputfile_RunsGH_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
 TH2* histo_RunsGH_ID_2016 = (TH2*)(inputfile_RunsGH_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsGH_ID_2016->SetDirectory(nullptr);
+
+std::cout << "before 2016, Iso efficiency" << std::endl;
 
 //2016, Iso efficiency
 TFile* inputfile_RunsBCDEF_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
 TH2* histo_RunsBCDEF_ISO_2016 = (TH2*)(inputfile_RunsBCDEF_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsBCDEF_ISO_2016->SetDirectory(nullptr);
 
+std::cout << "before inputfile_RunsGH_ISO_2016" << std::endl;
+
 TFile* inputfile_RunsGH_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
 TH2* histo_RunsGH_ISO_2016 = (TH2*)(inputfile_RunsGH_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsGH_ISO_2016->SetDirectory(nullptr);
 
 
+std::cout << "before 2017" << std::endl;
 
 //2017
 //Muon ID file
@@ -5389,20 +5400,29 @@ TFile* inputfile_RunsBCDEF_ID_2017 = new TFile("./ScaleFactors/LeptonEfficiency/
 TH2* histo_RunsBCDEF_ID_2017 = (TH2*)(inputfile_RunsBCDEF_ID_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
 histo_RunsBCDEF_ID_2017->SetDirectory(nullptr);
 
+std::cout << "before //Muon ID sys file" << std::endl;
+
 //Muon ID sys file
 TFile* inputfile_RunsBCDEF_ID_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
 TH2* histo_RunsBCDEF_ID_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
 histo_RunsBCDEF_ID_Sys_2017->SetDirectory(nullptr);
+
+std::cout << "before Muon ID sys (stat)" << std::endl;
 
 //Muon ID sys (stat)
 TFile* inputfile_RunsBCDEF_ID_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
 TH2* histo_RunsBCDEF_ID_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Stat_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
 histo_RunsBCDEF_ID_Sys_Stat_2017->SetDirectory(nullptr);
 
+std::cout << "before Muon ID sys (syst)" << std::endl;
+
 //Muon ID sys (syst)
 TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
 TH2* histo_RunsBCDEF_ID_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
 histo_RunsBCDEF_ID_Sys_Syst_2017->SetDirectory(nullptr);
+
+
+std::cout << "before Muon Iso file" << std::endl;
 
 //Muon Iso file
 TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
@@ -5410,15 +5430,21 @@ TH2* histo_RunsBCDEF_ISO_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_2017->Get("NUM_Ti
 histo_RunsBCDEF_ISO_2017->SetDirectory(nullptr);
 
 
+std::cout << "before Muon Iso sys file" << std::endl;
+
 //Muon Iso sys file
 TFile* inputfile_RunsBCDEF_ISO_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
 TH2* histo_RunsBCDEF_ISO_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
 histo_RunsBCDEF_ISO_Sys_2017->SetDirectory(nullptr);
 
+std::cout << "before Muon Iso sys (stat)" << std::endl;
+
 //Muon Iso sys (stat)
 TFile* inputfile_RunsBCDEF_ISO_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
 TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
 histo_RunsBCDEF_ISO_Sys_Stat_2017->SetDirectory(nullptr);
+
+std::cout << "before Muon Iso sys (syst)" << std::endl;
 
 //Muon Iso sys (syst)
 TFile* inputfile_RunsBCDEF_ISO_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
@@ -5426,19 +5452,28 @@ TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Syst
 histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 
 
-
+std::cout << "2018" << std::endl;
 
 //2018
 //Muon ID file (runs ABCD)
 TFile* inputfile_RunsABCD_ID_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
-TH2* histo_RunsABCD_ID_2018 = (TH2*)(inputfile_RunsABCD_ID_2018->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
+
+
+std::cout << "after inputfile_RunsABCD_ID_2018 " << std::endl;
+
+TH2* histo_RunsABCD_ID_2018 = (TH2*)(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta")->Clone());
 histo_RunsABCD_ID_2018->SetDirectory(nullptr);
+
+std::cout << "before Muon ISO file (runs ABCD)" << std::endl;
 
 //Muon ISO file (runs ABCD)
 TFile* inputfile_RunsABCD_ISO_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
-TH2* histo_RunsABCD_ISO_2018 = (TH2*)(inputfile_RunsABCD_ISO_2018->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
+TH2* histo_RunsABCD_ISO_2018 = (TH2*)(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
 histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
+//need syst files for 2018 (check the root files, there are more histos)
+
+std::cout << "before muon SF" << std::endl;
 
 
 auto MuonSF{[
@@ -5481,19 +5516,12 @@ auto MuonSF{[
 		if(year == "2016"){
 
 			float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinContent( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinContent( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinError( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinError( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinError( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinError( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
 
 			float Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsBCDEF, MuonSF_RunsBCDEF, Error_RunsGH, MuonSF_RunsGH;
@@ -5515,7 +5543,6 @@ auto MuonSF{[
 
 
 			MuonSF_RunsBCDEFGH = ( (MuonSF_RunsBCDEF * lumiRunBCDEF) + (MuonSF_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
-
 			Error_RunsBCDEFGH = ( (Error_RunsBCDEF * lumiRunBCDEF) + (Error_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
 
 
@@ -5561,36 +5588,20 @@ auto MuonSF{[
 		else if(year == "2017"){
 
 			float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinContent( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
-
 			float Error_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinError( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinError( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinError( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
 
 
@@ -5608,13 +5619,9 @@ auto MuonSF{[
 		else if(year == "2018"){
 
 			float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-
 			float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-
 
 			if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsABCD_ID_2018);}
 			else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
@@ -14674,112 +14681,107 @@ void fulleventselectionAlgo::fulleventselection(){
 
   for(int i = 0; i < year.size(); i++){
 
-	for(int j = 0; j < NPL.size(); j++){
+  	//Nominal
+  	fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-  		//Nominal
-  		fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+ 	if(NPL.at(i) == false){
 
- 			if(NPL.at(i) == false){
+		//PU_ScaleUp
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//PU_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//PU_ScaleDown
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//PU_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//BTag_ScaleUp
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//BTag_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//BTag_ScaleDown
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//BTag_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetSmearing_ScaleUp
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//JetSmearing_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetSmearing_ScaleDown
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//JetSmearing_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetResolution_ScaleUp
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//JetResolution_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		//JetResolution_ScaleDown
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//JetResolution_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+		//LeptonEfficiencies_ScaleUp
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
-				//LeptonEfficiencies_ScaleUp
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+		//LeptonEfficiencies_ScaleDown
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
 
-				//LeptonEfficiencies_ScaleDown
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+		//PDF_ScaleUp 
+        	fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
 
-				//PDF_ScaleUp 
-        			fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+        	//PDF_ScaleDown 
+        	fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
 
-        			//PDF_ScaleDown 
-        			fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+		//ME_Up
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
 
-				//ME_Up
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+		//ME_Down
+		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
 
-				//ME_Down
-				fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+		//MET_Up
+                fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
 
-				//MET_Up
-                        	fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
-
-                        	//MET_Down
-                        	fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
+                //MET_Down
+                fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
 
 
-   				if(year.at(i) == "2017" || year.at(i) == "2018"){
+   		if(year.at(i) == "2017" || year.at(i) == "2018"){
 
-					//isr_up
-					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+			//isr_up
+			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
-					//isr_down
-					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+			//isr_down
+			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
-					//fsr_up
-					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+			//fsr_up
+			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
-					//fsr_down  
-					fulleventselection2(blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+			//fsr_down  
+			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
-				}
+		}
 
 
 
-  			}
-  			else{
+  	}
+  	else{
+
+		//Creating the NPL root file
+		NPLROOTFile_Creator2(year.at(i), blinding);
 
 
-				//Creating the NPL root file
-				NPLROOTFile_Creator2(year.at(i), blinding);
+		//Running over the NPL root file
+		//Nominal
+		if(blinding == true){
 
+			fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				//Running over the NPL root file
-				//Nominal
-				if(blinding == true){
+			fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-					fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		}
+		else{
 
-					fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-				}
-				else{
+        		fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-					fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-        				fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL.at(j), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-
-				}
-
-
-
-			}
+		}
 
 
 
-  	}//end of for loop for NPL
+	}
+
+
 
   }//end of for loop for year
 
@@ -14788,15 +14790,11 @@ void fulleventselectionAlgo::fulleventselection(){
   //Saving the outputs to a directory
   for(int i = 0; i < year.size(); i++){
 
-	for(int j = 0; j < NPL.size(); j++){
-
-		DirectoryCreator(year.at(i), blinding, NPL.at(j));
-
-	}
+	DirectoryCreator(year.at(i), blinding, NPL.at(i));
 
   }
 
- 
+   
 
   //Printing out the time the script finished running
   time_t now2 = time(0);
