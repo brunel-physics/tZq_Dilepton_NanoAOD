@@ -4747,7 +4747,6 @@ const floats& Jet_pt
 
   }
 
-  std::cout << "factor = " << factor << std::endl;
   return factor;
 
 
@@ -4870,9 +4869,6 @@ const ints& Jet_genJetIdx){
 
   floats cJER_vec{};
 
-  std::cout << "sJER_nominal = " << sJER_nominal << std::endl;
-  std::cout << "sigma_JER = " << sigma_JER << std::endl;
- 
   for(int i = 0; i < pT.size(); i++){
 
 	float cJER_Scaling;
@@ -5266,7 +5262,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2017_histo->GetBinError(Bin_EGammaEffSys2017);}
                         else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGammaSF = EGammaEffRecoSys_LowPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_LowPt_2017);}
 			else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGammaSF = EGammaEffRecoSys_HigherPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_HigherPt_2017);}
-                        else if(type == "EGammaEff"){std::cout << "here 2" << std::endl; EGammaSF = EGammaEff2017_histo->GetBinContent(Bin_EGammaEff2017);}
+                        else if(type == "EGammaEff"){EGammaSF = EGammaEff2017_histo->GetBinContent(Bin_EGammaEff2017);}
 			else if(type == "EGammaEffReco" && pt.at(i) <= 20){EGammaSF = EGammaEffReco_LowPt_2017_histo->GetBinContent(Bin_EGammaEffReco_LowPt_2017);}
                         else if(type == "EGammaEffReco" && pt.at(i) > 20){EGammaSF = EGammaEffReco_HigherPt_2017_histo->GetBinContent(Bin_EGammaEffReco_HigherPt_2017);}
                         else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2017" << std::endl;}
@@ -12735,7 +12731,12 @@ else{
                 if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight" &&
                    ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco" &&
                    ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight" &&
-                   ColName != "ME_SF" && ColName == "z_mass"){
+                   ColName != "ME_SF" && 
+		  (ColName != "RecoZ" && ColName != "SmearedJet4Momentum" && ColName != "WPairJet1" && ColName != "WPairJet2" &&
+		   ColName != "RecoW" && ColName != "BJets" && ColName != "RecoTop" && ColName != "ReweightedTopPt" && ColName != "MinDeltaR" &&
+		   ColName != "MinDeltaPhi" && ColName != "newMET" && ColName != "EventWeight") ){ 
+
+			std::cout << "ColName = " << ColName << std::endl;
 
                         histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
 			histo_ee[i]->Write();
