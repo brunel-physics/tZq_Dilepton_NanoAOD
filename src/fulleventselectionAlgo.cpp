@@ -12649,14 +12649,41 @@ if(blinding == true && (SBR == true || SR == true)){
 	auto N_Columns_mumu = colNames_mumu.size();
 
 
+
+//std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF"};
+
+
+
 	//Writing the histograms for the ee channel to an output root file	
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
 	output_ee->cd();
 
-	auto h_ZMass_ee = AfterChi2Cut_ee.Histo1D("z_mass", "EventWeight");
-	
-	h_ZMass_ee->Write();
+	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
+
+	for(int i = 0; i < N_Columns_ee; i++){
+
+        	auto ColName = colNames_ee.at(i);
+
+		if(ColName != "PU" 			&& ColName != "BTagWeight" 		  && ColName != "ReturnedPSWeight" && 
+		   ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff" 	  && ColName != "EGammaSF_egammaEffReco" && 
+		   ColName != "EGammaSF_egammaEffSys" 	&& ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight" &&
+		   ColName != "ME_SF"){
+
+                	histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
+
+		}
+		else{histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());}
+
+
+         //      histo_ee[i]->Write();
+         
+        }
+
+
 	output_ee->Close();
+
+//	auto h_ZMass_ee = AfterChi2Cut_ee.Histo1D("z_mass", "EventWeight");	
+//	h_ZMass_ee->Write();
 
 
 	//Writing the histograms for the mumu channel to an output root file      
@@ -12688,14 +12715,42 @@ else{
 	}
 
 
+	auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
+        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
+
+        auto N_Columns_ee = colNames_ee.size();
+        auto N_Columns_mumu = colNames_mumu.size();
+
 
 	//Writing the unblinded histograms for the ee channel to an output root file
 	TFile * output_ee = new TFile(OutRootFile_ee_unblinded.c_str(), "RECREATE");
 	output_ee->cd();
 
-	auto h_ZMass_ee = d_WeightedEvents_withMET_ee.Histo1D("z_mass", "EventWeight");
+	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
-	h_ZMass_ee->Write();
+        for(int i = 0; i < N_Columns_ee; i++){
+
+                auto ColName = colNames_ee.at(i);
+
+                if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight" &&
+                   ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco" &&
+                   ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight" &&
+                   ColName != "ME_SF" && ColName == "w_mass"){
+
+                        histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
+
+                }
+                else{/*histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str())*/;}
+
+			
+
+
+         //      histo_ee[i]->Write();
+         
+        }
+
+	//auto h_ZMass_ee = d_WeightedEvents_withMET_ee.Histo1D("z_mass", "EventWeight");
+	//h_ZMass_ee->Write();
 	output_ee->Close();
 
 	//Writing the unblinded histograms for the mumu channel to an output root file
@@ -14667,7 +14722,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
   bool blinding = false;
-  std::vector<bool> NPL = {false/*, true*/};
+// std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
 
@@ -14676,78 +14731,77 @@ void fulleventselectionAlgo::fulleventselection(){
   bool ZPlusJetsCR = false;
   bool ttbarCR = false;
 
-  std::vector<std::string> year = {/*"2016", */"2017"/*, "2018"*/};
-  
+  bool NPL = false;
+  std::string year = "2017"; 
 
-  for(int i = 0; i < year.size(); i++){
 
   	//Nominal
-  	fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+  	fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
- 	if(NPL.at(i) == false){
+ 	if(NPL == false){
 
 		//PU_ScaleUp
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//PU_ScaleDown
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//BTag_ScaleUp
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//BTag_ScaleDown
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//JetSmearing_ScaleUp
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//JetSmearing_ScaleDown
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//JetResolution_ScaleUp
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//JetResolution_ScaleDown
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		//LeptonEfficiencies_ScaleUp
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
 
 		//LeptonEfficiencies_ScaleDown
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false);
 
 		//PDF_ScaleUp 
-        	fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
+        	fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false);
 
         	//PDF_ScaleDown 
-        	fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
+        	fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false);
 
 		//ME_Up
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false);
 
 		//ME_Down
-		fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
+		fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false);
 
 		//MET_Up
-                fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
+                fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false);
 
                 //MET_Down
-                fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
+                fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false);	
 
 
-   		if(year.at(i) == "2017" || year.at(i) == "2018"){
+   		if(year == "2017" || year == "2018"){
 
 			//isr_up
-			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
+			fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false);
 
 			//isr_down
-			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
+			fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false);
 
 			//fsr_up
-			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
+			fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false);
 
 			//fsr_down  
-			fulleventselection2(blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+			fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
 
 		}
 
@@ -14757,23 +14811,23 @@ void fulleventselectionAlgo::fulleventselection(){
   	else{
 
 		//Creating the NPL root file
-		NPLROOTFile_Creator2(year.at(i), blinding);
+		NPLROOTFile_Creator2(year, blinding);
 
 
 		//Running over the NPL root file
 		//Nominal
 		if(blinding == true){
 
-			fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection_calculator("NPL_File_ee_Blinded", blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-			fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection_calculator("NPL_File_mumu_Blinded", blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		}
 		else{
 
-			fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			fulleventselection_calculator("NPL_File_ee_Unblinded", blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
-        		fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL.at(i), SR, SBR, ZPlusJetsCR, ttbarCR, year.at(i), false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        		fulleventselection_calculator("NPL_File_mumu_Unblinded", blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 		}
 
@@ -14783,18 +14837,12 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
 
-  }//end of for loop for year
 
 
 
   //Saving the outputs to a directory
-  for(int i = 0; i < year.size(); i++){
-
-	DirectoryCreator(year.at(i), blinding, NPL.at(i));
-
-  }
-
-   
+  DirectoryCreator(year, blinding, NPL);
+ 
 
   //Printing out the time the script finished running
   time_t now2 = time(0);
