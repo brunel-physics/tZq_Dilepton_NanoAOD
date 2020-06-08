@@ -12711,8 +12711,8 @@ else{
 	}
 
 
-	auto colNames_ee = d_WeightedEvents_withMET_ee.GetColumnNames();
-        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetColumnNames();
+	auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
+        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
 
         auto N_Columns_ee = colNames_ee.size();
         auto N_Columns_mumu = colNames_mumu.size();
