@@ -12735,19 +12735,17 @@ else{
                 if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight" &&
                    ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco" &&
                    ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight" &&
-                   ColName != "ME_SF" && ColName == "w_mass"){
+                   ColName != "ME_SF" && ColName == "z_mass"){
 
                         histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
+			histo_ee[i]->Write();
 
                 }
                 else{/*histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str())*/;}
 
-			
-
-
-         //      histo_ee[i]->Write();
-         
+		 
         }
+	
 
 	//auto h_ZMass_ee = d_WeightedEvents_withMET_ee.Histo1D("z_mass", "EventWeight");
 	//h_ZMass_ee->Write();
