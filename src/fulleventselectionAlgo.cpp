@@ -11064,7 +11064,7 @@ auto ME_histo_function{[&SummedWeights](){
 
   ints numerators;
 
-  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; std::cout << "output = " << output << std::endl; numerators.push_back(output);}
+  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
 
   return numerators;
 
@@ -12138,7 +12138,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
         }};
 
-        auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_ee", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
+        auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
 		
 
 	
@@ -12638,8 +12638,8 @@ if(blinding == true && (SBR == true || SR == true)){
 	}
 
 
-	auto colNames_ee = AfterChi2Cut_ee.GetColumnNames();
-	auto colNames_mumu = AfterChi2Cut_mumu.GetColumnNames();
+	auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
+	auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
 
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
@@ -12656,39 +12656,88 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
-	for(int i = 0; i < N_Columns_ee; i++){
 
-        	auto ColName = colNames_ee.at(i);
+        for(int i = 0; i < N_Columns_ee; i++){
 
-		if(ColName != "PU" 			&& ColName != "BTagWeight" 		  && ColName != "ReturnedPSWeight" && 
-		   ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff" 	  && ColName != "EGammaSF_egammaEffReco" && 
-		   ColName != "EGammaSF_egammaEffSys" 	&& ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight" &&
-		   ColName != "ME_SF"){
+                auto ColName = colNames_ee.at(i);
 
-                	histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
+                if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
+                   ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
+                   ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
+                   ColName != "ME_SF"                   &&
+                   ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     &&
+                   ColName != "WPairJet2"               && ColName != "RecoW"                     && ColName != "BJets"                         &&
+                   ColName != "RecoTop"                 && ColName != "ReweightedTopPt"           && ColName != "MinDeltaR"                     &&
+                   ColName != "MinDeltaPhi"             && ColName != "newMET"                    && ColName != "EventWeight"			&&
+		   ColName != "chi2" 			&& ColName != "AfterChi2Cut_ee"){
 
-		}
-		else{histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());}
+                        std::cout << "ColName = " << ColName << std::endl;
+
+                        histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
+                        histo_ee[i]->Write();
+
+                }
+                else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
+                        ColName  == "CalculatedNominalWeight" || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
+                        ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
+                        ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight" 		  ||
+			ColName  == "chi2"		      || ColName == "AfterChi2Cut_ee"){
+
+                        histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str());
+                        histo_ee[i]->Write();
+
+                }
+                else{std::cout << "Check ColName for ee channel" << std::endl; continue;}
 
 
-         //      histo_ee[i]->Write();
-         
         }
-
 
 	output_ee->Close();
 
-//	auto h_ZMass_ee = AfterChi2Cut_ee.Histo1D("z_mass", "EventWeight");	
-//	h_ZMass_ee->Write();
 
 
 	//Writing the histograms for the mumu channel to an output root file      
         TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "RECREATE");
         output_mumu->cd();
 
-        auto h_ZMass_mumu = AfterChi2Cut_mumu.Histo1D("z_mass", "EventWeight");
+	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
-        h_ZMass_mumu->Write();
+        for(int i = 0; i < N_Columns_mumu; i++){
+
+                auto ColName = colNames_mumu.at(i);
+
+                if(ColName != "PU"                            && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
+                   ColName != "CalculatedNominalWeight"       && ColName != "MuonSFTest_ID"             && ColName != "MuonSFTest_Iso"                &&
+                   ColName != "MuonSFTest_ID_sys_syst"        && ColName != "MuonSFTest_ID_sys_stat"    && ColName != "MuonSFTest_Iso_sys_syst"       &&
+                   ColName != "MuonSFTest_Iso_sys_stat"       && ColName != "CalculatedGeneratorWeight" &&
+                   ColName != "ME_SF"                         &&
+                   ColName != "RecoZ"                         && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     &&
+                   ColName != "WPairJet2"                     && ColName != "RecoW"                     && ColName != "BJets"                         &&
+                   ColName != "RecoTop"                       && ColName != "ReweightedTopPt"           && ColName != "MinDeltaR"                     &&
+                   ColName != "MinDeltaPhi"                   && ColName != "newMET"                    && ColName != "EventWeight"                   &&
+                   ColName != "MuonFourMomentum"	      && ColName != "chi2"			&& ColName != "AfterChi2Cut_mumu"){
+
+                        std::cout << "ColName = " << ColName << std::endl;
+
+                        histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
+                        histo_mumu[i]->Write();
+
+                }
+                else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
+                        ColName  == "CalculatedNominalWeight" || ColName == "MuonSFTest_ID"             || ColName == "MuonSFTest_Iso"            ||
+                        ColName  == "MuonSFTest_ID_sys_syst"  || ColName == "MuonSFTest_ID_sys_stat"    || ColName == "MuonSFTest_Iso_sys_syst"   ||
+                        ColName  == "MuonSFTest_Iso_sys_stat" || ColName == "CalculatedGeneratorWeight" ||
+                        ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight"		  ||
+			ColName  == "chi2"		      || ColName == "AfterChi2Cut_mumu"){
+
+                        histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str());
+                        histo_mumu[i]->Write();
+
+                }
+                else{std::cout << "Check ColName for mumu channel" << std::endl; continue;}
+
+        }	
+
         output_mumu->Close();	
 
 
@@ -12793,8 +12842,8 @@ else{
 			ColName  == "MuonSFTest_Iso_sys_stat" || ColName == "CalculatedGeneratorWeight" ||
                         ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight"){
 
-                        //histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str());
-			//histo_mumu[i]->Write();
+                        histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str());
+			histo_mumu[i]->Write();
 
                 }
                 else{std::cout << "Check ColName for mumu channel" << std::endl; continue;}
