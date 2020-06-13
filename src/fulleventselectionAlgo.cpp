@@ -13490,8 +13490,6 @@ std::cout << "before GoldenJsonReader" << std::endl;
 //Using the golden ison file to filter events
 auto GoldenJsonReader{[&year](){
 
- std::cout << "GoldenJsonReader" << std::endl;
-
  std::string GoldenJsonFileName;
 
  if(year == "2016"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt";}
@@ -13511,7 +13509,6 @@ auto GoldenJsonReader{[&year](){
 
 
     myReadFile >> output;
-    std::cout << "output = " << output << std::endl;
     GoldenJsonOutput.push_back(output);
 
  }
@@ -13527,8 +13524,6 @@ std::cout << "before GoldenJson_SplitChars" << std::endl;
 
 
 auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
-
-  std::cout << "inside GoldenJson_SplitChars" << std::endl;
 
   std::vector<char> out{};
 
@@ -13553,8 +13548,6 @@ std::cout << "before RunNumberCheck" << std::endl;
 
 auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
 
-  std::cout << "inside RunNumberCheck" << std::endl;
-  
  std::vector<char> EventsVector{}; 
 
  for(int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
@@ -13625,8 +13618,6 @@ std::cout << "before ReturnRunNumAndEventRanges" << std::endl;
 
 auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
- std::cout << "inside ReturnRunNumAndEventRanges" << std::endl;
- 
  std::vector<int> RunNumAndEvents{};
 
  RunNumAndEvents.push_back(InputRunNumber);
