@@ -13081,20 +13081,20 @@ process == "data_SingleElectronRunE" ||
 process == "data_SingleElectronRunF" ||
 process == "data_SingleElectronRunG" ||
 process == "data_SingleElectronRunH" ||
-process == "data_DoubleMuonRunB2" ||
-process == "data_DoubleMuonRunC2" ||
-process == "data_DoubleMuonRunD2" ||
-process == "data_DoubleMuonRunE2" ||
-process == "data_DoubleMuonRunF2" ||
-process == "data_DoubleMuonRunG2" ||
-process == "data_DoubleMuonRunH2" ||
-process == "data_SingleMuonRunB2" ||
-process == "data_SingleMuonRunC2" ||
-process == "data_SingleMuonRunD2" ||
-process == "data_SingleMuonRunE2" ||
-process == "data_SingleMuonRunF2" ||
-process == "data_SingleMuonRunG2" ||
-process == "data_SingleMuonRunH2" ||
+process == "data_DoubleMuonRunB" ||
+process == "data_DoubleMuonRunC" ||
+process == "data_DoubleMuonRunD" ||
+process == "data_DoubleMuonRunE" ||
+process == "data_DoubleMuonRunF" ||
+process == "data_DoubleMuonRunG" ||
+process == "data_DoubleMuonRunH" ||
+process == "data_SingleMuonRunB" ||
+process == "data_SingleMuonRunC" ||
+process == "data_SingleMuonRunD" ||
+process == "data_SingleMuonRunE" ||
+process == "data_SingleMuonRunF" ||
+process == "data_SingleMuonRunG" ||
+process == "data_SingleMuonRunH" ||
 process == "data_SingleElectronRunB2" ||
 process == "data_SingleElectronRunC2" ||
 process == "data_SingleElectronRunD2" ||
@@ -13334,7 +13334,7 @@ const bool& HLT_Ele27_WPTight_Gsf
 		ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunB_" + year + ".root";
 		e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunB_" + year + ".root";
 		mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunB_" + year + ".root";
-		mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunB_2016.root";
+		mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunB_" + year + ".root";
 	}
 	else if(process == "data_DoubleEGRunC2"   || process == "data_SingleElectronRunC2" ||
                 process == "data_DoubleMuonRunC2" || process == "data_SingleMuonRunC2"){
@@ -14661,15 +14661,15 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
  }
   else if(year == "2017"){
 
-  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", /*"ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
 	             "VV_WZTo2L2Q", "VV_WZTo3LNu", "VV_WWTo1L1Nu2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VV_WGToLNuG", "VV_ZGToLLG", "VVV_WWWTo4F", 
 	             "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",  
-	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",*/
+	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
-		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
+		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF",*/ "data_DoubleMuonRunB", 
 		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", 
 		     "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF", 
 		     "data_DoubleEGRunB2", "data_DoubleEGRunC2", "data_DoubleEGRunD2", "data_DoubleEGRunE2", "data_DoubleEGRunF2", "data_SingleElectronRunB2",
