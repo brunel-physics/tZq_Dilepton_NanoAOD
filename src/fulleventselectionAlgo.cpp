@@ -12253,13 +12253,19 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
 
-	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
+	  std::cout << "inside Chi2Cut_ee" << std::endl;
+
+	  if(SBR == true){std::cout << "inside if for SBR is true" << std::endl; return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
 	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
-	  else{std::cout << "SB and SR cannot both be false" << std::endl;}
+	  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
 
 	}};
 
+	std::cout << "before AfterChi2Cut_ee" << std::endl;
+
 	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"}).Filter(Chi2Cut_ee, {"chi2"});
+
+	std::cout << "after AfterChi2Cut_ee" << std::endl;
 
 	//chi2 range for mumu
 	
@@ -12269,7 +12275,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
           if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
           else if(SR == true){return Chi2 < Chi2_SR_mumu;}
-          else{std::cout << "SB and SR cannot both be false" << std::endl;}
+          else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
 
         }};
 
@@ -12781,9 +12787,6 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 
-//std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF"};
-
-
 
 	//Writing the histograms for the ee channel to an output root file	
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
@@ -12810,7 +12813,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
                         std::cout << "ColName = " << ColName << std::endl;
 
-                        histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str(), "EventWeight");
+                        histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
                         histo_ee[i]->Write();
 
                 }
@@ -12818,9 +12821,9 @@ if(blinding == true && (SBR == true || SR == true)){
                         ColName  == "CalculatedNominalWeight" || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
                         ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
                         ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight" 		  ||
-			ColName  == "chi2"){
+			ColName  == "chi2" 		      || ColName == "AfterChi2Cut_ee"){
 
-                        histo_ee[i] = d_WeightedEvents_withMET_ee.Histo1D(ColName.c_str());
+                        histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());
                         histo_ee[i]->Write();
 
                 }
@@ -12857,7 +12860,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
                         std::cout << "ColName = " << ColName << std::endl;
 
-                        histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str(), "EventWeight");
+                        histo_mumu[i] = AfterChi2Cut_mumu.Histo1D(ColName.c_str(), "EventWeight");
                         histo_mumu[i]->Write();
 
                 }
@@ -12866,9 +12869,9 @@ if(blinding == true && (SBR == true || SR == true)){
                         ColName  == "MuonSFTest_ID_sys_syst"  || ColName == "MuonSFTest_ID_sys_stat"    || ColName == "MuonSFTest_Iso_sys_syst"   ||
                         ColName  == "MuonSFTest_Iso_sys_stat" || ColName == "CalculatedGeneratorWeight" ||
                         ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight"		  ||
-			ColName  == "chi2"){
+			ColName  == "chi2"		      || ColName == "AfterChi2Cut_mumu"){
 
-                        histo_mumu[i] = d_WeightedEvents_withMET_mumu.Histo1D(ColName.c_str());
+                        histo_mumu[i] = AfterChi2Cut_mumu.Histo1D(ColName.c_str());
                         histo_mumu[i]->Write();
 
                 }
@@ -13311,200 +13314,159 @@ const bool& HLT_Ele27_WPTight_Gsf
 	else{std::cout << "The process specified is not SingleElectron, SingleMuon, Double Electron, DoubleMuon, MuonEG or EG. The process is: " << process << std::endl;}
 
 
+  auto d_DoubleCountCheck_ee = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"}); 
+  auto d_DoubleCountCheck_mumu = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"});
 
 
-
-
-/*
-std::cout << "before d_DoubleCountCheck" << std::endl;
-
-auto d_DoubleCountCheck = d_EventCleaning.Define("DummyColumn3", DummyColumnFunction, {"Electron_pt"});
-
-
-if(process != "data_EGRunB" &&
-   process != "data_EGRunC" &&
-   process != "data_EGRunD"){
-
-
-	std::cout << "before ee_file" << std::endl;
+  if(year != "2018"){
 	
 	//Preventing double counting of single and double lepton datasets 
-	if(process == "")	
+	std::string ee_file;
+        std::string mumu_file;
+        std::string emu_file;
+        std::string e_file;
+        std::string mu_file;	
 
-	
-	std::string ee_file = "EventsPassingDoubleElectronTrigger_" + "_" + year + ".root";
-	std::string mumu_file = "EventsPassingDoubleMuonTrigger_" + process + "_" + year + ".root";
-	std::string emu_file = "EventsPassingElectronMuonTrigger_" + process + "_" + year + ".root";
-	std::string e_file = "EventsPassingSingleElectronTrigger_" + process + "_" + year + ".root";
-	std::string mu_file = "EventsPassingSingleMuonTrigger_" + process + "_" + year + ".root";
 
-	std::cout << "after mu_file" << std::endl;
+	if(process == "data_DoubleEGRunB2"   || process == "data_SingleElectronRunB2" ||
+	   process == "data_DoubleMuonRunB2" || process == "data_SingleMuonRunB2"){
 
-	TFile * ee_file_Open = new TFile(ee_file.c_str(), "READ");
-	TFile * mumu_file_Open = new TFile(mumu_file.c_str(), "READ");
-	TFile * emu_file_Open = new TFile(emu_file.c_str(), "READ");
-	TFile * e_file_Open = new TFile(e_file.c_str(), "READ");
-	TFile * mu_file_Open = new TFile(mu_file.c_str(), "READ");
+		ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunB_" + year + ".root";
+		e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunB_" + year + ".root";
+		mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunB_" + year + ".root";
+		mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunB_2016.root";
+	}
+	else if(process == "data_DoubleEGRunC2"   || process == "data_SingleElectronRunC2" ||
+                process == "data_DoubleMuonRunC2" || process == "data_SingleMuonRunC2"){
 
-	std::cout << "before h_EventNumber_ee" << std::endl;
+                ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunC_" + year + ".root";
+                e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunC_" + year + ".root";
+                mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunC_" + year + ".root";
+                mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunC_" + year + ".root";
+        }
+	else if(process == "data_DoubleEGRunD2"   || process == "data_SingleElectronRunD2" ||
+                process == "data_DoubleMuonRunD2" || process == "data_SingleMuonRunD2"){
 
-	TH1* h_EventNumber_ee = (TH1*)ee_file_Open->GetObjectChecked("event", "TH1");
-	
-	std::cout << "before h_EventNumber_mumu" << std::endl;
+                ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunD_" + year + ".root";
+                e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunD_" + year + ".root";
+                mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunD_" + year + ".root";
+                mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunD_" + year + ".root";
+        }
+	else if(process == "data_DoubleEGRunE2"   || process == "data_SingleElectronRunE2" ||
+                process == "data_DoubleMuonRunE2" || process == "data_SingleMuonRunE2"){
 
-	TH1* h_EventNumber_mumu = (TH1*)mumu_file_Open->GetObjectChecked("event", "TH1");
-	TH1* h_EventNumber_emu = (TH1*)emu_file_Open->GetObjectChecked("event", "TH1");
-	TH1* h_EventNumber_e = (TH1*)ee_file_Open->GetObjectChecked("event", "TH1");
-	TH1* h_EventNumber_mu = (TH1*)mu_file_Open->GetObjectChecked("event", "TH1");
+                ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunE_" + year + ".root";
+                e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunE_" + year + ".root";
+                mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunE_" + year + ".root";
+                mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunE_" + year + ".root";
+        }
+	else if(process == "data_DoubleEGRunF2"   || process == "data_SingleElectronRunF2" ||
+                process == "data_DoubleMuonRunF2" || process == "data_SingleMuonRunF2"){
 
-	std::cout << "after h_EventNumber_mu" << std::endl;
+                 ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunF_" + year + ".root";
+                 e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunF_" + year + ".root";
+                 mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunF_" + year + ".root";
+                 mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunF_" + year + ".root";
+        }
+	else if(process == "data_DoubleEGRunG2"   || process == "data_SingleElectronRunG2" ||
+                process == "data_DoubleMuonRunG2" || process == "data_SingleMuonRunG2"){
+
+                 ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunG_" + year + ".root";
+                 e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunG_" + year + ".root";
+                 mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunG_" + year + ".root";
+                 mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunG_" + year + ".root";
+        }
+	else if(process == "data_DoubleEGRunH2"   || process == "data_SingleElectronRunH2" ||
+                process == "data_DoubleMuonRunnH2" || process == "data_SingleMuonRunH2"){
+
+                 ee_file = "EventsPassingDoubleElectronTrigger_data_DoubleEGRunH_" + year + ".root";
+                 e_file = "EventsPassingSingleElectronTrigger_data_SingleElectronRunH_" + year + ".root";
+                 mumu_file = "EventsPassingDoubleMuonTrigger_data_DoubleMuonRunH_" + year + ".root";
+                 mu_file = "EventsPassingSingleMuonTrigger_data_SingleMuonRunH_" + year + ".root";
+        }
+	else{std::cout << "Check process for double counting check." << std::endl;}
+
+
+
+	ROOT::RDataFrame d_EventNumber_ee("Events", ee_file.c_str());
+	ROOT::RDataFrame d_EventNumber_e("Events", e_file.c_str());
+	ROOT::RDataFrame d_EventNumber_mumu("Events", mumu_file.c_str());
+	ROOT::RDataFrame d_EventNumber_mu("Events", mu_file.c_str());
+
+	auto h_EventNumber_ee = d_EventNumber_ee.Histo1D("event");
+	auto h_EventNumber_mumu = d_EventNumber_mumu.Histo1D("event");
+	auto h_EventNumber_e = d_EventNumber_e.Histo1D("event");
+	auto h_EventNumber_mu = d_EventNumber_mu.Histo1D("event");
+
+
 
 	//Returning events that have not been double-counted
 	//For ee and single electron 
-	auto DoubleCountCheck_ee_channel{[&h_EventNumber_ee, &h_EventNumber_e](){
+	auto ee_and_e{[&h_EventNumber_ee, &h_EventNumber_e](const int& event){
 
-	  std::cout << "inside doubleCountCheck_ee_channel" << std::endl;
+		floats eeVec = {};
+		floats eVec = {};
+		floats SkimmedVector_e = {};
 
-	  floats EventNumbers{};
-
-	  for(int i = 0; i < h_EventNumber_ee->GetNbinsX(); i++){
-
-		std::cout << "h_EventNumber_ee->GetNbinsX() = " << h_EventNumber_ee->GetNbinsX() << std::endl;
-
-		float DoubleElectronEventNumber = h_EventNumber_ee->GetBinContent(i);
-
-		for(int j = 0; j < h_EventNumber_e->GetNbinsX(); j++){
-
-			if( DoubleElectronEventNumber  != h_EventNumber_e->GetBinContent(j) ){ EventNumbers.push_back(DoubleElectronEventNumber); }
-			else{continue;}
+		for(int i = 0; i < h_EventNumber_ee->GetNbinsX(); i++){float EventNum_ee = h_EventNumber_ee->GetXaxis()->GetBinCenter(i); eeVec.push_back(EventNum_ee);}
+		for(int i = 0; i < h_EventNumber_e->GetNbinsX(); i++){float EventNum_e = h_EventNumber_e->GetXaxis()->GetBinCenter(i); eVec.push_back(EventNum_e);}
 		
+		for(int i = 0; i < eeVec.size(); i++){
+
+			float event_number = eeVec.at(i); 
+			bool e_EventNumbers = any_of(eVec.begin(), eVec.end(), [&event_number](int j){return j == event_number;});
+
+			if(e_EventNumbers == false){SkimmedVector_e.push_back(event_number);}
+			else{continue;}
+
 		}
 
-	  }
+		bool check_e = any_of(SkimmedVector_e.begin(), SkimmedVector_e.end(), [&event](int k){return k == event;});
 
-
-	 return EventNumbers.at(0);
+		return event && (check_e == true); 
 
 
 	}};
 
-	//For mumu and single muon
-	auto DoubleCountCheck_mumu_channel{[&h_EventNumber_mumu, &h_EventNumber_mu](){
+	
+	//For mumu and single muon 
+        auto mumu_and_mu{[&h_EventNumber_mumu, &h_EventNumber_mu](const int& event){
 
-	  std::cout << "inside DoubleCountCheck_mumu_channel" << std::endl;
+                floats mumuVec = {};
+                floats muVec = {};
+                floats SkimmedVector_m = {};
 
-          floats EventNumbers{};
+                for(int i = 0; i < h_EventNumber_mumu->GetNbinsX(); i++){float EventNum_mumu = h_EventNumber_mumu->GetXaxis()->GetBinCenter(i); mumuVec.push_back(EventNum_mumu);}
+                for(int i = 0; i < h_EventNumber_mu->GetNbinsX(); i++){float EventNum_mu = h_EventNumber_mu->GetXaxis()->GetBinCenter(i); muVec.push_back(EventNum_mu);}
+                
+                for(int i = 0; i < mumuVec.size(); i++){
+                        
+                        float event_number = mumuVec.at(i);
+                        bool mu_EventNumbers = any_of(muVec.begin(), muVec.end(), [&event_number](int j){return j == event_number;});
 
-          for(int i = 0; i < h_EventNumber_mumu->GetNbinsX(); i++){
-        
-                float DoubleMuonEventNumber = h_EventNumber_mumu->GetBinContent(i);
-
-                for(int j = 0; j < h_EventNumber_mu->GetNbinsX(); j++){
-
-                        if( DoubleMuonEventNumber  != h_EventNumber_mu->GetBinContent(j) ){ EventNumbers.push_back(DoubleMuonEventNumber); }
+                        if(mu_EventNumbers == false){SkimmedVector_m.push_back(event_number);}
                         else{continue;}
-
+                
                 }
 
-          }
+                bool check_m = any_of(SkimmedVector_m.begin(), SkimmedVector_m.end(), [&event](int k){return k == event;});
 
-
-         return EventNumbers.at(0);
-
-
-        }};
-
-
-	//For emu and single electron
-	auto DoubleCountCheck1_emu_channel{[&h_EventNumber_emu, &h_EventNumber_e](){
-
-	  std::cout << "inside DoubleCountCheck1_emu_channel" << std::endl;
-
-          floats EventNumbers{};
-
-          for(int i = 0; i < h_EventNumber_emu->GetNbinsX(); i++){
-
-                float MuonElectronEventNumber = h_EventNumber_emu->GetBinContent(i);
-
-                for(int j = 0; j < h_EventNumber_e->GetNbinsX(); j++){
-
-                        if( MuonElectronEventNumber  != h_EventNumber_e->GetBinContent(j) ){ EventNumbers.push_back(MuonElectronEventNumber); }
-                        else{continue;}
-
-                }
-
-          }
-
-
-        return EventNumbers.at(0);
-
-
-        }};
-
-
-	//For emu and single muon
-        auto DoubleCountCheck2_emu_channel{[&h_EventNumber_emu, &h_EventNumber_mu](){
-
-	 std::cout << "inside DoubleCountCheck2_emu_channel" << std::endl;
-
-          floats EventNumbers{};
-
-          for(int i = 0; i < h_EventNumber_emu->GetNbinsX(); i++){
-
-                float MuonElectronEventNumber = h_EventNumber_emu->GetBinContent(i);
-
-                for(int j = 0; j < h_EventNumber_mu->GetNbinsX(); j++){
-
-                        if( MuonElectronEventNumber  != h_EventNumber_mu->GetBinContent(j) ){ EventNumbers.push_back(MuonElectronEventNumber); }
-                        else{continue;}
-
-                }
-
-          }
-
-
-         return EventNumbers.at(0);
+                return event && (check_m == true);
 
 
         }};	
 
+	
 
-	std::cout << "before PreventDoubleCount_FilterFunction_Not2018" << std::endl;
-
-	auto PreventDoubleCount_FilterFunction_Not2018{[&DoubleCountCheck_ee_channel, &DoubleCountCheck_mumu_channel, &DoubleCountCheck1_emu_channel, DoubleCountCheck2_emu_channel](const unsigned int& event){
-
-		std::cout << "inside PreventDoubleCount_FilterFunction_Not2018" << std::endl;
-
-		return (event == DoubleCountCheck_ee_channel()) && (event == DoubleCountCheck_mumu_channel()) && (event == DoubleCountCheck1_emu_channel()) && (event == DoubleCountCheck2_emu_channel());
-
-	}};
-
-	std::cout << "before PreventDoubleCount_FilterFunction_2018" << std::endl;
-
-	//The double and single electron datasets for 2018 are merged. Only need to check for double counting for muons. 
-	auto PreventDoubleCount_FilterFunction_2018{[&DoubleCountCheck_mumu_channel, &DoubleCountCheck1_emu_channel, DoubleCountCheck2_emu_channel](const unsigned int& event){
-
-		std::cout << "inside PreventDoubleCount_FilterFunction_2018" << std::endl;
-
-                return (event == DoubleCountCheck_mumu_channel()) && (event == DoubleCountCheck1_emu_channel()) && (event == DoubleCountCheck2_emu_channel());
-
-        }};
-
-  std::cout << "before d_DoubleCountCheck" << std::endl;
-
-  auto d_DoubleCountCheck = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"});
-
-  std::cout << "before year != 2018" << std::endl;
-
-  if(year != "2018"){ auto d_DoubleCountCheck = d_EventCleaning.Filter(PreventDoubleCount_FilterFunction_Not2018, {"event"}, "Double counting filter");}
-  else{ auto d_DoubleCountCheck = d_EventCleaning.Filter(PreventDoubleCount_FilterFunction_2018, {"event"}, "Double counting filter");}
+	//Filtering events so events that haven't been double-counted remain
+	auto d_DoubleCountCheck_ee = d_EventCleaning.Filter(ee_and_e, "event");
+	auto d_DoubleCountCheck_mumu = d_EventCleaning.Filter(mumu_and_mu, "event");
 
 
-  std::cout << "after else{ auto d_DoubleCountCheck" << std::endl;
+  }
+  else{auto d_DoubleCountCheck_ee = d_EventCleaning; auto d_DoubleCountCheck_mumu = d_EventCleaning;}
 
-}
 
-*/
 
 
 
@@ -13999,27 +13961,12 @@ std::cout << "before d_GoldenJsonFilteredEvents" << std::endl;
 
 
 //commented out for now until double counting section is corrected
-/*
-//Filtering events with the run numbers and lumi ranges from the golden json file
-auto d_GoldenJsonFilteredEvents = d_EventCleaning.Define("DummyColumn2", DummyColumnFunction, {"Electron_pt"});
-
-
-if(process != "data_EGRunB" &&
-   process != "data_EGRunC" &&
-   process != "data_EGRunD"){
-
-	auto d_GoldenJsonFilteredEvents = d_DoubleCountCheck.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
-
-}
-else{auto d_GoldenJsonFilteredEvents = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
-*/
-
-
-auto d_GoldenJsonFilteredEvents = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
+auto d_GoldenJsonFilteredEvents_ee = d_DoubleCountCheck_ee.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
+auto d_GoldenJsonFilteredEvents_mumu = d_DoubleCountCheck_mumu.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
 
  //Filtering events that pass the ee selection criteria
-auto d_ee_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_function, {"PV_npvs"})
+auto d_ee_selection_defines = d_GoldenJsonFilteredEvents_ee.Define("PU", PU_function, {"PV_npvs"})
                                            .Define("TightElectrons", TightElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
                                           .Define("Electron_pt_Selection", select<floats>, {"Electron_pt", "TightElectrons"})
                                           .Define("Electron_charge_Selection", select<ints>, {"Electron_charge", "TightElectrons"})
@@ -14063,7 +14010,7 @@ std::cout << "before d_mumu_selection_defines" << std::endl;
 
 
 //Filtering events that pass the mumu selection criteria
-auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents.Define("PU", PU_function, {"PV_npvs"})
+auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents_mumu.Define("PU", PU_function, {"PV_npvs"})
                                              .Define("TightMuons", TightMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
                                              .Define("Muon_pt_Selection", select<floats>, {"Muon_pt", "TightMuons"})
                                              .Define("Muon_charge_Selection", select<ints>, {"Muon_charge", "TightMuons"})
@@ -14714,13 +14661,13 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
  }
   else if(year == "2017"){
 
-  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", /*"ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
 	             "VV_WZTo2L2Q", "VV_WZTo3LNu", "VV_WWTo1L1Nu2Q", "VV_WWTo2L2Nu", "VV_WWToLNuQQ", "VV_WGToLNuG", "VV_ZGToLLG", "VVV_WWWTo4F", 
 	             "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",  
-	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
+	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",*/
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
 		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
 		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", 
@@ -15006,7 +14953,7 @@ void fulleventselectionAlgo::fulleventselection(){
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
 
-  bool SR = true;
+  bool SR = false;
   bool SBR = true;
   bool ZPlusJetsCR = false;
   bool ttbarCR = false;
