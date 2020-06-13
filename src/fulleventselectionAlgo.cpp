@@ -13314,8 +13314,12 @@ const bool& HLT_Ele27_WPTight_Gsf
 	else{std::cout << "The process specified is not SingleElectron, SingleMuon, Double Electron, DoubleMuon, MuonEG or EG. The process is: " << process << std::endl;}
 
 
+  std::cout << "before  d_DoubleCountCheck_ee " << std::endl;
+
   auto d_DoubleCountCheck_ee = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"}); 
   auto d_DoubleCountCheck_mumu = d_EventCleaning.Define("DummyColumn1", DummyColumnFunction, {"Electron_pt"});
+
+  std::cout << "after  d_DoubleCountCheck_mumu" << std::endl;
 
 
   if(year != "2018"){
@@ -13393,11 +13397,15 @@ const bool& HLT_Ele27_WPTight_Gsf
 	ROOT::RDataFrame d_EventNumber_mumu("Events", mumu_file.c_str());
 	ROOT::RDataFrame d_EventNumber_mu("Events", mu_file.c_str());
 
+	std::cout << "before h_EventNumber_ee " << std::endl;
+
 	auto h_EventNumber_ee = d_EventNumber_ee.Histo1D("event");
 	auto h_EventNumber_mumu = d_EventNumber_mumu.Histo1D("event");
 	auto h_EventNumber_e = d_EventNumber_e.Histo1D("event");
 	auto h_EventNumber_mu = d_EventNumber_mu.Histo1D("event");
 
+
+	std::cout << "after h_EventNumber_mu" << std::endl;
 
 
 	//Returning events that have not been double-counted
@@ -13456,15 +13464,18 @@ const bool& HLT_Ele27_WPTight_Gsf
 
         }};	
 
-	
+
+	std::cout << "before d_DoubleCountCheck_ee" << std::endl;	
 
 	//Filtering events so events that haven't been double-counted remain
-	auto d_DoubleCountCheck_ee = d_EventCleaning.Filter(ee_and_e, "event");
-	auto d_DoubleCountCheck_mumu = d_EventCleaning.Filter(mumu_and_mu, "event");
+	auto d_DoubleCountCheck_ee = d_EventCleaning.Filter(ee_and_e, {"event"});
+	auto d_DoubleCountCheck_mumu = d_EventCleaning.Filter(mumu_and_mu, {"event"});
+
+	std::cout << "after d_DoubleCountCheck_mumu" << std::endl;
 
 
   }
-  else{auto d_DoubleCountCheck_ee = d_EventCleaning; auto d_DoubleCountCheck_mumu = d_EventCleaning;}
+  else{std::cout << "in else double count check" << std::endl; auto d_DoubleCountCheck_ee = d_EventCleaning; auto d_DoubleCountCheck_mumu = d_EventCleaning;}
 
 
 
@@ -13489,8 +13500,6 @@ auto GoldenJsonReader{[&year](){
  else{std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl;}
 
 
- std::cout << "GoldenJsonFileName = " << GoldenJsonFileName << std::endl;
-
  std::ifstream myReadFile;
  myReadFile.open(GoldenJsonFileName);
  static char output[100];
@@ -13502,6 +13511,7 @@ auto GoldenJsonReader{[&year](){
 
 
     myReadFile >> output;
+    std::cout << "output = " << output << std::endl;
     GoldenJsonOutput.push_back(output);
 
  }
@@ -13964,6 +13974,7 @@ std::cout << "before d_GoldenJsonFilteredEvents" << std::endl;
 auto d_GoldenJsonFilteredEvents_ee = d_DoubleCountCheck_ee.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 auto d_GoldenJsonFilteredEvents_mumu = d_DoubleCountCheck_mumu.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
+std::cout << "after d_GoldenJsonFilteredEvents_mumu" << std::endl;
 
  //Filtering events that pass the ee selection criteria
 auto d_ee_selection_defines = d_GoldenJsonFilteredEvents_ee.Define("PU", PU_function, {"PV_npvs"})
@@ -14669,9 +14680,9 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
 	             "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets_WJetsToLNu", "ttbarV_ttWJetsToLNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttgamma",  
 	             "ttbarV_ttZToLL", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb", "ttbarV_ttZToLLNuNu", "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext",
 		     "data_DoubleEGRunB", "data_DoubleEGRunC", "data_DoubleEGRunD", "data_DoubleEGRunE", "data_DoubleEGRunF", "data_SingleElectronRunB", 
-		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF",*/ "data_DoubleMuonRunB", 
+		     "data_SingleElectronRunC", "data_SingleElectronRunD", "data_SingleElectronRunE", "data_SingleElectronRunF", "data_DoubleMuonRunB", 
 		     "data_DoubleMuonRunC", "data_DoubleMuonRunD", "data_DoubleMuonRunE", "data_DoubleMuonRunF", "data_SingleMuonRunB", 
-		     "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF", 
+		     "data_SingleMuonRunC", "data_SingleMuonRunD", "data_SingleMuonRunE", "data_SingleMuonRunF",*/ 
 		     "data_DoubleEGRunB2", "data_DoubleEGRunC2", "data_DoubleEGRunD2", "data_DoubleEGRunE2", "data_DoubleEGRunF2", "data_SingleElectronRunB2",
                      "data_SingleElectronRunC2", "data_SingleElectronRunD2", "data_SingleElectronRunE2", "data_SingleElectronRunF2", "data_DoubleMuonRunB2",
                      "data_DoubleMuonRunC2", "data_DoubleMuonRunD2", "data_DoubleMuonRunE2", "data_DoubleMuonRunF2", "data_SingleMuonRunB2",
