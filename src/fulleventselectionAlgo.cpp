@@ -12792,20 +12792,18 @@ if(blinding == true && (SBR == true || SR == true)){
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
         output_ee->cd();
 
+	TTree * tree = new TTree("Nominal", "Nominal");
+	//tree->Write();
+
         ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
-
-	std::string branch = "Nominal";
-	ROOT::RDF::RSnapshotOptions opts;
-	opts.fMode = "UPDATE";
-
-	auto snapshot_ee = AfterChi2Cut_ee.Snapshot(branch.c_str(), OutRootFile_ee.c_str(), ".*");
 
         for(int i = 0; i < N_Columns_ee; i++){
 
 		std::cout << "inside N_Columns_ee for loop" << std::endl;
 
                 auto ColName = colNames_ee.at(i);
+
 
                 if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
                    ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
@@ -12820,7 +12818,9 @@ if(blinding == true && (SBR == true || SR == true)){
                         std::cout << "ColName = " << ColName << std::endl;
 
                         histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
-			histo_ee[i]->Write();			
+			tree->Branch("histo_ee", "TH1F", &histo_ee);
+			//histo_ee[i]->Write();
+
 
                 }
                 else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
@@ -12829,6 +12829,9 @@ if(blinding == true && (SBR == true || SR == true)){
                         ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight" 		  ||
 			ColName  == "chi2" 		      || ColName == "AfterChi2Cut_ee"){
 
+			histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str());
+                        //histo_ee[i]->Write();
+
 
                 }
                 else{std::cout << "Check ColName for ee channel - ColName is = " << ColName << std::endl; continue;}
@@ -12836,8 +12839,8 @@ if(blinding == true && (SBR == true || SR == true)){
 
         }
 
-
-	auto snapshot_ee_updated = AfterChi2Cut_ee.Snapshot(branch.c_str(), OutRootFile_ee.c_str(), ".*", opts);
+	tree->Write();
+	output_ee->Close();
 
 
 	//Writing the histograms for the mumu channel to an output root file      
