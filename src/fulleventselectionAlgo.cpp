@@ -12789,67 +12789,55 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 	//Writing the histograms for the ee channel to an output root file	
-	auto UniqueNodeDF_ee = std::make_unique<RNode>(AfterChi2Cut_ee);
+	//auto h_WeightedWMass = AfterChi2Cut_ee.Histo1D("w_mass", "EventWeight");
+
+	/*
+	auto WeightedHistsFunction_ee{[&h_WeightedWMass](){
+
+		const auto NumberOfBins = h_WeightedWMass->GetNbinsX();
+		floats Output{};
+
+		for(int i = 0; i < NumberOfBins; i++){Output.push_back( h_WeightedWMass->GetBinContent(i) );}
+
+		return Output;
+
+	}};
+	*/
+
+	//auto FinalDf_ee = AfterChi2Cut_ee.Define("w_mass_weighted", WeightedHistsFunction_ee, {});
+
+	auto snapshot_ee_channel = d_WeightedEvents_withMET_ee.Snapshot("Events", OutRootFile_ee.c_str(), "w_mass");
+
+/*
+	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
+	output_ee->cd();
+
+	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
         for(int i = 0; i < N_Columns_ee; i++){
 
                 auto ColName = colNames_ee.at(i);
 
-                if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
-                   ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
-                   ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
-                   ColName != "ME_SF"                   &&
-                   ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     &&
-                   ColName != "WPairJet2"               && ColName != "RecoW"                     && ColName != "BJets"                         &&
-                   ColName != "RecoTop"                 && ColName != "ReweightedTopPt"           && ColName != "MinDeltaR"                     &&
-                   ColName != "MinDeltaPhi"             && ColName != "newMET"                    && ColName != "EventWeight"			&&
-		   ColName != "chi2" 			&& ColName != "AfterChi2Cut_ee"){
+                if(ColName == "w_mass"){
 
                         std::cout << "ColName = " << ColName << std::endl;
 
-                        //auto histo_ee = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
-			auto histo_ee = AfterChi2Cut_ee.Histo1D(ColName.c_str());
-
-			std::string HistoName = ColName + "_Weighted";
-
-			std::cout << "HistoName = " << HistoName << std::endl;
-			std::cout << "histo_ee->GetNbinsX() = " << histo_ee->GetNbinsX() << std::endl;	
-			std::cout << "histo_ee->GetEntries() = " << histo_ee->GetEntries() << std::endl;
-
-			auto WeightedHistosFunction_ee{[&histo_ee](){
-
-                                const auto nbins = histo_ee->GetNbinsX();
-                                floats vec(nbins);
-
-                                for(int j = 0; j < nbins; j++){
-                                        std::cout << "histo_ee->GetBinContent(j) = " << histo_ee->GetBinContent(j) << std::endl;
-                                        vec.push_back(histo_ee->GetBinContent(j));
-                                }
-
-                                return vec;
-
-                        }};
-
-
-   			UniqueNodeDF_ee  = std::make_unique<RNode>(UniqueNodeDF_ee->Define(HistoName.c_str(), WeightedHistosFunction_ee, {}));
+                        histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
+			histo_ee[i]->Write();
+			break;
 			
 
 
                 }
-                else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
-                        ColName  == "CalculatedNominalWeight" || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
-                        ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
-                        ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight" 		  ||
-			ColName  == "chi2" 		      || ColName == "AfterChi2Cut_ee"){
-
-
-
-
-                }
-                else{std::cout << "Check ColName for ee channel - ColName is = " << ColName << std::endl; continue;}
+		else{continue;}
 
 
         }
+
+
+	output_ee->Close();
+
+*/
 
 	std::string branch;
 
@@ -12877,13 +12865,9 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 
-        ROOT::RDF::RSnapshotOptions opts;
-        opts.fMode = "UPDATE";
-
-        auto snapshot_ee = UniqueNodeDF_ee->Snapshot(branch.c_str(), OutRootFile_ee.c_str(), ".*", opts);
 
 
-
+/*
 	//Writing the histograms for the mumu channel to an output root file      
 	auto UniqueNodeDF_mumu = std::make_unique<RNode>(AfterChi2Cut_mumu);
 
@@ -12969,9 +12953,9 @@ if(blinding == true && (SBR == true || SR == true)){
                 else{std::cout << "Check ColName for mumu channel - ColName is = " << ColName  << std::endl; continue;}
 
         }	
+*/
 
-
-	auto snapshot_mumu = UniqueNodeDF_mumu->Snapshot(branch.c_str(), OutRootFile_mumu.c_str(), ".*", opts);
+//	auto snapshot_mumu = UniqueNodeDF_mumu->Snapshot(branch.c_str(), OutRootFile_mumu.c_str(), ".*", opts);
 
 
 }
