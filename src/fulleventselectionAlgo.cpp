@@ -5230,12 +5230,8 @@ auto NormalisationFactorFunction{[&process, &year](){
 				    "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
 
 
-  std::cout << "ProcessStrings.size() = " << ProcessStrings.size() << std::endl;
 
   for(int i = 1; i < ProcessStrings.size(); i++){
-
-	std::cout << "process = " << process << std::endl;
-	std::cout << "ProcessStrings.at(i) = " << ProcessStrings.at(i) << std::endl;
 
 	if(process == ProcessStrings.at(i)){return linereader(i, year);}
 	else{continue;}
@@ -5322,8 +5318,6 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo
 		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
-
-   std::cout << "inside EGammaFunction" << std::endl;
 
    floats OutputVector{};
    floats OutputVectorFinal{};
@@ -11134,8 +11128,6 @@ ints SummedWeights(14, 0);
 
 auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
-  std::cout << "inside NominalWeight" << std::endl;
-
   float PdfMin = 1.0;
   float PdfMax = 1.0;
 
@@ -12779,34 +12771,61 @@ if(blinding == true && (SBR == true || SR == true)){
 	}
 
 
-	auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
-	auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
+	//auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
+	//auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
+
+	auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
+        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
 
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
 
 
+	//Writing the histograms for the ee channel to an output root file
+	auto latestDF = std::make_unique<RNode>(d_WeightedEvents_withMET_ee);
+
+	for(int i = 0; i < N_Columns_ee; i++){
+
+		std::cout << "i = " << i << std::endl;
+		std::cout << "N_Columns_ee = " << N_Columns_ee << std::endl;
+
+		auto ColName_ee = colNames_ee.at(i);
+		auto HistName_ee = ColName_ee + "_weighted";
+
+		std::cout << "ColName_ee = " << ColName_ee << std::endl;
+
+		if(d_WeightedEvents_withMET_ee.GetColumnType(ColName_ee) != "TLorentzVector" &&
+		   d_WeightedEvents_withMET_ee.GetColumnType(ColName_ee) != "std::vector<TLorentzVector>" && 
+		   ColName_ee != "MinDeltaPhi" && ColName_ee != "MinDeltaR" && ColName_ee != "SmearedJet4Momentum" &&
+		   ColName_ee != "newMET" ColName_ee == "w_mass"){
+
+			auto h_Weighted_ee = d_WeightedEvents_withMET_ee.Histo1D(ColName_ee.c_str(), "EventWeight");
+			const auto nBins = h_Weighted_ee->GetNbinsX();	
+
+			latestDF = std::make_unique<RNode>(latestDF->Define(HistName_ee, [&h_Weighted_ee, &nBins]() {
+      
+          			floats vec(nBins);
+                                                                   
+           			for(int j = 0; j < nBins; ++j){
+					vec.push_back(h_Weighted_ee->GetBinContent(j));
+				}
+
+				return vec;
+
+       			}, {}));
 
 
-	//Writing the histograms for the ee channel to an output root file	
-	//auto h_WeightedWMass = AfterChi2Cut_ee.Histo1D("w_mass", "EventWeight");
+		}
+		else{continue;}
+	
+	}
 
-	/*
-	auto WeightedHistsFunction_ee{[&h_WeightedWMass](){
+	std::cout << "before snapshot_ee_channel" << std::endl;
+	auto snapshot_ee_channel = latestDF->Snapshot("Events", OutRootFile_ee.c_str(), {"w_mass_weighted"});
+	std::cout << "after snapshot_ee_channel" << std::endl;
 
-		const auto NumberOfBins = h_WeightedWMass->GetNbinsX();
-		floats Output{};
 
-		for(int i = 0; i < NumberOfBins; i++){Output.push_back( h_WeightedWMass->GetBinContent(i) );}
 
-		return Output;
-
-	}};
-	*/
-
-	//auto FinalDf_ee = AfterChi2Cut_ee.Define("w_mass_weighted", WeightedHistsFunction_ee, {});
-
-	auto snapshot_ee_channel = d_WeightedEvents_withMET_ee.Snapshot("Events", OutRootFile_ee.c_str(), "w_mass");
 
 /*
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
