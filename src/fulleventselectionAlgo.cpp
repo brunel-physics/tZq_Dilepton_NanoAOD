@@ -12232,6 +12232,16 @@ if(blinding == true && (SBR == true || SR == true)){
         	}
 
 
+		//for Chi2_SBR_ee and mumu
+		auto MaxElement_ee = std::max_element(CutRanges_ee.begin(), CutRanges_ee.end());
+		auto DistToMax_ee = std::distance(CutRanges_ee.begin(), MaxElement_ee);
+		Chi2_SBR_ee = CutRanges_ee.at(DistToMax_ee);
+
+		auto MaxElement_mumu = std::max_element(CutRanges_mumu.begin(), CutRanges_mumu.end());
+		auto DistToMax_mumu = std::distance(CutRanges_mumu.begin(), MaxElement_mumu);
+                Chi2_SBR_mumu = CutRanges_mumu.at(DistToMax_mumu);
+
+
 	}//end of if for tZq
 
 
@@ -12247,10 +12257,16 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	  std::cout << "inside Chi2Cut_ee" << std::endl;
 
+
 	  if(SBR == true){std::cout << "inside if for SBR is true" << std::endl; return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
 	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
 	  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
 
+/*
+	  if(SBR == true){std::cout << "inside if for SBR is true" << std::endl; return 5 < Chi2 && Chi2 < 30;}
+          else if(SR == true){return Chi2 < 5;}
+          else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+*/
 	}};
 
 	std::cout << "before AfterChi2Cut_ee" << std::endl;
@@ -12271,8 +12287,9 @@ if(blinding == true && (SBR == true || SR == true)){
 
         }};
 
+	std::cout << "before AfterChi2Cut_mumu" << std::endl;
         auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
-		
+	std::cout << "after AfterChi2Cut_mumu" << std::endl;
 
 	
 
@@ -12757,81 +12774,61 @@ if(blinding == true && (SBR == true || SR == true)){
 	std::string OutRootFile_ee;
 	std::string OutRootFile_mumu;  
 
+	std::string branch;
+
+        if(PU_ScaleUp == true){branch = "PU_ScaleUp";}
+        else if(PU_ScaleDown == true){branch = "PU_ScaleDown";}
+        else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp";}
+        else if(BTag_ScaleDown == true){branch = "BTag_ScaleDown";}
+        else if(JetSmearing_ScaleUp == true){branch = "JetSmearing_ScaleUp";}
+        else if(JetSmearing_ScaleDown == true){branch = "JetSmearing_ScaleDown";}
+        else if(JetResolution_ScaleUp == true){branch = "JetResolution_ScaleUp";}
+        else if(JetResolution_ScaleDown == true){branch = "JetResolution_ScaleDown";}
+        else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp";}
+        else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown";}
+        else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
+        else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
+        else if(ME_Up == true){branch = "ME_Up";}
+        else if(ME_Down == true){branch = "ME_Down";}
+        else if(MET_Up == true){branch = "MET_Up";}
+        else if(MET_Down == true){branch = "MET_Down";}
+        else if(isr_up == true){branch = "isr_up";}
+        else if(isr_down == true){branch = "isr_down";}
+        else if(fsr_up == true){branch = "fsr_up";}
+        else if(fsr_down == true){branch = "fsr_down";}
+        else{branch = "Nominal";}
+
+
+
+
         if(NPL == false){
   
-      		OutRootFile_ee  = "Results_MC_" + process + "_" + year + "_ee_Blinded.root";
-        	OutRootFile_mumu = "Results_MC_" + process + "_" + year + "_mumu_Blinded.root";
+      		OutRootFile_ee  = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_Blinded.root";
+        	OutRootFile_mumu = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_Blinded.root";
 	
 	}
  	else{
 
-		OutRootFile_ee  = "Results_MC_" + process + "_" + year + "_ee_NPL_Blinded.root";
-                OutRootFile_mumu = "Results_MC_" + process + "_" + year + "_mumu_NPL_Blinded.root";
+		OutRootFile_ee  = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_NPL_Blinded.root";
+                OutRootFile_mumu = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_NPL_Blinded.root";
 
 	}
 
 
-	//auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
-	//auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
+	auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
+	auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
 
-	auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
-        auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
+	//auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
+        //auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
 
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
 
-
-	//Writing the histograms for the ee channel to an output root file
-	auto latestDF = std::make_unique<RNode>(d_WeightedEvents_withMET_ee);
-
-	for(int i = 0; i < N_Columns_ee; i++){
-
-		std::cout << "i = " << i << std::endl;
-		std::cout << "N_Columns_ee = " << N_Columns_ee << std::endl;
-
-		auto ColName_ee = colNames_ee.at(i);
-		auto HistName_ee = ColName_ee + "_weighted";
-
-		std::cout << "ColName_ee = " << ColName_ee << std::endl;
-
-		if(d_WeightedEvents_withMET_ee.GetColumnType(ColName_ee) != "TLorentzVector" &&
-		   d_WeightedEvents_withMET_ee.GetColumnType(ColName_ee) != "std::vector<TLorentzVector>" && 
-		   ColName_ee != "MinDeltaPhi" && ColName_ee != "MinDeltaR" && ColName_ee != "SmearedJet4Momentum" &&
-		   ColName_ee != "newMET" ColName_ee == "w_mass"){
-
-			auto h_Weighted_ee = d_WeightedEvents_withMET_ee.Histo1D(ColName_ee.c_str(), "EventWeight");
-			const auto nBins = h_Weighted_ee->GetNbinsX();	
-
-			latestDF = std::make_unique<RNode>(latestDF->Define(HistName_ee, [&h_Weighted_ee, &nBins]() {
-      
-          			floats vec(nBins);
-                                                                   
-           			for(int j = 0; j < nBins; ++j){
-					vec.push_back(h_Weighted_ee->GetBinContent(j));
-				}
-
-				return vec;
-
-       			}, {}));
-
-
-		}
-		else{continue;}
-	
-	}
-
-	std::cout << "before snapshot_ee_channel" << std::endl;
-	auto snapshot_ee_channel = latestDF->Snapshot("Events", OutRootFile_ee.c_str(), {"w_mass_weighted"});
-	std::cout << "after snapshot_ee_channel" << std::endl;
-
-
-
-
-/*
+	//ee
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
-	output_ee->cd();
+        output_ee->cd();
 
-	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
+        ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
         for(int i = 0; i < N_Columns_ee; i++){
 
@@ -12842,139 +12839,45 @@ if(blinding == true && (SBR == true || SR == true)){
                         std::cout << "ColName = " << ColName << std::endl;
 
                         histo_ee[i] = AfterChi2Cut_ee.Histo1D(ColName.c_str(), "EventWeight");
-			histo_ee[i]->Write();
-			break;
-			
-
-
+                        histo_ee[i]->Write();
+                        break;
+                        
                 }
-		else{continue;}
-
+                else{continue;}
 
         }
 
+        output_ee->Close();	
 
-	output_ee->Close();
+	//mumu
+	TFile * output_mumu = new TFile(OutRootFile_mumu.c_str(), "RECREATE");
+        output_mumu->cd();
 
-*/
-
-	std::string branch;
-
-	if(PU_ScaleUp == true){branch = "PU_ScaleUp";}
-	else if(PU_ScaleDown == true){branch = "PU_ScaleDown";}
-	else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp";}
-	else if(BTag_ScaleDown == true){branch = "BTag_ScaleDown";}
-	else if(JetSmearing_ScaleUp == true){branch = "JetSmearing_ScaleUp";}
-	else if(JetSmearing_ScaleDown == true){branch = "JetSmearing_ScaleDown";}
-	else if(JetResolution_ScaleUp == true){branch = "JetResolution_ScaleUp";}
-	else if(JetResolution_ScaleDown == true){branch = "JetResolution_ScaleDown";}
-	else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp";}
-	else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown";}
-	else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
-	else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
-	else if(ME_Up == true){branch = "ME_Up";}
-	else if(ME_Down == true){branch = "ME_Down";}
-	else if(MET_Up == true){branch = "MET_Up";}
-        else if(MET_Down == true){branch = "MET_Down";}
-	else if(isr_up == true){branch = "isr_up";}
-	else if(isr_down == true){branch = "isr_down";}
-	else if(fsr_up == true){branch = "fsr_up";}
-        else if(fsr_down == true){branch = "fsr_down";}
-	else{branch = "Nominal";}
-
-
-
-
-
-/*
-	//Writing the histograms for the mumu channel to an output root file      
-	auto UniqueNodeDF_mumu = std::make_unique<RNode>(AfterChi2Cut_mumu);
+        ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
         for(int i = 0; i < N_Columns_mumu; i++){
 
                 auto ColName = colNames_mumu.at(i);
 
-                if(ColName != "PU"                            && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
-                   ColName != "CalculatedNominalWeight"       && ColName != "MuonSFTest_ID"             && ColName != "MuonSFTest_Iso"                &&
-                   ColName != "MuonSFTest_ID_sys_syst"        && ColName != "MuonSFTest_ID_sys_stat"    && ColName != "MuonSFTest_Iso_sys_syst"       &&
-                   ColName != "MuonSFTest_Iso_sys_stat"       && ColName != "CalculatedGeneratorWeight" &&
-                   ColName != "ME_SF"                         &&
-                   ColName != "RecoZ"                         && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     &&
-                   ColName != "WPairJet2"                     && ColName != "RecoW"                     && ColName != "BJets"                         &&
-                   ColName != "RecoTop"                       && ColName != "ReweightedTopPt"           && ColName != "MinDeltaR"                     &&
-                   ColName != "MinDeltaPhi"                   && ColName != "newMET"                    && ColName != "EventWeight"                   &&
-                   ColName != "MuonFourMomentum"	      && ColName != "MuonFourMomentum_RochCorr" && ColName != "chi2"			      && 
-		   ColName != "AfterChi2Cut_mumu"){
+                if(ColName == "w_mass"){
 
+                        std::cout << "ColName = " << ColName << std::endl;
 
-				std::cout << "ColName = " << ColName << std::endl;
-
-                                auto histo_mumu = AfterChi2Cut_mumu.Histo1D(ColName.c_str(), "EventWeight");
-
-                                std::string HistoName = ColName + "_Weighted";
-
-
-                                auto WeightedHistosFunction_mumu{[&histo_mumu](){
-
-                                        const auto nbins = histo_mumu->GetNbinsX();
-                                        floats vec(nbins);
-
-                                        for(int j = 0; j < nbins; j++){
-                                                std::cout << "histo_mumu->GetBinContent(j) = " << histo_mumu->GetBinContent(j) << std::endl;
-                                                vec.push_back(histo_mumu->GetBinContent(j));
-                                        }
-
-                                        return vec;
-
-                                }};
-
-
-                                UniqueNodeDF_mumu  = std::make_unique<RNode>(UniqueNodeDF_mumu->Define(HistoName.c_str(), WeightedHistosFunction_mumu, {}));
-
-
+                        histo_mumu[i] = AfterChi2Cut_mumu.Histo1D(ColName.c_str(), "EventWeight");
+                        histo_mumu[i]->Write();
+                        break;
 
                 }
-                else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
-                        ColName  == "CalculatedNominalWeight" || ColName == "MuonSFTest_ID"             || ColName == "MuonSFTest_Iso"            ||
-                        ColName  == "MuonSFTest_ID_sys_syst"  || ColName == "MuonSFTest_ID_sys_stat"    || ColName == "MuonSFTest_Iso_sys_syst"   ||
-                        ColName  == "MuonSFTest_Iso_sys_stat" || ColName == "CalculatedGeneratorWeight" ||
-                        ColName  == "ME_SF"                   || ColName == "ReweightedTopPt"           || ColName == "EventWeight"		  ||
-			ColName  == "chi2"		      || ColName == "AfterChi2Cut_mumu"){
+                else{continue;}
 
+        }
 
-				std::cout << "ColName = " << ColName << std::endl;
-
-                        	auto histo_mumu = AfterChi2Cut_mumu.Histo1D(ColName.c_str());
-
-                        	std::string HistoName = ColName + "_Unweighted";
-
-
-                        	auto WeightedHistosFunction_mumu{[&histo_mumu](){
-
-                                	const auto nbins = histo_mumu->GetNbinsX();
-                                	floats vec(nbins);
-
-                                	for(int j = 0; j < nbins; j++){
-                                        	std::cout << "histo_mumu->GetBinContent(j) = " << histo_mumu->GetBinContent(j) << std::endl;
-                                        	vec.push_back(histo_mumu->GetBinContent(j));
-                                	}
-
-                                	return vec;
-
-                        	}};
-
-
-                        	UniqueNodeDF_mumu  = std::make_unique<RNode>(UniqueNodeDF_mumu->Define(HistoName.c_str(), WeightedHistosFunction_mumu, {}));
+        output_mumu->Close();
 
 
 
-                }
-                else{std::cout << "Check ColName for mumu channel - ColName is = " << ColName  << std::endl; continue;}
 
-        }	
-*/
 
-//	auto snapshot_mumu = UniqueNodeDF_mumu->Snapshot(branch.c_str(), OutRootFile_mumu.c_str(), ".*", opts);
 
 
 }
