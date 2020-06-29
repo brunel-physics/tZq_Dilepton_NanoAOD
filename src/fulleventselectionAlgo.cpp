@@ -89,7 +89,9 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 		line_number++;
 		line_number_vec.push_back(line_number);
 		std::vector<std::string> vec;
+		std::cout << "before boost::algorithm" << std::endl;
 		boost::algorithm::split(vec, line, boost::is_any_of(delimeter));
+		std::cout << "after boost::algorithm" << std::endl;
 		dataList.push_back(vec);
 	}
 	
@@ -824,6 +826,9 @@ template<typename T, typename U, typename... Types>
         p.SetPtEtaPhiM(pts[i], etas[i], phis[i], ms[i]);
         vec += p;
     }
+	
+    std::cout << "Inside inv_mass, vec.M() = " << vec.M() << std::endl;
+
     return boost::numeric_cast<float>(vec.M());
 }
 
@@ -848,6 +853,9 @@ template<typename T, typename U, typename... Types>
         p.SetPtEtaPhiM(pts[i], etas[i], phis[i], ms[i]);
         vec += p;
     }
+
+    std::cout << "Inside inv_mass_doubles, vec.M() = " << vec.M() << std::endl; 
+
     return boost::numeric_cast<float>(vec.M());
 }
 
@@ -3170,7 +3178,9 @@ auto find_lead_mask{[](const ints& mask, const floats& vals) {
   
 
   const auto masked_vals{mask * vals};
+  std::cout << "before max_idx" << std::endl;
   const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
+  std::cout << "after max_idx" << std::endl;
   ints lead_mask(masked_vals.size(), 0); // must be ()
   lead_mask.at(max_idx) = 1;
   return lead_mask;
@@ -9118,6 +9128,7 @@ else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_reco
 //Print cut report
 std::cout << "before print cut flow report" << std::endl;
 
+//auto allCutsReport = d_dataframe.Report();
 auto allCutsReport = d.Report();
 
 std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
@@ -9491,7 +9502,7 @@ if( (year == "2017" || year == "2018") &&
 }
 else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";}
 
-
+std::cout << "before d_WeightedEvents_ee" << std::endl;
 
 auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
                                              .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings)
@@ -9521,6 +9532,8 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("ME_numerator_histo", ME_histo_function, {})
 					     .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"});
 								      
+
+std::cout << "before d_WeightedEvents_mumu" << std::endl;
 
 
 auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
@@ -9714,9 +9727,13 @@ std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "Returned
 std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
 
 
+std::cout << "before d_WeightedEvents_withMET_ee" << std::endl;
+
 //Defining the new MET columns and the event weight columns
 auto d_WeightedEvents_withMET_ee = d_WeightedEvents_ee.Define("newMET", METUncertFunction, MET_uncert_strings)
 						      .Define("EventWeight", EventWeight_ee, EventWeight_ee_strings);
+
+std::cout << "before d_WeightedEvents_withMET_mumu" << std::endl;
 
 auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METUncertFunction, MET_uncert_strings)
 							  .Define("EventWeight", EventWeight_mumu, EventWeight_mumu_strings);
@@ -9755,11 +9772,14 @@ if(process == "tZq"){
 	TFile* FittedHistosOutput = new TFile(Filename.c_str(), "RECREATE");
         FittedHistosOutput->cd();
 
+	std::cout << "before h_WMass_ee" << std::endl;
 
 	auto h_WMass_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_WMass_ee", "Mass distribution of the W mass candidate (ee channel)", nbins, 0, 150}, "w_mass");
 	auto h_InvTopMass_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_InvTopMass_ee", "Mass distribution of the top candidate (ee channel)", nbins, 0, 500}, "InvTopMass");
 	auto h_WMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_WMass_mumu", "Mass distribution of the W mass candidate (mumu channel)", nbins, 0, 150}, "w_mass");
 	auto h_InvTopMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_InvTopMass_mumu", "Mass distribution of the top candidate (mumu channel)", nbins, 0, 500}, "InvTopMass");
+
+	std::cout << "after h_InvTopMass_mumu " << std::endl;
 
 	h_WMass_ee->Fit("gaus");
 	h_InvTopMass_ee->Fit("gaus");
@@ -9801,7 +9821,7 @@ if(process == "tZq"){
 	else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
 
 
-
+	std::cout << "before tZq_WAndTop_File" << std::endl;
 
 
 	TFile* tZq_WAndTop_File = new TFile{tZq_WAndTop_Filename.c_str(), "READ"};
@@ -9818,6 +9838,8 @@ if(process == "tZq"){
 
 	tZq_WAndTop_File->Close();
 
+
+	std::cout << "after closing tZq_WAndTop_File" << std::endl;
 
 
 	//Write the nominal mass and resolution values to a text file
