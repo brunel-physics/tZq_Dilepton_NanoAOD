@@ -89,9 +89,7 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 		line_number++;
 		line_number_vec.push_back(line_number);
 		std::vector<std::string> vec;
-		std::cout << "before boost::algorithm" << std::endl;
 		boost::algorithm::split(vec, line, boost::is_any_of(delimeter));
-		std::cout << "after boost::algorithm" << std::endl;
 		dataList.push_back(vec);
 	}
 	
@@ -827,8 +825,6 @@ template<typename T, typename U, typename... Types>
         vec += p;
     }
 	
-    std::cout << "Inside inv_mass, vec.M() = " << vec.M() << std::endl;
-
     return boost::numeric_cast<float>(vec.M());
 }
 
@@ -853,8 +849,6 @@ template<typename T, typename U, typename... Types>
         p.SetPtEtaPhiM(pts[i], etas[i], phis[i], ms[i]);
         vec += p;
     }
-
-    std::cout << "Inside inv_mass_doubles, vec.M() = " << vec.M() << std::endl; 
 
     return boost::numeric_cast<float>(vec.M());
 }
@@ -1228,7 +1222,7 @@ else if(year == "2017"){
         else if(process == "data_SingleElectronRunE2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"};}
         else if(process == "data_SingleElectronRunF2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root", "/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*", "/data/disk0/nanoAOD_2017/TTToHadronic/*", "/data/disk0/nanoAOD_2017/TTToSemileptonic/*", "/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2017_Blinded.root"};}
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"};}
@@ -1292,7 +1286,7 @@ else if(year == "2018"){
         else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"};}
         else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"};}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root", "/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*", "/data/disk0/nanoAOD_2017/TTToHadronic/*", "/data/disk0/nanoAOD_2017/TTToSemileptonic/*", "/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"};}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"};}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"};}
 	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2018_Blinded.root"};}
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"};}
@@ -1309,7 +1303,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 1000000);
+auto d_dataframe = d.Range(0, 100000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -3178,9 +3172,7 @@ auto find_lead_mask{[](const ints& mask, const floats& vals) {
   
 
   const auto masked_vals{mask * vals};
-  std::cout << "before max_idx" << std::endl;
   const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
-  std::cout << "after max_idx" << std::endl;
   ints lead_mask(masked_vals.size(), 0); // must be ()
   lead_mask.at(max_idx) = 1;
   return lead_mask;
@@ -4609,33 +4601,27 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 
 //Lambda functions for lepton efficiencies
 //2016, ID efficiency
-std::cout << "before 2016, ID efficiency" << std::endl;
-
 TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
 TH2* histo_RunsBCDEF_ID_2016 = (TH2*)(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsBCDEF_ID_2016->SetDirectory(nullptr);
 
-std::cout << "before inputfile_RunsGH_ID_2016 " << std::endl;
 
 TFile* inputfile_RunsGH_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
 TH2* histo_RunsGH_ID_2016 = (TH2*)(inputfile_RunsGH_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsGH_ID_2016->SetDirectory(nullptr);
 
-std::cout << "before 2016, Iso efficiency" << std::endl;
 
 //2016, Iso efficiency
 TFile* inputfile_RunsBCDEF_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
 TH2* histo_RunsBCDEF_ISO_2016 = (TH2*)(inputfile_RunsBCDEF_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsBCDEF_ISO_2016->SetDirectory(nullptr);
 
-std::cout << "before inputfile_RunsGH_ISO_2016" << std::endl;
 
 TFile* inputfile_RunsGH_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
 TH2* histo_RunsGH_ISO_2016 = (TH2*)(inputfile_RunsGH_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsGH_ISO_2016->SetDirectory(nullptr);
 
 
-std::cout << "before 2017" << std::endl;
 
 //2017
 //Muon ID file
@@ -4643,21 +4629,18 @@ TFile* inputfile_RunsBCDEF_ID_2017 = new TFile("./ScaleFactors/LeptonEfficiency/
 TH2* histo_RunsBCDEF_ID_2017 = (TH2*)(inputfile_RunsBCDEF_ID_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
 histo_RunsBCDEF_ID_2017->SetDirectory(nullptr);
 
-std::cout << "before //Muon ID sys file" << std::endl;
 
 //Muon ID sys file
 TFile* inputfile_RunsBCDEF_ID_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
 TH2* histo_RunsBCDEF_ID_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
 histo_RunsBCDEF_ID_Sys_2017->SetDirectory(nullptr);
 
-std::cout << "before Muon ID sys (stat)" << std::endl;
 
 //Muon ID sys (stat)
 TFile* inputfile_RunsBCDEF_ID_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
 TH2* histo_RunsBCDEF_ID_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Stat_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
 histo_RunsBCDEF_ID_Sys_Stat_2017->SetDirectory(nullptr);
 
-std::cout << "before Muon ID sys (syst)" << std::endl;
 
 //Muon ID sys (syst)
 TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
@@ -4665,7 +4648,6 @@ TH2* histo_RunsBCDEF_ID_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Syst_2
 histo_RunsBCDEF_ID_Sys_Syst_2017->SetDirectory(nullptr);
 
 
-std::cout << "before Muon Iso file" << std::endl;
 
 //Muon Iso file
 TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
@@ -4673,21 +4655,18 @@ TH2* histo_RunsBCDEF_ISO_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_2017->Get("NUM_Ti
 histo_RunsBCDEF_ISO_2017->SetDirectory(nullptr);
 
 
-std::cout << "before Muon Iso sys file" << std::endl;
 
 //Muon Iso sys file
 TFile* inputfile_RunsBCDEF_ISO_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
 TH2* histo_RunsBCDEF_ISO_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
 histo_RunsBCDEF_ISO_Sys_2017->SetDirectory(nullptr);
 
-std::cout << "before Muon Iso sys (stat)" << std::endl;
 
 //Muon Iso sys (stat)
 TFile* inputfile_RunsBCDEF_ISO_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
 TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
 histo_RunsBCDEF_ISO_Sys_Stat_2017->SetDirectory(nullptr);
 
-std::cout << "before Muon Iso sys (syst)" << std::endl;
 
 //Muon Iso sys (syst)
 TFile* inputfile_RunsBCDEF_ISO_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
@@ -4695,19 +4674,13 @@ TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Syst
 histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 
 
-std::cout << "2018" << std::endl;
 
 //2018
 //Muon ID file (runs ABCD)
 TFile* inputfile_RunsABCD_ID_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
-
-
-std::cout << "after inputfile_RunsABCD_ID_2018 " << std::endl;
-
 TH2* histo_RunsABCD_ID_2018 = (TH2*)(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta")->Clone());
 histo_RunsABCD_ID_2018->SetDirectory(nullptr);
 
-std::cout << "before Muon ISO file (runs ABCD)" << std::endl;
 
 //Muon ISO file (runs ABCD)
 TFile* inputfile_RunsABCD_ISO_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
@@ -4716,7 +4689,6 @@ histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
 //need syst files for 2018 (check the root files, there are more histos)
 
-std::cout << "before muon SF" << std::endl;
 
 
 auto MuonSF{[
@@ -4739,10 +4711,6 @@ auto MuonSF{[
 
 
 ](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
-
-
-
-  std::cout << "inside MuonSF" << std::endl;
 
   floats AbsEta = abs(eta);
 
@@ -6539,32 +6507,8 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
 
 
 
-auto d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
-auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
-
-
-/*
-
-if(ttbarCR == false && process != "Data_triggerSF" && process != "MC_triggerSF"){
-
-	d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
-	d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
-
-}
-else if(ttbarCR == false && (process == "Data_triggerSF" || process == "MC_triggerSF")){
-	
-        d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
-        d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
-
-}
-else if(ttbarCR == true){
-
-       auto d_ee_selection = d_emu_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");
-       auto d_mumu_selection = d_emu_selection_defines.Filter(lep_cut_emu, lep_cut_emu_strings, "lepton cut (emu)");
-
-}
-else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
-*/
+  auto d_ee_selection = d_ee_selection_defines.Filter(lep_cut_ee, lep_cut_ee_strings, "lepton cut (ee)");
+  auto d_mumu_selection = d_mumu_selection_defines.Filter(lep_cut_mumu, lep_cut_mumu_strings, "lepton cut (mumu)");
 
 
 
@@ -7132,6 +7076,8 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
   }
 
 
+  std::cout << "before filtering events with a reconstructed Z boson (ee)" << std::endl;
+
   //Filtering events with a reconstructed Z boson
   auto d_ee_recoZ_selection = d_ee_selection.Define("OppositeSignNonPrompt", OppositeSignNonPrompt, {"Electron_charge_Selection", "Electron_genPartFlav"})
                                           .Define("OppositeSignPrompt", OppositeSignPrompt, {"Electron_charge_Selection", "Electron_genPartFlav"})
@@ -7150,6 +7096,8 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
                                           .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingElectronPhi", "SubleadingElectronPhi"})
                                           .Filter(z_mass_cut, {"z_mass"}, "Z mass cut (ee channel)");
 
+
+  std::cout << "before filtering events with a reconstructed Z boson (mumu)" << std::endl;
 
   auto d_mumu_recoZ_selection = d_mumu_selection.Define("DummyColumn", DummyColumnFunction, {"Muon_pt"})
 						.Define("Muon_genPartIdx_Selection", select<ints>, {"Muon_genPartIdx", "TightMuons"})
@@ -7178,7 +7126,9 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
                                                 .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingMuonPhi", "SubleadingMuonPhi"})
                                                 .Filter(z_mass_cut, {"z_mass"}, "Z mass cut (mumu channel)");
 
- 
+  
+  std::cout << "before jet cut (ee)" << std::endl;
+
 
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("sJER_Nominal", SJER_nominal, sJER_sigmaJER_strings)
                       				       .Define("sJER_up", SJER_up, sJER_sigmaJER_strings)
@@ -7234,6 +7184,8 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
                                                        .Filter(jet_selection_function, {"tight_jets"}, "jet cut (ee channel)");
 
 
+  std::cout << "before bjet cut (ee)" << std::endl;
+
   auto d_ee_recoZ_jets_bjets_selection = d_ee_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                   .Define("nbjets", numberofbjets, {"bjets"})
                                                                   .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
@@ -7267,7 +7219,10 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
                                                                   .Define("BTAGEFF_gluon_pt_denom", select<floats>, {JetPtInput, "BTAGEFF_gluon_id"})
                                                                   .Define("BTAGEFF_gluon_eta_denom", select<floats>, {JetEtaInput, "BTAGEFF_gluon_id"})
 								  .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
-								
+			
+
+  std::cout << "before jet cut (mumu)" << std::endl;
+					
   auto d_mumu_recoZ_jets_selection = d_mumu_recoZ_selection.Define("sJER_Nominal", SJER_nominal, sJER_sigmaJER_strings)
                       					   .Define("sJER_up", SJER_up, sJER_sigmaJER_strings)
                       					   .Define("sJER_down", SJER_down, sJER_sigmaJER_strings)
@@ -7320,6 +7275,9 @@ else{std::cout << "please choose ttbarCR as true or false" << std::endl;}
                                                            .Define("JetPhiSum", JetPhiSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
                                                            .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_mu"})
                                                            .Filter(jet_selection_function, {"tight_jets"}, "jet cut (mumu channel)");
+
+   
+   std::cout << "before jet cut (mumu)" << std::endl;
 
    auto d_mumu_recoZ_jets_bjets_selection = d_mumu_recoZ_jets_selection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                                                       .Define("nbjets", numberofbjets, {"bjets"})
@@ -7403,7 +7361,7 @@ else{
 }
 
 	
-
+	std::cout << "before btag efficiency" << std::endl;
 
 	TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
 	int NBins = 40;
@@ -8932,7 +8890,6 @@ return ResultVector;
 
 
 
-std::cout << "before CMSBTagSF" << std::endl;
 
 auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
@@ -9010,6 +8967,7 @@ auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 }};
 
 
+std::cout << "before W reconstruction (ee)" << std::endl;
 
 
 //Filtering events with a reconstructed W boson
@@ -9065,6 +9023,10 @@ auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selecti
 
 if(ZPlusJetsCR == true){auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut_ZPlusJetsCR, {"w_mass", "MET_sumEt"}, "W mass cut (ee channel)");}
 else{auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (ee channel)");}
+
+
+
+std::cout << "before W reconstruction (mumu)" << std::endl;
 
 
 auto d_mumu_recoZ_jets_bjets_recoW_selection_defines = d_mumu_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", "SmearedJetPt"})
@@ -9144,7 +9106,7 @@ for (auto&& cutInfo: allCutsReport){
 std::cout << "after the for loop for cut flow report" << std::endl;
 
 
-
+std::cout << "before top reconstruction (ee)" << std::endl;
 
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
@@ -9206,7 +9168,7 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
 											.Define("InvTopMass", inv_mass_doubles, {"Top_Pt", "Top_Eta", "Top_Phi", "Top_Mass"});
 
 
-std::cout << "before d_mumu_recoZ_jets_bjets_recoW_recoT_selection" << std::endl;
+std::cout << "before top reconstruction (mumu)" << std::endl;
 
 
 auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
@@ -9504,6 +9466,8 @@ else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt
 
 std::cout << "before d_WeightedEvents_ee" << std::endl;
 
+
+
 auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
                                              .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings)
 					     .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
@@ -9592,7 +9556,6 @@ const floats& Jet_mass){
   floats UnsmearedJetPx;
   floats UnsmearedJetPy;
 
-  std::cout << "inside METUncertFunction" << std::endl;
 
   //TLorentzVector for unsmeared jets
   for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
@@ -9782,19 +9745,41 @@ if(process == "tZq"){
 	std::cout << "after h_InvTopMass_mumu " << std::endl;
 
 	h_WMass_ee->Fit("gaus");
+
+	std::cout << "after gaus fit for W (ee)" << std::endl;
+
 	h_InvTopMass_ee->Fit("gaus");
+
+	std::cout << "after gaus fit for top (ee)" << std::endl;
+
 	h_WMass_ee->Write();
 	h_InvTopMass_ee->Write();
 
 	h_WMass_mumu->Fit("gaus");
+
+	std::cout << "after gaus fit for W (mumu)" << std::endl;
+
         h_InvTopMass_mumu->Fit("gaus");
+
+	std::cout << "after gaus fit for top (mumu)" << std::endl;
+
         h_WMass_mumu->Write();
         h_InvTopMass_mumu->Write();
 
+	std::cout << "before W stddev (ee)" << std::endl;
+
 	W_stddev_ee = h_WMass_ee->GetStdDev(); //Finding the resolution (same as the standard deviation)
+
+	std::cout << "after W stddev (ee)" << std::endl;
+
 	Top_stddev_ee = h_InvTopMass_ee->GetStdDev(); //Finding the resolution (same as the standard deviation)
+	std::cout << "after top stddev (ee)" << std::endl;
+
 	W_stddev_mumu = h_WMass_mumu->GetStdDev(); //Finding the resolution (same as the standard deviation)
+	std::cout << "after W stddev (mumu)" << std::endl;
+
         Top_stddev_mumu = h_InvTopMass_mumu->GetStdDev(); //Finding the resolution (same as the standard deviation)
+	std::cout << "after top stddev (mumu)" << std::endl;
 
 	FittedHistosOutput->Close();
 
@@ -10067,10 +10052,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
 
-	  std::cout << "inside Chi2Cut_ee" << std::endl;
-
-
-	  if(SBR == true){std::cout << "inside if for SBR is true" << std::endl; return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
+	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
 	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
 	  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
 
@@ -10155,9 +10137,6 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
 	auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
-
-	//auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
-        //auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
 
 	auto N_Columns_ee = colNames_ee.size();
 	auto N_Columns_mumu = colNames_mumu.size();
@@ -10254,7 +10233,7 @@ if(blinding == true && (SBR == true || SR == true)){
 }
 else{
 
-	std::cout << "inside the else statment for when blinding is false" << std::endl;
+	std::cout << "inside the else statement for when blinding is false" << std::endl;
 
 	std::string OutRootFile_ee_unblinded;
 	std::string OutRootFile_mumu_unblinded;
