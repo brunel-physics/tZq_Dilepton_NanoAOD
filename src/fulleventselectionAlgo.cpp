@@ -879,6 +879,1431 @@ double linereader(const int& LineNumber, const std::string& year){
 
 
 
+//Functions for btagging efficiency
+TH2* h_bjet_ee_num;
+TH2* h_bjet_ee_denom;
+TH2* h_bjet_mumu_num;
+TH2* h_bjet_mumu_denom;
+TH2* h_nonbjet_ee_num;
+TH2* h_nonbjet_ee_denom;
+TH2* h_nonbjet_mumu_num;
+TH2* h_nonbjet_mumu_denom;
+
+int NBins = 40;
+
+auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  floats BTaggedEff{};
+
+  for(int i = 0; i < pts.size(); i++){
+
+	int PtNum = h_bjet_ee_num->GetXaxis()->FindBin(pts.at(i));
+	int EtaNum = h_bjet_ee_num->GetYaxis()->FindBin(etas.at(i));
+
+	int PtDenom = h_bjet_ee_denom->GetXaxis()->FindBin(pts.at(i));
+	int EtaDenom = h_bjet_ee_denom->GetYaxis()->FindBin(etas.at(i));
+
+	float Numerator = h_bjet_ee_num->GetBinContent(PtNum, EtaNum);
+	float Denominator = h_bjet_ee_denom->GetBinContent(PtDenom, EtaDenom);
+
+	float eff = Numerator / Denominator;
+	
+	if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+        else{BTaggedEff.push_back(1.);}
+
+
+  }
+
+  return BTaggedEff;
+
+
+}};
+
+
+
+
+auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  floats BTaggedEff{};
+
+  for(int i = 0; i < pts.size(); i++){
+
+        int PtNum = h_bjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
+        int EtaNum = h_bjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
+
+        int PtDenom = h_bjet_mumu_denom->GetXaxis()->FindBin(pts.at(i));
+        int EtaDenom = h_bjet_mumu_denom->GetYaxis()->FindBin(etas.at(i));
+
+        float Numerator = h_bjet_mumu_num->GetBinContent(PtNum, EtaNum);
+        float Denominator = h_bjet_mumu_denom->GetBinContent(PtDenom, EtaDenom);
+
+        float eff = Numerator / Denominator;
+
+        if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+	else{BTaggedEff.push_back(1.);}
+
+
+  }
+
+  return BTaggedEff;
+
+
+}};
+
+
+auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  floats NonBTaggedEff{};
+
+  for(int i = 0; i < pts.size(); i++){
+
+        int PtNum = h_nonbjet_ee_num->GetXaxis()->FindBin(pts.at(i));
+        int EtaNum = h_nonbjet_ee_num->GetYaxis()->FindBin(etas.at(i));
+    
+        int PtDenom = h_nonbjet_ee_denom->GetXaxis()->FindBin(pts.at(i));
+        int EtaDenom = h_nonbjet_ee_denom->GetYaxis()->FindBin(etas.at(i));
+
+        float Numerator = h_nonbjet_ee_num->GetBinContent(PtNum, EtaNum);
+        float Denominator = h_nonbjet_ee_denom->GetBinContent(PtDenom, EtaDenom);
+
+        float eff = Numerator / Denominator;
+
+        if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
+        else{NonBTaggedEff.push_back(1.);}
+
+
+  }
+
+  return NonBTaggedEff;
+
+
+}};
+
+
+auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  floats NonBTaggedEff{};
+
+  for(int i = 0; i < pts.size(); i++){
+
+        int PtNum = h_nonbjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
+        int EtaNum = h_nonbjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
+
+        int PtDenom = h_nonbjet_mumu_denom->GetXaxis()->FindBin(pts.at(i));
+        int EtaDenom = h_nonbjet_mumu_denom->GetYaxis()->FindBin(etas.at(i));
+
+        float Numerator = h_nonbjet_mumu_num->GetBinContent(PtNum, EtaNum);
+        float Denominator = h_nonbjet_mumu_denom->GetBinContent(PtDenom, EtaDenom);
+
+        float eff = Numerator / Denominator;
+
+        if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
+        else{NonBTaggedEff.push_back(1.);}
+
+
+  }
+
+  return NonBTaggedEff;
+
+
+}};
+
+
+
+auto EffBTaggedProduct{[](const floats& EffBTagged){
+
+  float initial = 1;
+
+  for(int i = 0; i < EffBTagged.size(); i++ ){
+
+    initial = EffBTagged.at(i) * initial;
+
+  }
+
+  return initial;
+
+
+}};
+
+
+
+
+
+auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
+
+  float initial = 1;
+
+  for(int i = 0; i < EffNonBTagged.size(); i++ ){
+
+  	initial = (1 - EffNonBTagged.at(i)) * initial;
+
+  }
+
+  return initial;
+
+
+}};
+
+
+
+auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBTaggedProduct){
+
+  float MCProb = EffBTaggedProduct * EffNonBTaggedProduct; 
+  return MCProb;
+
+}};
+
+
+
+//reading the csv file to obtain the b tagging scale factor for each event
+bool BTag_ScaleUp_bool, BTag_ScaleDown_bool;
+
+auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+
+  floats ResultVector{};
+
+  for(int j = 0; j < Jet_partonFlavour.size(); j++){
+
+
+	CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
+	std::vector<std::vector<std::string> > dataList = reader.getData();
+        
+	std::vector<std::string> OutputVec{}; 
+	std::vector<std::string> outputstringvec{};
+
+	std::string number;
+
+        if(BTagOrNot == true){number = "1";}
+	else{number = "0";}
+
+	std::vector<std::string> CSVv2OperatingPointTest(pts.size(), number); 
+
+	std::string MeasurementTypeString;
+
+	if(abs(Jet_partonFlavour.at(j)) == 4 || abs(Jet_partonFlavour.at(j)) == 5){MeasurementTypeString = "mujets";}
+	else if( (abs(Jet_partonFlavour.at(j)) >= 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
+	else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_partonFlavour.at(j) << std::endl;}
+
+        std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
+
+	std::string systematic_type_string;
+
+	if(BTag_ScaleUp_bool == true){systematic_type_string = "up";}
+        else if(BTag_ScaleDown_bool == true){systematic_type_string = "down";}
+ 	else{systematic_type_string = "central";}
+
+        std::vector<std::string> SysTypeTest(pts.size(), "central");
+        std::vector<std::string> JetFlavourTest(pts.size(), "0"); 
+
+        std::vector<std::string> EtaTest{};
+
+
+	for(int i = 0; i < etas.size(); i++){
+
+		std::stringstream ss;
+		ss << etas.at(i);
+		std::string EtaString(ss.str());
+
+		EtaTest.push_back(EtaString);
+
+	}
+
+	std::vector<std::string> PtTest{};
+
+
+        for(int i = 0; i < pts.size(); i++){
+
+                std::stringstream ss;
+                ss << pts.at(i);
+                std::string PtString(ss.str());
+
+                PtTest.push_back(PtString);
+
+        }
+
+
+	std::vector<std::string> DiscrTest{};
+
+        for(int i = 0; i < pts.size(); i++){
+
+
+                std::stringstream ss;
+                ss << CSVv2Discr.at(i);
+                std::string CSVv2DiscrString(ss.str());
+
+                DiscrTest.push_back(CSVv2DiscrString);
+
+        }
+
+
+
+	std::vector<std::string> OutVec{};
+	std::vector<std::string> FinalOutVec{};
+
+
+
+for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
+	
+	for(std::vector<std::string> vec : dataList)
+	{
+		for(std::string data : vec)
+		{	
+			OutputVec.push_back(data);
+
+		}
+	}
+
+
+		for(std::vector<std::string> vec : dataList)
+        	{
+                	for(std::string data : vec)
+                	{
+				
+				std::string VecAt1String = vec.at(1);
+				std::string VecAt2String = vec.at(2);
+				std::string VecAt3String = vec.at(3);
+			        std::string VecAt4String = vec.at(4);
+				std::string VecAt5String = vec.at(5);
+				std::string VecAt6String = vec.at(6);
+				std::string VecAt7String = vec.at(7);
+				std::string VecAt8String = vec.at(8);
+				std::string VecAt9String = vec.at(9);
+				
+
+				VecAt1String.erase(0, 0);
+				VecAt2String.erase(0, 0);
+                                VecAt3String.erase(0, 0);
+                                VecAt4String.erase(0, 0);
+				VecAt1String.erase(remove(VecAt1String.begin(), VecAt1String.end(), ' '), VecAt1String.end());		
+				VecAt2String.erase(remove(VecAt2String.begin(), VecAt2String.end(), ' '), VecAt2String.end());
+				VecAt3String.erase(remove(VecAt3String.begin(), VecAt3String.end(), ' '), VecAt3String.end());
+                                VecAt4String.erase(remove(VecAt4String.begin(), VecAt4String.end(), ' '), VecAt4String.end());	
+
+
+				float VecAt4Float = stof(VecAt4String);
+                        	float VecAt5Float = stof(VecAt5String);
+				float VecAt6Float = stof(VecAt6String);
+				float VecAt7Float = stof(VecAt7String);
+				float VecAt8Float = stof(VecAt8String);
+                        	float VecAt9Float = stof(VecAt9String);
+
+
+				float PtTestFloat = stof(PtTest.at(i));
+				float EtaTestFloat = stof(EtaTest.at(i));
+				float DiscrTestFloat = stof(DiscrTest.at(i));
+
+
+
+				if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
+    				&& (VecAt1String == MeasurementTypeTest.at(i))
+    				&& (VecAt2String == SysTypeTest.at(i))
+    	  			&& (VecAt3String == JetFlavourTest.at(i))
+    				&& (VecAt4Float < EtaTestFloat)
+    				&& (VecAt5Float > EtaTestFloat)
+    	  			&& (VecAt6Float < PtTestFloat)     
+    				&& (VecAt7Float > PtTestFloat)
+    				&& (VecAt8Float < DiscrTestFloat) 
+    				&& (VecAt9Float > DiscrTestFloat)
+  				){
+					OutVec.push_back(vec.at(10));					
+				}
+				else if( (vec.at(0) != CSVv2OperatingPointTest.at(i))
+                        	|| (vec.at(1) != MeasurementTypeTest.at(i))
+                        	|| (vec.at(2) != SysTypeTest.at(i))
+                        	|| (vec.at(3) != JetFlavourTest.at(i))
+                        	|| (VecAt4Float > EtaTestFloat)
+                        	|| (VecAt5Float < EtaTestFloat)
+                        	|| (VecAt6Float > PtTestFloat)     
+                        	|| (VecAt7Float < PtTestFloat)
+                        	|| (VecAt8Float > DiscrTestFloat) 
+                        	|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
+				else{std::cout << "double check criteria" << std::endl;}
+			
+                	}
+
+        	}
+
+
+
+	std::vector<std::string> NewOutVec{};
+	std::vector<std::string> Zeroes{}; 
+	Zeroes.push_back("0");
+	Zeroes.push_back("0");
+
+	bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
+
+
+	if(OutVec.size() != 0 && check == false){
+		for(int i = 0; i < OutVec.size(); i++){
+
+			if(OutVec.at(i) != "0"){NewOutVec.push_back(OutVec.at(i));}
+	
+		}
+	
+		std::string outputString;
+
+	
+		if(NewOutVec.size() > 11){
+
+			outputString = NewOutVec.at( ((i+1)*11)-1 );
+		}
+		else{
+			outputString = NewOutVec.at(0); 
+		}
+
+		outputString.erase(outputString.begin()+1);
+                outputString.erase(outputString.begin());
+                outputString.erase(outputString.end()-2);
+                outputString.erase(outputString.end()-1);
+		
+                std::string::size_type pos = 0;
+ 
+                while ((pos = outputString.find('x', pos)) != std::string::npos)
+                {
+                        outputString.replace(pos, 1, PtTest.at(i));
+                        pos += 2;
+                }
+                
+		outputstringvec.push_back(outputString);
+		FinalOutVec.push_back(outputstringvec.at(i));
+
+	
+	}
+	else{FinalOutVec.push_back(Zeroes.at(0));}
+
+
+}//end of for loop
+
+
+
+//Evaluating the mathematical expression in the std::string
+std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
+std::string ConcatenatedString5, ConcatenatedString6, ConcatenatedString7, ConcatenatedString8;
+std::string ConcatenatedString9, ConcatenatedString10, ConcatenatedString11, ConcatenatedString12;
+std::string ConcatenatedString13, ConcatenatedString14, ConcatenatedString15, ConcatenatedString16;
+std::vector<char> VecForConcString{};
+std::vector<char> VecForConcString2{};
+std::vector<char> VecForConcString3{};
+std::vector<char> VecForConcString4{};
+std::vector<char> VecForConcString5{};
+std::vector<char> VecForConcString6{};
+std::vector<char> VecForConcString7{};
+std::vector<char> VecForConcString8{};
+std::vector<char> VecForConcString9{};
+std::vector<char> VecForConcString10{};
+std::vector<char> VecForConcString11{};
+std::vector<char> VecForConcString12{};
+std::vector<char> VecForConcString13{};
+std::vector<char> VecForConcString14{};
+std::vector<char> VecForConcString15{};
+std::vector<char> VecForConcString16{};
+int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14, index15, index16;
+float result;
+
+for(int i = 0; i < FinalOutVec.size(); i++){
+
+	std::string FirstElement = FinalOutVec.at(i);
+
+	if(FirstElement.at(0) != '('){
+
+		int LastIndex;
+
+		//first
+		for(int i = 0; i < FirstElement.length(); i++){
+
+			if(FirstElement.at(i) != ')'&& 
+	   	   	   FirstElement.at(i) != '(' &&
+	   	   	   FirstElement.at(i) != '*' &&
+	   	   	   FirstElement.at(i) != '/' &&
+	   	   	   FirstElement.at(i) != '+' &&
+	  	   	   FirstElement.at(i) != '-'){VecForConcString.push_back(FirstElement.at(i)); LastIndex = i;}
+			else if(i == 0 && FirstElement.at(i) == '('){continue;}
+			else{index = i; break;}
+		}
+
+
+		for(int i = 0; i < VecForConcString.size(); i++){
+			if(i == 0){ConcatenatedString = VecForConcString.at(i);}
+			else{ConcatenatedString += VecForConcString.at(i);}
+
+		}	
+
+
+		float ConcatenatedStringToFloat = stof(ConcatenatedString);
+
+		if(LastIndex == FirstElement.length()-1){ResultVector.push_back(ConcatenatedStringToFloat);}
+		else{
+	
+			int Min1;
+
+			if(FirstElement.at(index) == '+' && 
+			   FirstElement.at(index+1) == '(' && 
+			   FirstElement.at(index+2) == '-' && 
+			   FirstElement.at(index+3) == '('){
+			
+				Min1 = index+4;
+			}
+			else if(FirstElement.at(index) == '+' &&
+                           	FirstElement.at(index+1) == '(' && 
+                          	FirstElement.at(index+2) == '(' && 
+                           	FirstElement.at(index+3) == '-' &&
+				FirstElement.at(index+2) == '('){
+                        
+                                	Min1 = index+5;
+                        }
+			else if(FirstElement.at(index) == '*' &&
+				FirstElement.at(index+1) == '(' &&
+				FirstElement.at(index+2) == '('){
+			
+					Min1 = index+3;
+
+			}
+			else if(FirstElement.at(index) == '+' &&
+				FirstElement.at(index+1) == '-'){
+			
+					Min1 = index+2;
+
+			}
+			else if(FirstElement.at(index) == '+' &&
+				FirstElement.at(index+1) == '(' &&
+				FirstElement.at(index+2) == '(' &&
+				FirstElement.at(index+3) == '-' &&
+				FirstElement.at(index+4) == '('){
+
+				Min1 = index+5;
+			
+
+			}
+			else{Min1 = index+1;}
+
+			//second
+			for(int i = Min1; i < FirstElement.length(); i++){
+
+        			if(FirstElement.at(i) == 'e' && FirstElement.at(i+1) == '-'){
+					
+					VecForConcString2.push_back(FirstElement.at(i));
+					VecForConcString2.push_back(FirstElement.at(i+1));
+					VecForConcString2.push_back(FirstElement.at(i+2));
+					VecForConcString2.push_back(FirstElement.at(i+3));
+					
+					index2 = i+4;
+					break;
+
+				}
+				else if(FirstElement.at(i) != ')'&&
+           	  		   	FirstElement.at(i) != '(' &&
+           	  		   	FirstElement.at(i) != '*' &&
+           	  		   	FirstElement.at(i) != '/' &&
+           	  		   	FirstElement.at(i) != '+' &&
+                  		   	FirstElement.at(i) != '-'){VecForConcString2.push_back(FirstElement.at(i));}
+               			else{index2 = i; break;}
+			
+			}
+
+
+
+			for(int i = 0; i < VecForConcString2.size(); i++){
+        			if(i == 0){ConcatenatedString2 = VecForConcString2.at(i);}
+        			else{ConcatenatedString2 += VecForConcString2.at(i);}
+
+			}
+
+			float ConcatenatedStringToFloat2 = stof(ConcatenatedString2);
+			int Min2;
+
+			if(FirstElement.at(index2) == '*' && 
+			   FirstElement.at(index2+1) == '(' && 
+			   FirstElement.at(index2+2) == 'l' && 
+			   FirstElement.at(index2+3) == 'o' &&
+			   FirstElement.at(index2+4) == 'g' &&
+			   FirstElement.at(index2+5) == '('){Min2 = index2+6;}
+                        else{Min2 = index2+2;}
+
+			//third
+			for(int i = Min2; i < FirstElement.length(); i++){
+
+        			if(FirstElement.at(i) != ')'&&
+           	   		   FirstElement.at(i) != '(' &&
+           	   		   FirstElement.at(i) != '*' &&
+           	   		   FirstElement.at(i) != '/' &&
+           	   		   FirstElement.at(i) != '+' &&
+           	   		   FirstElement.at(i) != '-'){VecForConcString3.push_back(FirstElement.at(i));}
+        			else{index4 = i; break;}
+			}
+
+
+			for(int i = 0; i < VecForConcString3.size(); i++){
+        			if(i == 0){ConcatenatedString3 = VecForConcString3.at(i);}
+        			else{ConcatenatedString3 += VecForConcString3.at(i);}
+
+			}
+
+
+			float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
+			int Min3;
+
+			if(FirstElement.at(index4) == '+'){Min3 = index4+1;}
+			else{Min3 = index4+1;}
+
+
+			//fourth
+			for(int i = Min3; i < FirstElement.length(); i++){
+
+        			if(FirstElement.at(i) != ')'&&
+           	   		   FirstElement.at(i) != '(' &&
+           	   		   FirstElement.at(i) != '*' &&
+           	   		   FirstElement.at(i) != '/' &&
+           	   	           FirstElement.at(i) != '+' &&
+           	   		   FirstElement.at(i) != '-'){VecForConcString4.push_back(FirstElement.at(i));}
+        			else{index5 = i; break;}
+			}
+
+
+			for(int i = 0; i < VecForConcString4.size(); i++){
+        			if(i == 0){ConcatenatedString4 = VecForConcString4.at(i);}
+        			else{ConcatenatedString4 += VecForConcString4.at(i);}
+
+			}
+			
+
+			float ConcatenatedStringToFloat4 = stof(ConcatenatedString4);
+
+
+			int Min4;
+
+			if(FirstElement.at(index5) == ')' && 
+			   FirstElement.at(index5+1) == '*' && 
+			   FirstElement.at(index5+2) == '(' && 
+			   FirstElement.at(index5+3) == 'l' && 
+			   FirstElement.at(index5+4) == 'o' && 
+			   FirstElement.at(index5+5) == 'g' && 
+			   FirstElement.at(index5+6) == '('){Min4 = index5+7;}
+			else if(FirstElement.at(index5) == ')' &&
+				FirstElement.at(index5+1) == ')' &&
+				FirstElement.at(index5+2) == '/' &&
+				FirstElement.at(index5+3) == '('){Min4 = index5+4;}
+                        else{Min4 = index5+2;} 
+
+
+			//fifth
+			for(int i = Min4; i < FirstElement.length(); i++){
+
+        			if(FirstElement.at(i) != ')'&&
+           	   		   FirstElement.at(i) != '(' &&
+           	   		   FirstElement.at(i) != '*' &&
+           	   		   FirstElement.at(i) != '/' &&
+           	   		   FirstElement.at(i) != '+' &&
+           	   		   FirstElement.at(i) != '-'){VecForConcString5.push_back(FirstElement.at(i));}
+        			else{index6 = i; break;}
+			}
+
+
+			for(int i = 0; i < VecForConcString5.size(); i++){
+        			if(i == 0){ConcatenatedString5 = VecForConcString5.at(i);}
+        			else{ConcatenatedString5 += VecForConcString5.at(i);}
+
+			}
+
+	
+			float ConcatenatedStringToFloat5 = stof(ConcatenatedString5);
+
+			int Min5;
+
+			if(FirstElement.at(index6) == '+' && FirstElement.at(index6+1) != '('){Min5 = index6+1;}
+			else if(FirstElement.at(index6) == '+' && FirstElement.at(index6+1) == '('){Min5 = index6+2;}
+			else{Min5 = index6+1;}
+
+
+			//sixth
+			for(int i = Min5; i < FirstElement.length(); i++){
+
+        			if(FirstElement.at(i) != ')'&&
+           	   		   FirstElement.at(i) != '(' &&
+           	   		   FirstElement.at(i) != '*' &&
+           	   		   FirstElement.at(i) != '/' &&
+           	   		   FirstElement.at(i) != '+' &&
+           	   		   FirstElement.at(i) != '-'){VecForConcString6.push_back(FirstElement.at(i));}
+        			else{index7 = i; break;}
+			}
+
+
+			for(int i = 0; i < VecForConcString6.size(); i++){
+        			if(i == 0){ConcatenatedString6 = VecForConcString6.at(i);}
+        			else{ConcatenatedString6 += VecForConcString6.at(i);}
+
+			}
+	
+
+			float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
+
+			int Min6;
+
+                        if(FirstElement.at(index7) == ')' &&
+                           FirstElement.at(index7+1) == '*' &&
+                           FirstElement.at(index7+2) == '('){Min6 = index7+3;}
+			else if(FirstElement.at(index7) == '*'){Min6 = index7+1;}
+                        else{Min6 = index7+3;}
+			
+
+			//seventh
+			for(int i = Min6; i < FirstElement.length(); i++){
+
+        			if(FirstElement.at(i) != ')'&&
+           	   		   FirstElement.at(i) != '(' &&
+           	   		   FirstElement.at(i) != '*' &&
+           	   		   FirstElement.at(i) != '/' &&
+           	   		   FirstElement.at(i) != '+' &&
+           	   		   FirstElement.at(i) != '-'){VecForConcString7.push_back(FirstElement.at(i));}
+        			else{index8 = i; break;}
+			}
+
+
+			for(int i = 0; i < VecForConcString7.size(); i++){
+        			if(i == 0){ConcatenatedString7 = VecForConcString7.at(i);}
+        			else{ConcatenatedString7 += VecForConcString7.at(i);}
+
+			}
+
+
+			float ConcatenatedStringToFloat7 = stof(ConcatenatedString7);
+			int Min7;
+                        
+			if(FirstElement.at(index8) == '-' &&
+                           FirstElement.at(index8+1) == '(' &&
+                           FirstElement.at(index8+2) == '-' &&
+			   FirstElement.at(index8+3) == '('){Min7 = index8+4;}
+                        else{Min7 = index8+1;}
+	
+
+
+			//for an output containing 7 floats
+			if(FirstElement.at(index6) == '+' && 
+			   FirstElement.at(index6+1) == '(' &&
+			   FirstElement.at(index8) == ')' &&
+                           FirstElement.at(index8+1) == ')' &&
+                           FirstElement.at(index8+2) == ')'){
+
+				
+				result = ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7)));
+
+				ResultVector.push_back(result);
+
+
+			}
+			else{
+
+
+				//eighth
+				for(int i = Min7; i < FirstElement.length(); i++){
+
+        				if(FirstElement.at(i) != ')'&&
+           	   		   	   FirstElement.at(i) != '(' &&
+           	   		   	   FirstElement.at(i) != '*' &&
+           	   		   	   FirstElement.at(i) != '/' &&
+           	   		   	   FirstElement.at(i) != '+' &&
+           	   		   	   FirstElement.at(i) != '-'){VecForConcString8.push_back(FirstElement.at(i));}
+        				else{index9 = i; break;}
+				}     
+
+
+
+
+				for(int i = 0; i < VecForConcString8.size(); i++){
+        				if(i == 0){ConcatenatedString8 = VecForConcString8.at(i);}
+        				else{ConcatenatedString8 += VecForConcString8.at(i);}
+    
+				}   
+
+
+				float ConcatenatedStringToFloat8 = stof(ConcatenatedString8);
+				int Min8;
+
+				if(FirstElement.at(index9) == '*' &&
+			   	   FirstElement.at(index9+1) == 'l' &&
+                           	   FirstElement.at(index9+2) == 'o' &&
+                           	   FirstElement.at(index9+3) == 'g' &&
+                           	   FirstElement.at(index9+4) == '('){Min8 = index9+5;}
+				else if(FirstElement.at(index9) == ')' &&
+					FirstElement.at(index9+1) == ')'){break;}
+				else{Min8 = index9+2;}
+
+
+
+				//ninth
+				for(int i = Min8; i < FirstElement.length(); i++){
+
+        				if(FirstElement.at(i) != ')'&&
+           	   		   	   FirstElement.at(i) != '(' &&
+           	   		   	   FirstElement.at(i) != '*' &&
+           	   		   	   FirstElement.at(i) != '/' &&
+           	   		  	   FirstElement.at(i) != '+' &&
+           	   		   	   FirstElement.at(i) != '-'){VecForConcString9.push_back(FirstElement.at(i));}
+        				else{index10 = i; break;}
+				}
+
+
+				for(int i = 0; i < VecForConcString9.size(); i++){
+        				if(i == 0){ConcatenatedString9 = VecForConcString9.at(i);}
+        				else{ConcatenatedString9 += VecForConcString9.at(i);}
+
+				}
+
+
+				float ConcatenatedStringToFloat9 = stof(ConcatenatedString9);
+				int Min9;
+
+				if(FirstElement.at(index10) == '+'){Min9 = index10+1;}
+				else{Min9 = index10 + 1;}
+
+
+				int LastIndex2;
+
+				//tenth
+				for(int i = Min9; i < FirstElement.length(); i++){
+
+        				if(FirstElement.at(i) != ')'&&
+           	   		   	   FirstElement.at(i) != '(' &&
+           	   		   	   FirstElement.at(i) != '*' &&
+           	   		   	   FirstElement.at(i) != '/' &&
+           	   		   	   FirstElement.at(i) != '+' &&
+           	   		   	   FirstElement.at(i) != '-'){VecForConcString10.push_back(FirstElement.at(i)); LastIndex2 = i;}
+        				else{index11 = i; break;}
+				}
+
+
+				for(int i = 0; i < VecForConcString10.size(); i++){
+        				if(i == 0){ConcatenatedString10 = VecForConcString10.at(i);}
+        				else{ConcatenatedString10 += VecForConcString10.at(i);}
+
+				}
+		
+
+				float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
+
+				//result for an equation containing 10 floats and ending in "))))))))' 
+			 	if(LastIndex2 == FirstElement.length()-9 &&
+                            	   FirstElement.at(index) == '+' &&
+                            	   FirstElement.at(index+1) == '(' &&
+                            	   FirstElement.at(index+2) == '-' &&
+                           	   FirstElement.at(index+3) == '('){
+				
+
+			    		result = ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))));
+
+                                	ResultVector.push_back(result);
+
+				}
+                        	else{
+
+
+					int Min10;
+
+					if(FirstElement.at(index11+8) == '-'){Min10 = index11+9;}
+					else{Min10 = index11+3;}
+
+
+					int LastIndex3;
+
+					//eleventh
+					for(int i = Min10; i < FirstElement.length(); i++){
+
+        					if(FirstElement.at(i) != ')'&&
+           	   		   	   	   FirstElement.at(i) != '(' &&
+           	   		  	   	   FirstElement.at(i) != '*' &&
+           	   		   	   	   FirstElement.at(i) != '/' &&
+           	   		   	   	   FirstElement.at(i) != '+' &&
+           	   		   	   	   FirstElement.at(i) != '-'){VecForConcString11.push_back(FirstElement.at(i)); LastIndex3 = i;}
+        					else{index12 = i; break;}
+					}
+
+
+					for(int i = 0; i < VecForConcString11.size(); i++){
+        					if(i == 0){ConcatenatedString11 = VecForConcString11.at(i);}
+        					else{ConcatenatedString11 += VecForConcString11.at(i);}
+
+					}
+
+					float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
+
+
+					//for an equation with 11 floats
+					if(LastIndex == FirstElement.length()-1 && FirstElement.at(index11+8) == '-'){
+
+						result = ConcatenatedStringToFloat+((-(ConcatenatedStringToFloat2*exp(-5)*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))))-ConcatenatedStringToFloat11);
+
+						ResultVector.push_back(result);
+
+					}
+					else if(FirstElement.at(index) == '+' &&
+                                		FirstElement.at(index+1) == '(' &&
+                                		FirstElement.at(index+2) == '(' &&
+                                		FirstElement.at(index+3) == '-' &&
+                                		FirstElement.at(index+4) == '(' &&
+						FirstElement.at(index11+8) == '-'){
+
+                                		result = ConcatenatedStringToFloat+((-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))))-ConcatenatedStringToFloat11);
+
+						ResultVector.push_back(result);
+                        
+                        		}
+					else{
+				
+						//twelfth
+						for(int i = index12+1; i < FirstElement.length(); i++){
+	
+        						if(FirstElement.at(i) != ')'&&
+           	   			   	   	   FirstElement.at(i) != '(' &&
+           	   			   	   	   FirstElement.at(i) != '*' &&
+           	   		   	   		   FirstElement.at(i) != '/' &&
+           	   		   		   	   FirstElement.at(i) != '+' &&
+           	   		   	   		   FirstElement.at(i) != '-'){VecForConcString12.push_back(FirstElement.at(i));}
+        						else{index13 = i; break;}
+						}
+
+
+						for(int i = 0; i < VecForConcString12.size(); i++){
+        						if(i == 0){ConcatenatedString12 = VecForConcString12.at(i);}
+        						else{ConcatenatedString12 += VecForConcString12.at(i);}
+
+						}
+
+						float ConcatenatedStringToFloat12 = stof(ConcatenatedString12);
+
+						//thirteenth
+						for(int i = index13+1; i < FirstElement.length(); i++){
+
+        						if(FirstElement.at(i) != ')'&&
+           	   		   	   	   	   FirstElement.at(i) != '(' &&
+           	   		   	   	   	   FirstElement.at(i) != '*' &&
+           	   		   	   	   	   FirstElement.at(i) != '/' &&
+           	   		   	   	  	   FirstElement.at(i) != '+' &&
+           	   		   	   	   	   FirstElement.at(i) != '-'){VecForConcString13.push_back(FirstElement.at(i));}
+        						else{index14 = i; break;}
+						}
+
+
+						for(int i = 0; i < VecForConcString13.size(); i++){
+        						if(i == 0){ConcatenatedString13 = VecForConcString13.at(i);}
+        						else{ConcatenatedString13 += VecForConcString13.at(i);}
+
+						}
+
+						float ConcatenatedStringToFloat13 = stof(ConcatenatedString13);
+
+						//Calculating the result for an equation containing 13 floats
+
+						if(FirstElement.at(index) == '+'){result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2;}
+						else if(FirstElement.at(index) == '-'){result = ConcatenatedStringToFloat - ConcatenatedStringToFloat2;}
+						else if(FirstElement.at(index) == '*'){result = ConcatenatedStringToFloat * ConcatenatedStringToFloat2;}
+						else{std::cout << "FirstElement.at(index) is " << FirstElement.at(index) << ". This is not a +, - or *. Output has been set to zero" << std::endl; result = 0;}
+
+
+						if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '(' && FirstElement.at(index2+2) == '-'){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3);
+						}
+						else{std::cout << "error" << std::endl;}
+
+
+						if(FirstElement.at(index4) == '+'){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4);
+						}
+						else{std::cout << "error message 2" << std::endl;}
+
+
+						if(FirstElement.at(index5) == '*' && FirstElement.at(index5+1) == '('){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5));
+						}
+						else{std::cout << "error message 3" << std::endl;}
+
+						if(FirstElement.at(index6) == '+'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6));
+						}
+						else{std::cout << "error message 4" << std::endl;}
+
+
+						if(FirstElement.at(index7) == '*'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7)));
+						}	   
+						else{std::cout << "error message 5" << std::endl;}
+
+
+						if(FirstElement.at(index8) == '+'){
+ 	       						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8)));
+						}
+						else{std::cout << "error message 5" << std::endl;}
+
+						if(FirstElement.at(index9) == '*' && FirstElement.at(index9+1) == '('){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9))));
+						}
+						else{std::cout << "error message 6" << std::endl;}
+
+						if(FirstElement.at(index10) == '+'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))));
+						}
+						else{std::cout << "error message 7" << std::endl;}
+
+						if(FirstElement.at(index11) == '*' && FirstElement.at(index11+1) == '(' && FirstElement.at(index11+2) == '-'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11)))));
+						}
+						else{std::cout << "error message 8" << std::endl;}
+
+
+						if(FirstElement.at(index12) == '+'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12)))));
+						}	
+						else{std::cout << "error message 9" << std::endl;}
+
+						if(FirstElement.at(index13) == '*'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12*ConcatenatedStringToFloat13)))));
+						}
+						else{std::cout << "error message 10" << std::endl;}
+
+						ResultVector.push_back(result);
+
+						}
+
+				}
+
+			}
+
+	 	}//extra bracket added here
+
+	}
+	else{
+		//first
+        	for(int i = 1; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString.push_back(FirstElement.at(i));}
+                	else{index = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString.size(); i++){
+                	if(i == 0){ConcatenatedString = VecForConcString.at(i);}
+                	else{ConcatenatedString += VecForConcString.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat = stof(ConcatenatedString);
+
+		int Minimum;
+
+		if(FirstElement.at(index) == '+' &&
+		   FirstElement.at(index+1) == '(' &&
+		   FirstElement.at(index+2) == '-' &&
+		   FirstElement.at(index+3) == '('){
+
+			Minimum = index+4;
+
+		}
+		else{Minimum = index+3;}
+
+
+		//second	
+		for(int i = Minimum; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString2.push_back(FirstElement.at(i));}
+                	else{index2 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString2.size(); i++){
+                	if(i == 0){ConcatenatedString2 = VecForConcString2.at(i);}
+                	else{ConcatenatedString2 += VecForConcString2.at(i);}
+
+        	}
+        	
+		float ConcatenatedStringToFloat2 = stof(ConcatenatedString2);
+
+		int Minimum2;
+
+		if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '('){Minimum2 = index2+ 6;}
+		else{Minimum2 = index2+2;}
+
+
+		//third
+		for(int i = Minimum2; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString3.push_back(FirstElement.at(i));}
+                	else{index3 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString3.size(); i++){
+                	if(i == 0){ConcatenatedString3 = VecForConcString3.at(i);}
+                	else{ConcatenatedString3 += VecForConcString3.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
+
+		//fourth
+		for(int i = index3+1; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString4.push_back(FirstElement.at(i));}
+                	else{index4 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString4.size(); i++){
+                	if(i == 0){ConcatenatedString4 = VecForConcString4.at(i);}
+                	else{ConcatenatedString4 += VecForConcString4.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat4 = stof(ConcatenatedString4);
+
+		int Minimum3;
+
+
+		if(FirstElement.at(index4) == ')' && FirstElement.at(index4+1) == '*' && FirstElement.at(index4+2) == '('){Minimum3 = index4+7;}
+		else{Minimum3 = index4+4;}
+
+
+		//fifth
+		for(int i = Minimum3; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString5.push_back(FirstElement.at(i));}
+               	 	else{index5 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString5.size(); i++){
+                	if(i == 0){ConcatenatedString5 = VecForConcString5.at(i);}
+                	else{ConcatenatedString5 += VecForConcString5.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat5 = stof(ConcatenatedString5);
+
+		int Minimum4;
+		
+		if(FirstElement.at(index4) == ')' && FirstElement.at(index4+1) == '*' && FirstElement.at(index4+2) == '('){Minimum4 = index5+1;}
+		else{Minimum4 = index5+2;}	
+
+		
+		//sixth
+		for(int i = Minimum4; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString6.push_back(FirstElement.at(i));}
+                	else{index6 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString6.size(); i++){
+                	if(i == 0){ConcatenatedString6 = VecForConcString6.at(i);}
+                	else{ConcatenatedString6 += VecForConcString6.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
+	
+		//seventh
+		for(int i = index6+1; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                   	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString7.push_back(FirstElement.at(i));}
+                	else{index7 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString7.size(); i++){
+                	if(i == 0){ConcatenatedString7 = VecForConcString7.at(i);}
+                	else{ConcatenatedString7 += VecForConcString7.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat7 = stof(ConcatenatedString7);
+
+
+		int MinValue;
+
+
+		if(FirstElement.at(index) == '+' &&
+		   FirstElement.at(index+1) == '(' &&
+		   FirstElement.at(index+2) == '-' &&
+		   FirstElement.at(index+3) == '('){
+		
+			MinValue = index7+7;
+
+		}
+		else{MinValue = index7+5;}
+
+		//seventh
+        	for(int i = MinValue; i < FirstElement.length(); i++){
+
+                	if(FirstElement.at(i) != ')'&&
+                   	   FirstElement.at(i) != '(' &&
+                  	   FirstElement.at(i) != '*' &&
+                   	   FirstElement.at(i) != '/' &&
+                   	   FirstElement.at(i) != '+' &&
+                   	   FirstElement.at(i) != '-'){VecForConcString8.push_back(FirstElement.at(i));}
+                	else{index8 = i; break;}
+        	}
+
+
+        	for(int i = 0; i < VecForConcString8.size(); i++){
+                	if(i == 0){ConcatenatedString8 = VecForConcString8.at(i);}
+                	else{ConcatenatedString8 += VecForConcString8.at(i);}
+
+        	}
+
+        	float ConcatenatedStringToFloat8 = stof(ConcatenatedString8);
+
+
+		//result
+
+		if(FirstElement.at(index) == '*' && 
+		   FirstElement.at(index+1) == '(' && 
+		   FirstElement.at(index+2) == '(' &&
+		   FirstElement.at(index2) == '+' && 
+		   FirstElement.at(index2+1) == '(' &&
+		   FirstElement.at(index3) == '*' &&
+		   FirstElement.at(index4) == ')' && 
+		   FirstElement.at(index4+1) == ')' && 
+		   FirstElement.at(index4+2) == '/' && 
+		   FirstElement.at(index4+3) == '(' &&
+		   FirstElement.at(index5) == '+' && 
+		   FirstElement.at(index5+1) == '(' &&
+		   FirstElement.at(index6) == '*' &&
+		   FirstElement.at(index7) == ')' && 
+		   FirstElement.at(index7+1) == ')' && 
+		   FirstElement.at(index7+2) == ')' && 
+		   FirstElement.at(index7+3) == ')' && 
+		   FirstElement.at(index7+4) == '-'){
+
+			result = (ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7))))-ConcatenatedStringToFloat8;
+
+        	}
+		else if(FirstElement.at(index7+4) == '+'){
+
+                        result = (ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7))))+ConcatenatedStringToFloat8;
+
+                }
+        	else if(FirstElement.at(index) == '+' &&
+			FirstElement.at(index+1) == '(' &&
+			FirstElement.at(index+2) == '-' &&
+			FirstElement.at(index+3) == '('){
+	
+
+			//eighth
+                	for(int i = index8+5; i < FirstElement.length(); i++){
+
+                        	if(FirstElement.at(i) != ')'&&
+                           	   FirstElement.at(i) != '(' &&
+                           	   FirstElement.at(i) != '*' &&
+                           	   FirstElement.at(i) != '/' &&
+                           	   FirstElement.at(i) != '+' &&
+                           	   FirstElement.at(i) != '-'){VecForConcString9.push_back(FirstElement.at(i));}
+                        	else{index9 = i; break;}
+                	}
+
+
+                	for(int i = 0; i < VecForConcString9.size(); i++){
+                        	if(i == 0){ConcatenatedString9 = VecForConcString9.at(i);}
+                        	else{ConcatenatedString9 += VecForConcString9.at(i);}
+
+                	}
+                	
+			float ConcatenatedStringToFloat9 = stof(ConcatenatedString9);
+
+
+			//ninth
+                        for(int i = index9+4; i < FirstElement.length(); i++){
+
+                                if(FirstElement.at(i) != ')'&&
+                                   FirstElement.at(i) != '(' &&
+                                   FirstElement.at(i) != '*' &&
+                                   FirstElement.at(i) != '/' &&
+                                   FirstElement.at(i) != '+' &&
+                                   FirstElement.at(i) != '-'){VecForConcString10.push_back(FirstElement.at(i));}
+                                else{index10 = i; break;}
+                        }
+
+
+                        for(int i = 0; i < VecForConcString10.size(); i++){
+                                if(i == 0){ConcatenatedString10 = VecForConcString10.at(i);}
+                                else{ConcatenatedString10 += VecForConcString10.at(i);}
+
+                        }
+
+                        float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
+
+			//tenth
+                        for(int i = index10+9; i < FirstElement.length(); i++){
+          
+                                if(FirstElement.at(i) != ')'&&
+                                   FirstElement.at(i) != '(' &&
+                                   FirstElement.at(i) != '*' &&
+                                   FirstElement.at(i) != '/' &&
+                                   FirstElement.at(i) != '+' &&
+                                   FirstElement.at(i) != '-'){VecForConcString11.push_back(FirstElement.at(i));}
+                                else{index11 = i; break;}
+                        } 
+    
+
+                        for(int i = 0; i < VecForConcString11.size(); i++){
+                                if(i == 0){ConcatenatedString11 = VecForConcString11.at(i);}
+                                else{ConcatenatedString11 += VecForConcString11.at(i);}
+    
+                        }
+			
+                        float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
+
+
+		
+
+			result = (ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10)))))))))+ConcatenatedStringToFloat11;
+			
+
+		}
+		else{std::cout << "ERROR" << std::endl;}
+
+		ResultVector.push_back(result);
+
+	}	
+
+	VecForConcString.clear();
+	VecForConcString2.clear();
+	VecForConcString3.clear();
+	VecForConcString4.clear();
+	VecForConcString5.clear();
+	VecForConcString6.clear();
+	VecForConcString7.clear();
+	VecForConcString8.clear();
+	VecForConcString9.clear();
+	VecForConcString10.clear();
+	VecForConcString11.clear();
+	VecForConcString12.clear();
+	VecForConcString13.clear();
+
+
+}//end of for loop
+
+
+}//end of first for loop
+
+return ResultVector;
+
+}};
+
+
+
+
+auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+
+ return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
+
+}};
+
+
+auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+
+ return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
+
+}};
+
+
+
+auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF){
+
+  float initial = 1;
+  float output;
+
+  for(int i = 0; i < EffBTagged.size(); i++){
+
+        output = (CMSBTagSF.at(0)*EffBTagged.at(i)) * initial;
+
+  }
+
+  return output;
+
+}};
+
+
+
+
+auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSF){
+
+  float initial = 1;
+
+  int size = (CMSNonBTagSF.size() < EffNonBTagged.size()) ? CMSNonBTagSF.size() : EffNonBTagged.size();
+
+  for(int i = 0; i < size; i++){
+
+  	initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
+
+  }
+
+  return initial;
+
+}};
+
+
+
+
+
+
+
+auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& EffNonBTaggedProductData){
+
+  float DataProb = EffBTaggedProductData * EffNonBTaggedProductData;
+  return DataProb;
+
+}};
+
+
+
+
+auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
+
+	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
+	
+        if( !isnan(BTagWeight) && !isinf(BTagWeight) ){return BTagWeight;}
+	else{float One = 1.0; return One;}
+
+
+}};
+
+
+
+
+
+
 
 
 
@@ -888,36 +2313,6 @@ double linereader(const int& LineNumber, const std::string& year){
 void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR, const bool& SBR, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
-std::cout << '\n' << std::endl;
-std::cout << "The process is: " << process << std::endl;
-std::cout << "Blinding is: " << blinding << std::endl;
-std::cout << "NPL is: " << NPL << std::endl;
-std::cout << "SR is: " << SR << std::endl;
-std::cout << "SBR is: " << SBR << std::endl;
-std::cout << "ZPlusJetsCR is: " << ZPlusJetsCR << std::endl;
-std::cout << "ttbarCR is: " << ttbarCR << std::endl;
-std::cout << "The year is: " << year << std::endl;
-std::cout << "PU_ScaleUp is: " << PU_ScaleUp << std::endl;
-std::cout << "PU_ScaleDown is: " << PU_ScaleDown << std::endl;
-std::cout << "BTag_ScaleUp is: " << BTag_ScaleUp << std::endl;
-std::cout << "BTag_ScaleDown is: " << BTag_ScaleDown << std::endl;
-std::cout << "JetSmearing_ScaleUp is: " << JetSmearing_ScaleUp << std::endl;
-std::cout << "JetSmearing_ScaleDown is: " << JetSmearing_ScaleDown << std::endl;
-std::cout << "JetResolution_ScaleUp is: " << JetResolution_ScaleUp << std::endl;
-std::cout << "JetResolution_ScaleDown is: " << JetResolution_ScaleDown << std::endl;
-std::cout << "LeptonEfficiencies_ScaleUp is: " << LeptonEfficiencies_ScaleUp << std::endl;
-std::cout << "LeptonEfficiencies_ScaleDown is: " << LeptonEfficiencies_ScaleDown << std::endl;
-std::cout << "PDF_ScaleUp is: " << PDF_ScaleUp << std::endl;
-std::cout << "PDF_ScaleDown is: " << PDF_ScaleDown << std::endl;
-std::cout << "ME_Up is: " << ME_Up << std::endl;
-std::cout << "ME_Down is: " << ME_Down << std::endl;
-std::cout << "MET_Up is: " << MET_Up << std::endl;
-std::cout << "MET_Down is: " << MET_Down << std::endl;
-std::cout << "isr_up is: " << isr_up << std::endl;
-std::cout << "isr_down is: " << isr_down << std::endl;
-std::cout << "fsr_up is: " << fsr_up << std::endl;
-std::cout << "fsr_down is: " << fsr_down << std::endl;
-std::cout << '\n' << std::endl;
 
 
 //EnableImplicitMT();
@@ -948,7 +2343,11 @@ else if(fsr_down == true){branch = "fsr_down";}
 else{branch = "Nominal";}
 
 
+std::cout << "branch = " << branch << std::endl;
 
+
+BTag_ScaleUp_bool = BTag_ScaleUp;
+BTag_ScaleDown_bool = BTag_ScaleDown;
 
 
 std::vector<std::string> input_files;
@@ -1297,7 +2696,6 @@ else if(year == "2018"){
 
 }
 else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
-
 
 
 
@@ -7385,6 +8783,8 @@ else{
         auto h_gluon_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_gluon_mumu_num", "h_gluon_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
 
 
+        std::cout << "after creating the numerator histograms" << std::endl;
+
         auto h_bjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
 	auto h_nonbjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
 
@@ -7398,6 +8798,8 @@ else{
         auto h_charm_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_denom", "h_charm_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
         auto h_lightjets_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_denom", "h_lightjets_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
         auto h_gluon_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_gluon_mumu_denom", "h_gluon_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
+
+	std::cout << "after creating the denominator histograms" << std::endl;
 
 
 	h_bjet_ee_num->GetXaxis()->SetTitle("#eta");
@@ -7469,6 +8871,9 @@ else{
 	h_gluon_mumu_denom->Write();
 
 
+	std::cout << "before h_bjet_ee" << std::endl;
+
+
 	TH2F* h_bjet_ee = new TH2F("h_bjet_ee", "h_bjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
 	TH2F* h_nonbjet_ee = new TH2F("h_nonbjet_ee", "h_nonbjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
 	TH2F* h_charm_ee = new TH2F("h_charm_ee", "h_charm_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
@@ -7481,6 +8886,7 @@ else{
         TH2F* h_lightjets_mumu = new TH2F("h_lightjets_mumu", "h_lightjets_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
         TH2F* h_gluon_mumu = new TH2F("h_gluon_mumu", "h_gluon_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);	
 
+	std::cout << "after h_gluon_mumu" << std::endl;
 
 
 	h_bjet_ee = (TH2F*)h_bjet_ee_num->Clone();
@@ -7503,6 +8909,8 @@ else{
         h_nonbjet_ee->Divide(h_nonbjet_ee_denom.GetPtr());
         h_nonbjet_mumu = (TH2F*)h_nonbjet_mumu_num->Clone();
         h_nonbjet_mumu->Divide(h_nonbjet_mumu_denom.GetPtr());
+
+	std::cout << "before setting the titles for b tag plots" << std::endl;
 
 
 	h_bjet_ee->SetTitle("h_bjet_ee");
@@ -7556,1415 +8964,6 @@ else{
 	BTagEffPlots->Close();
 
 
-
-
-//continue b tag here
-
-auto EffBTaggedFunction_ee{[&h_bjet_ee_num, &h_bjet_ee_denom, &NBins](const floats& DummyColumn, const floats& pts, const floats& etas){
-
-  floats BTaggedEff{};
-
-  for(int i = 0; i < pts.size(); i++){
-
-	int PtNum = h_bjet_ee_num->GetXaxis()->FindBin(pts.at(i));
-	int EtaNum = h_bjet_ee_num->GetYaxis()->FindBin(etas.at(i));
-
-	int PtDenom = h_bjet_ee_denom->GetXaxis()->FindBin(pts.at(i));
-	int EtaDenom = h_bjet_ee_denom->GetYaxis()->FindBin(etas.at(i));
-
-	float Numerator = h_bjet_ee_num->GetBinContent(PtNum, EtaNum);
-	float Denominator = h_bjet_ee_denom->GetBinContent(PtDenom, EtaDenom);
-
-	float eff = Numerator / Denominator;
-	
-	if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
-        else{BTaggedEff.push_back(1.);}
-
-
-  }
-
-  return BTaggedEff;
-
-
-}};
-
-
-
-
-auto EffBTaggedFunction_mumu{[&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins](const floats& DummyColumn, const floats& pts, const floats& etas){
-
-  floats BTaggedEff{};
-
-  for(int i = 0; i < pts.size(); i++){
-
-        int PtNum = h_bjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
-        int EtaNum = h_bjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
-
-        int PtDenom = h_bjet_mumu_denom->GetXaxis()->FindBin(pts.at(i));
-        int EtaDenom = h_bjet_mumu_denom->GetYaxis()->FindBin(etas.at(i));
-
-        float Numerator = h_bjet_mumu_num->GetBinContent(PtNum, EtaNum);
-        float Denominator = h_bjet_mumu_denom->GetBinContent(PtDenom, EtaDenom);
-
-        float eff = Numerator / Denominator;
-
-        if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
-	else{BTaggedEff.push_back(1.);}
-
-
-  }
-
-  return BTaggedEff;
-
-
-}};
-
-
-auto EffNonBTaggedFunction_ee{[&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins](const floats& DummyColumn, const floats& pts, const floats& etas){
-
-  floats NonBTaggedEff{};
-
-  for(int i = 0; i < pts.size(); i++){
-
-        int PtNum = h_nonbjet_ee_num->GetXaxis()->FindBin(pts.at(i));
-        int EtaNum = h_nonbjet_ee_num->GetYaxis()->FindBin(etas.at(i));
-    
-        int PtDenom = h_nonbjet_ee_denom->GetXaxis()->FindBin(pts.at(i));
-        int EtaDenom = h_nonbjet_ee_denom->GetYaxis()->FindBin(etas.at(i));
-
-        float Numerator = h_nonbjet_ee_num->GetBinContent(PtNum, EtaNum);
-        float Denominator = h_nonbjet_ee_denom->GetBinContent(PtDenom, EtaDenom);
-
-        float eff = Numerator / Denominator;
-
-        if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
-        else{NonBTaggedEff.push_back(1.);}
-
-
-  }
-
-  return NonBTaggedEff;
-
-
-}};
-
-
-auto EffNonBTaggedFunction_mumu{[&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins](const floats& DummyColumn, const floats& pts, const floats& etas){
-
-  floats NonBTaggedEff{};
-
-  for(int i = 0; i < pts.size(); i++){
-
-        int PtNum = h_nonbjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
-        int EtaNum = h_nonbjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
-
-        int PtDenom = h_nonbjet_mumu_denom->GetXaxis()->FindBin(pts.at(i));
-        int EtaDenom = h_nonbjet_mumu_denom->GetYaxis()->FindBin(etas.at(i));
-
-        float Numerator = h_nonbjet_mumu_num->GetBinContent(PtNum, EtaNum);
-        float Denominator = h_nonbjet_mumu_denom->GetBinContent(PtDenom, EtaDenom);
-
-        float eff = Numerator / Denominator;
-
-        if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
-        else{NonBTaggedEff.push_back(1.);}
-
-
-  }
-
-  return NonBTaggedEff;
-
-
-}};
-
-
-
-auto EffBTaggedProduct{[](const floats& EffBTagged){
-
-  float initial = 1;
-
-  for(int i = 0; i < EffBTagged.size(); i++ ){
-
-    initial = EffBTagged.at(i) * initial;
-
-  }
-
-  return initial;
-
-
-}};
-
-
-
-
-
-auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
-
-  float initial = 1;
-
-  for(int i = 0; i < EffNonBTagged.size(); i++ ){
-
-  	initial = (1 - EffNonBTagged.at(i)) * initial;
-
-  }
-
-  return initial;
-
-
-}};
-
-
-
-auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBTaggedProduct){
-
-  float MCProb = EffBTaggedProduct * EffNonBTaggedProduct; 
-  return MCProb;
-
-}};
-
-
-
-//reading the csv file to obtain the b tagging scale factor for each event
-auto CMSBTagSF_Function{[&BTag_ScaleUp, &BTag_ScaleDown](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
-
-  floats ResultVector{};
-
-  for(int j = 0; j < Jet_partonFlavour.size(); j++){
-
-
-	CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
-	std::vector<std::vector<std::string> > dataList = reader.getData();
-        
-	std::vector<std::string> OutputVec{}; 
-	std::vector<std::string> outputstringvec{};
-
-	std::string number;
-
-        if(BTagOrNot == true){number = "1";}
-	else{number = "0";}
-
-	std::vector<std::string> CSVv2OperatingPointTest(pts.size(), number); 
-
-	std::string MeasurementTypeString;
-
-	if(abs(Jet_partonFlavour.at(j)) == 4 || abs(Jet_partonFlavour.at(j)) == 5){MeasurementTypeString = "mujets";}
-	else if( (abs(Jet_partonFlavour.at(j)) >= 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
-	else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_partonFlavour.at(j) << std::endl;}
-
-        std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
-
-	std::string systematic_type_string;
-
-	if(BTag_ScaleUp == true){systematic_type_string = "up";}
-        else if(BTag_ScaleDown == true){systematic_type_string = "down";}
- 	else{systematic_type_string = "central";}
-
-        std::vector<std::string> SysTypeTest(pts.size(), "central");
-        std::vector<std::string> JetFlavourTest(pts.size(), "0"); 
-
-        std::vector<std::string> EtaTest{};
-
-
-	for(int i = 0; i < etas.size(); i++){
-
-		std::stringstream ss;
-		ss << etas.at(i);
-		std::string EtaString(ss.str());
-
-		EtaTest.push_back(EtaString);
-
-	}
-
-	std::vector<std::string> PtTest{};
-
-
-        for(int i = 0; i < pts.size(); i++){
-
-                std::stringstream ss;
-                ss << pts.at(i);
-                std::string PtString(ss.str());
-
-                PtTest.push_back(PtString);
-
-        }
-
-
-	std::vector<std::string> DiscrTest{};
-
-        for(int i = 0; i < pts.size(); i++){
-
-
-                std::stringstream ss;
-                ss << CSVv2Discr.at(i);
-                std::string CSVv2DiscrString(ss.str());
-
-                DiscrTest.push_back(CSVv2DiscrString);
-
-        }
-
-
-
-	std::vector<std::string> OutVec{};
-	std::vector<std::string> FinalOutVec{};
-
-
-
-for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
-	
-	for(std::vector<std::string> vec : dataList)
-	{
-		for(std::string data : vec)
-		{	
-			OutputVec.push_back(data);
-
-		}
-	}
-
-
-		for(std::vector<std::string> vec : dataList)
-        	{
-                	for(std::string data : vec)
-                	{
-				
-				std::string VecAt1String = vec.at(1);
-				std::string VecAt2String = vec.at(2);
-				std::string VecAt3String = vec.at(3);
-			        std::string VecAt4String = vec.at(4);
-				std::string VecAt5String = vec.at(5);
-				std::string VecAt6String = vec.at(6);
-				std::string VecAt7String = vec.at(7);
-				std::string VecAt8String = vec.at(8);
-				std::string VecAt9String = vec.at(9);
-				
-
-				VecAt1String.erase(0, 0);
-				VecAt2String.erase(0, 0);
-                                VecAt3String.erase(0, 0);
-                                VecAt4String.erase(0, 0);
-				VecAt1String.erase(remove(VecAt1String.begin(), VecAt1String.end(), ' '), VecAt1String.end());		
-				VecAt2String.erase(remove(VecAt2String.begin(), VecAt2String.end(), ' '), VecAt2String.end());
-				VecAt3String.erase(remove(VecAt3String.begin(), VecAt3String.end(), ' '), VecAt3String.end());
-                                VecAt4String.erase(remove(VecAt4String.begin(), VecAt4String.end(), ' '), VecAt4String.end());	
-
-
-				float VecAt4Float = stof(VecAt4String);
-                        	float VecAt5Float = stof(VecAt5String);
-				float VecAt6Float = stof(VecAt6String);
-				float VecAt7Float = stof(VecAt7String);
-				float VecAt8Float = stof(VecAt8String);
-                        	float VecAt9Float = stof(VecAt9String);
-
-
-				float PtTestFloat = stof(PtTest.at(i));
-				float EtaTestFloat = stof(EtaTest.at(i));
-				float DiscrTestFloat = stof(DiscrTest.at(i));
-
-
-
-				if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
-    				&& (VecAt1String == MeasurementTypeTest.at(i))
-    				&& (VecAt2String == SysTypeTest.at(i))
-    	  			&& (VecAt3String == JetFlavourTest.at(i))
-    				&& (VecAt4Float < EtaTestFloat)
-    				&& (VecAt5Float > EtaTestFloat)
-    	  			&& (VecAt6Float < PtTestFloat)     
-    				&& (VecAt7Float > PtTestFloat)
-    				&& (VecAt8Float < DiscrTestFloat) 
-    				&& (VecAt9Float > DiscrTestFloat)
-  				){
-					OutVec.push_back(vec.at(10));					
-				}
-				else if( (vec.at(0) != CSVv2OperatingPointTest.at(i))
-                        	|| (vec.at(1) != MeasurementTypeTest.at(i))
-                        	|| (vec.at(2) != SysTypeTest.at(i))
-                        	|| (vec.at(3) != JetFlavourTest.at(i))
-                        	|| (VecAt4Float > EtaTestFloat)
-                        	|| (VecAt5Float < EtaTestFloat)
-                        	|| (VecAt6Float > PtTestFloat)     
-                        	|| (VecAt7Float < PtTestFloat)
-                        	|| (VecAt8Float > DiscrTestFloat) 
-                        	|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
-				else{std::cout << "double check criteria" << std::endl;}
-			
-                	}
-
-        	}
-
-
-
-	std::vector<std::string> NewOutVec{};
-	std::vector<std::string> Zeroes{}; 
-	Zeroes.push_back("0");
-	Zeroes.push_back("0");
-
-	bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
-
-
-	if(OutVec.size() != 0 && check == false){
-		for(int i = 0; i < OutVec.size(); i++){
-
-			if(OutVec.at(i) != "0"){NewOutVec.push_back(OutVec.at(i));}
-	
-		}
-	
-		std::string outputString;
-
-	
-		if(NewOutVec.size() > 11){
-
-			outputString = NewOutVec.at( ((i+1)*11)-1 );
-		}
-		else{
-			outputString = NewOutVec.at(0); 
-		}
-
-		outputString.erase(outputString.begin()+1);
-                outputString.erase(outputString.begin());
-                outputString.erase(outputString.end()-2);
-                outputString.erase(outputString.end()-1);
-		
-                std::string::size_type pos = 0;
- 
-                while ((pos = outputString.find('x', pos)) != std::string::npos)
-                {
-                        outputString.replace(pos, 1, PtTest.at(i));
-                        pos += 2;
-                }
-                
-		outputstringvec.push_back(outputString);
-		FinalOutVec.push_back(outputstringvec.at(i));
-
-	
-	}
-	else{FinalOutVec.push_back(Zeroes.at(0));}
-
-
-}//end of for loop
-
-
-
-//Evaluating the mathematical expression in the std::string
-std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
-std::string ConcatenatedString5, ConcatenatedString6, ConcatenatedString7, ConcatenatedString8;
-std::string ConcatenatedString9, ConcatenatedString10, ConcatenatedString11, ConcatenatedString12;
-std::string ConcatenatedString13, ConcatenatedString14, ConcatenatedString15, ConcatenatedString16;
-std::vector<char> VecForConcString{};
-std::vector<char> VecForConcString2{};
-std::vector<char> VecForConcString3{};
-std::vector<char> VecForConcString4{};
-std::vector<char> VecForConcString5{};
-std::vector<char> VecForConcString6{};
-std::vector<char> VecForConcString7{};
-std::vector<char> VecForConcString8{};
-std::vector<char> VecForConcString9{};
-std::vector<char> VecForConcString10{};
-std::vector<char> VecForConcString11{};
-std::vector<char> VecForConcString12{};
-std::vector<char> VecForConcString13{};
-std::vector<char> VecForConcString14{};
-std::vector<char> VecForConcString15{};
-std::vector<char> VecForConcString16{};
-int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14, index15, index16;
-float result;
-
-for(int i = 0; i < FinalOutVec.size(); i++){
-
-	std::string FirstElement = FinalOutVec.at(i);
-
-	if(FirstElement.at(0) != '('){
-
-		int LastIndex;
-
-		//first
-		for(int i = 0; i < FirstElement.length(); i++){
-
-			if(FirstElement.at(i) != ')'&& 
-	   	   	   FirstElement.at(i) != '(' &&
-	   	   	   FirstElement.at(i) != '*' &&
-	   	   	   FirstElement.at(i) != '/' &&
-	   	   	   FirstElement.at(i) != '+' &&
-	  	   	   FirstElement.at(i) != '-'){VecForConcString.push_back(FirstElement.at(i)); LastIndex = i;}
-			else if(i == 0 && FirstElement.at(i) == '('){continue;}
-			else{index = i; break;}
-		}
-
-
-		for(int i = 0; i < VecForConcString.size(); i++){
-			if(i == 0){ConcatenatedString = VecForConcString.at(i);}
-			else{ConcatenatedString += VecForConcString.at(i);}
-
-		}	
-
-
-		float ConcatenatedStringToFloat = stof(ConcatenatedString);
-
-		if(LastIndex == FirstElement.length()-1){ResultVector.push_back(ConcatenatedStringToFloat);}
-		else{
-	
-			int Min1;
-
-			if(FirstElement.at(index) == '+' && 
-			   FirstElement.at(index+1) == '(' && 
-			   FirstElement.at(index+2) == '-' && 
-			   FirstElement.at(index+3) == '('){
-			
-				Min1 = index+4;
-			}
-			else if(FirstElement.at(index) == '+' &&
-                           	FirstElement.at(index+1) == '(' && 
-                          	FirstElement.at(index+2) == '(' && 
-                           	FirstElement.at(index+3) == '-' &&
-				FirstElement.at(index+2) == '('){
-                        
-                                	Min1 = index+5;
-                        }
-			else if(FirstElement.at(index) == '*' &&
-				FirstElement.at(index+1) == '(' &&
-				FirstElement.at(index+2) == '('){
-			
-					Min1 = index+3;
-
-			}
-			else if(FirstElement.at(index) == '+' &&
-				FirstElement.at(index+1) == '-'){
-			
-					Min1 = index+2;
-
-			}
-			else if(FirstElement.at(index) == '+' &&
-				FirstElement.at(index+1) == '(' &&
-				FirstElement.at(index+2) == '(' &&
-				FirstElement.at(index+3) == '-' &&
-				FirstElement.at(index+4) == '('){
-
-				Min1 = index+5;
-			
-
-			}
-			else{Min1 = index+1;}
-
-			//second
-			for(int i = Min1; i < FirstElement.length(); i++){
-
-        			if(FirstElement.at(i) == 'e' && FirstElement.at(i+1) == '-'){
-					
-					VecForConcString2.push_back(FirstElement.at(i));
-					VecForConcString2.push_back(FirstElement.at(i+1));
-					VecForConcString2.push_back(FirstElement.at(i+2));
-					VecForConcString2.push_back(FirstElement.at(i+3));
-					
-					index2 = i+4;
-					break;
-
-				}
-				else if(FirstElement.at(i) != ')'&&
-           	  		   	FirstElement.at(i) != '(' &&
-           	  		   	FirstElement.at(i) != '*' &&
-           	  		   	FirstElement.at(i) != '/' &&
-           	  		   	FirstElement.at(i) != '+' &&
-                  		   	FirstElement.at(i) != '-'){VecForConcString2.push_back(FirstElement.at(i));}
-               			else{index2 = i; break;}
-			
-			}
-
-
-
-			for(int i = 0; i < VecForConcString2.size(); i++){
-        			if(i == 0){ConcatenatedString2 = VecForConcString2.at(i);}
-        			else{ConcatenatedString2 += VecForConcString2.at(i);}
-
-			}
-
-			float ConcatenatedStringToFloat2 = stof(ConcatenatedString2);
-			int Min2;
-
-			if(FirstElement.at(index2) == '*' && 
-			   FirstElement.at(index2+1) == '(' && 
-			   FirstElement.at(index2+2) == 'l' && 
-			   FirstElement.at(index2+3) == 'o' &&
-			   FirstElement.at(index2+4) == 'g' &&
-			   FirstElement.at(index2+5) == '('){Min2 = index2+6;}
-                        else{Min2 = index2+2;}
-
-			//third
-			for(int i = Min2; i < FirstElement.length(); i++){
-
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString3.push_back(FirstElement.at(i));}
-        			else{index4 = i; break;}
-			}
-
-
-			for(int i = 0; i < VecForConcString3.size(); i++){
-        			if(i == 0){ConcatenatedString3 = VecForConcString3.at(i);}
-        			else{ConcatenatedString3 += VecForConcString3.at(i);}
-
-			}
-
-
-			float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
-			int Min3;
-
-			if(FirstElement.at(index4) == '+'){Min3 = index4+1;}
-			else{Min3 = index4+1;}
-
-
-			//fourth
-			for(int i = Min3; i < FirstElement.length(); i++){
-
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   	           FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString4.push_back(FirstElement.at(i));}
-        			else{index5 = i; break;}
-			}
-
-
-			for(int i = 0; i < VecForConcString4.size(); i++){
-        			if(i == 0){ConcatenatedString4 = VecForConcString4.at(i);}
-        			else{ConcatenatedString4 += VecForConcString4.at(i);}
-
-			}
-			
-
-			float ConcatenatedStringToFloat4 = stof(ConcatenatedString4);
-
-
-			int Min4;
-
-			if(FirstElement.at(index5) == ')' && 
-			   FirstElement.at(index5+1) == '*' && 
-			   FirstElement.at(index5+2) == '(' && 
-			   FirstElement.at(index5+3) == 'l' && 
-			   FirstElement.at(index5+4) == 'o' && 
-			   FirstElement.at(index5+5) == 'g' && 
-			   FirstElement.at(index5+6) == '('){Min4 = index5+7;}
-			else if(FirstElement.at(index5) == ')' &&
-				FirstElement.at(index5+1) == ')' &&
-				FirstElement.at(index5+2) == '/' &&
-				FirstElement.at(index5+3) == '('){Min4 = index5+4;}
-                        else{Min4 = index5+2;} 
-
-
-			//fifth
-			for(int i = Min4; i < FirstElement.length(); i++){
-
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString5.push_back(FirstElement.at(i));}
-        			else{index6 = i; break;}
-			}
-
-
-			for(int i = 0; i < VecForConcString5.size(); i++){
-        			if(i == 0){ConcatenatedString5 = VecForConcString5.at(i);}
-        			else{ConcatenatedString5 += VecForConcString5.at(i);}
-
-			}
-
-	
-			float ConcatenatedStringToFloat5 = stof(ConcatenatedString5);
-
-			int Min5;
-
-			if(FirstElement.at(index6) == '+' && FirstElement.at(index6+1) != '('){Min5 = index6+1;}
-			else if(FirstElement.at(index6) == '+' && FirstElement.at(index6+1) == '('){Min5 = index6+2;}
-			else{Min5 = index6+1;}
-
-
-			//sixth
-			for(int i = Min5; i < FirstElement.length(); i++){
-
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString6.push_back(FirstElement.at(i));}
-        			else{index7 = i; break;}
-			}
-
-
-			for(int i = 0; i < VecForConcString6.size(); i++){
-        			if(i == 0){ConcatenatedString6 = VecForConcString6.at(i);}
-        			else{ConcatenatedString6 += VecForConcString6.at(i);}
-
-			}
-	
-
-			float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
-
-			int Min6;
-
-                        if(FirstElement.at(index7) == ')' &&
-                           FirstElement.at(index7+1) == '*' &&
-                           FirstElement.at(index7+2) == '('){Min6 = index7+3;}
-			else if(FirstElement.at(index7) == '*'){Min6 = index7+1;}
-                        else{Min6 = index7+3;}
-			
-
-			//seventh
-			for(int i = Min6; i < FirstElement.length(); i++){
-
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString7.push_back(FirstElement.at(i));}
-        			else{index8 = i; break;}
-			}
-
-
-			for(int i = 0; i < VecForConcString7.size(); i++){
-        			if(i == 0){ConcatenatedString7 = VecForConcString7.at(i);}
-        			else{ConcatenatedString7 += VecForConcString7.at(i);}
-
-			}
-
-
-			float ConcatenatedStringToFloat7 = stof(ConcatenatedString7);
-			int Min7;
-                        
-			if(FirstElement.at(index8) == '-' &&
-                           FirstElement.at(index8+1) == '(' &&
-                           FirstElement.at(index8+2) == '-' &&
-			   FirstElement.at(index8+3) == '('){Min7 = index8+4;}
-                        else{Min7 = index8+1;}
-	
-
-
-			//for an output containing 7 floats
-			if(FirstElement.at(index6) == '+' && 
-			   FirstElement.at(index6+1) == '(' &&
-			   FirstElement.at(index8) == ')' &&
-                           FirstElement.at(index8+1) == ')' &&
-                           FirstElement.at(index8+2) == ')'){
-
-				
-				result = ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7)));
-
-				ResultVector.push_back(result);
-
-
-			}
-			else{
-
-
-				//eighth
-				for(int i = Min7; i < FirstElement.length(); i++){
-
-        				if(FirstElement.at(i) != ')'&&
-           	   		   	   FirstElement.at(i) != '(' &&
-           	   		   	   FirstElement.at(i) != '*' &&
-           	   		   	   FirstElement.at(i) != '/' &&
-           	   		   	   FirstElement.at(i) != '+' &&
-           	   		   	   FirstElement.at(i) != '-'){VecForConcString8.push_back(FirstElement.at(i));}
-        				else{index9 = i; break;}
-				}     
-
-
-
-
-				for(int i = 0; i < VecForConcString8.size(); i++){
-        				if(i == 0){ConcatenatedString8 = VecForConcString8.at(i);}
-        				else{ConcatenatedString8 += VecForConcString8.at(i);}
-    
-				}   
-
-
-				float ConcatenatedStringToFloat8 = stof(ConcatenatedString8);
-				int Min8;
-
-				if(FirstElement.at(index9) == '*' &&
-			   	   FirstElement.at(index9+1) == 'l' &&
-                           	   FirstElement.at(index9+2) == 'o' &&
-                           	   FirstElement.at(index9+3) == 'g' &&
-                           	   FirstElement.at(index9+4) == '('){Min8 = index9+5;}
-				else if(FirstElement.at(index9) == ')' &&
-					FirstElement.at(index9+1) == ')'){break;}
-				else{Min8 = index9+2;}
-
-
-
-				//ninth
-				for(int i = Min8; i < FirstElement.length(); i++){
-
-        				if(FirstElement.at(i) != ')'&&
-           	   		   	   FirstElement.at(i) != '(' &&
-           	   		   	   FirstElement.at(i) != '*' &&
-           	   		   	   FirstElement.at(i) != '/' &&
-           	   		  	   FirstElement.at(i) != '+' &&
-           	   		   	   FirstElement.at(i) != '-'){VecForConcString9.push_back(FirstElement.at(i));}
-        				else{index10 = i; break;}
-				}
-
-
-				for(int i = 0; i < VecForConcString9.size(); i++){
-        				if(i == 0){ConcatenatedString9 = VecForConcString9.at(i);}
-        				else{ConcatenatedString9 += VecForConcString9.at(i);}
-
-				}
-
-
-				float ConcatenatedStringToFloat9 = stof(ConcatenatedString9);
-				int Min9;
-
-				if(FirstElement.at(index10) == '+'){Min9 = index10+1;}
-				else{Min9 = index10 + 1;}
-
-
-				int LastIndex2;
-
-				//tenth
-				for(int i = Min9; i < FirstElement.length(); i++){
-
-        				if(FirstElement.at(i) != ')'&&
-           	   		   	   FirstElement.at(i) != '(' &&
-           	   		   	   FirstElement.at(i) != '*' &&
-           	   		   	   FirstElement.at(i) != '/' &&
-           	   		   	   FirstElement.at(i) != '+' &&
-           	   		   	   FirstElement.at(i) != '-'){VecForConcString10.push_back(FirstElement.at(i)); LastIndex2 = i;}
-        				else{index11 = i; break;}
-				}
-
-
-				for(int i = 0; i < VecForConcString10.size(); i++){
-        				if(i == 0){ConcatenatedString10 = VecForConcString10.at(i);}
-        				else{ConcatenatedString10 += VecForConcString10.at(i);}
-
-				}
-		
-
-				float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
-
-				//result for an equation containing 10 floats and ending in "))))))))' 
-			 	if(LastIndex2 == FirstElement.length()-9 &&
-                            	   FirstElement.at(index) == '+' &&
-                            	   FirstElement.at(index+1) == '(' &&
-                            	   FirstElement.at(index+2) == '-' &&
-                           	   FirstElement.at(index+3) == '('){
-				
-
-			    		result = ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))));
-
-                                	ResultVector.push_back(result);
-
-				}
-                        	else{
-
-
-					int Min10;
-
-					if(FirstElement.at(index11+8) == '-'){Min10 = index11+9;}
-					else{Min10 = index11+3;}
-
-
-					int LastIndex3;
-
-					//eleventh
-					for(int i = Min10; i < FirstElement.length(); i++){
-
-        					if(FirstElement.at(i) != ')'&&
-           	   		   	   	   FirstElement.at(i) != '(' &&
-           	   		  	   	   FirstElement.at(i) != '*' &&
-           	   		   	   	   FirstElement.at(i) != '/' &&
-           	   		   	   	   FirstElement.at(i) != '+' &&
-           	   		   	   	   FirstElement.at(i) != '-'){VecForConcString11.push_back(FirstElement.at(i)); LastIndex3 = i;}
-        					else{index12 = i; break;}
-					}
-
-
-					for(int i = 0; i < VecForConcString11.size(); i++){
-        					if(i == 0){ConcatenatedString11 = VecForConcString11.at(i);}
-        					else{ConcatenatedString11 += VecForConcString11.at(i);}
-
-					}
-
-					float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
-
-
-					//for an equation with 11 floats
-					if(LastIndex == FirstElement.length()-1 && FirstElement.at(index11+8) == '-'){
-
-						result = ConcatenatedStringToFloat+((-(ConcatenatedStringToFloat2*exp(-5)*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))))-ConcatenatedStringToFloat11);
-
-						ResultVector.push_back(result);
-
-					}
-					else if(FirstElement.at(index) == '+' &&
-                                		FirstElement.at(index+1) == '(' &&
-                                		FirstElement.at(index+2) == '(' &&
-                                		FirstElement.at(index+3) == '-' &&
-                                		FirstElement.at(index+4) == '(' &&
-						FirstElement.at(index11+8) == '-'){
-
-                                		result = ConcatenatedStringToFloat+((-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))))-ConcatenatedStringToFloat11);
-
-						ResultVector.push_back(result);
-                        
-                        		}
-					else{
-				
-						//twelfth
-						for(int i = index12+1; i < FirstElement.length(); i++){
-	
-        						if(FirstElement.at(i) != ')'&&
-           	   			   	   	   FirstElement.at(i) != '(' &&
-           	   			   	   	   FirstElement.at(i) != '*' &&
-           	   		   	   		   FirstElement.at(i) != '/' &&
-           	   		   		   	   FirstElement.at(i) != '+' &&
-           	   		   	   		   FirstElement.at(i) != '-'){VecForConcString12.push_back(FirstElement.at(i));}
-        						else{index13 = i; break;}
-						}
-
-
-						for(int i = 0; i < VecForConcString12.size(); i++){
-        						if(i == 0){ConcatenatedString12 = VecForConcString12.at(i);}
-        						else{ConcatenatedString12 += VecForConcString12.at(i);}
-
-						}
-
-						float ConcatenatedStringToFloat12 = stof(ConcatenatedString12);
-
-						//thirteenth
-						for(int i = index13+1; i < FirstElement.length(); i++){
-
-        						if(FirstElement.at(i) != ')'&&
-           	   		   	   	   	   FirstElement.at(i) != '(' &&
-           	   		   	   	   	   FirstElement.at(i) != '*' &&
-           	   		   	   	   	   FirstElement.at(i) != '/' &&
-           	   		   	   	  	   FirstElement.at(i) != '+' &&
-           	   		   	   	   	   FirstElement.at(i) != '-'){VecForConcString13.push_back(FirstElement.at(i));}
-        						else{index14 = i; break;}
-						}
-
-
-						for(int i = 0; i < VecForConcString13.size(); i++){
-        						if(i == 0){ConcatenatedString13 = VecForConcString13.at(i);}
-        						else{ConcatenatedString13 += VecForConcString13.at(i);}
-
-						}
-
-						float ConcatenatedStringToFloat13 = stof(ConcatenatedString13);
-
-						//Calculating the result for an equation containing 13 floats
-
-						if(FirstElement.at(index) == '+'){result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2;}
-						else if(FirstElement.at(index) == '-'){result = ConcatenatedStringToFloat - ConcatenatedStringToFloat2;}
-						else if(FirstElement.at(index) == '*'){result = ConcatenatedStringToFloat * ConcatenatedStringToFloat2;}
-						else{std::cout << "FirstElement.at(index) is " << FirstElement.at(index) << ". This is not a +, - or *. Output has been set to zero" << std::endl; result = 0;}
-
-
-						if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '(' && FirstElement.at(index2+2) == '-'){
-							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3);
-						}
-						else{std::cout << "error" << std::endl;}
-
-
-						if(FirstElement.at(index4) == '+'){
-							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4);
-						}
-						else{std::cout << "error message 2" << std::endl;}
-
-
-						if(FirstElement.at(index5) == '*' && FirstElement.at(index5+1) == '('){
-							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5));
-						}
-						else{std::cout << "error message 3" << std::endl;}
-
-						if(FirstElement.at(index6) == '+'){
-        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6));
-						}
-						else{std::cout << "error message 4" << std::endl;}
-
-
-						if(FirstElement.at(index7) == '*'){
-        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7)));
-						}	   
-						else{std::cout << "error message 5" << std::endl;}
-
-
-						if(FirstElement.at(index8) == '+'){
- 	       						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8)));
-						}
-						else{std::cout << "error message 5" << std::endl;}
-
-						if(FirstElement.at(index9) == '*' && FirstElement.at(index9+1) == '('){
-							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9))));
-						}
-						else{std::cout << "error message 6" << std::endl;}
-
-						if(FirstElement.at(index10) == '+'){
-        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))));
-						}
-						else{std::cout << "error message 7" << std::endl;}
-
-						if(FirstElement.at(index11) == '*' && FirstElement.at(index11+1) == '(' && FirstElement.at(index11+2) == '-'){
-        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11)))));
-						}
-						else{std::cout << "error message 8" << std::endl;}
-
-
-						if(FirstElement.at(index12) == '+'){
-        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12)))));
-						}	
-						else{std::cout << "error message 9" << std::endl;}
-
-						if(FirstElement.at(index13) == '*'){
-        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12*ConcatenatedStringToFloat13)))));
-						}
-						else{std::cout << "error message 10" << std::endl;}
-
-						ResultVector.push_back(result);
-
-						}
-
-				}
-
-			}
-
-	 	}//extra bracket added here
-
-	}
-	else{
-		//first
-        	for(int i = 1; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString.push_back(FirstElement.at(i));}
-                	else{index = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString.size(); i++){
-                	if(i == 0){ConcatenatedString = VecForConcString.at(i);}
-                	else{ConcatenatedString += VecForConcString.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat = stof(ConcatenatedString);
-
-		int Minimum;
-
-		if(FirstElement.at(index) == '+' &&
-		   FirstElement.at(index+1) == '(' &&
-		   FirstElement.at(index+2) == '-' &&
-		   FirstElement.at(index+3) == '('){
-
-			Minimum = index+4;
-
-		}
-		else{Minimum = index+3;}
-
-
-		//second	
-		for(int i = Minimum; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString2.push_back(FirstElement.at(i));}
-                	else{index2 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString2.size(); i++){
-                	if(i == 0){ConcatenatedString2 = VecForConcString2.at(i);}
-                	else{ConcatenatedString2 += VecForConcString2.at(i);}
-
-        	}
-        	
-		float ConcatenatedStringToFloat2 = stof(ConcatenatedString2);
-
-		int Minimum2;
-
-		if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '('){Minimum2 = index2+ 6;}
-		else{Minimum2 = index2+2;}
-
-
-		//third
-		for(int i = Minimum2; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString3.push_back(FirstElement.at(i));}
-                	else{index3 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString3.size(); i++){
-                	if(i == 0){ConcatenatedString3 = VecForConcString3.at(i);}
-                	else{ConcatenatedString3 += VecForConcString3.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
-
-		//fourth
-		for(int i = index3+1; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString4.push_back(FirstElement.at(i));}
-                	else{index4 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString4.size(); i++){
-                	if(i == 0){ConcatenatedString4 = VecForConcString4.at(i);}
-                	else{ConcatenatedString4 += VecForConcString4.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat4 = stof(ConcatenatedString4);
-
-		int Minimum3;
-
-
-		if(FirstElement.at(index4) == ')' && FirstElement.at(index4+1) == '*' && FirstElement.at(index4+2) == '('){Minimum3 = index4+7;}
-		else{Minimum3 = index4+4;}
-
-
-		//fifth
-		for(int i = Minimum3; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString5.push_back(FirstElement.at(i));}
-               	 	else{index5 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString5.size(); i++){
-                	if(i == 0){ConcatenatedString5 = VecForConcString5.at(i);}
-                	else{ConcatenatedString5 += VecForConcString5.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat5 = stof(ConcatenatedString5);
-
-		int Minimum4;
-		
-		if(FirstElement.at(index4) == ')' && FirstElement.at(index4+1) == '*' && FirstElement.at(index4+2) == '('){Minimum4 = index5+1;}
-		else{Minimum4 = index5+2;}	
-
-		
-		//sixth
-		for(int i = Minimum4; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString6.push_back(FirstElement.at(i));}
-                	else{index6 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString6.size(); i++){
-                	if(i == 0){ConcatenatedString6 = VecForConcString6.at(i);}
-                	else{ConcatenatedString6 += VecForConcString6.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
-	
-		//seventh
-		for(int i = index6+1; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString7.push_back(FirstElement.at(i));}
-                	else{index7 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString7.size(); i++){
-                	if(i == 0){ConcatenatedString7 = VecForConcString7.at(i);}
-                	else{ConcatenatedString7 += VecForConcString7.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat7 = stof(ConcatenatedString7);
-
-
-		int MinValue;
-
-
-		if(FirstElement.at(index) == '+' &&
-		   FirstElement.at(index+1) == '(' &&
-		   FirstElement.at(index+2) == '-' &&
-		   FirstElement.at(index+3) == '('){
-		
-			MinValue = index7+7;
-
-		}
-		else{MinValue = index7+5;}
-
-		//seventh
-        	for(int i = MinValue; i < FirstElement.length(); i++){
-
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                  	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString8.push_back(FirstElement.at(i));}
-                	else{index8 = i; break;}
-        	}
-
-
-        	for(int i = 0; i < VecForConcString8.size(); i++){
-                	if(i == 0){ConcatenatedString8 = VecForConcString8.at(i);}
-                	else{ConcatenatedString8 += VecForConcString8.at(i);}
-
-        	}
-
-        	float ConcatenatedStringToFloat8 = stof(ConcatenatedString8);
-
-
-		//result
-
-		if(FirstElement.at(index) == '*' && 
-		   FirstElement.at(index+1) == '(' && 
-		   FirstElement.at(index+2) == '(' &&
-		   FirstElement.at(index2) == '+' && 
-		   FirstElement.at(index2+1) == '(' &&
-		   FirstElement.at(index3) == '*' &&
-		   FirstElement.at(index4) == ')' && 
-		   FirstElement.at(index4+1) == ')' && 
-		   FirstElement.at(index4+2) == '/' && 
-		   FirstElement.at(index4+3) == '(' &&
-		   FirstElement.at(index5) == '+' && 
-		   FirstElement.at(index5+1) == '(' &&
-		   FirstElement.at(index6) == '*' &&
-		   FirstElement.at(index7) == ')' && 
-		   FirstElement.at(index7+1) == ')' && 
-		   FirstElement.at(index7+2) == ')' && 
-		   FirstElement.at(index7+3) == ')' && 
-		   FirstElement.at(index7+4) == '-'){
-
-			result = (ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7))))-ConcatenatedStringToFloat8;
-
-        	}
-		else if(FirstElement.at(index7+4) == '+'){
-
-                        result = (ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7))))+ConcatenatedStringToFloat8;
-
-                }
-        	else if(FirstElement.at(index) == '+' &&
-			FirstElement.at(index+1) == '(' &&
-			FirstElement.at(index+2) == '-' &&
-			FirstElement.at(index+3) == '('){
-	
-
-			//eighth
-                	for(int i = index8+5; i < FirstElement.length(); i++){
-
-                        	if(FirstElement.at(i) != ')'&&
-                           	   FirstElement.at(i) != '(' &&
-                           	   FirstElement.at(i) != '*' &&
-                           	   FirstElement.at(i) != '/' &&
-                           	   FirstElement.at(i) != '+' &&
-                           	   FirstElement.at(i) != '-'){VecForConcString9.push_back(FirstElement.at(i));}
-                        	else{index9 = i; break;}
-                	}
-
-
-                	for(int i = 0; i < VecForConcString9.size(); i++){
-                        	if(i == 0){ConcatenatedString9 = VecForConcString9.at(i);}
-                        	else{ConcatenatedString9 += VecForConcString9.at(i);}
-
-                	}
-                	
-			float ConcatenatedStringToFloat9 = stof(ConcatenatedString9);
-
-
-			//ninth
-                        for(int i = index9+4; i < FirstElement.length(); i++){
-
-                                if(FirstElement.at(i) != ')'&&
-                                   FirstElement.at(i) != '(' &&
-                                   FirstElement.at(i) != '*' &&
-                                   FirstElement.at(i) != '/' &&
-                                   FirstElement.at(i) != '+' &&
-                                   FirstElement.at(i) != '-'){VecForConcString10.push_back(FirstElement.at(i));}
-                                else{index10 = i; break;}
-                        }
-
-
-                        for(int i = 0; i < VecForConcString10.size(); i++){
-                                if(i == 0){ConcatenatedString10 = VecForConcString10.at(i);}
-                                else{ConcatenatedString10 += VecForConcString10.at(i);}
-
-                        }
-
-                        float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
-
-			//tenth
-                        for(int i = index10+9; i < FirstElement.length(); i++){
-          
-                                if(FirstElement.at(i) != ')'&&
-                                   FirstElement.at(i) != '(' &&
-                                   FirstElement.at(i) != '*' &&
-                                   FirstElement.at(i) != '/' &&
-                                   FirstElement.at(i) != '+' &&
-                                   FirstElement.at(i) != '-'){VecForConcString11.push_back(FirstElement.at(i));}
-                                else{index11 = i; break;}
-                        } 
-    
-
-                        for(int i = 0; i < VecForConcString11.size(); i++){
-                                if(i == 0){ConcatenatedString11 = VecForConcString11.at(i);}
-                                else{ConcatenatedString11 += VecForConcString11.at(i);}
-    
-                        }
-			
-                        float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
-
-
-		
-
-			result = (ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10)))))))))+ConcatenatedStringToFloat11;
-			
-
-		}
-		else{std::cout << "ERROR" << std::endl;}
-
-		ResultVector.push_back(result);
-
-	}	
-
-	VecForConcString.clear();
-	VecForConcString2.clear();
-	VecForConcString3.clear();
-	VecForConcString4.clear();
-	VecForConcString5.clear();
-	VecForConcString6.clear();
-	VecForConcString7.clear();
-	VecForConcString8.clear();
-	VecForConcString9.clear();
-	VecForConcString10.clear();
-	VecForConcString11.clear();
-	VecForConcString12.clear();
-	VecForConcString13.clear();
-
-
-}//end of for loop
-
-
-}//end of first for loop
-
-return ResultVector;
-
-}};
-
-
-
-
-auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
-
- return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
-
-}};
-
-
-auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
-
- return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
-
-}};
-
-
-
-auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF){
-
-  float initial = 1;
-  float output;
-
-  for(int i = 0; i < EffBTagged.size(); i++){
-
-        output = (CMSBTagSF.at(0)*EffBTagged.at(i)) * initial;
-
-  }
-
-  return output;
-
-}};
-
-
-
-
-auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSF){
-
-  float initial = 1;
-
-  int size = (CMSNonBTagSF.size() < EffNonBTagged.size()) ? CMSNonBTagSF.size() : EffNonBTagged.size();
-
-  for(int i = 0; i < size; i++){
-
-  	initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
-
-  }
-
-  return initial;
-
-}};
-
-
-
-
-
-
-
-auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& EffNonBTaggedProductData){
-
-  float DataProb = EffBTaggedProductData * EffNonBTaggedProductData;
-  return DataProb;
-
-}};
-
-
-
-
-auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
-
-	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
-	
-        if( !isnan(BTagWeight) && !isinf(BTagWeight) ){return BTagWeight;}
-	else{float One = 1.0; return One;}
-
-
-}};
 
 
 std::cout << "before W reconstruction (ee)" << std::endl;
@@ -9090,8 +9089,8 @@ else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_reco
 //Print cut report
 std::cout << "before print cut flow report" << std::endl;
 
-//auto allCutsReport = d_dataframe.Report();
 auto allCutsReport = d.Report();
+//auto allCutsReport = d_dataframe.Report();
 
 std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
 
