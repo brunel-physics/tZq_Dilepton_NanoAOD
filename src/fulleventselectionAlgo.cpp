@@ -2701,7 +2701,7 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 100000);
+auto d_dataframe = d.Range(0, 1000000);
 
 //RDataFrame d_dataframe("Events", input_files);
 
@@ -8801,7 +8801,6 @@ else{
 
 	std::cout << "after creating the denominator histograms" << std::endl;
 
-
 	h_bjet_ee_num->GetXaxis()->SetTitle("#eta");
 	h_nonbjet_ee_num->GetXaxis()->SetTitle("#eta");
 	h_charm_ee_num->GetXaxis()->SetTitle("#eta");
@@ -8847,6 +8846,9 @@ else{
 	h_charm_mumu_denom->GetYaxis()->SetTitle("p_{T}");
 	h_lightjets_mumu_denom->GetYaxis()->SetTitle("p_{T}");
 	h_gluon_mumu_denom->GetYaxis()->SetTitle("p_{T}");
+
+
+	std::cout << "before h_bjet_ee_num->Write()" << std::endl;
 
 	h_bjet_ee_num->Write();
 	h_nonbjet_ee_num->Write();
@@ -8909,6 +8911,7 @@ else{
         h_nonbjet_ee->Divide(h_nonbjet_ee_denom.GetPtr());
         h_nonbjet_mumu = (TH2F*)h_nonbjet_mumu_num->Clone();
         h_nonbjet_mumu->Divide(h_nonbjet_mumu_denom.GetPtr());
+
 
 	std::cout << "before setting the titles for b tag plots" << std::endl;
 
@@ -9085,21 +9088,6 @@ else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_reco
 
 
 
-
-//Print cut report
-std::cout << "before print cut flow report" << std::endl;
-
-auto allCutsReport = d.Report();
-//auto allCutsReport = d_dataframe.Report();
-
-std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
-
-
-for (auto&& cutInfo: allCutsReport){
-
-        CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-
-}
 
 
 std::cout << "after the for loop for cut flow report" << std::endl;
@@ -9706,124 +9694,30 @@ int nbins = 40;
 
 //Chi^2 calculation using MC samples
 
-std::string Filename;
-
 
 if(process == "tZq"){
 
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                Filename = process + "_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                Filename = process + "_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + "_" + year + ".root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                Filename = process + "_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                Filename = process + "_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                Filename = process + "_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{Filename = process + "_AfterFullSelection_GaussianFit_" + year + ".root";}
 
-
-
-	TFile* FittedHistosOutput = new TFile(Filename.c_str(), "RECREATE");
-        FittedHistosOutput->cd();
-
-	std::cout << "before h_WMass_ee" << std::endl;
-
-	auto h_WMass_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_WMass_ee", "Mass distribution of the W mass candidate (ee channel)", nbins, 0, 150}, "w_mass");
-	auto h_InvTopMass_ee = d_WeightedEvents_withMET_ee.Histo1D({"h_InvTopMass_ee", "Mass distribution of the top candidate (ee channel)", nbins, 0, 500}, "InvTopMass");
-	auto h_WMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_WMass_mumu", "Mass distribution of the W mass candidate (mumu channel)", nbins, 0, 150}, "w_mass");
-	auto h_InvTopMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D({"h_InvTopMass_mumu", "Mass distribution of the top candidate (mumu channel)", nbins, 0, 500}, "InvTopMass");
+	auto h_WMass_ee = d_WeightedEvents_withMET_ee.Filter("w_mass").Histo1D("w_mass");
+	auto h_InvTopMass_ee = d_WeightedEvents_withMET_ee.Filter("InvTopMass").Histo1D("InvTopMass");
+	auto h_WMass_mumu = d_WeightedEvents_withMET_mumu.Filter("w_mass").Histo1D("w_mass");
+        auto h_InvTopMass_mumu = d_WeightedEvents_withMET_mumu.Filter("InvTopMass").Histo1D("InvTopMass");
 
 	std::cout << "after h_InvTopMass_mumu " << std::endl;
 
 	h_WMass_ee->Fit("gaus");
-
-	std::cout << "after gaus fit for W (ee)" << std::endl;
-
 	h_InvTopMass_ee->Fit("gaus");
-
-	std::cout << "after gaus fit for top (ee)" << std::endl;
-
-	h_WMass_ee->Write();
-	h_InvTopMass_ee->Write();
-
 	h_WMass_mumu->Fit("gaus");
-
-	std::cout << "after gaus fit for W (mumu)" << std::endl;
-
         h_InvTopMass_mumu->Fit("gaus");
 
-	std::cout << "after gaus fit for top (mumu)" << std::endl;
-
-        h_WMass_mumu->Write();
-        h_InvTopMass_mumu->Write();
-
-	std::cout << "before W stddev (ee)" << std::endl;
+	std::cout << "before W_stddev_ee" << std::endl;
 
 	W_stddev_ee = h_WMass_ee->GetStdDev(); //Finding the resolution (same as the standard deviation)
-
-	std::cout << "after W stddev (ee)" << std::endl;
-
 	Top_stddev_ee = h_InvTopMass_ee->GetStdDev(); //Finding the resolution (same as the standard deviation)
-	std::cout << "after top stddev (ee)" << std::endl;
-
 	W_stddev_mumu = h_WMass_mumu->GetStdDev(); //Finding the resolution (same as the standard deviation)
-	std::cout << "after W stddev (mumu)" << std::endl;
-
         Top_stddev_mumu = h_InvTopMass_mumu->GetStdDev(); //Finding the resolution (same as the standard deviation)
+
 	std::cout << "after top stddev (mumu)" << std::endl;
-
-	FittedHistosOutput->Close();
-
-
-	std::string tZq_WAndTop_Filename; 
-
-	
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
-	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-		tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){ 
-	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){ 
-	 	tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
-	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
-
-
-	std::cout << "before tZq_WAndTop_File" << std::endl;
-
-
-	TFile* tZq_WAndTop_File = new TFile{tZq_WAndTop_Filename.c_str(), "READ"};
-
-	TH1* WHist_ee = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_WMass_ee", "TH1");
-	TH1* TopHist_ee = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_InvTopMass_ee", "TH1");
-	TH1* WHist_mumu = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_WMass_mumu", "TH1");
-	TH1* TopHist_mumu = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_InvTopMass_mumu", "TH1");
-
-	W_stddev_ee = WHist_ee->GetStdDev();
-	Top_stddev_ee = TopHist_ee->GetStdDev();
-	W_stddev_mumu = WHist_mumu->GetStdDev();
-	Top_stddev_mumu = TopHist_mumu->GetStdDev();
-
-	tZq_WAndTop_File->Close();
-
-
-	std::cout << "after closing tZq_WAndTop_File" << std::endl;
 
 
 	//Write the nominal mass and resolution values to a text file
@@ -9972,9 +9866,13 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	if(process == "tZq" && NominalRun == true){
 
+
+		std::cout << "before NumberOfSimulatedEvents_ee" << std::endl;
+
 		NumberOfSimulatedEvents_ee = *( Blinding_ee.Filter("chi2").Count() );
 		NumberOfSimulatedEvents_mumu = *( Blinding_mumu.Filter("chi2").Count() );	
 	
+		std::cout << "after NumberOfSimulatedEvents_mumu" << std::endl;
 
 		int OneSigmaOfNumEvents_ee = NumberOfSimulatedEvents_ee * 0.68;
 		int OneSigmaOfNumEvents_mumu = NumberOfSimulatedEvents_mumu * 0.68;
@@ -9982,13 +9880,19 @@ if(blinding == true && (SBR == true || SR == true)){
 		auto histo_chi2_ee = Blinding_ee.Histo1D("chi2");
 		auto histo_chi2_mumu = Blinding_mumu.Histo1D("chi2");
 
+		std::cout << "after histo_chi2_mumu" << std::endl;
+
 		TAxis *xaxis_ee = histo_chi2_ee->GetXaxis();
 		TAxis *xaxis_mumu = histo_chi2_mumu->GetXaxis();
+
+		std::cout << "before MaxBin_ee" << std::endl;
 
 		double MaxBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindLastBinAbove() );
 		double MinBin_ee = xaxis_ee->GetBinCenter( histo_chi2_ee->FindFirstBinAbove() ) ;
 		double MaxBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindLastBinAbove() );
         	double MinBin_mumu = xaxis_mumu->GetBinCenter( histo_chi2_mumu->FindFirstBinAbove() );
+
+		std::cout << "before MinBin_mumu" << std::endl;
 
 		int NumBins_ee = MaxBin_ee - MinBin_ee;
 		int NumBins_mumu = MaxBin_mumu - MinBin_mumu;
@@ -9997,11 +9901,16 @@ if(blinding == true && (SBR == true || SR == true)){
 		auto histo_chi2_ee_rebinned = Blinding_ee.Histo1D({"histo_chi2_ee_rebinned", "histo_chi2_ee_rebinned", 2*NumBins_ee, MinBin_ee, MaxBin_ee}, {"chi2"});
 		auto histo_chi2_mumu_rebinned = Blinding_mumu.Histo1D({"histo_chi2_mumu_rebinned", "histo_chi2_mumu_rebinned", 2*NumBins_mumu, MinBin_mumu, MaxBin_mumu}, {"chi2"});
 
+
+		std::cout << "before histo_chi2_ee_rebinned_x" << std::endl;
+
 		TAxis * histo_chi2_ee_rebinned_x = histo_chi2_ee_rebinned->GetXaxis();
 		TAxis * histo_chi2_mumu_rebinned_x = histo_chi2_mumu_rebinned->GetXaxis();
 
 		int total_ee = 0;
 		int total_mumu = 0;
+
+		std::cout << "after total_mumu" << std::endl;
 
 		for(int i = 0; i < histo_chi2_ee_rebinned->GetEntries(); i++){
 
@@ -10027,11 +9936,16 @@ if(blinding == true && (SBR == true || SR == true)){
 
         	}
 
+		
+		std::cout << "before MaxElement_ee" << std::endl;
 
 		//for Chi2_SBR_ee and mumu
 		auto MaxElement_ee = std::max_element(CutRanges_ee.begin(), CutRanges_ee.end());
 		auto DistToMax_ee = std::distance(CutRanges_ee.begin(), MaxElement_ee);
 		Chi2_SBR_ee = CutRanges_ee.at(DistToMax_ee);
+
+
+		std::cout << "before MaxElement_mumu" << std::endl;
 
 		auto MaxElement_mumu = std::max_element(CutRanges_mumu.begin(), CutRanges_mumu.end());
 		auto DistToMax_mumu = std::distance(CutRanges_mumu.begin(), MaxElement_mumu);
@@ -10396,6 +10310,22 @@ else{
   }
 
 
+
+ //Print cut report
+std::cout << "before print cut flow report" << std::endl;
+
+auto allCutsReport = d.Report();
+//auto allCutsReport = d_dataframe.Report();
+
+std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
+
+
+for(auto&& cutInfo: allCutsReport){
+   CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+}
+
+
+std::cout << "after the for loop for cut flow report" << std::endl; 
 
 
 												
