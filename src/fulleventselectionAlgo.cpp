@@ -880,6 +880,7 @@ double linereader(const int& LineNumber, const std::string& year){
 
 
 //Functions for btagging efficiency
+
 TH2* h_bjet_ee_num;
 TH2* h_bjet_ee_denom;
 TH2* h_bjet_mumu_num;
@@ -889,9 +890,12 @@ TH2* h_nonbjet_ee_denom;
 TH2* h_nonbjet_mumu_num;
 TH2* h_nonbjet_mumu_denom;
 
+
 int NBins = 40;
 
 auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  std::cout << "EffBTaggedFunction_ee" << std::endl;
 
   floats BTaggedEff{};
 
@@ -924,6 +928,8 @@ auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const 
 
 auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
+  std::cout << "EffBTaggedFunction_mumu" << std::endl;
+
   floats BTaggedEff{};
 
   for(int i = 0; i < pts.size(); i++){
@@ -952,6 +958,8 @@ auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](
 
 
 auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  std::cout << "EffNonBTaggedFunction_ee" << std::endl;
 
   floats NonBTaggedEff{};
 
@@ -982,6 +990,8 @@ auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*
 
 auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
+  std::cout << "before EffNonBTaggedFunction_mumu" << std::endl;
+
   floats NonBTaggedEff{};
 
   for(int i = 0; i < pts.size(); i++){
@@ -1011,6 +1021,8 @@ auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &
 
 
 auto EffBTaggedProduct{[](const floats& EffBTagged){
+  
+  std::cout << "EffBTaggedProduct" << std::endl;
 
   float initial = 1;
 
@@ -1031,6 +1043,8 @@ auto EffBTaggedProduct{[](const floats& EffBTagged){
 
 auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
+  std::cout << "EffNonBTaggedProduct" << std::endl;
+
   float initial = 1;
 
   for(int i = 0; i < EffNonBTagged.size(); i++ ){
@@ -1048,6 +1062,8 @@ auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
 auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBTaggedProduct){
 
+  std::cout << "ProbBTagMCFunction" << std::endl;
+
   float MCProb = EffBTaggedProduct * EffNonBTaggedProduct; 
   return MCProb;
 
@@ -1059,6 +1075,8 @@ auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBT
 bool BTag_ScaleUp_bool, BTag_ScaleDown_bool;
 
 auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+
+  std::cout << "inside CMSBTagSF_Function" << std::endl;
 
   floats ResultVector{};
 
@@ -2226,12 +2244,16 @@ return ResultVector;
 
 auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
+ std::cout << "CMSBTagSF" << std::endl;
+
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
 
 }};
 
 
 auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+
+ std::cout << "CMSNonBTagSF" << std::endl;
 
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
@@ -2240,6 +2262,8 @@ auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas
 
 
 auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF){
+
+  std::cout << "EffBTaggedProductData" << std::endl;
 
   float initial = 1;
   float output;
@@ -2258,6 +2282,8 @@ auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF)
 
 
 auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSF){
+
+  std::cout << "EffNonBTaggedProductData" << std::endl;
 
   float initial = 1;
 
@@ -2281,6 +2307,8 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
 auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& EffNonBTaggedProductData){
 
+  std::cout << "ProbBTagDataFunction" << std::endl;
+
   float DataProb = EffBTaggedProductData * EffNonBTaggedProductData;
   return DataProb;
 
@@ -2290,6 +2318,8 @@ auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& Ef
 
 
 auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
+
+ 	std::cout << "BTagWeightFunction" << std::endl;
 
 	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
 	
@@ -8712,262 +8742,6 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
                                                                       .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 
 
-std::string BTagEffOutput = process + "_BTagEffPlots.root";
-
-
-if(blinding == false){
-
-		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL.root";
-                }
-                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR.root";
-                }
-                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ttbarCR.root";
-                }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR.root";
-                }
-                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR.root";
-                }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-                else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + ".root";}
-
-}
-else{
-
-		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_Blinded.root";
-                }
-                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR_Blinded.root";
-                }
-                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ttbarCR_Blinded.root";
-                }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR_Blinded.root";
-                }
-                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
-                        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR_Blinded.root";
-                }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-                else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_Blinded.root";}
-
-}
-
-	
-	std::cout << "before btag efficiency" << std::endl;
-
-	TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
-	int NBins = 40;
-	double minpt = 0;
-	double maxpt = 500;
-	double mineta = -3;
-	double maxeta = 3;
-
-        auto h_bjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
-	auto h_nonbjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
-
-        auto h_charm_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_charm_ee_num", "h_charm_ee_num", NBins, mineta, maxpt, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
-        auto h_lightjets_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_ee_num", "h_lightjets_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
-        auto h_gluon_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_gluon_ee_num", "h_gluon_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
-
-	auto h_bjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_num", "h_bjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
-	auto h_nonbjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_mumu_num", "h_nonbjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
-
-        auto h_charm_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_num", "h_charm_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
-        auto h_lightjets_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_num", "h_lightjets_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
-        auto h_gluon_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_gluon_mumu_num", "h_gluon_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
-
-
-        std::cout << "after creating the numerator histograms" << std::endl;
-
-        auto h_bjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
-	auto h_nonbjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
-
-        auto h_charm_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_charm_ee_denom", "h_charm_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
-        auto h_lightjets_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_ee_denom", "h_lightjets_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
-        auto h_gluon_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_gluon_ee_denom", "h_gluon_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
- 
-       auto h_bjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_bjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
-	auto h_nonbjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_nonbjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});	
-
-        auto h_charm_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_denom", "h_charm_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
-        auto h_lightjets_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_denom", "h_lightjets_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
-        auto h_gluon_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_gluon_mumu_denom", "h_gluon_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
-
-	std::cout << "after creating the denominator histograms" << std::endl;
-
-	h_bjet_ee_num->GetXaxis()->SetTitle("#eta");
-	h_nonbjet_ee_num->GetXaxis()->SetTitle("#eta");
-	h_charm_ee_num->GetXaxis()->SetTitle("#eta");
-	h_lightjets_ee_num->GetXaxis()->SetTitle("#eta");
-	h_gluon_ee_num->GetXaxis()->SetTitle("#eta");
-	h_bjet_mumu_num->GetXaxis()->SetTitle("#eta");
-	h_nonbjet_mumu_num->GetXaxis()->SetTitle("#eta");
-	h_charm_mumu_num->GetXaxis()->SetTitle("#eta");
-	h_lightjets_mumu_num->GetXaxis()->SetTitle("#eta");
-	h_gluon_mumu_num->GetXaxis()->SetTitle("#eta");
-
-
-	h_bjet_ee_denom->GetXaxis()->SetTitle("#eta");
-	h_nonbjet_ee_denom->GetXaxis()->SetTitle("#eta");
-	h_charm_ee_denom->GetXaxis()->SetTitle("#eta");
-	h_lightjets_ee_denom->GetXaxis()->SetTitle("#eta");
-	h_gluon_ee_denom->GetXaxis()->SetTitle("#eta");
-	h_bjet_mumu_denom->GetXaxis()->SetTitle("#eta");
-	h_nonbjet_mumu_denom->GetXaxis()->SetTitle("#eta");
-	h_charm_mumu_denom->GetXaxis()->SetTitle("#eta");
-	h_lightjets_mumu_denom->GetXaxis()->SetTitle("#eta");
-	h_gluon_mumu_denom->GetXaxis()->SetTitle("#eta");
-
-
-	h_bjet_ee_num->GetYaxis()->SetTitle("p_{T}");
-	h_nonbjet_ee_num->GetYaxis()->SetTitle("p_{T}");
-	h_charm_ee_num->GetYaxis()->SetTitle("p_{T}");
-	h_lightjets_ee_num->GetYaxis()->SetTitle("p_{T}");
-	h_gluon_ee_num->GetYaxis()->SetTitle("p_{T}");
-	h_bjet_mumu_num->GetYaxis()->SetTitle("p_{T}");
-	h_nonbjet_mumu_num->GetYaxis()->SetTitle("p_{T}");
-	h_charm_mumu_num->GetYaxis()->SetTitle("p_{T}");
-	h_lightjets_mumu_num->GetYaxis()->SetTitle("p_{T}");
-	h_gluon_mumu_num->GetYaxis()->SetTitle("p_{T}");
-
-	h_bjet_ee_denom->GetYaxis()->SetTitle("p_{T}");
-	h_nonbjet_ee_denom->GetYaxis()->SetTitle("p_{T}");
-	h_charm_ee_denom->GetYaxis()->SetTitle("p_{T}");
-	h_lightjets_ee_denom->GetYaxis()->SetTitle("p_{T}");
-	h_gluon_ee_denom->GetYaxis()->SetTitle("p_{T}");
-	h_bjet_mumu_denom->GetYaxis()->SetTitle("p_{T}");
-	h_nonbjet_mumu_denom->GetYaxis()->SetTitle("p_{T}");
-	h_charm_mumu_denom->GetYaxis()->SetTitle("p_{T}");
-	h_lightjets_mumu_denom->GetYaxis()->SetTitle("p_{T}");
-	h_gluon_mumu_denom->GetYaxis()->SetTitle("p_{T}");
-
-
-	std::cout << "before h_bjet_ee_num->Write()" << std::endl;
-
-	h_bjet_ee_num->Write();
-	h_nonbjet_ee_num->Write();
-	h_charm_ee_num->Write();
-	h_lightjets_ee_num->Write();
-	h_gluon_ee_num->Write();
-	h_bjet_mumu_num->Write();
-	h_nonbjet_mumu_num->Write();
-	h_charm_mumu_num->Write();
-	h_lightjets_mumu_num->Write();
-	h_gluon_mumu_num->Write();
-
-	h_bjet_ee_denom->Write();
-	h_nonbjet_ee_denom->Write();
-	h_charm_ee_denom->Write();
-	h_lightjets_ee_denom->Write();
-	h_gluon_ee_denom->Write();
-	h_bjet_mumu_denom->Write();
-	h_nonbjet_mumu_denom->Write();
-	h_charm_mumu_denom->Write();
-	h_lightjets_mumu_denom->Write();
-	h_gluon_mumu_denom->Write();
-
-
-	std::cout << "before h_bjet_ee" << std::endl;
-
-
-	TH2F* h_bjet_ee = new TH2F("h_bjet_ee", "h_bjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_nonbjet_ee = new TH2F("h_nonbjet_ee", "h_nonbjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_charm_ee = new TH2F("h_charm_ee", "h_charm_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_lightjets_ee = new TH2F("h_lightjets_ee", "h_lightjets_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_gluon_ee = new TH2F("h_gluon_ee", "h_gluon_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-
-	TH2F* h_bjet_mumu = new TH2F("h_bjet_mumu", "h_bjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_nonbjet_mumu = new TH2F("h_bjet_mumu", "h_nonbjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-        TH2F* h_charm_mumu = new TH2F("h_charm_mumu", "h_charm_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-        TH2F* h_lightjets_mumu = new TH2F("h_lightjets_mumu", "h_lightjets_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-        TH2F* h_gluon_mumu = new TH2F("h_gluon_mumu", "h_gluon_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);	
-
-	std::cout << "after h_gluon_mumu" << std::endl;
-
-
-	h_bjet_ee = (TH2F*)h_bjet_ee_num->Clone();
-	h_bjet_ee->Divide(h_bjet_ee_denom.GetPtr());
-	h_bjet_mumu = (TH2F*)h_bjet_mumu_num->Clone();
-	h_bjet_mumu->Divide(h_bjet_mumu_denom.GetPtr());
-	h_charm_ee = (TH2F*)h_charm_ee_num->Clone();
-	h_charm_ee->Divide(h_charm_ee_denom.GetPtr());
-	h_charm_mumu = (TH2F*)h_charm_mumu_num->Clone();
-	h_charm_mumu->Divide(h_charm_mumu_denom.GetPtr());
-	h_lightjets_ee = (TH2F*)h_lightjets_ee_num->Clone();
-	h_lightjets_ee->Divide(h_lightjets_ee_denom.GetPtr());
-	h_lightjets_mumu = (TH2F*)h_lightjets_mumu_num->Clone();
-	h_lightjets_mumu->Divide(h_lightjets_mumu_denom.GetPtr());
-	h_gluon_ee = (TH2F*)h_gluon_ee_num->Clone();
-	h_gluon_ee->Divide(h_gluon_ee_denom.GetPtr());
-	h_gluon_mumu = (TH2F*)h_gluon_mumu_num->Clone();
-	h_gluon_mumu->Divide(h_gluon_mumu_denom.GetPtr());
-	h_nonbjet_ee = (TH2F*)h_nonbjet_ee_num->Clone();
-        h_nonbjet_ee->Divide(h_nonbjet_ee_denom.GetPtr());
-        h_nonbjet_mumu = (TH2F*)h_nonbjet_mumu_num->Clone();
-        h_nonbjet_mumu->Divide(h_nonbjet_mumu_denom.GetPtr());
-
-
-	std::cout << "before setting the titles for b tag plots" << std::endl;
-
-
-	h_bjet_ee->SetTitle("h_bjet_ee");
-	h_nonbjet_ee->SetTitle("h_nonbjet_ee");
-        h_charm_ee->SetTitle("h_charm_ee");
-        h_lightjets_ee->SetTitle("h_lightjets_ee");
-        h_gluon_ee->SetTitle("h_gluon_ee");
-        h_bjet_mumu->SetTitle("h_bjet_mumu");
-	h_nonbjet_mumu->SetTitle("h_nonbjet_mumu");
-        h_charm_mumu->SetTitle("h_charm_mumu");
-        h_lightjets_mumu->SetTitle("h_lightjets_mumu");
-        h_gluon_mumu->SetTitle("h_gluon_mumu");
-	
-
-	h_bjet_ee->GetXaxis()->SetTitle("#eta");
-	h_nonbjet_ee->GetXaxis()->SetTitle("#eta");
-	h_charm_ee->GetXaxis()->SetTitle("#eta");
-	h_lightjets_ee->GetXaxis()->SetTitle("#eta");
-	h_gluon_ee->GetXaxis()->SetTitle("#eta");
-	h_bjet_mumu->GetXaxis()->SetTitle("#eta");
-	h_nonbjet_mumu->GetXaxis()->SetTitle("#eta");
-	h_charm_mumu->GetXaxis()->SetTitle("#eta");
-	h_lightjets_mumu->GetXaxis()->SetTitle("#eta");
-	h_gluon_mumu->GetXaxis()->SetTitle("#eta");
-
-
-	h_bjet_ee->GetYaxis()->SetTitle("p_{T}");
-	h_nonbjet_ee->GetYaxis()->SetTitle("p_{T}");
-	h_charm_ee->GetYaxis()->SetTitle("p_{T}");
-	h_lightjets_ee->GetYaxis()->SetTitle("p_{T}");
-	h_gluon_ee->GetYaxis()->SetTitle("p_{T}");
-	h_bjet_mumu->GetYaxis()->SetTitle("p_{T}");
-	h_nonbjet_mumu->GetYaxis()->SetTitle("p_{T}");
-	h_charm_mumu->GetYaxis()->SetTitle("p_{T}");
-	h_lightjets_mumu->GetYaxis()->SetTitle("p_{T}");
-	h_gluon_mumu->GetYaxis()->SetTitle("p_{T}");
-
-
-	h_bjet_ee->Write();
-	h_nonbjet_ee->Write();
-	h_charm_ee->Write();
-	h_lightjets_ee->Write();
-	h_gluon_ee->Write();
-	h_bjet_mumu->Write();
-	h_nonbjet_mumu->Write();
-	h_charm_mumu->Write();
-	h_lightjets_mumu->Write();
-	h_gluon_mumu->Write();
-
-
-	BTagEffPlots->Close();
-
-
-
 
 std::cout << "before W reconstruction (ee)" << std::endl;
 
@@ -9451,9 +9225,246 @@ if( (year == "2017" || year == "2018") &&
 }
 else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";}
 
+
+
+std::cout << "before btag efficiency" << std::endl;
+
+std::string BTagEffOutput;
+std::string EndOfName;
+
+if(blinding == false){EndOfName = ".root";}
+else{EndOfName = "_Blinded.root";}
+
+
+if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+	BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL" + EndOfName;
+}
+else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR" + EndOfName;
+}
+else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ttbarCR" + EndOfName;
+}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR" + EndOfName;
+}
+else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+        BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR" + EndOfName;
+}
+else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_" + EndOfName;}
+
+
+
+	TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
+	int NBins = 40;
+	double minpt = 0;
+	double maxpt = 500;
+	double mineta = -3;
+	double maxeta = 3;
+
+        auto h_bjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
+	auto h_nonbjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
+
+        auto h_charm_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_charm_ee_num", "h_charm_ee_num", NBins, mineta, maxpt, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
+        auto h_lightjets_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_ee_num", "h_lightjets_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
+        auto h_gluon_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_gluon_ee_num", "h_gluon_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
+
+	auto h_bjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_num", "h_bjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
+	auto h_nonbjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_mumu_num", "h_nonbjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
+
+        auto h_charm_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_num", "h_charm_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
+        auto h_lightjets_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_num", "h_lightjets_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
+        auto h_gluon_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_gluon_mumu_num", "h_gluon_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
+
+
+        std::cout << "after creating the numerator histograms" << std::endl;
+
+        auto h_bjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
+	auto h_nonbjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
+
+        auto h_charm_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_charm_ee_denom", "h_charm_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
+        auto h_lightjets_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_ee_denom", "h_lightjets_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
+        auto h_gluon_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_gluon_ee_denom", "h_gluon_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
+ 
+       auto h_bjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_bjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
+	auto h_nonbjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_nonbjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});	
+
+        auto h_charm_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_denom", "h_charm_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
+        auto h_lightjets_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_denom", "h_lightjets_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
+        auto h_gluon_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_gluon_mumu_denom", "h_gluon_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
+
+	std::cout << "after creating the denominator histograms" << std::endl;
+
+	h_bjet_ee_num->GetXaxis()->SetTitle("#eta");
+	h_nonbjet_ee_num->GetXaxis()->SetTitle("#eta");
+	h_charm_ee_num->GetXaxis()->SetTitle("#eta");
+	h_lightjets_ee_num->GetXaxis()->SetTitle("#eta");
+	h_gluon_ee_num->GetXaxis()->SetTitle("#eta");
+	h_bjet_mumu_num->GetXaxis()->SetTitle("#eta");
+	h_nonbjet_mumu_num->GetXaxis()->SetTitle("#eta");
+	h_charm_mumu_num->GetXaxis()->SetTitle("#eta");
+	h_lightjets_mumu_num->GetXaxis()->SetTitle("#eta");
+	h_gluon_mumu_num->GetXaxis()->SetTitle("#eta");
+
+
+	h_bjet_ee_denom->GetXaxis()->SetTitle("#eta");
+	h_nonbjet_ee_denom->GetXaxis()->SetTitle("#eta");
+	h_charm_ee_denom->GetXaxis()->SetTitle("#eta");
+	h_lightjets_ee_denom->GetXaxis()->SetTitle("#eta");
+	h_gluon_ee_denom->GetXaxis()->SetTitle("#eta");
+	h_bjet_mumu_denom->GetXaxis()->SetTitle("#eta");
+	h_nonbjet_mumu_denom->GetXaxis()->SetTitle("#eta");
+	h_charm_mumu_denom->GetXaxis()->SetTitle("#eta");
+	h_lightjets_mumu_denom->GetXaxis()->SetTitle("#eta");
+	h_gluon_mumu_denom->GetXaxis()->SetTitle("#eta");
+
+
+	h_bjet_ee_num->GetYaxis()->SetTitle("p_{T}");
+	h_nonbjet_ee_num->GetYaxis()->SetTitle("p_{T}");
+	h_charm_ee_num->GetYaxis()->SetTitle("p_{T}");
+	h_lightjets_ee_num->GetYaxis()->SetTitle("p_{T}");
+	h_gluon_ee_num->GetYaxis()->SetTitle("p_{T}");
+	h_bjet_mumu_num->GetYaxis()->SetTitle("p_{T}");
+	h_nonbjet_mumu_num->GetYaxis()->SetTitle("p_{T}");
+	h_charm_mumu_num->GetYaxis()->SetTitle("p_{T}");
+	h_lightjets_mumu_num->GetYaxis()->SetTitle("p_{T}");
+	h_gluon_mumu_num->GetYaxis()->SetTitle("p_{T}");
+
+	h_bjet_ee_denom->GetYaxis()->SetTitle("p_{T}");
+	h_nonbjet_ee_denom->GetYaxis()->SetTitle("p_{T}");
+	h_charm_ee_denom->GetYaxis()->SetTitle("p_{T}");
+	h_lightjets_ee_denom->GetYaxis()->SetTitle("p_{T}");
+	h_gluon_ee_denom->GetYaxis()->SetTitle("p_{T}");
+	h_bjet_mumu_denom->GetYaxis()->SetTitle("p_{T}");
+	h_nonbjet_mumu_denom->GetYaxis()->SetTitle("p_{T}");
+	h_charm_mumu_denom->GetYaxis()->SetTitle("p_{T}");
+	h_lightjets_mumu_denom->GetYaxis()->SetTitle("p_{T}");
+	h_gluon_mumu_denom->GetYaxis()->SetTitle("p_{T}");
+
+
+	std::cout << "before h_bjet_ee_num->Write()" << std::endl;
+
+	h_bjet_ee_num->Write();
+	h_nonbjet_ee_num->Write();
+	h_charm_ee_num->Write();
+	h_lightjets_ee_num->Write();
+	h_gluon_ee_num->Write();
+	h_bjet_mumu_num->Write();
+	h_nonbjet_mumu_num->Write();
+	h_charm_mumu_num->Write();
+	h_lightjets_mumu_num->Write();
+	h_gluon_mumu_num->Write();
+
+	h_bjet_ee_denom->Write();
+	h_nonbjet_ee_denom->Write();
+	h_charm_ee_denom->Write();
+	h_lightjets_ee_denom->Write();
+	h_gluon_ee_denom->Write();
+	h_bjet_mumu_denom->Write();
+	h_nonbjet_mumu_denom->Write();
+	h_charm_mumu_denom->Write();
+	h_lightjets_mumu_denom->Write();
+	h_gluon_mumu_denom->Write();
+
+
+	std::cout << "before h_bjet_ee" << std::endl;
+
+
+	TH2F* h_bjet_ee = new TH2F("h_bjet_ee", "h_bjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2F* h_nonbjet_ee = new TH2F("h_nonbjet_ee", "h_nonbjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2F* h_charm_ee = new TH2F("h_charm_ee", "h_charm_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2F* h_lightjets_ee = new TH2F("h_lightjets_ee", "h_lightjets_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2F* h_gluon_ee = new TH2F("h_gluon_ee", "h_gluon_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+
+	TH2F* h_bjet_mumu = new TH2F("h_bjet_mumu", "h_bjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2F* h_nonbjet_mumu = new TH2F("h_bjet_mumu", "h_nonbjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+        TH2F* h_charm_mumu = new TH2F("h_charm_mumu", "h_charm_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+        TH2F* h_lightjets_mumu = new TH2F("h_lightjets_mumu", "h_lightjets_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+        TH2F* h_gluon_mumu = new TH2F("h_gluon_mumu", "h_gluon_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);	
+
+	std::cout << "after h_gluon_mumu" << std::endl;
+
+
+	h_bjet_ee = (TH2F*)h_bjet_ee_num->Clone();
+	h_bjet_ee->Divide(h_bjet_ee_denom.GetPtr());
+	h_bjet_mumu = (TH2F*)h_bjet_mumu_num->Clone();
+	h_bjet_mumu->Divide(h_bjet_mumu_denom.GetPtr());
+	h_charm_ee = (TH2F*)h_charm_ee_num->Clone();
+	h_charm_ee->Divide(h_charm_ee_denom.GetPtr());
+	h_charm_mumu = (TH2F*)h_charm_mumu_num->Clone();
+	h_charm_mumu->Divide(h_charm_mumu_denom.GetPtr());
+	h_lightjets_ee = (TH2F*)h_lightjets_ee_num->Clone();
+	h_lightjets_ee->Divide(h_lightjets_ee_denom.GetPtr());
+	h_lightjets_mumu = (TH2F*)h_lightjets_mumu_num->Clone();
+	h_lightjets_mumu->Divide(h_lightjets_mumu_denom.GetPtr());
+	h_gluon_ee = (TH2F*)h_gluon_ee_num->Clone();
+	h_gluon_ee->Divide(h_gluon_ee_denom.GetPtr());
+	h_gluon_mumu = (TH2F*)h_gluon_mumu_num->Clone();
+	h_gluon_mumu->Divide(h_gluon_mumu_denom.GetPtr());
+	h_nonbjet_ee = (TH2F*)h_nonbjet_ee_num->Clone();
+        h_nonbjet_ee->Divide(h_nonbjet_ee_denom.GetPtr());
+        h_nonbjet_mumu = (TH2F*)h_nonbjet_mumu_num->Clone();
+        h_nonbjet_mumu->Divide(h_nonbjet_mumu_denom.GetPtr());
+
+
+	std::cout << "before setting the titles for b tag plots" << std::endl;
+
+
+	h_bjet_ee->SetTitle("h_bjet_ee");
+	h_nonbjet_ee->SetTitle("h_nonbjet_ee");
+        h_charm_ee->SetTitle("h_charm_ee");
+        h_lightjets_ee->SetTitle("h_lightjets_ee");
+        h_gluon_ee->SetTitle("h_gluon_ee");
+        h_bjet_mumu->SetTitle("h_bjet_mumu");
+	h_nonbjet_mumu->SetTitle("h_nonbjet_mumu");
+        h_charm_mumu->SetTitle("h_charm_mumu");
+        h_lightjets_mumu->SetTitle("h_lightjets_mumu");
+        h_gluon_mumu->SetTitle("h_gluon_mumu");
+	
+
+	h_bjet_ee->GetXaxis()->SetTitle("#eta");
+	h_nonbjet_ee->GetXaxis()->SetTitle("#eta");
+	h_charm_ee->GetXaxis()->SetTitle("#eta");
+	h_lightjets_ee->GetXaxis()->SetTitle("#eta");
+	h_gluon_ee->GetXaxis()->SetTitle("#eta");
+	h_bjet_mumu->GetXaxis()->SetTitle("#eta");
+	h_nonbjet_mumu->GetXaxis()->SetTitle("#eta");
+	h_charm_mumu->GetXaxis()->SetTitle("#eta");
+	h_lightjets_mumu->GetXaxis()->SetTitle("#eta");
+	h_gluon_mumu->GetXaxis()->SetTitle("#eta");
+
+
+	h_bjet_ee->GetYaxis()->SetTitle("p_{T}");
+	h_nonbjet_ee->GetYaxis()->SetTitle("p_{T}");
+	h_charm_ee->GetYaxis()->SetTitle("p_{T}");
+	h_lightjets_ee->GetYaxis()->SetTitle("p_{T}");
+	h_gluon_ee->GetYaxis()->SetTitle("p_{T}");
+	h_bjet_mumu->GetYaxis()->SetTitle("p_{T}");
+	h_nonbjet_mumu->GetYaxis()->SetTitle("p_{T}");
+	h_charm_mumu->GetYaxis()->SetTitle("p_{T}");
+	h_lightjets_mumu->GetYaxis()->SetTitle("p_{T}");
+	h_gluon_mumu->GetYaxis()->SetTitle("p_{T}");
+
+
+	h_bjet_ee->Write();
+	h_nonbjet_ee->Write();
+	h_charm_ee->Write();
+	h_lightjets_ee->Write();
+	h_gluon_ee->Write();
+	h_bjet_mumu->Write();
+	h_nonbjet_mumu->Write();
+	h_charm_mumu->Write();
+	h_lightjets_mumu->Write();
+	h_gluon_mumu->Write();
+
+
+	BTagEffPlots->Close();
+
+
+
+
 std::cout << "before d_WeightedEvents_ee" << std::endl;
-
-
 
 auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
                                              .Define("TotalPt_System", TotalPt_System, TotalPt_System_strings)
@@ -9706,8 +9717,17 @@ if(process == "tZq"){
 	std::cout << "after h_InvTopMass_mumu " << std::endl;
 
 	h_WMass_ee->Fit("gaus");
+
+	std::cout << "after gaus fit for W ee" << std::endl;
+
 	h_InvTopMass_ee->Fit("gaus");
+
+	std::cout << "after gaus fit for top ee" << std::endl;
+
 	h_WMass_mumu->Fit("gaus");
+
+	std::cout << "after gaus fit for W mumu" << std::endl;
+
         h_InvTopMass_mumu->Fit("gaus");
 
 	std::cout << "before W_stddev_ee" << std::endl;
