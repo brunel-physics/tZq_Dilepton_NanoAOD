@@ -881,14 +881,14 @@ double linereader(const int& LineNumber, const std::string& year){
 
 //Functions for btagging efficiency
 
-TH2* h_bjet_ee_num;
-TH2* h_bjet_ee_denom;
-TH2* h_bjet_mumu_num;
-TH2* h_bjet_mumu_denom;
-TH2* h_nonbjet_ee_num;
-TH2* h_nonbjet_ee_denom;
-TH2* h_nonbjet_mumu_num;
-TH2* h_nonbjet_mumu_denom;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_ee_num;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_ee_denom;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_mumu_num;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_mumu_denom;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_ee_num;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_ee_denom;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_mumu_num;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_mumu_denom;
 
 
 int NBins = 40;
@@ -9263,15 +9263,15 @@ else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_"
 	double mineta = -3;
 	double maxeta = 3;
 
-        auto h_bjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
-	auto h_nonbjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
+        h_bjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
+	h_nonbjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
 
         auto h_charm_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_charm_ee_num", "h_charm_ee_num", NBins, mineta, maxpt, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
         auto h_lightjets_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_ee_num", "h_lightjets_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
         auto h_gluon_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_gluon_ee_num", "h_gluon_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
 
-	auto h_bjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_num", "h_bjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
-	auto h_nonbjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_mumu_num", "h_nonbjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
+	h_bjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_num", "h_bjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
+	h_nonbjet_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_mumu_num", "h_nonbjet_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
 
         auto h_charm_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_num", "h_charm_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
         auto h_lightjets_mumu_num = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_num", "h_lightjets_mumu_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
@@ -9280,15 +9280,15 @@ else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_"
 
         std::cout << "after creating the numerator histograms" << std::endl;
 
-        auto h_bjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
-	auto h_nonbjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
+        h_bjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
+	h_nonbjet_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
 
         auto h_charm_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_charm_ee_denom", "h_charm_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
         auto h_lightjets_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_ee_denom", "h_lightjets_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
         auto h_gluon_ee_denom = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_gluon_ee_denom", "h_gluon_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
  
-       auto h_bjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_bjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
-	auto h_nonbjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_nonbjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});	
+        h_bjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_bjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
+	h_nonbjet_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_bjet_mumu_denom", "h_nonbjet_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});	
 
         auto h_charm_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_charm_mumu_denom", "h_charm_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
         auto h_lightjets_mumu_denom = d_mumu_recoZ_jets_bjets_selection.Histo2D({"h_lightjets_mumu_denom", "h_lightjets_mumu_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
