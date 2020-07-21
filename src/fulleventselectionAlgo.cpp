@@ -7151,7 +7151,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-//EnableImplicitMT();
+  //EnableImplicitMT();
 
 
   Process_String = process;
@@ -7189,6 +7189,49 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
   std::cout << "branch = " << branch << std::endl;
+
+  std::string RunType;
+
+  if(process != "data_EGRunB"              && process != "data_EGRunC"              && process != "data_EGRunD"              && process != "data_DoubleEGRunB" && 
+     process != "data_DoubleEGRunC"        && process != "data_DoubleEGRunD"        && process != "data_DoubleEGRunE"        && process != "data_DoubleEGRunF" &&
+     process != "data_DoubleEGRunG"        && process != "data_DoubleEGRunH"        && process != "data_SingleElectronRunB"  && process != "data_SingleElectronRunC" &&
+     process != "data_SingleElectronRunD"  && process != "data_SingleElectronRunE"  && process != "data_SingleElectronRunF"  && process != "data_SingleElectronRunG" &&
+     process != "data_SingleElectronRunH"  && process != "data_DoubleMuonRunB"      && process != "data_DoubleMuonRunC"      && process != "data_DoubleMuonRunD" &&
+     process != "data_DoubleMuonRunE"      && process != "data_DoubleMuonRunF"      && process != "data_DoubleMuonRunG"      && process != "data_DoubleMuonRunH" &&
+     process != "data_SingleMuonRunB"      && process != "data_SingleMuonRunC"      && process != "data_SingleMuonRunD"      && process != "data_SingleMuonRunE" &&
+     process != "data_SingleMuonRunF"      && process != "data_SingleMuonRunG"      && process != "data_SingleMuonRunH"      && process != "data_DoubleEGRunB2" &&
+     process != "data_DoubleEGRunC2"       && process != "data_DoubleEGRunD2"       && process != "data_DoubleEGRunE2"       && process != "data_DoubleEGRunF2" &&
+     process != "data_DoubleEGRunG2"       && process != "data_DoubleEGRunH2"       && process != "data_SingleElectronRunB2" && process != "data_SingleElectronRunC2" &&
+     process != "data_SingleElectronRunD2" && process != "data_SingleElectronRunE2" && process != "data_SingleElectronRunF2" && process != "data_SingleElectronRunG2" &&
+     process != "data_SingleElectronRunH2" && process != "data_DoubleMuonRunB2"     && process != "data_DoubleMuonRunC2"     && process != "data_DoubleMuonRunD2" &&
+     process != "data_DoubleMuonRunE2"     && process != "data_DoubleMuonRunF2"     && process != "data_DoubleMuonRunG2"     && process != "data_DoubleMuonRunH2" &&
+     process != "data_SingleMuonRunB2"     && process != "data_SingleMuonRunC2"     && process != "data_SingleMuonRunD2"     && process != "data_SingleMuonRunE2" &&
+     process != "data_SingleMuonRunF2"     && process != "data_SingleMuonRunG2"     && process != "data_SingleMuonRunH2"){
+
+	RunType = "MC";
+
+ }
+ else if( (process == "data_DoubleEGRunB"        || process == "data_DoubleEGRunC"        || process == "data_DoubleEGRunD"        || process == "data_DoubleEGRunE" ||
+	   process == "data_DoubleEGRunF"        || process == "data_DoubleEGRunG"        || process == "data_DoubleEGRunH"        || process == "data_DoubleEGRunB2" ||
+           process == "data_DoubleEGRunC2"       || process == "data_DoubleEGRunD2"       || process == "data_DoubleEGRunE2"       || process == "data_DoubleEGRunF2" ||
+	   process == "data_DoubleEGRunG2"       || process == "data_DoubleEGRunH2" 	  || process == "data_EGRunB"              || process == "data_EGRunC" ||
+	   process == "data_EGRunD"              || process == "data_SingleElectronRunB"  || process == "data_SingleElectronRunC"  || process == "data_SingleElectronRunD" ||
+	   process == "data_SingleElectronRunE"  || process == "data_SingleElectronRunF"  || process == "data_SingleElectronRunG"  || process == "data_SingleElectronRunH" ||
+           process == "data_DoubleMuonRunB"      || process == "data_DoubleMuonRunC"      || process == "data_DoubleMuonRunD"      || process == "data_DoubleMuonRunE" ||
+	   process == "data_DoubleMuonRunF"      || process == "data_DoubleMuonRunG"      || process == "data_DoubleMuonRunH"      || process == "data_SingleMuonRunB" ||
+           process == "data_SingleMuonRunC"      || process == "data_SingleMuonRunD"      || process == "data_SingleMuonRunE"      || process == "data_SingleMuonRunF" ||
+           process == "data_SingleMuonRunG"      || process == "data_SingleMuonRunH"      || process == "data_SingleElectronRunB2" || process == "data_SingleElectronRunC2" ||
+           process == "data_SingleElectronRunD2" || process == "data_SingleElectronRunE2" || process == "data_SingleElectronRunF2" || process == "data_SingleElectronRunG2" ||
+           process == "data_SingleElectronRunH2" || process == "data_DoubleMuonRunB2"     || process == "data_DoubleMuonRunC2"     || process == "data_DoubleMuonRunD2" ||
+	   process == "data_DoubleMuonRunE2"     || process == "data_DoubleMuonRunF2"     || process == "data_DoubleMuonRunG2"     || process == "data_DoubleMuonRunH2" ||
+	   process == "data_SingleMuonRunB2"     || process == "data_SingleMuonRunC2"     || process == "data_SingleMuonRunD2"     || process == "data_SingleMuonRunE2" ||
+           process == "data_SingleMuonRunF2"     || process == "data_SingleMuonRunG2"     || process == "data_SingleMuonRunH2"){
+
+
+	RunType = "Data";
+
+  }
+ else{std::cout << "ERROR: Process is " << process << std::endl;}
 
 
   std::vector<std::string> input_files;
@@ -7938,69 +7981,7 @@ systDownFile_2018->Close();
 
 ///MC starts here
 
-if(
-
-process != "data_EGRunB" &&
-process != "data_EGRunC" &&
-process != "data_EGRunD" &&
-process != "data_DoubleEGRunB" &&
-process != "data_DoubleEGRunC" &&
-process != "data_DoubleEGRunD" &&
-process != "data_DoubleEGRunE" &&
-process != "data_DoubleEGRunF" &&
-process != "data_DoubleEGRunG" &&
-process != "data_DoubleEGRunH" &&
-process != "data_SingleElectronRunB" &&
-process != "data_SingleElectronRunC" &&
-process != "data_SingleElectronRunD" &&
-process != "data_SingleElectronRunE" &&
-process != "data_SingleElectronRunF" &&
-process != "data_SingleElectronRunG" &&
-process != "data_SingleElectronRunH" &&
-process != "data_DoubleMuonRunB" &&
-process != "data_DoubleMuonRunC" &&
-process != "data_DoubleMuonRunD" &&
-process != "data_DoubleMuonRunE" &&
-process != "data_DoubleMuonRunF" &&
-process != "data_DoubleMuonRunG" &&
-process != "data_DoubleMuonRunH" &&
-process != "data_SingleMuonRunB" &&
-process != "data_SingleMuonRunC" &&
-process != "data_SingleMuonRunD" &&
-process != "data_SingleMuonRunE" &&
-process != "data_SingleMuonRunF" &&
-process != "data_SingleMuonRunG" &&
-process != "data_SingleMuonRunH" &&
-process != "data_DoubleEGRunB2" &&
-process != "data_DoubleEGRunC2" &&
-process != "data_DoubleEGRunD2" &&
-process != "data_DoubleEGRunE2" &&
-process != "data_DoubleEGRunF2" &&
-process != "data_DoubleEGRunG2" &&
-process != "data_DoubleEGRunH2" &&
-process != "data_SingleElectronRunB2" &&
-process != "data_SingleElectronRunC2" &&
-process != "data_SingleElectronRunD2" &&
-process != "data_SingleElectronRunE2" &&
-process != "data_SingleElectronRunF2" &&
-process != "data_SingleElectronRunG2" &&
-process != "data_SingleElectronRunH2" &&
-process != "data_DoubleMuonRunB2" &&
-process != "data_DoubleMuonRunC2" &&
-process != "data_DoubleMuonRunD2" &&
-process != "data_DoubleMuonRunE2" &&
-process != "data_DoubleMuonRunF2" &&
-process != "data_DoubleMuonRunG2" &&
-process != "data_DoubleMuonRunH2" &&
-process != "data_SingleMuonRunB2" &&
-process != "data_SingleMuonRunC2" &&
-process != "data_SingleMuonRunD2" &&
-process != "data_SingleMuonRunE2" &&
-process != "data_SingleMuonRunF2" &&
-process != "data_SingleMuonRunG2" &&
-process != "data_SingleMuonRunH2"
-
-){
+if(RunType == "MC"){
   
   //Filtering events that pass the ee selection criteria
   auto d_ee_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
@@ -10149,12 +10130,8 @@ if(blinding == true && (SBR == true || SR == true)){
         output_mumu->Close();
 
 
-
-
-
-
-}
-else{
+  }
+  else{
 
 	std::cout << "inside the else statement for when blinding is false" << std::endl;
 
@@ -10265,7 +10242,7 @@ else{
         output_mumu->Close();
 
 
-}
+  }
 
 
 
@@ -10319,89 +10296,27 @@ else{
 
 
 
- //Print cut report
-std::cout << "before print cut flow report" << std::endl;
+   //Print cut report
+  std::cout << "before print cut flow report" << std::endl;
 
-auto allCutsReport = d.Report();
-//auto allCutsReport = d_dataframe.Report();
+  auto allCutsReport = d.Report();
+  //auto allCutsReport = d_dataframe.Report();
 
-std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
-
-
-for(auto&& cutInfo: allCutsReport){
-   CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-}
+  std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
 
 
-std::cout << "after the for loop for cut flow report" << std::endl; 
+  for(auto&& cutInfo: allCutsReport){
+     CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+  }
+
+
+  std::cout << "after the for loop for cut flow report" << std::endl; 
 
 
 												
 
 }
-else if(
-
-//data starts here
-(process == "data_DoubleEGRunB" ||
-process == "data_DoubleEGRunC" ||
-process == "data_DoubleEGRunD" ||
-process == "data_DoubleEGRunE" ||
-process == "data_DoubleEGRunF" ||
-process == "data_DoubleEGRunG" ||
-process == "data_DoubleEGRunH" ||
-process == "data_DoubleEGRunB2" ||
-process == "data_DoubleEGRunC2" ||
-process == "data_DoubleEGRunD2" ||
-process == "data_DoubleEGRunE2" ||
-process == "data_DoubleEGRunF2" ||
-process == "data_DoubleEGRunG2" ||
-process == "data_DoubleEGRunH2" ||
-process == "data_EGRunB" ||
-process == "data_EGRunC" ||
-process == "data_EGRunD" ||
-process == "data_SingleElectronRunB" ||
-process == "data_SingleElectronRunC" ||
-process == "data_SingleElectronRunD" ||
-process == "data_SingleElectronRunE" ||
-process == "data_SingleElectronRunF" ||
-process == "data_SingleElectronRunG" ||
-process == "data_SingleElectronRunH" ||
-process == "data_DoubleMuonRunB" ||
-process == "data_DoubleMuonRunC" ||
-process == "data_DoubleMuonRunD" ||
-process == "data_DoubleMuonRunE" ||
-process == "data_DoubleMuonRunF" ||
-process == "data_DoubleMuonRunG" ||
-process == "data_DoubleMuonRunH" ||
-process == "data_SingleMuonRunB" ||
-process == "data_SingleMuonRunC" ||
-process == "data_SingleMuonRunD" ||
-process == "data_SingleMuonRunE" ||
-process == "data_SingleMuonRunF" ||
-process == "data_SingleMuonRunG" ||
-process == "data_SingleMuonRunH" ||
-process == "data_SingleElectronRunB2" ||
-process == "data_SingleElectronRunC2" ||
-process == "data_SingleElectronRunD2" ||
-process == "data_SingleElectronRunE2" ||
-process == "data_SingleElectronRunF2" ||
-process == "data_SingleElectronRunG2" ||
-process == "data_SingleElectronRunH2" ||
-process == "data_DoubleMuonRunB2" ||
-process == "data_DoubleMuonRunC2" ||
-process == "data_DoubleMuonRunD2" ||
-process == "data_DoubleMuonRunE2" ||
-process == "data_DoubleMuonRunF2" ||
-process == "data_DoubleMuonRunG2" ||
-process == "data_DoubleMuonRunH2" ||
-process == "data_SingleMuonRunB2" ||
-process == "data_SingleMuonRunC2" ||
-process == "data_SingleMuonRunD2" ||
-process == "data_SingleMuonRunE2" ||
-process == "data_SingleMuonRunF2" ||
-process == "data_SingleMuonRunG2" ||
-process == "data_SingleMuonRunH2") && branch == "Nominal"
-){
+else if(RunType == "Data" && branch == "Nominal"){
 
 
 	if(process == "data_DoubleEGRunB" ||
