@@ -6441,6 +6441,287 @@ auto DummyBool{[](const bool& dummyinput){
 
 
 
+//For ME_Up and ME_Down
+ints SummedWeights(14, 0);
+
+auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+
+  float PdfMin = 1.0;
+  float PdfMax = 1.0;
+
+  //For the min and max Pdf weights
+  for(int i = 0; i < LHEPdfWeight.size(); i++){
+
+
+        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
+
+        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
+        else{continue;}
+
+        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
+        else{continue;}
+
+  }
+
+
+  if(PDF_ScaleUp == true){return PdfMax;}
+  else if(PDF_ScaleDown == true){return PdfMin;}
+  else{float One = 1.0; return One;}
+
+
+}};
+
+
+
+
+auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
+
+  floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
+
+
+  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
+
+
+  ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
+  ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
+  (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
+  ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++; //fsr up
+  ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
+  (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
+
+
+  //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
+
+  int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12]; 
+  int TotalNumNegative = SummedWeights[1] + SummedWeights[3] + SummedWeights[5] + SummedWeights[7] + SummedWeights[9] + SummedWeights[11] + SummedWeights[13]; 
+
+
+  float ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
+
+  return ME_SF;
+
+}};
+
+
+
+//Histogram for ME uncertainties
+auto ME_histo_function{[&SummedWeights](){
+
+  ints numerators;
+
+  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
+
+  return numerators;
+
+}};
+
+
+
+
+
+//SFs for ME up and down
+auto GeneratorWeight{[&SummedWeights/*, &ME_Up, &ME_Down*/](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
+
+
+ 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
+
+
+	if(ME_Up == true){
+
+		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
+                return generatorWeight_ScaleUp; 
+	
+	}
+	else if(ME_Down == true){	
+
+		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
+		return generatorWeight_ScaleDown; 
+
+	}
+	else{	
+
+		float generatorWeight = (TotalNumPositive / ME_numerator_histo.at(4)) * ( CalculatedNominalWeight / abs(CalculatedNominalWeight) );
+		return generatorWeight; 
+
+	}
+
+}};
+
+
+
+
+
+auto DummyColumnFunction{[](const floats& pts){
+ 
+	return pts;
+
+}};
+
+
+auto UnweightedTopPt{[](const doubles& pts){
+
+        return pts;
+
+}};
+
+
+auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
+                
+  return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
+        
+}};
+
+
+auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
+
+   return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
+
+}};
+
+
+auto TopReweighting_weight{[](const ints& TopReweighting_topquark, const ints& TopReweighting_antitopquark){
+
+  doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
+  doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
+  doubles weight = sqrt( SF_top * SF_antitop);
+
+  return weight;
+
+}};
+
+
+
+
+//Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
+bool NominalRun;
+
+if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
+   BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
+   JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 &&
+   PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      &&
+   MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     &&
+   fsr_up == 0                && fsr_down == 0){NominalRun = true;}
+else{NominalRun = false;}
+
+
+
+std::vector<float> CutRanges_ee = {};
+
+auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+
+  float FiveSigmaW = 5*W_stddev_ee;
+
+  //calculating chi2
+  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
+
+  float LowerBound = W_MASS - FiveSigmaW;
+  float UpperBound = W_MASS + FiveSigmaW;
+
+  if(process == "tZq" && NominalRun == true && SBR == true){
+
+        //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
+        if(w_mass > LowerBound && w_mass < UpperBound){
+                CutRanges_ee.push_back(chi2);
+                return chi2;
+        }   
+        else{   
+                std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
+                float out = 999.0;
+                return out;
+        }
+
+  }   
+  else{return chi2;}
+
+
+}};
+
+
+
+std::vector<float> CutRanges_mumu = {};
+
+auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+
+  float FiveSigmaW = 5*W_stddev_mumu;
+
+  float LowerBound = W_MASS - FiveSigmaW;
+  float UpperBound = W_MASS + FiveSigmaW;
+
+
+  //calculating chi2
+  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
+
+
+  if(process == "tZq" && NominalRun == true && SBR == true){
+ 
+        //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
+        if(w_mass > LowerBound && w_mass < UpperBound){
+                CutRanges_mumu.push_back(chi2);
+                return chi2;
+        }
+        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
+             float out = 999.0;
+             return out;
+        }
+
+
+  }  
+  else{return chi2;}
+
+
+}};
+
+
+
+auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){
+
+  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
+  else if(SR == true){return Chi2 < Chi2_SR_ee;}
+  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+
+}};
+
+
+
+
+auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
+
+  if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
+  else if(SR == true){return Chi2 < Chi2_SR_mumu;}
+  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+
+}};
+
+
+std::string Chi2Range_string;
+
+
+
+std::string PSWeightString_ee;
+std::string PSWeightString_mumu;
+
+if( (year == "2017" || year == "2018") &&
+     (process == "tZq" ||
+     process == "SingleTop_tbarW" ||
+     process == "SingleTop_schannel" ||
+     process == "SingleTop_tchannel_top" ||
+     process == "SingleTop_tchannel_tbar" ||
+     process == "ttbarV_ttgamma" ||
+     process == "ttbar_TTToHadronic" ||
+     process == "ttbar_TTToSemileptonic") ){
+
+	PSWeightString_ee = "PSWeight";
+	PSWeightString_mumu = "PSWeight";
+
+}
+else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";}
+
+
+
+
+
+
+
 std::vector<std::string> leptontriggers_strings;
 
 if(year == "2016"){
@@ -9130,11 +9411,6 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 
 
 //lambda functions for top quark pT reweighting
-auto UnweightedTopPt{[](const doubles& pts){
-
-        return pts;
-
-}};
 
 std::cout << "before d_TopReweighted_ee" << std::endl;
 
@@ -9146,47 +9422,6 @@ if(process == "ttbar_2l2nu" ||
     process == "ttbar_madgraph_NanoAODv5" ||
     process == "ttbar_TTToHadronic" ||
     process == "ttbar_TTToSemileptonic"){
-
-	auto TopReweighting_topquark{[](
-
-		const ints& GenPart_pdgId,
-		const ints& GenPart_statusFlags,
-		const ints& GenPart_pt
-
-	){
-
-		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
-
-	}};
-
-	auto TopReweighting_antitopquark{[](
-
-		const ints& GenPart_pdgId,
-		const ints& GenPart_statusFlags,
-		const ints& GenPart_pt
-
-	){
-		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
-
-	}};
-
-
-
-	auto TopReweighting_weight{[](
-
-		const ints& TopReweighting_topquark,
-		const ints& TopReweighting_antitopquark
-
-	){
-
-		doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
-		doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
-		doubles weight = sqrt( SF_top * SF_antitop);
-		
-		return weight;
-
-	}};
-
 
 
 	std::cout << "before d_TopReweighted_ee" << std::endl;
@@ -9218,144 +9453,6 @@ else{
 
 }
 
-
-
-
-//For ME_Up and ME_Down
-ints SummedWeights(14, 0);
-
-auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
-
-  float PdfMin = 1.0;
-  float PdfMax = 1.0;
-
-  //For the min and max Pdf weights
-  for(int i = 0; i < LHEPdfWeight.size(); i++){
-
-
-        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
-
-        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
-        else{continue;}
-
-        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
-        else{continue;}
-
-  }
-
-
-  if(PDF_ScaleUp == true){return PdfMax;}
-  else if(PDF_ScaleDown == true){return PdfMin;}
-  else{float One = 1.0; return One;}
-
-
-}};
-
-
-
-
-auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
-
-  floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
-
-
-  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
-
-
-  ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
-  ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
-  (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
-  ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++; //fsr up
-  ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
-  (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
-
-
-  //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
-
-  int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12]; 
-  int TotalNumNegative = SummedWeights[1] + SummedWeights[3] + SummedWeights[5] + SummedWeights[7] + SummedWeights[9] + SummedWeights[11] + SummedWeights[13]; 
-
-
-  float ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
-
-  return ME_SF;
-
-}};
-
-
-
-//Histogram for ME uncertainties
-auto ME_histo_function{[&SummedWeights](){
-
-  ints numerators;
-
-  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
-
-  return numerators;
-
-}};
-
-
-
-
-
-//SFs for ME up and down
-auto GeneratorWeight{[&SummedWeights/*, &ME_Up, &ME_Down*/](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
-
-
- 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
-
-
-	if(ME_Up == true){
-
-		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
-                return generatorWeight_ScaleUp; 
-	
-	}
-	else if(ME_Down == true){	
-
-		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
-		return generatorWeight_ScaleDown; 
-
-	}
-	else{	
-
-		float generatorWeight = (TotalNumPositive / ME_numerator_histo.at(4)) * ( CalculatedNominalWeight / abs(CalculatedNominalWeight) );
-		return generatorWeight; 
-
-	}
-
-}};
-
-
-
-
-
-auto DummyColumnFunction{[](const floats& pts){
- 
-	return pts;
-
-}};
-
-
-std::string PSWeightString_ee;
-std::string PSWeightString_mumu;
-
-if( (year == "2017" || year == "2018") &&
-     (process == "tZq" ||
-     process == "SingleTop_tbarW" ||
-     process == "SingleTop_schannel" ||
-     process == "SingleTop_tchannel_top" ||
-     process == "SingleTop_tchannel_tbar" ||
-     process == "ttbarV_ttgamma" ||
-     process == "ttbar_TTToHadronic" ||
-     process == "ttbar_TTToSemileptonic") ){
-
-	PSWeightString_ee = "PSWeight";
-	PSWeightString_mumu = "PSWeight";
-
-}
-else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";}
 
 
 
@@ -9757,95 +9854,6 @@ if(process == "tZq"){
 
 
 
-
-
-//Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
-bool NominalRun;
-
-if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
-   BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
-   JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 && 
-   PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      && 
-   MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     && 
-   fsr_up == 0                && fsr_down == 0){NominalRun = true;}
-else{NominalRun = false;}
-
-
-
-std::vector<float> CutRanges_ee = {};
-
-auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
-
-  float FiveSigmaW = 5*W_stddev_ee;
-
-  //calculating chi2
-  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
-
-  float LowerBound = W_MASS - FiveSigmaW;
-  float UpperBound = W_MASS + FiveSigmaW;
-
-  if(process == "tZq" && NominalRun == true && SBR == true){
-
-  	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-  	if(w_mass > LowerBound && w_mass < UpperBound){
-		CutRanges_ee.push_back(chi2);
-		return chi2;
-	}	
-	else{
-		std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
-		float out = 999.0;
-                return out;
-	}
-
-  }
-  else{return chi2;}
-
-
-}};
-
-
-
-
-std::vector<float> CutRanges_mumu = {};
-
-auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
-
-  float FiveSigmaW = 5*W_stddev_mumu;
-
-  float LowerBound = W_MASS - FiveSigmaW;
-  float UpperBound = W_MASS + FiveSigmaW;
-
-
-  //calculating chi2
-  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
-
-
-  if(process == "tZq" && NominalRun == true && SBR == true){
-  
-	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-        if(w_mass > LowerBound && w_mass < UpperBound){
-		CutRanges_mumu.push_back(chi2);
-		return chi2;
-	}
-        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
-	     float out = 999.0;
-	     return out;
-	}
-
-
-  }
-  else{return chi2;}
-
- 
-}};
-
-
-
-
-
-std::string Chi2Range_string;
-
-
 //Section for experimental blinding
 if(blinding == true && (SBR == true || SR == true)){
 
@@ -9955,17 +9963,6 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	std::cout << "before Chi2Cut_ee" << std::endl;
 
-	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
-
-	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
-	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
-	  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
-
-	}};
-
-
-
-	std::cout << "before AfterChi2Cut_ee" << std::endl;
 
 	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"}).Filter(Chi2Cut_ee, {"chi2"});
 
@@ -9975,15 +9972,6 @@ if(blinding == true && (SBR == true || SR == true)){
 	
 	std::cout << "before Chi2Cut_mumu" << std::endl;
 
-        auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
-
-          if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
-          else if(SR == true){return Chi2 < Chi2_SR_mumu;}
-          else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
-
-        }};
-
-	std::cout << "before AfterChi2Cut_mumu" << std::endl;
         auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
 	std::cout << "after AfterChi2Cut_mumu" << std::endl;
 
