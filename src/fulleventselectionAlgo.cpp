@@ -5564,6 +5564,28 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
 
 
 
+//Implementing the PU modelling
+auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year](int PV_npvs_input){
+
+  float PU_Weight_input;
+
+  if(year == "2016"){
+        PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input));
+  }
+  else if(year == "2017"){
+        PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input));
+  }
+  else if(year == "2018"){
+        PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
+  }
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
+
+
+  return PU_Weight_input;
+
+}};
+
+
 
 
 
@@ -5576,6 +5598,12 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
   Process_String = process;
+  Blinding_Bool = blinding;
+  NPL_Bool = NPL;
+  SR_Bool = SR;
+  SBR_Bool = SBR;
+  ZPlusJetsCR_Bool = ZPlusJetsCR;
+  ttbarCR_Bool = ttbarCR;
   Year_String = year;
 
   std::string branch;
@@ -5967,58 +5995,58 @@ auto d_dataframe = d.Range(0, 1000000);
 
 //Electron selection and reconstruction SFs
 //2016
-TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-TFile* EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
-TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
 
 //2017
-TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
-TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-TFile* EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
-TFile* EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
+EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
 
 //2018
-TFile* EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
-TFile* EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
-TFile* EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
-TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
+EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
+EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
 //Histograms
 //2016
-TH2* EGammaEff2016_histo = (TH2*)(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEff2016_histo = (TH2*)(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEff2016_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2016_histo = (TH2*)(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEffSys2016_histo = (TH2*)(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2016_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco2016_histo = (TH2*)(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEffReco2016_histo = (TH2*)(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffReco2016_histo->SetDirectory(nullptr);
-TH2* EGammaEffRecoSys2016_histo = (TH2*)(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys2016_histo = (TH2*)(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys2016_histo->SetDirectory(nullptr);
 
 //2017
-TH2* EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEff2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2017_histo = (TH2*)(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffSys2017_histo = (TH2*)(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco_LowPt_2017_histo = (TH2*)(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffReco_LowPt_2017_histo = (TH2*)(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffReco_LowPt_2017_histo->SetDirectory(nullptr); 
-TH2* EGammaEffRecoSys_LowPt_2017_histo = (TH2*)(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys_LowPt_2017_histo = (TH2*)(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys_LowPt_2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco_HigherPt_2017_histo = (TH2*)(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffReco_HigherPt_2017_histo = (TH2*)(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffReco_HigherPt_2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys_HigherPt_2017_histo->SetDirectory(nullptr);
 
 //2018
-TH2* EGammaEff2018_histo = (TH2*)(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEff2018_histo = (TH2*)(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEff2018_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2018_histo = (TH2*)(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEffSys2018_histo = (TH2*)(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2018_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco2018_histo = (TH2*)(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEffReco2018_histo = (TH2*)(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffReco2018_histo->SetDirectory(nullptr);
-TH2* EGammaEffRecoSys2018_histo = (TH2*)(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+EGammaEffRecoSys2018_histo = (TH2*)(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys2018_histo->SetDirectory(nullptr);
 
 
@@ -7896,32 +7924,6 @@ dataPileupFile_2018->Close();
 mcPileupFile_2018->Close();
 systUpFile_2018->Close();
 systDownFile_2018->Close();
-
-
-
-//Implementing the PU modelling
-
-
-auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year](int PV_npvs_input){
-
-  float PU_Weight_input;
-
-  if(year == "2016"){
-        PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else if(year == "2017"){
-  	PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else if(year == "2018"){
-        PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
-
-
-  return PU_Weight_input;
-
-}};
-
 
 
 
