@@ -2544,7 +2544,7 @@ std::vector<std::string> MET_uncert_strings = {
 
 //Functions for events that pass the ee, mumu, or emu triggers
 //To prevent double counting single and double lepton datasets
-auto SingleElectron{[&year](
+auto SingleElectron{[/*&Year_String*/](
 
 const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG,
 const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
@@ -2556,20 +2556,20 @@ const bool& HLT_Ele27_WPTight_Gsf)-> bool{
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
 	return  HLT_Ele25_eta2p1_WPTight_Gsf > 0 ||
 		HLT_Ele27_WPTight_Gsf > 0 ||
 		HLT_Ele32_eta2p1_WPTight_Gsf > 0;
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
   	return //HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || 
    	       HLT_Ele35_WPTight_Gsf > 0; 
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
 	return HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0;
 
@@ -2580,7 +2580,7 @@ const bool& HLT_Ele27_WPTight_Gsf)-> bool{
 }};
 
 
-auto DoubleElectron{[&year](
+auto DoubleElectron{[/*&Year_String*/](
 
 const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
@@ -2592,18 +2592,18 @@ const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
 	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
   
 	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
    	       HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 	
 	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || 
                HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
@@ -2616,7 +2616,7 @@ const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
 
 
 
-auto SingleMuon{[&year](
+auto SingleMuon{[/*&Year_String*/](
 
 const bool& HLT_IsoMu24,
 const bool& HLT_IsoMu27,
@@ -2628,19 +2628,19 @@ const bool& HLT_IsoMu24_eta2p1
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
   	return HLT_IsoMu24  > 0 ||
 	       HLT_IsoMu24_eta2p1  > 0;
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
   	return HLT_IsoMu24 > 0 || 
    	       HLT_IsoMu27 > 0; 
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
 	return HLT_IsoMu24 > 0;
 
@@ -2651,7 +2651,7 @@ const bool& HLT_IsoMu24_eta2p1
 
 
 
-auto DoubleMuon{[&year](
+auto DoubleMuon{[/*&Year_String*/](
 
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
@@ -2662,14 +2662,14 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
 
 
-  if(year == "2016"){return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0;}
-  else if(year == "2017"){
+  if(Year_String == "2016"){return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0;}
+  else if(Year_String == "2017"){
 
   	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || 
    	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0; 
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
 	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 ||
 	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0;
@@ -2683,7 +2683,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
 
-auto MuonElectron{[&year](
+auto MuonElectron{[/*&Year_String*/](
 
 const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
 const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
@@ -2698,7 +2698,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
 
 
- if(year == "2016"){
+ if(Year_String == "2016"){
 
 	return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
                //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
@@ -2709,14 +2709,14 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
 
  }
- else if(year == "2017"){
+ else if(Year_String == "2017"){
 
  	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
    	       HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
   	       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
 
  }
- else if(year == "2018"){
+ else if(Year_String == "2018"){
 
 	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
                HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
@@ -2733,170 +2733,6 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
 
 
-
-
-
-
-
-
-if(year == "2016"){
-        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-}
-else if(year == "2017" || year == "2018"){
-	if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-}
-else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
-
-
-
-std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
-
-if(
-
-process != "data_DoubleEGRunB" &&
-process != "data_DoubleEGRunC" &&
-process != "data_DoubleEGRunD" &&
-process != "data_DoubleEGRunE" &&
-process != "data_DoubleEGRunF" &&
-process != "data_DoubleEGRunG" &&
-process != "data_DoubleEGRunH" &&
-process != "data_DoubleEGRunB2" &&
-process != "data_DoubleEGRunC2" &&
-process != "data_DoubleEGRunD2" &&
-process != "data_DoubleEGRunE2" &&
-process != "data_DoubleEGRunF2" &&
-process != "data_DoubleEGRunG2" &&
-process != "data_DoubleEGRunH2" &&
-process != "data_EGRunB" &&
-process != "data_EGRunC" &&
-process != "data_EGRunD" &&
-process != "data_SingleElectronRunB" &&
-process != "data_SingleElectronRunC" &&
-process != "data_SingleElectronRunD" &&
-process != "data_SingleElectronRunE" &&
-process != "data_SingleElectronRunF" &&
-process != "data_SingleElectronRunG" &&
-process != "data_SingleElectronRunH" &&
-process != "data_DoubleMuonRunB" &&
-process != "data_DoubleMuonRunC" &&
-process != "data_DoubleMuonRunD" &&
-process != "data_DoubleMuonRunE" &&
-process != "data_DoubleMuonRunF" &&
-process != "data_DoubleMuonRunG" &&
-process != "data_DoubleMuonRunH" &&
-process != "data_SingleMuonRunB" &&
-process != "data_SingleMuonRunC" &&
-process != "data_SingleMuonRunD" &&
-process != "data_SingleMuonRunE" &&
-process != "data_SingleMuonRunF" &&
-process != "data_SingleMuonRunG" &&
-process != "data_SingleMuonRunH" &&
-process != "data_SingleElectronRunB2" &&
-process != "data_SingleElectronRunC2" &&
-process != "data_SingleElectronRunD2" &&
-process != "data_SingleElectronRunE2" &&
-process != "data_SingleElectronRunF2" &&
-process != "data_SingleElectronRunG2" &&
-process != "data_SingleElectronRunH2" &&
-process != "data_DoubleMuonRunB2" &&
-process != "data_DoubleMuonRunC2" &&
-process != "data_DoubleMuonRunD2" &&
-process != "data_DoubleMuonRunE2" &&
-process != "data_DoubleMuonRunF2" &&
-process != "data_DoubleMuonRunG2" &&
-process != "data_DoubleMuonRunH2" &&
-process != "data_SingleMuonRunB2" &&
-process != "data_SingleMuonRunC2" &&
-process != "data_SingleMuonRunD2" &&
-process != "data_SingleMuonRunE2" &&
-process != "data_SingleMuonRunF2" &&
-process != "data_SingleMuonRunG2" &&
-process != "data_SingleMuonRunH2" 
-
-){
-
-
-  JetMassInput = "SmearedJetMass";
-  JetPtInput = "SmearedJetPt";
-  JetEtaInput = "SmearedJetEta";
-  JetPhiInput = "SmearedJetPhi";
-
-
-}
-else if(
-
-process == "data_DoubleEGRunB" ||
-process == "data_DoubleEGRunC" ||
-process == "data_DoubleEGRunD" ||
-process == "data_DoubleEGRunE" ||
-process == "data_DoubleEGRunF" ||
-process == "data_DoubleEGRunG" ||
-process == "data_DoubleEGRunH" ||
-process == "data_DoubleEGRunB2" ||
-process == "data_DoubleEGRunC2" ||
-process == "data_DoubleEGRunD2" ||
-process == "data_DoubleEGRunE2" ||
-process == "data_DoubleEGRunF2" ||
-process == "data_DoubleEGRunG2" ||
-process == "data_DoubleEGRunH2" ||
-process == "data_EGRunB" ||
-process == "data_EGRunC" ||
-process == "data_EGRunD" ||
-process == "data_SingleElectronRunB" ||
-process == "data_SingleElectronRunC" ||
-process == "data_SingleElectronRunD" ||
-process == "data_SingleElectronRunE" ||
-process == "data_SingleElectronRunF" ||
-process == "data_SingleElectronRunG" ||
-process == "data_SingleElectronRunH" ||
-process == "data_DoubleMuonRunB" ||
-process == "data_DoubleMuonRunC" ||
-process == "data_DoubleMuonRunD" ||
-process == "data_DoubleMuonRunE" ||
-process == "data_DoubleMuonRunF" ||
-process == "data_DoubleMuonRunG" ||
-process == "data_DoubleMuonRunH" ||
-process == "data_SingleMuonRunB" ||
-process == "data_SingleMuonRunC" ||
-process == "data_SingleMuonRunD" ||
-process == "data_SingleMuonRunE" ||
-process == "data_SingleMuonRunF" ||
-process == "data_SingleMuonRunG" ||
-process == "data_SingleMuonRunH" ||
-process == "data_SingleElectronRunB2" ||
-process == "data_SingleElectronRunC2" ||
-process == "data_SingleElectronRunD2" ||
-process == "data_SingleElectronRunE2" ||
-process == "data_SingleElectronRunF2" ||
-process == "data_SingleElectronRunG2" ||
-process == "data_SingleElectronRunH2" ||
-process == "data_DoubleMuonRunB2" ||
-process == "data_DoubleMuonRunC2" ||
-process == "data_DoubleMuonRunD2" ||
-process == "data_DoubleMuonRunE2" ||
-process == "data_DoubleMuonRunF2" ||
-process == "data_DoubleMuonRunG2" ||
-process == "data_DoubleMuonRunH2" ||
-process == "data_SingleMuonRunB2" ||
-process == "data_SingleMuonRunC2" ||
-process == "data_SingleMuonRunD2" ||
-process == "data_SingleMuonRunE2" ||
-process == "data_SingleMuonRunF2" ||
-process == "data_SingleMuonRunG2" ||
-process == "data_SingleMuonRunH2" 
-
-){
-
-
-  JetMassInput = "Jet_mass";
-  JetPtInput = "Jet_pt";
-  JetEtaInput = "Jet_eta";
-  JetPhiInput = "Jet_phi";
-
-}
-else{std::cout << "Please choose MC or data as the input" << std::endl;}
 
 
 
@@ -3173,7 +3009,7 @@ const bools& Electron_isPFcand
 
 
 
-auto TightElectronsFunction{[&ElectronsFunction](
+auto TightElectronsFunction{[/*&ElectronsFunction*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -3188,7 +3024,7 @@ const bools& Electron_isPFcand
 }};
 
 
-auto TightElectronsFunctionEmu{[&ElectronsFunctionEmu](
+auto TightElectronsFunctionEmu{[/*&ElectronsFunctionEmu*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -3203,7 +3039,7 @@ const bools& Electron_isPFcand
 }};
 
 
-auto LooseElectronsFunction{[&ElectronsFunction](
+auto LooseElectronsFunction{[/*&ElectronsFunction*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -3218,7 +3054,7 @@ const bools& Electron_isPFcand
 }};
 
 
-auto LooseElectronsFunctionEmu{[&ElectronsFunctionEmu](
+auto LooseElectronsFunctionEmu{[/*&ElectronsFunctionEmu*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -3265,28 +3101,28 @@ const floats& isos
 }};
 
 
-auto TightMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto TightMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
   return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
 
 }};
 
 
-auto TightMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto TightMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
   return MuonsFunctionEmu(0.25, isPFs, pts, etas, ids, isos);
 
 }};
 
 
-auto LooseMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto LooseMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
   return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
 
 }};
 
 
-auto LooseMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto LooseMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
  
   return MuonsFunctionEmu(0.15, isPFs, pts, etas, ids, isos);
 
@@ -3864,7 +3700,7 @@ const float& Object2_phi
 
 
 
-auto tight_jets_function{[&year](
+auto tight_jets_function{[/*&year*/](
 
 const floats& Jet_pt_Selection,
 const floats& Jet_eta_Selection,
@@ -3873,8 +3709,8 @@ const floats& dRJet_lep){
 
   int JetId;
 
-  if(year == "2016"){JetId = 1;} //1 is loose 
-  else if(year == "2017" || year == "2018"){JetId = 2;} //2 is tight
+  if(Year_String == "2016"){JetId = 1;} //1 is loose 
+  else if(Year_String == "2017" || Year_String == "2018"){JetId = 2;} //2 is tight
   else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
 
   return
@@ -4968,7 +4804,7 @@ Flag_eeBadScFilter_Selection > 0;
 std::string FileNameJetSmear;
 
 
-auto RowReader2{[&FileNameJetSmear, &year](
+auto RowReader2{[/*&FileNameJetSmear*/](
 
 const int& LineSpecified, 
 const bool& sigmaJER, 
@@ -4982,7 +4818,7 @@ const floats& Jet_pt) {
 
   float Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11;
   
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
   	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
   	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
@@ -4991,7 +4827,7 @@ const floats& Jet_pt) {
   	else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
 	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
@@ -5000,7 +4836,7 @@ const floats& Jet_pt) {
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
   	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
   	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
@@ -5120,13 +4956,13 @@ const floats& Jet_pt) {
 
 
 
-auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
+auto linecounter{[/*&FileNameJetSmear*/](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
 
    int number_of_lines = 0;
    std::string line;
 
 
-   if(year == "2016"){
+   if(Year_String == "2016"){
 
         if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
@@ -5135,7 +4971,7 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
         if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
@@ -5144,7 +4980,7 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
         else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
         if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
         else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
@@ -5167,7 +5003,7 @@ auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF
 
 
 
-auto RowReader3{[&RowReader2, &linecounter](
+auto RowReader3{[/*&RowReader2, &linecounter*/](
 
 const bool& SigmaJER, 
 const bool& JetSmearScaleFactor, 
@@ -5229,7 +5065,7 @@ const floats& Jet_pt
 
 
 //sigma_JER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_PtResolution_AK4PF.txt
-auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+auto sigma_JER{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
   bool SigmaJER = true;
   bool JetSmearScaleFactor = false;
@@ -5241,7 +5077,7 @@ auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const 
 }};
 
 
-auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+auto sigma_JER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5253,7 +5089,7 @@ auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,con
 }};
 
 
-auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+auto sigma_JER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5265,7 +5101,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 }};
 
 //SJER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_SF_AK4PF.txt 
-auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+auto SJER_nominal{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = true;
@@ -5277,7 +5113,7 @@ auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, co
 
 }};
 
-auto SJER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+auto SJER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5289,7 +5125,7 @@ auto SJER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const f
 
 }};
 
-auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+auto SJER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5322,7 +5158,7 @@ auto MaxComparison{[](const float& sJER_nominal){
 }};
 
 
-auto JetSmearingFunction_HybridMethod{[&MaxComparison](
+auto JetSmearingFunction_HybridMethod{[/*&MaxComparison*/](
 
 const floats& pT,
 const floats& eta,      
@@ -5511,7 +5347,7 @@ const floats& Muon_mass
 
 
 
-auto RochCorrVec_Function{[&process, &year](
+auto RochCorrVec_Function{[/*&process, &year*/](
 
 const ints& MuonCharge, 
 const floats& MuonPt, 
@@ -5522,14 +5358,14 @@ const ints& Muon_nTrackerLayers
 
 ){
 
-  floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
+  floats CorrectionFactor = RochesterCorrections_testscript2(Year_String, Process_String, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
   return CorrectionFactor;
 
 }};
 
 
 
-auto RochCorrVec_Function_data{[&process, &year](
+auto RochCorrVec_Function_data{[/*&process, &year*/](
 
 const ints& MuonCharge,
 const floats& MuonPt,
@@ -5540,7 +5376,7 @@ const ints& Muon_nTrackerLayers
 
 ){
 
-  floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
+  floats CorrectionFactor = RochesterCorrections_testscript2(Year_String, Process_String, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
   return CorrectionFactor;
 
 }};
@@ -5565,17 +5401,17 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
 
 
 //Implementing the PU modelling
-auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year](int PV_npvs_input){
+auto PU_function{[/*&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year*/](int PV_npvs_input){
 
   float PU_Weight_input;
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
         PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input));
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
         PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input));
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
         PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
   }
   else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
@@ -5588,13 +5424,13 @@ auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_par
 
 
 //EGamma SF functions
-auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
+auto EGammaFunction{[/*&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
 		     &EGammaEffReco2016_histo, 	     	     &EGammaEffRecoSys2016_histo,
 		     &EGammaEff2017_histo,                   &EGammaEffSys2017_histo, 
 		     &EGammaEffReco_LowPt_2017_histo,        &EGammaEffRecoSys_LowPt_2017_histo,
 		     &EGammaEffReco_HigherPt_2017_histo,     &EGammaEffRecoSys_HigherPt_2017_histo,
 		     &EGammaEff2018_histo,	             &EGammaEffSys2018_histo,
-		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo
+		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo*/
 		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
 
@@ -5678,19 +5514,9 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 
 
 
-auto EGammaSF_egammaEff{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+auto EGammaSF_egammaEff{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
-
-}};
-
-
-
-
-
-auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
-
-  return EGammaFunction(year, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(Year_String, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
 
 }};
 
@@ -5698,9 +5524,9 @@ auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_S
 
 
 
-auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+auto EGammaSF_egammaEffReco{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(Year_String, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
 
 }};
 
@@ -5708,9 +5534,19 @@ auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_S
 
 
 
-auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+auto EGammaSF_egammaEff_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  return EGammaFunction(year, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
+  return EGammaFunction(Year_String, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
+
+}};
+
+
+
+
+
+auto EGammaSF_egammaEffReco_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  return EGammaFunction(Year_String, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
 
 }};
 
@@ -5718,7 +5554,7 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 
 
 auto MuonSF{[
-
+/*
 &year,
 &histo_RunsBCDEF_ID_2016,
 &histo_RunsGH_ID_2016,
@@ -5734,7 +5570,7 @@ auto MuonSF{[
 &histo_RunsBCDEF_ISO_Sys_Syst_2017,
 &histo_RunsABCD_ID_2018,
 &histo_RunsABCD_ISO_2018
-
+*/
 
 ](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
@@ -5751,7 +5587,7 @@ auto MuonSF{[
 
   	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){ 
 
-		if(year == "2016"){
+		if(Year_String == "2016"){
 
 			float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
 			float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -5823,7 +5659,7 @@ auto MuonSF{[
 			else{MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);}
 
 		}
-		else if(year == "2017"){
+		else if(Year_String == "2017"){
 
 			float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
 			float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -5854,7 +5690,7 @@ auto MuonSF{[
 			else{std::cout << "Incorrect type for 2017 muon SF function" << std::endl;}
 
 		}
-		else if(year == "2018"){
+		else if(Year_String == "2018"){
 
 			float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 			float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -5882,30 +5718,30 @@ auto MuonSF{[
 }};
 
 
-auto MuonSFTest_ID{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_ID{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
-  return MuonSF("ID", year, " ", pt, eta);
+  return MuonSF("ID", Year_String, " ", pt, eta);
   
 }};
 
 
 
-auto MuonSFTest_Iso{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_Iso{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
-  return MuonSF("Iso", year, " ", pt, eta);
+  return MuonSF("Iso", Year_String, " ", pt, eta);
     
 }};
 
 
 
 
-auto MuonSFTest_ID_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_ID_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
   
-  if(year == "2016"){
-        return MuonSF("ID sys", year, "Up", pt, eta);
+  if(Year_String == "2016"){
+        return MuonSF("ID sys", Year_String, "Up", pt, eta);
   }
-  else if(year == "2017"){
-        return MuonSF("ID sys (syst)", year, " ", pt, eta);
+  else if(Year_String == "2017"){
+        return MuonSF("ID sys (syst)", Year_String, " ", pt, eta);
   }  
   else{std::cout << "Need to add 2018" << std::endl;}
 
@@ -5914,13 +5750,13 @@ auto MuonSFTest_ID_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta
 
 
 
-auto MuonSFTest_ID_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_ID_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
-  if(year == "2016"){
-	return MuonSF("ID sys", year, "Down", pt, eta);
+  if(Year_String == "2016"){
+	return MuonSF("ID sys", Year_String, "Down", pt, eta);
   }
-  else if(year == "2017"){
-  	return MuonSF("ID sys (stat)", year, " ", pt, eta);
+  else if(Year_String == "2017"){
+  	return MuonSF("ID sys (stat)", Year_String, " ", pt, eta);
   }
   else{std::cout << "Need to add 2018" << std::endl;}  
 
@@ -5929,13 +5765,13 @@ auto MuonSFTest_ID_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta
 
 
 
-auto MuonSFTest_Iso_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_Iso_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
-  if(year == "2016"){
-        return MuonSF("Iso sys", year, "Up", pt, eta);
+  if(Year_String == "2016"){
+        return MuonSF("Iso sys", Year_String, "Up", pt, eta);
   }
-  else if(year == "2017"){
-        return MuonSF("Iso sys (syst)", year, " ", pt, eta);
+  else if(Year_String == "2017"){
+        return MuonSF("Iso sys (syst)", Year_String, " ", pt, eta);
   }
   else{std::cout << "Need to add 2018" << std::endl;}
 
@@ -5944,13 +5780,13 @@ auto MuonSFTest_Iso_sys_syst{[&MuonSF, &year](const floats& pt, const floats& et
 
 
 
-auto MuonSFTest_Iso_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
+auto MuonSFTest_Iso_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
-  if(year == "2016"){
-        return MuonSF("Iso sys", year, "Down", pt, eta);
+  if(Year_String == "2016"){
+        return MuonSF("Iso sys", Year_String, "Down", pt, eta);
   }
-  else if(year == "2017"){
-        return MuonSF("Iso sys (stat)", year, " ", pt, eta);
+  else if(Year_String == "2017"){
+        return MuonSF("Iso sys (stat)", Year_String, " ", pt, eta);
   }
   else{std::cout << "Need to add 2018" << std::endl;}
 
@@ -5979,20 +5815,20 @@ auto DummyColumnFunctionInts{[](const ints& charges){
 
 
 //PS weight lambda function
-auto PSWeight{[&year, &process](floats& PSWeight, const floats& pts){
+auto PSWeight{[/*&year, &process*/](floats& PSWeight, const floats& pts){
 
   floats Ones(4, 1.0);
 
-  if(year == "2017" || year == "2018"){
+  if(Year_String == "2017" || Year_String == "2018"){
 
-  	if(process == "tZq" ||
-	   process == "SingleTop_tbarW" ||
-	   process == "SingleTop_schannel" ||
-	   process == "SingleTop_tchannel_top" ||
-	   process == "SingleTop_tchannel_tbar" ||
-	   process == "ttbarV_ttgamma" ||
-	   process == "ttbar_TTToHadronic" ||
-	   process == "ttbar_TTToSemileptonic"){return PSWeight;}
+  	if(Process_String == "tZq" ||
+	   Process_String == "SingleTop_tbarW" ||
+	   Process_String == "SingleTop_schannel" ||
+	   Process_String == "SingleTop_tchannel_top" ||
+	   Process_String == "SingleTop_tchannel_tbar" ||
+	   Process_String == "ttbarV_ttgamma" ||
+	   Process_String == "ttbar_TTToHadronic" ||
+	   Process_String == "ttbar_TTToSemileptonic"){return PSWeight;}
 	else{return Ones;}
 
  
@@ -6008,7 +5844,7 @@ auto PSWeight{[&year, &process](floats& PSWeight, const floats& pts){
 ///Lambda function for the MET triggers
 
 
-auto MET_triggers_function{[&year](
+auto MET_triggers_function{[/*&year*/](
 
 const bool& HLT_MET200,
 const bool& HLT_MET250,
@@ -6044,7 +5880,7 @@ const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
 const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
 const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 	
 	return HLT_MET200 > 0 ||
         HLT_MET250 > 0 ||
@@ -6053,7 +5889,7 @@ const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
         HLT_PFHT300_PFMET100 > 0;
 
   }
-  else if(year == "2017" || year == "2018"){
+  else if(Year_String == "2017" || Year_String == "2018"){
 
   return 
 
@@ -6099,7 +5935,7 @@ const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
 
 //Events that pass the selection criteria and the lepton triggers
 
-auto ee_selection_LL_Trig_function{[&year](
+auto ee_selection_LL_Trig_function{[/*&year*/](
 
 const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
 const bool& HLT_Ele35_WPTight_Gsf, 
@@ -6122,7 +5958,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 )-> bool{
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
 	return //single or double electron and not any of the others
 	
@@ -6144,7 +5980,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
   return 
 
@@ -6187,7 +6023,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 }};
 
 
-auto mumu_selection_LL_Trig_function{[&year](
+auto mumu_selection_LL_Trig_function{[/*&year*/](
 
 const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
 const bool& HLT_Ele35_WPTight_Gsf, 
@@ -6214,7 +6050,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
         return //single or double muon and not any of the others
 
@@ -6238,7 +6074,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
   return
  
@@ -6258,7 +6094,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0);  //double electron
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
 	return //single or double muon and not any of the others
 	
@@ -6282,7 +6118,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 }};
 
 
-auto emu_selection_LL_Trig_function{[&year](
+auto emu_selection_LL_Trig_function{[/*&year*/](
 
 const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
 const bool& HLT_Ele35_WPTight_Gsf, 
@@ -6309,7 +6145,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
-  if(year == "2016"){
+  if(Year_String == "2016"){
 
 	return //single lepton or muon+electron and not any of the others
 
@@ -6334,7 +6170,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
   }
-  else if(year == "2017"){
+  else if(Year_String == "2017"){
 
   	return 
 
@@ -6388,48 +6224,6 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 //MET triggers
 std::vector<std::string> MET_triggers;
 
-if(year == "2016"){ 
-
-	MET_triggers = {"HLT_MET200",
-		        "HLT_MET250",
-		        "HLT_PFMET120_PFMHT120_IDTight",
-			"HLT_PFMET170_HBHECleaned",
-			"HLT_PFHT300_PFMET100",
-			"DummyBool",
-			"DummyBool",
-			"DummyBool",
-			"DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-			"DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool"};
-
-
-}
-else if(year == "2017" || year == "2018"){
-
-	MET_triggers = {"DummyBool",
-			"DummyBool",
-			"DummyBool",
-                        "DummyBool",
-			"DummyBool",
-			"HLT_PFMET130_PFMHT130_IDTight",
-			"HLT_PFMET140_PFMHT140_IDTight",
-			"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-			"HLT_PFHT1050",
-			"HLT_PFHT180",
-			"HLT_PFHT500_PFMET100_PFMHT100_IDTight",
-			"HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-			"HLT_PFHT700_PFMET85_PFMHT85_IDTight",
-			"HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-			"HLT_PFHT800_PFMET75_PFMHT75_IDTight",
-			"HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
-
-}
-else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;}
 
 
 //dummy lambda function
@@ -6464,8 +6258,8 @@ auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight
   }
 
 
-  if(PDF_ScaleUp == true){return PdfMax;}
-  else if(PDF_ScaleDown == true){return PdfMin;}
+  if(PDF_ScaleUp_Bool == true){return PdfMax;}
+  else if(PDF_ScaleDown_Bool == true){return PdfMin;}
   else{float One = 1.0; return One;}
 
 
@@ -6474,7 +6268,7 @@ auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight
 
 
 
-auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
+auto ME_uncert_function{[/*&SummedWeights*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
@@ -6505,7 +6299,7 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
 
 
 //Histogram for ME uncertainties
-auto ME_histo_function{[&SummedWeights](){
+auto ME_histo_function{[/*&SummedWeights*/](){
 
   ints numerators;
 
@@ -6520,19 +6314,19 @@ auto ME_histo_function{[&SummedWeights](){
 
 
 //SFs for ME up and down
-auto GeneratorWeight{[&SummedWeights/*, &ME_Up, &ME_Down*/](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
+auto GeneratorWeight{[/*&SummedWeights, &ME_Up, &ME_Down*/](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
 
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
 
 
-	if(ME_Up == true){
+	if(ME_Up_Bool == true){
 
 		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
                 return generatorWeight_ScaleUp; 
 	
 	}
-	else if(ME_Down == true){	
+	else if(ME_Down_Bool == true){	
 
 		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
 		return generatorWeight_ScaleDown; 
@@ -6691,6 +6485,7 @@ auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
   else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
 
 }};
+
 
 
 std::string Chi2Range_string;
@@ -7518,6 +7313,90 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   std::vector<std::string> input_files;
   std::ofstream CutFlowReport;
   std::string cutflowstring;
+
+
+
+
+  if(Year_String == "2016"){
+        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
+        else{MinElectronPt = 25; MinMuonPt = 25;}
+  }
+  else if(Year_String == "2017" || year == "2018"){
+        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
+        else{MinElectronPt = 25; MinMuonPt = 25;}
+  }
+  else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
+
+
+
+  std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
+
+  if(Process_String = "MC"){
+
+    JetMassInput = "SmearedJetMass";
+    JetPtInput = "SmearedJetPt";
+    JetEtaInput = "SmearedJetEta";
+    JetPhiInput = "SmearedJetPhi";
+
+
+  }
+  else if(Process_String = "Data"){
+
+    JetMassInput = "Jet_mass";
+    JetPtInput = "Jet_pt";
+    JetEtaInput = "Jet_eta";
+    JetPhiInput = "Jet_phi";
+
+  }
+  else{std::cout << "Please choose MC or data as the input" << std::endl;}
+
+
+
+  if(Year_String == "2016"){
+
+        MET_triggers = {"HLT_MET200",
+                        "HLT_MET250",
+                        "HLT_PFMET120_PFMHT120_IDTight",
+                        "HLT_PFMET170_HBHECleaned",
+                        "HLT_PFHT300_PFMET100",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool"};
+
+
+  }
+  else if(Year_String == "2017" || Year_String == "2018"){
+
+        MET_triggers = {"DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "HLT_PFMET130_PFMHT130_IDTight",
+                        "HLT_PFMET140_PFMHT140_IDTight",
+                        "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                        "HLT_PFHT1050",
+                        "HLT_PFHT180",
+                        "HLT_PFHT500_PFMET100_PFMHT100_IDTight",
+                        "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                        "HLT_PFHT700_PFMET85_PFMHT85_IDTight",
+                        "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                        "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
+                        "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+
+  }
+  else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;} 
+
+
+
 
 
 if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
@@ -11734,25 +11613,6 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 	std::cout << "before chi2_filter_ee for data" << std::endl;
-
-	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee){
-
-		if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
-		else if(SR == true){return chi2_ee < Chi2_SR_ee;}
-		else{std::cout << "SR and SBR cannot both be false" << std::endl;}
-
-	}};
-
-	
-	std::cout << "before chi2_filter_mumu for data" << std::endl;
-
-	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumu){
-                
-                if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
-                else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
-                else{std::cout << "SR and SBR cannot both be false" << std::endl;}
-        
-        }};
 
 
 	std::cout << "before Blinding_ee_filtered for data" << std::endl; 
