@@ -804,6 +804,40 @@ namespace{
 	bool fsr_down = false;	
 
 
+	TH1* puReweight_2016;
+ 	TH1* puReweight_2017;
+	TH1* puReweight_2018;
+	TH2* EGammaEff2016_histo;
+	TH2* EGammaEffSys2016_histo;
+	TH2* EGammaEffReco2016_histo;
+	TH2* EGammaEff2017_histo;
+	TH2* EGammaEffSys2017_histo;
+	TH2* EGammaEffReco_LowPt_2017_histo;
+	TH2* EGammaEffRecoSys_LowPt_2017_histo;
+	TH2* EGammaEffReco_HigherPt_2017_histo;
+	TH2* EGammaEffRecoSys_HigherPt_2017_histo;
+	TH2* EGammaEff2018_histo;
+	TH2* EGammaEffSys2018_histo;
+	TH2* EGammaEffReco2018_histo;
+	TH2* EGammaEffRecoSys2016_histo;
+	TH2* EGammaEffRecoSys2018_histo;
+	TH2* histo_RunsBCDEF_ID_2016;
+	TH2* histo_RunsGH_ID_2016;
+	TH2* histo_RunsBCDEF_ISO_2016;
+	TH2* histo_RunsGH_ISO_2016;
+	TH2* histo_RunsBCDEF_ID_2017;
+	TH2* histo_RunsBCDEF_ID_Sys_2017;
+	TH2* histo_RunsBCDEF_ID_Sys_Stat_2017;
+	TH2* histo_RunsBCDEF_ID_Sys_Syst_2017;
+	TH2* histo_RunsBCDEF_ISO_2017;
+	TH2* histo_RunsBCDEF_ISO_Sys_2017;
+	TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017;
+	TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017;
+	TH2* histo_RunsABCD_ID_2018;
+	TH2* histo_RunsABCD_ISO_2018;
+
+
+
 }
 
 template<typename T, typename U>
@@ -6001,7 +6035,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
 	return (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
 		HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //single electron
@@ -6192,7 +6226,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
   	HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0); //muon+electron
 
   }
-  else if(year == "2018"){
+  else if(Year_String == "2018"){
 
 	 return //single lepton or muon+electron and not any of the others
 
