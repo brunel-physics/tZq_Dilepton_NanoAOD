@@ -766,6 +766,12 @@ namespace{
 	float Chi2_SBR_mumu;
 
 
+	std::string JetEtaInput;
+	std::string JetPtInput;
+	std::string JetMassInput;	
+	std::string JetPhiInput;
+
+
 	template<typename T>
 	[[gnu::const]] T select(const T& a, const ints& mask)
 	{
@@ -802,6 +808,13 @@ namespace{
 	bool isr_down = false;
 	bool fsr_up = false;
 	bool fsr_down = false;	
+        bool SBR = false;
+	bool SR = false;	
+
+	bool Blinding_bool = false;
+	bool NPL_bool = false;
+	bool ttbarCR = false;
+	bool ZPlusJetsCR = false;
 
 
 	TH1* puReweight_2016;
@@ -835,6 +848,21 @@ namespace{
 	TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017;
 	TH2* histo_RunsABCD_ID_2018;
 	TH2* histo_RunsABCD_ISO_2018;
+
+	TFile* EGammaEff_inputfile_2016;
+	TFile* EGammaEffSys_inputfile_2016;
+	TFile* EGammaEffReco_inputfile_2016;
+ 	TFile* EGammaEffRecoSys_inputfile_2016;
+	TFile* EGammaEffReco_HigherPt_inputfile_2017;
+	TFile* EGammaEffRecoSys_HigherPt_inputfile_2017;
+	TFile* EGammaEffReco_LowPt_inputfile_2017;
+	TFile* EGammaEffRecoSys_LowPt_inputfile_2017;
+	TFile* EGammaEff_inputfile_2017;
+	TFile* EGammaEffSys_inputfile_2017;
+	TFile* EGammaEff_inputfile_2018;
+	TFile* EGammaEffSys_inputfile_2018;
+	TFile* EGammaEffReco_inputfile_2018;
+	TFile* EGammaEffRecoSys_inputfile_2018;
 
 
 
@@ -6292,8 +6320,8 @@ auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight
   }
 
 
-  if(PDF_ScaleUp_Bool == true){return PdfMax;}
-  else if(PDF_ScaleDown_Bool == true){return PdfMin;}
+  if(PDF_ScaleUp == true){return PdfMax;}
+  else if(PDF_ScaleDown == true){return PdfMin;}
   else{float One = 1.0; return One;}
 
 
@@ -6354,13 +6382,13 @@ auto GeneratorWeight{[/*&SummedWeights, &ME_Up, &ME_Down*/](const ints& ME_numer
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
 
 
-	if(ME_Up_Bool == true){
+	if(ME_Up == true){
 
 		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
                 return generatorWeight_ScaleUp; 
 	
 	}
-	else if(ME_Down_Bool == true){	
+	else if(ME_Down == true){	
 
 		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
 		return generatorWeight_ScaleDown; 
@@ -6378,19 +6406,7 @@ auto GeneratorWeight{[/*&SummedWeights, &ME_Up, &ME_Down*/](const ints& ME_numer
 
 
 
-
-auto DummyColumnFunction{[](const floats& pts){
- 
-	return pts;
-
-}};
-
-
-auto UnweightedTopPt{[](const doubles& pts){
-
-        return pts;
-
-}};
+auto UnweightedTopPt{[](const doubles& pts){return pts;}};
 
 
 auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
@@ -6423,19 +6439,10 @@ auto TopReweighting_weight{[](const ints& TopReweighting_topquark, const ints& T
 //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
 bool NominalRun;
 
-if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
-   BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
-   JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 &&
-   PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      &&
-   MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     &&
-   fsr_up == 0                && fsr_down == 0){NominalRun = true;}
-else{NominalRun = false;}
-
-
 
 std::vector<float> CutRanges_ee = {};
 
-auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+auto chi2_ee{[/*&process, &CutRanges_ee, &SBR, &NominalRun*/](const float& w_mass, const float& Top_Mass){
 
   float FiveSigmaW = 5*W_stddev_ee;
 
@@ -6445,7 +6452,7 @@ auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, c
   float LowerBound = W_MASS - FiveSigmaW;
   float UpperBound = W_MASS + FiveSigmaW;
 
-  if(process == "tZq" && NominalRun == true && SBR == true){
+  if(Process_String == "tZq" && NominalRun == true && SBR == true){
 
         //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
         if(w_mass > LowerBound && w_mass < UpperBound){
@@ -6468,7 +6475,7 @@ auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, c
 
 std::vector<float> CutRanges_mumu = {};
 
-auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+auto chi2_mumu{[/*&process, &CutRanges_mumu, &SBR, &NominalRun*/](const float& w_mass, const float& Top_Mass){
 
   float FiveSigmaW = 5*W_stddev_mumu;
 
@@ -6480,7 +6487,7 @@ auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mas
   float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
 
 
-  if(process == "tZq" && NominalRun == true && SBR == true){
+  if(Process_String == "tZq" && NominalRun == true && SBR == true){
  
         //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
         if(w_mass > LowerBound && w_mass < UpperBound){
@@ -6501,7 +6508,7 @@ auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mas
 
 
 
-auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){
+auto Chi2Cut_ee{[/*&SBR, &SR*/](const float& Chi2){
 
   if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
   else if(SR == true){return Chi2 < Chi2_SR_ee;}
@@ -6512,7 +6519,7 @@ auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){
 
 
 
-auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
+auto Chi2Cut_mumu{[/*&SBR, &SR*/](const float& Chi2){
 
   if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
   else if(SR == true){return Chi2 < Chi2_SR_mumu;}
@@ -6520,6 +6527,23 @@ auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
 
 }};
 
+
+auto chi2_filter_ee{[/*&SBR, &SR*/](const float& chi2_ee){
+
+  if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
+  else if(SR == true){return chi2_ee < Chi2_SR_ee;}
+  else{std::cout << "SR and SBR cannot both be false" << std::endl;}
+
+}};
+
+	
+auto chi2_filter_mumu{[/*&SBR, &SR*/](const float& chi2_mumu){
+                
+  if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
+  else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
+  else{std::cout << "SR and SBR cannot both be false" << std::endl;}
+        
+}};
 
 
 std::string Chi2Range_string;
@@ -6529,135 +6553,17 @@ std::string Chi2Range_string;
 std::string PSWeightString_ee;
 std::string PSWeightString_mumu;
 
-if( (year == "2017" || year == "2018") &&
-     (process == "tZq" ||
-     process == "SingleTop_tbarW" ||
-     process == "SingleTop_schannel" ||
-     process == "SingleTop_tchannel_top" ||
-     process == "SingleTop_tchannel_tbar" ||
-     process == "ttbarV_ttgamma" ||
-     process == "ttbar_TTToHadronic" ||
-     process == "ttbar_TTToSemileptonic") ){
-
-	PSWeightString_ee = "PSWeight";
-	PSWeightString_mumu = "PSWeight";
-
-}
-else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";}
-
-
-
 
 
 
 
 std::vector<std::string> leptontriggers_strings;
 
-if(year == "2016"){
-
-	leptontriggers_strings = {
-
-	"DummyBool", //single electron (for 2018 only)
-	"DummyBool", //single electron (for 2017 only)
-	"DummyBool", //double electron (for 2017 and 2018)
-	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-	"DummyBool", //double muon (for 2017 and 2018)
-	"DummyBool", //single muon (for 2017 only)
-//	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-//	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-	"DummyBool",
-	"DummyBool",
-	"DummyBool",
-	"HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-	"HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
-	"HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-	"HLT_IsoMu24", //single muon (all years)
-//	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
-	"DummyBool",
-	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
-	"DummyBool",
-	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-	"DummyBool" //double muon (for 2018 only)
-
-};
-
-}
-else if(year == "2017"){
-
-	leptontriggers_strings = {
-
-        "DummyBool", //single electron (for 2018 only)
-        "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
-        "HLT_IsoMu27", //single muon (for 2017 only)
-        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "HLT_IsoMu24", //single muon (all years)
-        "DummyBool", //single muon (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool" //double muon (for 2018 only)	
-
-};
-
-}
-else if(year == "2018"){
-
-	leptontriggers_strings = {
-
-	"HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
-	"DummyBool", //single electron (for 2017 only)
-	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-	"DummyBool", //double muon (for 2016 and 2017)
-	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
-	"DummyBool", //single muon (for 2017 only)
-	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"DummyBool", //single electron (for 2016 only)
-	"DummyBool", //single electron (for 2016 only)
-	"DummyBool", //single electron (for 2016 only)
-	"HLT_IsoMu24", //single muon (all years)
-	"DummyBool", //single muon (for 2016 only)	
-	"DummyBool", //muon+electron (for 2016 only)
-	"DummyBool", //muon+electron (for 2016 only)
-	"DummyBool", //muon+electron (for 2016 only)
-	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
-
-};
-
-} 
-else{std::cout << "choose 2016, 2017 or 2018" << std::endl;}
-
-
-
-
-
 
 std::vector<std::string> sJER_sigmaJER_strings = {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"};
 
 std::string SJER;
 std::string SIGMAJER;
-
-if(JetSmearing_ScaleUp == true){SJER = "sJER_up";} 
-else if(JetSmearing_ScaleDown == true){SJER = "sJER_down";}
-else{SJER = "sJER_Nominal";}
-
-if(JetResolution_ScaleUp == true){SIGMAJER = "sigma_JER_up";}
-else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
-else{SIGMAJER = "sigma_JER";}
 
 
 std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
@@ -7188,59 +7094,6 @@ JetEtaInput
 std::vector<std::string> lep_cut_ee_strings;
 std::vector<std::string> lep_cut_mumu_strings;
 
-if(NPL == true){
-
-	lep_cut_ee_strings = {
-	"Electron_pt_Selection", 
-	"LooseElectron_pt_Selection", 
-	"SameSign",
-	"nElectron",
-	"LeadingElectron_dz_ECALBarrel",
-	"LeadingElectron_dxy_ECALBarrel",
-	"LeadingElectron_dz_ECALEndcaps",
-	"LeadingElectron_dxy_ECALEndcaps",
-	"SubleadingElectron_dz_ECALBarrel",
-	"SubleadingElectron_dxy_ECALBarrel",
-	"SubleadingElectron_dz_ECALEndcaps",
-	"SubleadingElectron_dxy_ECALEndcaps"
-	
-	};
-
-
-	lep_cut_mumu_strings = {
-	"Muon_pt_Selection",
-	"LooseMuon_pt_Selection", 
-	"SameSign", 
-	"nMuon"
-	};
-
-}
-else{
-
-	lep_cut_ee_strings = {
-	"Electron_pt_Selection",
-	"LooseElectron_pt_Selection",
-	"OppositeSign",
-	"nElectron",
-	"LeadingElectron_dz_ECALBarrel",
-	"LeadingElectron_dxy_ECALBarrel",
-	"LeadingElectron_dz_ECALEndcaps",
-	"LeadingElectron_dxy_ECALEndcaps",
-	"SubleadingElectron_dz_ECALBarrel",
-	"SubleadingElectron_dxy_ECALBarrel",
-	"SubleadingElectron_dz_ECALEndcaps",
-	"SubleadingElectron_dxy_ECALEndcaps"
-	
-	};
-
-	lep_cut_mumu_strings = {
-	"Muon_pt_Selection",  
-	"LooseMuon_pt_Selection", 
-	"OppositeSign", 
-	"nMuon"
-	};
-
-}
 
 
 std::vector<std::string> lep_cut_emu_strings = {
@@ -7257,7 +7110,7 @@ std::vector<std::string> lep_cut_emu_strings = {
 
 
 
-void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR, const bool& SBR, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp_bool, const bool& PU_ScaleDown_bool, const bool& BTag_ScaleUp_bool, const bool& BTag_ScaleDown_bool, const bool& JetSmearing_ScaleUp_bool, const bool& JetSmearing_ScaleDown_bool, const bool& JetResolution_ScaleUp_bool, const bool& JetResolution_ScaleDown_bool, const bool& LeptonEfficiencies_ScaleUp_bool, const bool& LeptonEfficiencies_ScaleDown_bool, const bool& PDF_ScaleUp_bool, const bool& PDF_ScaleDown_bool, const bool& ME_Up_bool, const bool& ME_Down_bool, const bool& MET_Up_bool, const bool& MET_Down_bool, const bool& isr_up_bool, const bool& isr_down_bool, const bool& fsr_up_bool, const bool& fsr_down_bool){
+void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR_bool, const bool& SBR_bool, const bool& ZPlusJetsCR_bool, const bool& ttbarCR_bool, const std::string& year, const bool& PU_ScaleUp_bool, const bool& PU_ScaleDown_bool, const bool& BTag_ScaleUp_bool, const bool& BTag_ScaleDown_bool, const bool& JetSmearing_ScaleUp_bool, const bool& JetSmearing_ScaleDown_bool, const bool& JetResolution_ScaleUp_bool, const bool& JetResolution_ScaleDown_bool, const bool& LeptonEfficiencies_ScaleUp_bool, const bool& LeptonEfficiencies_ScaleDown_bool, const bool& PDF_ScaleUp_bool, const bool& PDF_ScaleDown_bool, const bool& ME_Up_bool, const bool& ME_Down_bool, const bool& MET_Up_bool, const bool& MET_Down_bool, const bool& isr_up_bool, const bool& isr_down_bool, const bool& fsr_up_bool, const bool& fsr_down_bool){
 
 
 
@@ -7265,15 +7118,20 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
   Process_String = process;
-  Blinding_Bool = blinding;
-  NPL_Bool = NPL;
-  SR_Bool = SR;
-  SBR_Bool = SBR;
-  ZPlusJetsCR_Bool = ZPlusJetsCR;
-  ttbarCR_Bool = ttbarCR;
+  Blinding_bool = blinding;
+  NPL_bool = NPL;
+  SR = SR_bool;
+  SBR = SBR_bool;
+  ZPlusJetsCR = ZPlusJetsCR_bool;
+  ttbarCR = ttbarCR_bool;
   Year_String = year;
 
   std::string branch;
+
+  if(SBR_bool == true){SBR = true;}
+  else if(SR_bool == true){SR = true;}
+  else{std::cout << "Neither SBR_bool nor SR_bool are true" << std::endl;}
+
 
   if(PU_ScaleUp_bool == true){branch = "PU_ScaleUp"; PU_ScaleUp = true;}
   else if(PU_ScaleDown_bool == true){branch = "PU_ScaleDown"; PU_ScaleDown = true;}
@@ -7321,7 +7179,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 	RunType = "MC";
 
  }
- else if( (process == "data_DoubleEGRunB"        || process == "data_DoubleEGRunC"        || process == "data_DoubleEGRunD"        || process == "data_DoubleEGRunE" ||
+ else if(  process == "data_DoubleEGRunB"        || process == "data_DoubleEGRunC"        || process == "data_DoubleEGRunD"        || process == "data_DoubleEGRunE" ||
 	   process == "data_DoubleEGRunF"        || process == "data_DoubleEGRunG"        || process == "data_DoubleEGRunH"        || process == "data_DoubleEGRunB2" ||
            process == "data_DoubleEGRunC2"       || process == "data_DoubleEGRunD2"       || process == "data_DoubleEGRunE2"       || process == "data_DoubleEGRunF2" ||
 	   process == "data_DoubleEGRunG2"       || process == "data_DoubleEGRunH2" 	  || process == "data_EGRunB"              || process == "data_EGRunC" ||
@@ -7362,10 +7220,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
 
 
-
-  std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
-
-  if(Process_String = "MC"){
+  if(RunType == "MC"){
 
     JetMassInput = "SmearedJetMass";
     JetPtInput = "SmearedJetPt";
@@ -7374,7 +7229,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
   }
-  else if(Process_String = "Data"){
+  else if(RunType == "Data"){
 
     JetMassInput = "Jet_mass";
     JetPtInput = "Jet_pt";
@@ -7383,6 +7238,45 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
   }
   else{std::cout << "Please choose MC or data as the input" << std::endl;}
+
+ 
+  if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
+     BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
+     JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 &&
+     PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      &&
+     MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     &&
+     fsr_up == 0                && fsr_down == 0){NominalRun = true;}
+  else{NominalRun = false;}
+
+
+
+
+  if(JetSmearing_ScaleUp == true){SJER = "sJER_up";}
+  else if(JetSmearing_ScaleDown == true){SJER = "sJER_down";}
+  else{SJER = "sJER_Nominal";}
+
+  if(JetResolution_ScaleUp == true){SIGMAJER = "sigma_JER_up";}
+  else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
+  else{SIGMAJER = "sigma_JER";} 
+
+
+ 
+  if( (year == "2017" || year == "2018") &&
+      (process == "tZq" ||
+       process == "SingleTop_tbarW" ||
+       process == "SingleTop_schannel" ||
+       process == "SingleTop_tchannel_top" ||
+       process == "SingleTop_tchannel_tbar" ||
+       process == "ttbarV_ttgamma" ||
+       process == "ttbar_TTToHadronic" ||
+       process == "ttbar_TTToSemileptonic") ){
+
+         PSWeightString_ee = "PSWeight";
+         PSWeightString_mumu = "PSWeight";
+
+  }
+  else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";} 
+
 
 
 
@@ -7431,9 +7325,152 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
+ if(year == "2016"){
+
+        leptontriggers_strings = {
+
+        "DummyBool", //single electron (for 2018 only)
+        "DummyBool", //single electron (for 2017 only)
+        "DummyBool", //double electron (for 2017 and 2018)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+        "DummyBool", //double muon (for 2017 and 2018)
+        "DummyBool", //single muon (for 2017 only)
+//      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+//      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+//      "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+        "DummyBool",
+        "DummyBool",
+        "DummyBool",
+        "HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+        "HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
+        "HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+        "HLT_IsoMu24", //single muon (all years)
+//      "HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
+        "DummyBool",
+        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+//      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
+        "DummyBool",
+        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+        "DummyBool" //double muon (for 2018 only)
+
+	};
+
+  }
+  else if(year == "2017"){
+
+        leptontriggers_strings = {
+
+        "DummyBool", //single electron (for 2018 only)
+        "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
+        "HLT_IsoMu27", //single muon (for 2017 only)
+        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "HLT_IsoMu24", //single muon (all years)
+        "DummyBool", //single muon (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool" //double muon (for 2018 only)       
+
+  };
+
+ }
+  else if(year == "2018"){
+
+        leptontriggers_strings = {
+
+        "HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
+        "DummyBool", //single electron (for 2017 only)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+        "DummyBool", //double muon (for 2016 and 2017)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
+        "DummyBool", //single muon (for 2017 only)
+        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "HLT_IsoMu24", //single muon (all years)
+        "DummyBool", //single muon (for 2016 only)      
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
+
+ 	};
+
+  }
+  else{std::cout << "choose 2016, 2017 or 2018 for leptontriggers_strings" << std::endl;}  
 
 
-if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
+  if(NPL == true){
+
+        lep_cut_ee_strings = {
+        "Electron_pt_Selection",
+        "LooseElectron_pt_Selection",
+        "SameSign",
+        "nElectron",
+        "LeadingElectron_dz_ECALBarrel",
+        "LeadingElectron_dxy_ECALBarrel",
+        "LeadingElectron_dz_ECALEndcaps",
+        "LeadingElectron_dxy_ECALEndcaps",
+        "SubleadingElectron_dz_ECALBarrel",
+        "SubleadingElectron_dxy_ECALBarrel",
+        "SubleadingElectron_dz_ECALEndcaps",
+        "SubleadingElectron_dxy_ECALEndcaps"
+
+        };
+
+
+        lep_cut_mumu_strings = {
+        "Muon_pt_Selection",
+        "LooseMuon_pt_Selection",
+        "SameSign",
+        "nMuon"
+        };
+
+ }
+ else{
+
+        lep_cut_ee_strings = {
+        "Electron_pt_Selection",
+        "LooseElectron_pt_Selection",
+        "OppositeSign",
+        "nElectron",
+        "LeadingElectron_dz_ECALBarrel",
+        "LeadingElectron_dxy_ECALBarrel",
+        "LeadingElectron_dz_ECALEndcaps",
+        "LeadingElectron_dxy_ECALEndcaps",
+        "SubleadingElectron_dz_ECALBarrel",
+        "SubleadingElectron_dxy_ECALBarrel",
+        "SubleadingElectron_dz_ECALEndcaps",
+        "SubleadingElectron_dxy_ECALEndcaps"
+
+        };
+
+        lep_cut_mumu_strings = {
+        "Muon_pt_Selection",
+        "LooseMuon_pt_Selection",
+        "OppositeSign",
+        "nMuon"
+        };
+
+ } 
+
+
+
+  if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
 
 	if(blinding == false){
 
@@ -8886,7 +8923,8 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
                                                 .Filter(z_mass_cut, {"z_mass"}, "Z mass cut (mumu channel)");
 
   
-  std::cout << "before jet cut (ee)" << std::endl;
+  std::cout << "before jet cut (ee)" << std::endl; 
+  std::cout << "SJER_nominal = " << std::endl;
 
 
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("sJER_Nominal", SJER_nominal, sJER_sigmaJER_strings)
