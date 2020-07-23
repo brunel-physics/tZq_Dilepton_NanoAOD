@@ -6636,24 +6636,7 @@ std::vector<std::string> InvMass_3Jets_strings = {
 "nJet"
 };
 
-std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
 
-std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
-
-
-std::vector<std::string> w_pair_strings = {
-JetPtInput,
-JetEtaInput,
-JetPhiInput,
-JetMassInput,
-"Jet_jetId",
-"lead_bjet"};
 
 
 std::vector<std::string> top_strings = {
@@ -6980,20 +6963,6 @@ std::vector<std::string> dR_Z_WPairJet2_strings = {
 };
 
 
-std::vector<std::string> MinDeltaR_strings = {
-"nJet",
-"RecoZPhi",
-"RecoZEta",
-JetPhiInput,
-JetEtaInput
-};
-
-
-std::vector<std::string> MinDeltaPhi_strings = {
-"nJet",
-"RecoZPhi",
-JetPhiInput
-};
 
 std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_ee = {
 "bjeteta",
@@ -9225,6 +9194,33 @@ std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
 "Jet_btagCSVV2",
 "tight_jets",
 JetEtaInput
+};
+
+
+std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
+
+std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
+
+
+std::vector<std::string> MinDeltaR_strings = {
+"nJet",
+"RecoZPhi",
+"RecoZEta",
+JetPhiInput,
+JetEtaInput
+};
+
+
+std::vector<std::string> MinDeltaPhi_strings = {
+"nJet",
+"RecoZPhi",
+JetPhiInput
 };
 
 
@@ -11490,6 +11486,33 @@ std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
 "Jet_btagCSVV2",
 "tight_jets",
 JetEtaInput
+};
+
+
+std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
+
+std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
+
+
+std::vector<std::string> MinDeltaR_strings = {
+"nJet",
+"RecoZPhi",
+"RecoZEta",
+JetPhiInput,
+JetEtaInput
+};
+
+
+std::vector<std::string> MinDeltaPhi_strings = {
+"nJet",
+"RecoZPhi",
+JetPhiInput
 };
 
 
