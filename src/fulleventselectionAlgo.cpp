@@ -6566,7 +6566,6 @@ std::string SJER;
 std::string SIGMAJER;
 
 
-std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
 std::vector<std::string> ApplyCJER_strings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"};
 
 
@@ -6592,21 +6591,6 @@ std::vector<std::string> mumu_strings = {
 "Muon_pt_Selection", 
 "Muon_isPFcand_Selection"};
 
-
-
-std::vector<std::string> deltaR_JetE_strings = {
-JetEtaInput,
-JetPhiInput,
-"z_lep_eta",
-"z_lep_phi"
-};
-
-std::vector<std::string> deltaR_JetMu_strings = {
-JetEtaInput,
-JetPhiInput,
-"z_lep_eta",
-"z_lep_phi"
-};
 
 std::vector<std::string> deltaR_j1j2_strings = {
 "LeadingJetEta",
@@ -7040,56 +7024,9 @@ std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_mumu = {
 };
 
 
-std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
-JetPhiInput,
-"LeadingElectronPhi"
-};
-
-std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
-JetPhiInput,
-"LeadingMuonPhi"
-};
-
-
-std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
-JetPhiInput,
-"SubleadingElectronPhi"
-};
-
-std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
-JetPhiInput,
-"SubleadingMuonPhi"
-};
 
 
 
-std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
-"LeadingJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-}; 
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
-"SubleadingJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
-"ThirdJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
-"FourthJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
 
 std::vector<std::string> lep_cut_ee_strings;
 std::vector<std::string> lep_cut_mumu_strings;
@@ -8924,8 +8861,10 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
 
   
   std::cout << "before jet cut (ee)" << std::endl; 
-  std::cout << "SJER_nominal = " << std::endl;
 
+  std::vector<std::string> deltaR_JetE_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
+  std::vector<std::string> deltaR_JetMu_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
+  std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
 
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("sJER_Nominal", SJER_nominal, sJER_sigmaJER_strings)
                       				       .Define("sJER_up", SJER_up, sJER_sigmaJER_strings)
@@ -9237,6 +9176,57 @@ std::cout << "after the for loop for cut flow report" << std::endl;
 
 
 std::cout << "before top reconstruction (ee)" << std::endl;
+
+
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
+JetPhiInput,
+"LeadingElectronPhi"
+};
+
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
+JetPhiInput,
+"LeadingMuonPhi"
+};
+
+
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
+JetPhiInput,
+"SubleadingElectronPhi"
+};
+
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
+JetPhiInput,
+"SubleadingMuonPhi"
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
+"LeadingJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+}; 
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
+"SubleadingJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
+"ThirdJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
+"FourthJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
 
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
@@ -11225,6 +11215,10 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents_mumu.Define("PU", PU_
 
   std::cout << "before d_ee_recoZ_jets_selection" << std::endl;
 
+  std::vector<std::string> deltaR_JetE_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
+  std::vector<std::string> deltaR_JetMu_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
+
+
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("LeadingJetMass", LeadingVariable, {JetMassInput})
                                          	     .Define("SubleadingJetMass", SubleadingVariable, {JetMassInput})
                                          	     .Define("ThirdJetMass", ThirdLeadingVariable, {JetMassInput})
@@ -11448,6 +11442,56 @@ else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_reco
 
 
 std::cout << "before filtering events with a reconstructed top quark" << std::endl;
+
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
+JetPhiInput,
+"LeadingElectronPhi"
+};
+
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
+JetPhiInput,
+"LeadingMuonPhi"
+};
+
+
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
+JetPhiInput,
+"SubleadingElectronPhi"
+};
+
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
+JetPhiInput,
+"SubleadingMuonPhi"
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
+"LeadingJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
+"SubleadingJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
+"ThirdJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
+"FourthJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
 
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
