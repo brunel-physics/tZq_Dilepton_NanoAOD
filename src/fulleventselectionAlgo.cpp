@@ -4288,6 +4288,8 @@ constexpr float W_MASS_CUT = 20.f;
 
 auto find_lead_mask{[](const ints& mask, const floats& vals) {
   
+  std::cout << "inside find_lead_mask" << std::endl;
+
   const auto masked_vals{mask * vals};
 
   const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
@@ -4301,6 +4303,22 @@ auto find_lead_mask{[](const ints& mask, const floats& vals) {
 
 auto find_w_pair{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
+
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << "Inside find_w_pair" << std::endl;
+std::cout << "pts.size() = " << pts.size() << std::endl;
+std::cout << "etas.size() = " << etas.size() << std::endl;
+std::cout << "phis.size() = " << phis.size() << std::endl;
+std::cout << "ms.size() = " << ms.size() << std::endl;
+std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+std::cout << "lead_bjet.size() = " << lead_bjet.size() << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
 
 double w_reco_mass{std::numeric_limits<double>::infinity()};
 size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -4361,6 +4379,20 @@ auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
 auto WPairJet1{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
 
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << "inside WPairJet1" << std::endl;
+std::cout << "pts.size() = " << std::endl;
+std::cout << "etas.size() = " << std::endl;
+std::cout << "phis.size() = " << std::endl;
+std::cout << "ms.size() = " << std::endl;
+std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+std::cout << "lead_bjet.size() = " << lead_bjet.size() << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+
 double w_reco_mass{std::numeric_limits<double>::infinity()};
 size_t jet_index_1{std::numeric_limits<size_t>::max()};
 size_t jet_index_2{std::numeric_limits<size_t>::max()};
@@ -4399,6 +4431,20 @@ for (size_t i{0}; i < njets; ++i){
 
 
 auto WPairJet2{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
+
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << "inside WPairJet2" << std::endl;
+std::cout << "pts.size() = " << std::endl;
+std::cout << "etas.size() = " << std::endl;
+std::cout << "phis.size() = " << std::endl;
+std::cout << "ms.size() = " << std::endl;
+std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+std::cout << "lead_bjet.size() = " << lead_bjet.size() << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
+std::cout << '\n' << std::endl;
 
 double w_reco_mass{std::numeric_limits<double>::infinity()};
 size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -4570,6 +4616,8 @@ auto RecoWHT{[](const floats& RecoWPt){
 
 }};
 
+
+
 auto WLorentzVector{[](
 
 const floats& w_pair_pt,
@@ -4579,6 +4627,12 @@ const float& w_mass,
 const ints& w_reco_jets
 
 ){
+
+  std::cout << "Inside WLorentzVector" << std::endl;
+  std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
+  std::cout << "w_pair_eta.size() = " << w_pair_eta.size() << std::endl;
+  std::cout << "w_pair_phi.size() = " << w_pair_phi.size() << std::endl;
+  std::cout << "w_reco_jets.size() = " << w_reco_jets.size() << std::endl;
 
   const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
 
@@ -7016,6 +7070,9 @@ std::vector<std::string> lep_cut_emu_strings = {
 
 
 
+
+
+
 void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR_bool, const bool& SBR_bool, const bool& ZPlusJetsCR_bool, const bool& ttbarCR_bool, const std::string& year, const bool& PU_ScaleUp_bool, const bool& PU_ScaleDown_bool, const bool& BTag_ScaleUp_bool, const bool& BTag_ScaleDown_bool, const bool& JetSmearing_ScaleUp_bool, const bool& JetSmearing_ScaleDown_bool, const bool& JetResolution_ScaleUp_bool, const bool& JetResolution_ScaleDown_bool, const bool& LeptonEfficiencies_ScaleUp_bool, const bool& LeptonEfficiencies_ScaleDown_bool, const bool& PDF_ScaleUp_bool, const bool& PDF_ScaleDown_bool, const bool& ME_Up_bool, const bool& ME_Down_bool, const bool& MET_Up_bool, const bool& MET_Down_bool, const bool& isr_up_bool, const bool& isr_down_bool, const bool& fsr_up_bool, const bool& fsr_down_bool){
 
 
@@ -7788,8 +7845,6 @@ EGammaEffRecoSys2018_histo->SetDirectory(nullptr);
 
 
 
-
-
 EGammaEff_inputfile_2016->Close();
 EGammaEffSys_inputfile_2016->Close();
 EGammaEffReco_inputfile_2016->Close();
@@ -7906,8 +7961,6 @@ histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
 
 
-
-
 inputfile_RunsBCDEF_ID_2016->Close(); 
 inputfile_RunsGH_ID_2016->Close();
 inputfile_RunsBCDEF_ISO_2016->Close();
@@ -7923,13 +7976,6 @@ inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Close();
 inputfile_RunsABCD_ID_2018->Close();
 inputfile_RunsABCD_ISO_2018->Close();
 
-
-
-
-
-
-//Event cleaning
-auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event cleaning filter");
 
 //Pile up modelling
 //2016
@@ -8116,7 +8162,14 @@ systDownFile_2018->Close();
 
 
 
+//Event cleaning
+auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event cleaning filter");
+
+
 ///MC starts here
+
+
+
 
 if(RunType == "MC"){
   
