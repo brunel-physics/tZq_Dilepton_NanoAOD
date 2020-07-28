@@ -112,6 +112,7 @@ const floats& MuonPhi,
 const ints& Muon_genPartIdx,
 const ints& Muon_nTrackerLayers){
 
+	std::cout << "RochesterCorrections_testscript2" << std::endl;
 
 	std::string RoccoTextFile;
 
@@ -884,7 +885,12 @@ template<typename T, typename U, typename... Types>
 [[gnu::const]] auto inv_mass(const floats& pts, const floats& etas, const floats& phis, const floats& ms)
 {
 
-
+    std::cout << "inv_mass" << std::endl;
+    std::cout << "pts.size() = " << pts.size() << std::endl;
+    std::cout << "ms.size() = " << ms.size() << std::endl;
+    std::cout << "phis.size() = " << phis.size() << std::endl;
+    std::cout << "etas.size() = " << etas.size() << std::endl; 
+	
 
     if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
     {
@@ -915,6 +921,12 @@ template<typename T, typename U, typename... Types>
 
 [[gnu::const]] auto inv_mass_doubles(const doubles& pts, const doubles& etas, const doubles& phis, const doubles& ms)
 {
+
+    std::cout << "inv_mass_doubles" << std::endl;
+    std::cout << "pts.size() = " << pts.size() << std::endl;
+    std::cout << "ms.size() = " << ms.size() << std::endl;
+    std::cout << "phis.size() = " << phis.size() << std::endl;
+    std::cout << "etas.size() = " << etas.size() << std::endl;
 
 
     if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
@@ -979,6 +991,10 @@ int NBins = 40;
 
 auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
+  std::cout << " EffBTaggedFunction_ee" << std::endl;
+  std::cout << "pts.size() = " << pts.size() << std::endl;
+  std::cout << "etas.size() = " << etas.size() << std::endl;
+ 
   floats BTaggedEff{};
 
   for(int i = 0; i < pts.size(); i++){
@@ -1010,6 +1026,10 @@ auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const 
 
 auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
+  std::cout << " EffBTaggedFunction_mumu" << std::endl;
+  std::cout << "pts.size() = " << pts.size() << std::endl;
+  std::cout << "etas.size() = " << etas.size() << std::endl;
+
   floats BTaggedEff{};
 
   for(int i = 0; i < pts.size(); i++){
@@ -1039,6 +1059,10 @@ auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](
 
 auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
+  std::cout << "EffNonBTaggedFunction_ee" << std::endl;
+  std::cout << "pts.size() = " << pts.size() << std::endl;
+  std::cout << "etas.size() = " << etas.size() << std::endl;
+
   floats NonBTaggedEff{};
 
   for(int i = 0; i < pts.size(); i++){
@@ -1067,6 +1091,10 @@ auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*
 
 
 auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+
+  std::cout << "EffNonBTaggedFunction_mumu" << std::endl;
+  std::cout << "pts.size() = " << pts.size() << std::endl;
+  std::cout << "etas.size() = " << etas.size() << std::endl;
 
   floats NonBTaggedEff{};
 
@@ -1098,6 +1126,8 @@ auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &
 
 auto EffBTaggedProduct{[](const floats& EffBTagged){
   
+  std::cout << "EffBTaggedProduct" << std::endl;
+
   float initial = 1;
 
   for(int i = 0; i < EffBTagged.size(); i++ ){
@@ -1116,6 +1146,8 @@ auto EffBTaggedProduct{[](const floats& EffBTagged){
 
 
 auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
+
+  std::cout << "EffNonBTaggedProduct" << std::endl;
 
   float initial = 1;
 
@@ -1144,6 +1176,8 @@ auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBT
 //reading the csv file to obtain the b tagging scale factor for each event
 
 auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+
+   std::cout << "CMSBTagSF_Function" << std::endl;
 
   floats ResultVector{};
 
@@ -2400,6 +2434,8 @@ const floats& Jet_eta,
 const floats& Jet_phi, 
 const floats& Jet_mass){
 
+  
+  std::cout << "METUncertFunction" << std::endl;
 
   std::vector<TLorentzVector> metVecOriginal{};
   floats metVecOriginal_px;
@@ -2852,6 +2888,8 @@ const floats& Electron_dz){
 
   floats OutVec{};
 
+  std::cout << "LeadingElectron_dz_ECALEndcaps_function" << std::endl;
+
   for(int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) < 0.2){OutVec.push_back(Electron_dz.at(i));}
@@ -2870,6 +2908,8 @@ auto SubleadingElectron_dz_ECALEndcaps_function{[](
 const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
+
+  std::cout << "SubleadingElectron_dz_ECALEndcaps_function" << std::endl;
 
   floats OutVec{};
 
@@ -2894,6 +2934,8 @@ const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
 
 
+  std::cout << "LeadingElectron_dxy_ECALBarrel_function" << std::endl;
+
   floats OutVec{};
 
   for(int i = 0; i < Electron_eta_Selection.size(); i++){
@@ -2915,6 +2957,8 @@ const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
 
+  std::cout << "SubleadingElectron_dxy_ECALBarrel_function" << std::endl;
+
   floats OutVec{};
 
   for(int i = 0; i < Electron_eta_Selection.size(); i++){
@@ -2934,6 +2978,7 @@ const float& LeadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
 
+  std::cout << "LeadingElectron_dxy_ECALEndcaps_function" << std::endl;
 
   floats OutVec{};
 
@@ -2954,6 +2999,8 @@ auto SubleadingElectron_dxy_ECALEndcaps_function{[](
 const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
+
+  std::cout << "SubleadingElectron_dxy_ECALEndcaps_function" << std::endl;
 
   floats OutVec{};
 
@@ -3280,6 +3327,8 @@ const unsigned int nMuon
 
 auto LeadingVariable{[](const floats& variable){
 
+  std::cout << "LeadingVariable" << std::endl;
+
   if(variable.size() > 0){
 
   float first_largest_value = variable.at(0);
@@ -3305,6 +3354,8 @@ auto LeadingVariable{[](const floats& variable){
 
 auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
   
+  std::cout << "LeadingVariableEmu" << std::endl;
+
   float first_largest_value_electron, first_largest_value_muon; 
 
   if(variable1.size() > 0){
@@ -3348,6 +3399,8 @@ auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
 auto SubleadingVariable{[](const floats& variable){
 
+  std::cout << "SubleadingVariable" << std::endl;
+
   if(variable.size() == 0){float zero = 0.0; return zero;}
   else{
 
@@ -3390,6 +3443,8 @@ auto SubleadingVariable{[](const floats& variable){
 
 auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
+  std::cout << "SubleadingVariableEmu" << std::endl;
+
   float first_largest_value_electron, first_largest_value_muon;
 
   if(variable1.size() > 0){
@@ -3431,6 +3486,8 @@ auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
 
 auto ThirdLeadingVariable{[](const floats& variable){
+
+  std::cout << "ThirdLeadingVariable" << std::endl;
 
   if(variable.size() > 2){
 
@@ -3479,6 +3536,8 @@ auto ThirdLeadingVariable{[](const floats& variable){
 
 
 auto FourthLeadingVariable{[](const floats& variable){
+
+  std::cout << "FourthLeadingVariable" << std::endl;
 
   if(variable.size() > 3){
 
@@ -3559,6 +3618,8 @@ const float& Object2_eta,
 const float& Object2_phi
 ){
 
+  std::cout << "deltaRcheck_float" << std::endl;
+
   float dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
   return dR;
 
@@ -3573,6 +3634,8 @@ const floats& Object2_phi
 
 ){
 
+  std::cout << "deltaRcheck_4floats" << std::endl;
+
   floats dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
   return dR;
 
@@ -3580,6 +3643,8 @@ const floats& Object2_phi
 
 
 auto deltaRcheck_floats{[](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
+
+  std::cout << "deltaRcheck_floats" << std::endl;
 
   floats min_dRs{};
 
@@ -3622,6 +3687,8 @@ const floats& Object1_eta_Selection,
 const doubles& Object2_eta_Selection,
 const doubles& Object2_phi_Selection
 ){
+
+  std::cout << "deltaRcheck_WTop_function" << std::endl;
 
   doubles dR_vec{};
 
@@ -3719,6 +3786,8 @@ const floats& Object1_phi,
 const doubles& Object2_phi
 
 ){
+
+ std::cout << "DeltaPhi_function4" << std::endl;
 
  doubles dPhi_vec{};
 
@@ -4158,6 +4227,8 @@ const ints& lead_bjet
 
 ){
 
+  std::cout << " bjet_variable " << std::endl;
+
   floats vec{};
 
   for(int i = 0; i < nJet; i++){
@@ -4181,6 +4252,8 @@ const floats& bjet_phi,
 const floats& bjet_mass
 
 ){
+
+  std::cout << "BLorentzVector" << std::endl;
 
   auto BJets = TLorentzVector{};
 
@@ -4266,6 +4339,8 @@ auto BJetOutputDiscriminant{[](
 const ints& BJetBTags,
 const floats& Jet_btagCSVV2 
 ){
+
+  std::cout << "BJetOutputDiscriminant" << std::endl;
 
   floats btagoutput{};
 
@@ -4668,6 +4743,16 @@ const ints& w_reco_jets
 
 ){
 
+  std::cout << "top_reconstruction_function" << std::endl;
+  std::cout << "bjets_pt.size()" << bjets_pt.size() << std::endl;
+  std::cout << "bjets_eta.size()" << bjets_eta.size() << std::endl;
+  std::cout << "bjets_phi.size()" << bjets_phi.size() << std::endl;
+  std::cout << "bjets_mass.size()" << bjets_mass.size() << std::endl;
+  std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
+  std::cout << "w_pair_eta.size() = " << w_pair_eta.size() << std::endl;
+  std::cout << "w_pair_phi.size() = " << w_pair_phi.size() << std::endl;
+  std::cout << "w_reco_jets.size() = " << w_reco_jets.size() << std::endl;
+
   auto reco_top = TLorentzVector{}; 
   auto BJets = TLorentzVector{};
   auto RecoW = TLorentzVector{};
@@ -4780,6 +4865,13 @@ const floats& Jet_Phi_Selection,
 const floats& Jet_eta_Selection
 ){
 
+    std::cout << "MinDeltaR" << std::endl;
+    std::cout << "RecoZPhi.size() = " << RecoZPhi.size() << std::endl;
+    std::cout << "RecoZEta.size() = " << RecoZEta.size() << std::endl;
+    std::cout << "Jet_Phi_Selection.size() = " << Jet_Phi_Selection.size() << std::endl;
+    std::cout << "Jet_eta_Selection.size() = " << Jet_eta_Selection.size() << std::endl;
+
+
     doubles output_vec;
   
     for(int i; i < nJet; i++){
@@ -4805,6 +4897,10 @@ const doubles& RecoZPhi,
 const floats& Jet_Phi_Selection
 ){
 
+
+  std::cout << "MinDeltaPhi" << std::endl;
+  std::cout << "RecoZPhi.size() = " << RecoZPhi.size() << std::endl;
+  std::cout << "Jet_Phi_Selection.size() = " << Jet_Phi_Selection.size() << std::endl;
 
   double output;
   doubles output_vec{};
@@ -4931,6 +5027,8 @@ const floats& Jet_eta,
 const floats& Jet_rho,
 const floats& Jet_pt) { 
 
+
+  std::cout << "RowReader2" << std::endl;
 
   float Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11;
   
@@ -5130,6 +5228,8 @@ const floats& Jet_rho,
 const floats& Jet_pt
 ){
 
+ 
+  std::cout << "RowReader3" << std::endl;
 
   int k;
 
@@ -5286,6 +5386,8 @@ const float& sJER_nominal,
 const float& sigma_JER,
 const ints& Jet_genJetIdx){
 
+  std::cout << "JetSmearingFunction_HybridMethod" << std::endl;
+
   floats cJER_vec{};
 
   for(int i = 0; i < pT.size(); i++){
@@ -5346,6 +5448,8 @@ const floats& cJER,
 const unsigned int& nJet
 
 ){
+
+  std::cout << "ApplyCJER" << std::endl;
 
   std::vector<TLorentzVector> OutputVec{};
 
@@ -5447,6 +5551,8 @@ const floats& Muon_phi,
 const floats& Muon_mass
 
 ){
+
+  std::cout << "MuonFourMomentum" << std::endl;
   
   TLorentzVector Muon4Mo{};
   
@@ -5549,6 +5655,8 @@ auto EGammaFunction{[/*&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_h
 		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo*/
 		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
+
+   std::cout << "EGammaFunction" << std::endl;
 
    floats OutputVector{};
    floats OutputVectorFinal{};
@@ -5690,6 +5798,8 @@ auto MuonSF{[
 
 ](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
+
+  std::cout << "MuonSF" << std::endl;
 
   floats AbsEta = abs(eta);
 
@@ -6356,6 +6466,8 @@ ints SummedWeights(14, 0);
 
 auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
+  std::cout << "NominalWeight" << std::endl;
+
   float PdfMin = 1.0;
   float PdfMax = 1.0;
 
@@ -6386,8 +6498,9 @@ auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight
 
 auto ME_uncert_function{[/*&SummedWeights*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
-  floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
+  std::cout << "ME_uncert_function" << std::endl;
 
+  floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
   for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
 
@@ -6416,6 +6529,8 @@ auto ME_uncert_function{[/*&SummedWeights*/](const floats& LHEPdfWeight, const f
 
 //Histogram for ME uncertainties
 auto ME_histo_function{[/*&SummedWeights*/](){
+
+  std::cout << "ME_histo_function" << std::endl;
 
   ints numerators;
 
