@@ -884,8 +884,6 @@ template<typename T, typename U>
 template<typename T, typename U, typename... Types>
 [[gnu::const]] bool all_equal(const T& t, const U& u, Types const&... args)
 {
-    std::cout << "all_equal function" << std::endl;
-
     return t == u && all_equal(u, args...);
 }
 
@@ -6990,7 +6988,7 @@ auto Chi2Cut_ee{[/*&SBR, &SR*/](const float& Chi2){
 
 auto Chi2Cut_mumu{[/*&SBR, &SR*/](const float& Chi2){
 
-  std::cout << "Chi2Cut_mumu" << std::endl
+  std::cout << "Chi2Cut_mumu" << std::endl;
 
   if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
   else if(SR == true){return Chi2 < Chi2_SR_mumu;}
