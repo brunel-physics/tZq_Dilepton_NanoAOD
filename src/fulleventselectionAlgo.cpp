@@ -876,12 +876,16 @@ namespace{
 template<typename T, typename U>
 [[gnu::const]] bool all_equal(const T& t, const U& u)
 {
+    std::cout << "all_equal" << std::endl;
+
     return t == u;
 }
 
 template<typename T, typename U, typename... Types>
 [[gnu::const]] bool all_equal(const T& t, const U& u, Types const&... args)
 {
+    std::cout << "all_equal function" << std::endl;
+
     return t == u && all_equal(u, args...);
 }
 
@@ -1169,6 +1173,8 @@ auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
 
 auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBTaggedProduct){
+
+  std::cout << "ProbBTagMCFunction" << std::endl;
 
   float MCProb = EffBTaggedProduct * EffNonBTaggedProduct; 
   return MCProb;
