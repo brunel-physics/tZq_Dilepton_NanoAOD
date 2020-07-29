@@ -44,6 +44,8 @@ std::fstream& GotoLine(std::fstream& file, unsigned int num){
 		
     file.seekg(std::ios::beg);
 
+    std::cout << "inside go to line" << std::endl;
+
     for(int i=0; i < num - 1; ++i){
         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
@@ -279,6 +281,8 @@ int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::str
 
 
 auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
+
+   std::cout << "textfilereader2_TriggerSF" << std::endl;
 
    int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year, blinding);
    std::vector<double> Value;
@@ -2345,12 +2349,16 @@ return ResultVector;
 
 auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
+ std::cout << "CMSBTagSF" << std::endl;
+
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
 
 }};
 
 
 auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+ 
+ std::cout << "CMSNonBTagSF" << std::endl;
 
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
@@ -2359,6 +2367,8 @@ auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas
 
 
 auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF){
+
+  std::cout << "EffBTaggedProductData" << std::endl;
 
   float initial = 1;
   float output;
@@ -2377,6 +2387,8 @@ auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF)
 
 
 auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSF){
+
+  std::cout << "EffNonBTaggedProductData" << std::endl;
 
   float initial = 1;
 
@@ -2400,6 +2412,8 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
 auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& EffNonBTaggedProductData){
 
+  std::cout << "ProbBTagDataFunction" << std::endl;
+
   float DataProb = EffBTaggedProductData * EffNonBTaggedProductData;
   return DataProb;
 
@@ -2409,6 +2423,8 @@ auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& Ef
 
 
 auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
+
+ 	std::cout << "BTagWeightFunction" << std::endl;
 
 	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
 	
@@ -2521,6 +2537,8 @@ std::string Year_String;
 //For the normalisation factors
 auto NormalisationFactorFunction{[/*&process, &year*/](){
 
+  std::cout << "NormalisationFactorFunction" << std::endl;
+
   std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
                                     "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
                                     "ZPlusJets_PtBinned_0To50", "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250",
@@ -2570,6 +2588,7 @@ auto EventWeight_ee{[/*&NormalisationFactorFunction, &SF_ee,                    
                         ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
 
 
+			std::cout << "EventWeight_ee" << std::endl;
 
                         if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
                         else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
@@ -2595,6 +2614,8 @@ auto EventWeight_mumu{[/*&NormalisationFactorFunction, &SF_mumu,                
                        //&fsr_up,                      &fsr_down
                         ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
 
+
+			std::cout << "EventWeight_mumu" << std::endl;
 
                         if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * CalculatedGeneratorWeight * ME_SF * TopWeight;}
                         else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * CalculatedGeneratorWeight * ME_SF * TopWeight;}
@@ -2650,6 +2671,8 @@ const bool& HLT_Ele35_WPTight_Gsf,
 const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
 const bool& HLT_Ele27_WPTight_Gsf)-> bool{
 
+  std::cout << "SingleElectron" << std::endl;
+
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
@@ -2685,6 +2708,8 @@ const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
 
 )->bool{
 
+
+   std::cout << "DoubleElectron" << std::endl;
 
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -2722,6 +2747,8 @@ const bool& HLT_IsoMu24_eta2p1
 
 )->bool{
 
+  std::cout << "SingleMuon" << std::endl;
+
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
@@ -2754,6 +2781,8 @@ auto DoubleMuon{[/*&Year_String*/](
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
+
+   std::cout << "DoubleMuon" << std::endl;
 
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -2790,6 +2819,8 @@ const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
+
+ std::cout << "MuonElectron" << std::endl;
 
  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -2843,6 +2874,8 @@ const float& LeadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
 
+  std::cout << "LeadingElectron_dz_ECALBarrel_function" << std::endl;
+
   floats OutVec{};
 
   for(int i = 0; i < Electron_eta_Selection.size(); i++){
@@ -2863,6 +2896,8 @@ auto SubleadingElectron_dz_ECALBarrel_function{[](
 const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
+
+  std::cout << "SubleadingElectron_dz_ECALBarrel_function" << std::endl;
 
   floats OutVec{};
 
@@ -3024,11 +3059,15 @@ const floats& Electron_dxy){
 
 auto OppositeSign{[](const ints& charges){
 
+  std::cout << "OppositeSign" << std::endl;
+
   return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
 
 }};
 
 auto OppositeSign_emu{[](const ints& charges1, const ints& charges2){
+
+  std::cout << "OppositeSign_emu" << std::endl;
 
   return (charges1.size() == 1 && charges2.size() == 1) ? signbit(charges1.at(0)) != signbit(charges2.at(0)) : false;
 
@@ -3037,12 +3076,16 @@ auto OppositeSign_emu{[](const ints& charges1, const ints& charges2){
 
 auto SameSign{[](const ints& charges){
 
+  std::cout << "SameSign" << std::endl;
+
   return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
 
 }};
 
 
 auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+
+  std::cout << "OppositeSignNonPrompt" << std::endl;
 
   bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
@@ -3054,6 +3097,8 @@ auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFl
 
 auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
   
+  std::cout << "SameSignNonPrompt" << std::endl;
+
   bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
   bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
 
@@ -3064,6 +3109,8 @@ auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
 
 auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+
+  std::cout << "OppositeSignPrompt" << std::endl;
 
   bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});
@@ -3076,6 +3123,8 @@ auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav)
 
 
 auto SameSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+
+  std::cout << "SameSignPrompt" << std::endl;
 
   bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
   bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});  
@@ -3097,6 +3146,8 @@ const bools& Electron_isPFcand
 
 ){
  
+  std::cout << "ElectronsFunction" << std::endl;
+
   return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
 
 }};
@@ -3111,6 +3162,8 @@ const ints& Electron_cutBased,
 const bools& Electron_isPFcand
 
 ){
+
+  std::cout << "ElectronsFunctionEmu" << std::endl;
 
   return (Electron_pt > MinElectronPtEmu && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
 
@@ -3128,6 +3181,8 @@ const bools& Electron_isPFcand
 
 ){
 
+  std::cout << "TightElectronsFunction" << std::endl;
+
   return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
 }};
@@ -3142,6 +3197,8 @@ const bools& Electron_isPFcand
 
 
 ){
+
+  std::cout << "TightElectronsFunctionEmu" << std::endl;
 
   return ElectronsFunctionEmu(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
@@ -3158,6 +3215,8 @@ const bools& Electron_isPFcand
 
 ){
 
+  std::cout << "LooseElectronsFunction" << std::endl;
+
   return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
 }};
@@ -3172,6 +3231,8 @@ const bools& Electron_isPFcand
 
 
 ){
+
+  std::cout << "LooseElectronsFunctionEmu" << std::endl;
 
   return ElectronsFunctionEmu(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
@@ -3189,6 +3250,8 @@ const floats& isos
 
 ){
 
+  std::cout << "MuonsFunction" << std::endl;
+
   return (isPFs && Muon_pt > MinMuonPt && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
 
 }};
@@ -3205,12 +3268,16 @@ const floats& isos
 
 ){
 
+  std::cout << "MuonsFunctionEmu" << std::endl;
+
   return (isPFs && Muon_pt > MinMuonPtEmu && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
 
 }};
 
 
 auto TightMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+
+  std::cout << "TightMuonsFunction" << std::endl;
 
   return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
 
@@ -3219,12 +3286,16 @@ auto TightMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& p
 
 auto TightMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
+  std::cout << "TightMuonsFunctionEmu" << std::endl;
+
   return MuonsFunctionEmu(0.25, isPFs, pts, etas, ids, isos);
 
 }};
 
 
 auto LooseMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+
+  std::cout << "LooseMuonsFunction" << std::endl;
 
   return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
 
@@ -3233,6 +3304,8 @@ auto LooseMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& p
 
 auto LooseMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
  
+  std::cout << "LooseMuonsFunctionEmu" << std::endl;
+
   return MuonsFunctionEmu(0.15, isPFs, pts, etas, ids, isos);
 
 }};
@@ -3253,6 +3326,8 @@ const floats& SubleadingElectron_dxy_ECALBarrel,
 const floats& SubleadingElectron_dz_ECALEndcaps,
 const floats& SubleadingElectron_dxy_ECALEndcaps
 ){
+
+  std::cout << "lep_cut_ee" << std::endl;
 
   const bool ele_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
   bool lead_pt_cut{false};
@@ -3280,6 +3355,8 @@ const floats& SubleadingElectron_dxy_ECALEndcaps
 
 
 auto lep_cut_mumu{[](const floats& tight_mu_pts, const floats& loose_mu_pts, const bool os, const unsigned int nMuon) {
+
+  std::cout << "lep_cut_mumu" << std::endl;
 
   const bool mu_cut{tight_mu_pts.size() == 2 && tight_mu_pts.size() == loose_mu_pts.size()};
   bool lead_pt_cut{false};
@@ -3309,6 +3386,8 @@ const floats& loose_mu_pts,
 const unsigned int nMuon
 
 ){
+
+  std::cout << "lep_cut_emu" << std::endl;
 
   const bool emu_cut{tight_ele_pts.size() == 1 && tight_mu_pts.size() == 1 && (tight_mu_pts.size() == loose_mu_pts.size()) && (tight_mu_pts.size() == loose_mu_pts.size())};
 
@@ -3602,7 +3681,7 @@ auto FourthLeadingVariable{[](const floats& variable){
 
 auto MET_function{[](const floats& MET_input){
 
-  std::cout << "print 62" << std::endl;
+  std::cout << "MET_function" << std::endl;
   return MET_input;
 
 }};
@@ -3673,6 +3752,8 @@ const float& Object2_eta_Selection,
 const float& Object2_phi_Selection
 ){
 
+  std::cout << "deltaRcheck_Top_function" << std::endl;
+
   doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   return dR;
 
@@ -3713,6 +3794,8 @@ const doubles& Object2_eta_Selection,
 const doubles& Object2_phi_Selection
 ){
 
+  std::cout << "deltaRcheck_W_function" << std::endl;
+
   doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   return dR;
 
@@ -3727,6 +3810,8 @@ const doubles& Object1_eta_Selection,
 const float& Object2_eta_Selection,
 const float& Object2_phi_Selection
 ){
+
+  std::cout << "deltaRcheck_W_function2" << std::endl;
  
   doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   return dR;
@@ -3741,6 +3826,8 @@ const floats& Object1_phi_Selection,
 const floats& Object2_phi_Selection
 
 ){
+
+  std::cout << "DeltaPhi_function" << std::endl;
 
   floats dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   return dPhi;
@@ -3757,6 +3844,8 @@ const doubles& Object2_phi_Selection
 
 ){
 
+  std::cout << "DeltaPhi_function2" << std::endl;
+
   doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   return dPhi;
 
@@ -3771,6 +3860,8 @@ const doubles& Object1_phi_Selection,
 const floats& Object2_phi_Selection
 
 ){
+
+  std::cout << "DeltaPhi_function3" << std::endl;
 
   doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   return dPhi;
@@ -3811,6 +3902,8 @@ const float& Object2_phi
 
 ){
 
+  std::cout << "DeltaPhi_doublesandfloat" << std::endl;
+
   doubles dPhi = abs(Object1_phi - Object2_phi);
   return dPhi;
 
@@ -3822,6 +3915,8 @@ const float& Object1_phi,
 const float& Object2_phi
 
 ){
+
+  std::cout << "DeltaPhi_floatandfloat" << std::endl;
 
   double dPhi = abs(Object1_phi - Object2_phi);
   return dPhi;
@@ -3837,6 +3932,8 @@ const floats& Jet_pt_Selection,
 const floats& Jet_eta_Selection,
 const ints& Jet_jetId_Selection,
 const floats& dRJet_lep){
+
+  std::cout << "tight_jets_function" << std::endl;
 
   int JetId;
 
@@ -3857,6 +3954,8 @@ const floats& dRJet_lep){
 
 auto jet_selection_function{[](const ints& tight_jets) {
 
+  std::cout << "jet_selection_function" << std::endl;
+
   auto njet{count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
   return njet >= 4 && njet <= 6;
 
@@ -3869,6 +3968,8 @@ const float& LeadingJetPt,
 const float& SubleadingJetPt
 
 ){
+
+  std::cout << "SumSquared2LeadingJets_pT" << std::endl;
 
   double SumSquaredPt = pow(LeadingJetPt + SubleadingJetPt, 2);
   return SumSquaredPt;
@@ -3886,6 +3987,8 @@ const float& FourthJetPt
 
 ){
 
+  std::cout << "JetPtSum" << std::endl;
+
   float JetPtSum = LeadingJetPt + SubleadingJetPt + ThirdJetPt + FourthJetPt;
   return JetPtSum;
 
@@ -3900,6 +4003,8 @@ const float& ThirdJetEta,
 const float& FourthJetEta
 
 ){
+
+  std::cout << "JetEtaSum" << std::endl;
 
   float JetEtaSum = LeadingJetEta + SubleadingJetEta + ThirdJetEta + FourthJetEta;
   return JetEtaSum;
@@ -3916,6 +4021,8 @@ const float& FourthJetPhi
 
 ){
 
+  std::cout << "JetPhiSum" << std::endl;
+
   float JetPhiSum = LeadingJetPhi + SubleadingJetPhi + ThirdJetPhi + FourthJetPhi;
   return JetPhiSum;
 
@@ -3929,6 +4036,8 @@ const float& LeadingLepPt,
 const float& SubleadingLepPt
 
 ){
+
+  std::cout << "LepPtSum" << std::endl;
 
   float LepPtSum = LeadingLepPt + SubleadingLepPt;
   return LepPtSum;
@@ -3944,6 +4053,8 @@ const float& SubleadingLepEta
 
 ){
 
+  std::cout << "LepEtaSum" << std::endl;
+
   float LepEtaSum = LeadingLepEta + SubleadingLepEta;
   return LepEtaSum;
 
@@ -3958,6 +4069,8 @@ const float& SubleadingLepPhi
 
 ){
 
+  std::cout << "LepPhiSum" << std::endl;
+
   float LepPhiSum = LeadingLepPhi + SubleadingLepPhi;
   return LepPhiSum;
 
@@ -3967,6 +4080,8 @@ const float& SubleadingLepPhi
 
 auto HT{[](const float& Pt){
  
+  std::cout << "HT" << std::endl;
+
   float HT = abs(Pt);
   return HT;
 
@@ -3975,6 +4090,8 @@ auto HT{[](const float& Pt){
 
 auto HT_double{[](const doubles& Pt){
 
+  std::cout << "HT_double" << std::endl;  
+
   doubles HT = abs(Pt);
   return HT;
 
@@ -3982,6 +4099,8 @@ auto HT_double{[](const doubles& Pt){
 
 
 auto HT_floats{[](const floats& Pt){
+
+  std::cout << "HT_floats" << std::endl;
 
   floats HT = abs(Pt);
   return HT;
@@ -3998,6 +4117,8 @@ const float& FourthJetHT
 
 ){
   
+  std::cout << "TotJetHT" << std::endl;
+
   float TotJetHT = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
   return TotJetHT;
 
@@ -4012,12 +4133,16 @@ const float& SubleadingLeptonHT
 
 ){
 
+  std::cout << "TotLepHT" << std::endl;
+
   float TotLepHT = LeadingLeptonHT + SubleadingLeptonHT;
   return TotLepHT;
 
 }};
 
 auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
+
+  std::cout << "TotHTOverTotpT" << std::endl;
 
   float TotHTOverTotpT = TotHT / TotpT;
   return TotHTOverTotpT;
@@ -4026,6 +4151,8 @@ auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
 }};
 
 auto TotHTOverTotpT_floats{[](const floats& TotHT, const floats& TotpT){
+
+  std::cout << "TotHTOverTotpT_floats" << std::endl;
 
   floats TotHTOverTotpT = TotHT / TotpT;
   return TotHTOverTotpT;
@@ -4054,6 +4181,8 @@ const float& FourthJetMass,
 const unsigned int& nJet 
 
 ){
+
+  std::cout << "InvMass_AllJets" << std::endl;
 
   TLorentzVector Jet1 = {};
   TLorentzVector Jet2 = {};
@@ -4090,6 +4219,8 @@ const unsigned int nJet
 
 ){
   
+  std::cout << "InvMass_3Jets" << std::endl;
+
   TLorentzVector Jet1 = {};
   TLorentzVector Jet2 = {};
   TLorentzVector Jet3 = {};
@@ -4107,11 +4238,15 @@ const unsigned int nJet
 
 auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
      
+	std::cout << "bjet_id" << std::endl;
+
 	return tight_jets && (btags > 0.8838f) && (etas < MaxTrackerEta);
 }};
 
 
 auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
+
+  std::cout << "nonbjet_id" << std::endl;
 
   return tight_jets && (btags == 0) && (etas < MaxTrackerEta);
 
@@ -4120,6 +4255,8 @@ auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& et
 
 
 auto bjet_cut{[](const ints& bjets) {
+
+	std::cout << "bjet_cut" << std::endl;
 
         const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
         return nbjet >= 1 && nbjet <= 2;
@@ -4130,12 +4267,16 @@ auto bjet_cut{[](const ints& bjets) {
 //For the numerators
 auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
+	std::cout << "BTAGEFF_bjet_id_WP" << std::endl;
+
 	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
 }};
 
 
 auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "BTAGEFF_charm_id_WP" << std::endl;
 
        return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
@@ -4145,6 +4286,8 @@ auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const f
 
 auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
         
+      std::cout << "BTAGEFF_lightjets_id_WP" << std::endl;
+
       return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
@@ -4153,12 +4296,16 @@ auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, con
 
 auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
                 
+	std::cout << "BTAGEFF_gluon_id_WP" << std::endl;
+
       return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
 
 
 auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
+
+	std::cout << "BTAGEFF_nonbjet_id_WP" << std::endl;
 
     return abs(Jet_partonFlavour) != 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
@@ -4169,6 +4316,8 @@ auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const
 //For the denominators
 auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
+	std::cout << "BTAGEFF_bjet_id" << std::endl;
+
 	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
 
 }};
@@ -4176,6 +4325,8 @@ auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& 
 
 
 auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "BTAGEFF_charm_id" << std::endl;
 
 	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
 
@@ -4186,6 +4337,8 @@ auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints&
 
 auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
+	std::cout << "BTAGEFF_lightjets_id" << std::endl;
+
 	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
 
 }};
@@ -4193,6 +4346,8 @@ auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const i
 
 
 auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "BTAGEFF_gluon_id" << std::endl;
 
         return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
 
@@ -4202,6 +4357,8 @@ auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints&
 
 auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
 	
+	 std::cout << "BTAGEFF_nonbjet_id" << std::endl;
+
 	 return abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
 
 }};
@@ -4211,6 +4368,8 @@ auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const int
 
 
 auto numberofbjets{[](const ints& bjets) {
+
+	std::cout << "numberofbjets" << std::endl;
 
         const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
         return nbjet;
@@ -4281,6 +4440,8 @@ const floats& Jet_eta_Selection
 
 ){
 
+  std::cout << "LeadingBJetOutputDiscriminant" << std::endl;
+
   return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
@@ -4296,6 +4457,8 @@ const ints& tight_jets,
 const floats& Jet_eta_Selection
 
 ){
+
+  std::cout << "SubleadingBJetOutputDiscriminant" << std::endl;
 
   return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
@@ -4313,6 +4476,8 @@ const floats& Jet_eta_Selection
 
 ){
 
+  std::cout << "ThirdBJetOutputDiscriminant" << std::endl;
+
   return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
 }};
@@ -4327,6 +4492,8 @@ const ints& tight_jets,
 const floats& Jet_eta_Selection
 
 ){
+
+  std::cout << "FourthBJetOutputDiscriminant" << std::endl;
 
   return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
@@ -4435,6 +4602,8 @@ for (size_t i{0}; i < njets; ++i){
 
 
 auto w_mass_cut{[](const float& w_mass) {
+
+  std::cout << "w_mass_cut" << std::endl;
 	
   //return ( abs(w_mass - W_MASS) < W_MASS_CUT );
   return w_mass;
@@ -4445,6 +4614,8 @@ auto w_mass_cut{[](const float& w_mass) {
 
 auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
 	
+  std::cout << "w_mass_cut_ZPlusJetsCR" << std::endl;
+
   return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50);
 
 }};
@@ -4561,6 +4732,8 @@ for (size_t i{0}; i < njets; ++i){
 
 auto TLorentzVectorMass{[](const TLorentzVector& object){
 
+  std::cout << "TLorentzVectorMass" << std::endl;
+
   doubles vec{};
   vec.push_back(object.M());
   return vec;
@@ -4570,6 +4743,8 @@ auto TLorentzVectorMass{[](const TLorentzVector& object){
 
 auto TLorentzVectorMass_float{[](const TLorentzVector& object){
   
+  std::cout << "TLorentzVectorMass_float" << std::endl;
+
   floats vec{};
   vec.push_back(object.M());
   return vec;
@@ -4578,6 +4753,8 @@ auto TLorentzVectorMass_float{[](const TLorentzVector& object){
 
 
 auto TLorentzVectorPt{[](const TLorentzVector& object){
+
+  std::cout << "TLorentzVectorPt" << std::endl;
 
   doubles vec{};
   vec.push_back(object.Pt());
@@ -4589,6 +4766,8 @@ auto TLorentzVectorPt{[](const TLorentzVector& object){
 
 auto TLorentzVectorPt_float{[](const TLorentzVector& object){
   
+  std::cout << "TLorentzVectorPt_float" << std::endl;
+
   floats vec{};
   vec.push_back(object.Pt());
   return vec;
@@ -4597,6 +4776,8 @@ auto TLorentzVectorPt_float{[](const TLorentzVector& object){
 
 
 auto TLorentzVectorPhi{[](const TLorentzVector& object){
+
+  std::cout << "TLorentzVectorPhi" << std::endl;
 
   doubles vec{};
   vec.push_back(object.Phi());
@@ -4607,6 +4788,8 @@ auto TLorentzVectorPhi{[](const TLorentzVector& object){
 
 auto TLorentzVectorPhi_float{[](const TLorentzVector& object){
 
+  std::cout << "TLorentzVectorPhi_float" << std::endl;
+
   floats vec{};
   vec.push_back(object.Phi());
   return vec;
@@ -4615,6 +4798,8 @@ auto TLorentzVectorPhi_float{[](const TLorentzVector& object){
 
 
 auto TLorentzVectorEta{[](const TLorentzVector& object){
+
+  std::cout << "TLorentzVectorEta" << std::endl;
 
   doubles vec{};
   vec.push_back(object.Eta());
@@ -4625,6 +4810,8 @@ auto TLorentzVectorEta{[](const TLorentzVector& object){
 
 
 auto TLorentzVectorEta_float{[](const TLorentzVector& object){
+
+  std::cout << "TLorentzVectorEta_float" << std::endl;
 
   floats vec{};
   vec.push_back(object.Eta());
@@ -4642,6 +4829,8 @@ constexpr float Z_MASS{91.1876f};
 constexpr float Z_MASS_CUT{20.f};
 
 auto z_mass_cut{[](const float& z_mass) {
+
+  std::cout << "z_mass_cut" << std::endl;
 
   return abs(z_mass - Z_MASS) < Z_MASS_CUT;
 
@@ -4662,6 +4851,8 @@ const float& SubleadingleptonMass
 
 ){
 
+  std::cout << "RecoZ" << std::endl;
+
   TLorentzVector ZBoson = {};
   TLorentzVector LeadingLepton = {};
   TLorentzVector SubleadingLepton = {};
@@ -4678,6 +4869,8 @@ const float& SubleadingleptonMass
 
 auto RecoZHT{[](const doubles& RecoZPt){
 
+  std::cout << "RecoZHT" << std::endl;
+
   doubles RecoZHT = abs(RecoZPt);
   return RecoZHT;
 
@@ -4685,6 +4878,8 @@ auto RecoZHT{[](const doubles& RecoZPt){
 
 
 auto RecoWHT{[](const floats& RecoWPt){
+
+  std::cout << "RecoWHT" << std::endl;
 
   floats RecoWHT = abs(RecoWPt);
   return RecoWHT;
@@ -4802,6 +4997,8 @@ const float& TotJetHT
 
 ){
 
+  std::cout << "TotalHT_System" << std::endl;
+
   floats TotalHTSystem = RecoZHT + RecoWHT.at(0) + Top_HT + TotLepHT + TotJetHT;
   return TotalHTSystem;
 
@@ -4816,6 +5013,8 @@ const float& TotLepPt,
 const float& TotJetPt
 
 ){
+
+  std::cout << "TotalPt_System" << std::endl;
 
   floats TotalPtSystem = RecoZPt + RecoWPt.at(0) + Top_Pt + TotLepPt + TotJetPt;
   return TotalPtSystem;
@@ -4833,6 +5032,8 @@ const float& TotJetEta
 
 ){
 
+  std::cout << "TotalEta_System" << std::endl;
+
   doubles TotalEtaSystem = RecoZEta + RecoWEta.at(0) + Top_Eta + TotLepEta + TotJetEta;
   return TotalEtaSystem;
 
@@ -4848,6 +5049,8 @@ const float& TotLepPhi,
 const float& TotJetPhi
 
 ){
+
+  std::cout << "TotalPhi_System" << std::endl;
 
   doubles TotalPhiSystem = RecoZPhi + RecoWPhi.at(0) + Top_Phi + TotLepPhi + TotJetPhi;
   return TotalPhiSystem;
@@ -4930,6 +5133,8 @@ const float& LeadingLeptonPhi
 
 ){
 
+  std::cout << "dR_LeadingLepton_LeadingBJet" << std::endl;
+
   doubles DeltaR = sqrt(pow(LeadingLeptonPhi - bjetphi, 2) + pow(LeadingLeptonEta - bjeteta, 2));
   return DeltaR;
 
@@ -4946,6 +5151,8 @@ const float& SubleadingLeptonPhi
 
 ){
 
+  std::cout << "dR_SubleadingLepton_LeadingBJet" << std::endl;
+
   doubles DeltaR = sqrt(pow(SubleadingLeptonPhi - bjetphi, 2) + pow(SubleadingLeptonEta - bjeteta, 2));
   return DeltaR;
 
@@ -4959,6 +5166,8 @@ const float& LeptonPhi
 
 ){
 
+  std::cout << "DeltaPhi_Lepton_BJet" << std::endl;
+ 
   doubles DeltaPhi = LeptonPhi - Jet_phi_Selection;
   return DeltaPhi;
 
@@ -4973,6 +5182,8 @@ const doubles& WPairJet1Pt,
 const doubles& WPairJet2Pt
 
 ){
+
+  std::cout << "TransverseWMass" << std::endl;
 
   doubles mtW = sqrt(2 * WPairJet1Pt * WPairJet2Pt * (1 - cos(dPhi_j1j2)) );
   return mtW;
@@ -4993,6 +5204,8 @@ const bool& Flag_ecalBadCalibFilter_Selection,
 const bool& Flag_eeBadScFilter_Selection
 )-> bool{
 
+
+std::cout << "filter_function" << std::endl;
 
 return  
 
@@ -5284,6 +5497,8 @@ const floats& Jet_pt
 //sigma_JER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_PtResolution_AK4PF.txt
 auto sigma_JER{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
+  std::cout << "sigma_JER" << std::endl;
+
   bool SigmaJER = true;
   bool JetSmearScaleFactor = false;
   bool Up = false;
@@ -5295,6 +5510,8 @@ auto sigma_JER{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,co
 
 
 auto sigma_JER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+
+  std::cout << "sigma_JER_up" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5308,6 +5525,8 @@ auto sigma_JER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho
 
 auto sigma_JER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
+  std::cout << "sigma_JER_down" << std::endl;
+
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
   bool Up = false;
@@ -5319,6 +5538,8 @@ auto sigma_JER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_r
 
 //SJER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_SF_AK4PF.txt 
 auto SJER_nominal{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+
+  std::cout << "SJER_nominal" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = true;
@@ -5332,6 +5553,8 @@ auto SJER_nominal{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho
 
 auto SJER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
+  std::cout << "SJER_up" << std::endl;
+
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
   bool Up = true;
@@ -5343,6 +5566,8 @@ auto SJER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, con
 }};
 
 auto SJER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+
+  std::cout << "SJER_down" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5360,6 +5585,8 @@ auto SJER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, c
 
 //Calculating the jet smearing correction factor using the hybrid method
 auto MaxComparison{[](const float& sJER_nominal){
+
+ std::cout << "MaxComparison" << std::endl;
 
  float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
 
@@ -5477,6 +5704,8 @@ const unsigned int& nJet
 //To get the properties of the smeared jet
 auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
 
+ std::cout << "GetSmearedJetPt" << std::endl;
+
  floats NewPtVec = {};
 
  for(int i = 0; i < JetPt.size(); i++){
@@ -5492,6 +5721,8 @@ auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const f
 
 
 auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
+
+ std::cout << "GetSmearedJetPhi" << std::endl;
 
  floats NewPhiVec{};
 
@@ -5509,6 +5740,8 @@ auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const 
  
 auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
 
+ std::cout << "GetSmearedJetEta" << std::endl;
+
  floats NewEtaVec = {};
 
  for(int i = 0; i < JetEta.size(); i++){
@@ -5524,6 +5757,8 @@ auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const 
 
 
 auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
+
+ std::cout << "GetSmearedJetMass" << std::endl;
 
  floats NewMassVec = {};
 
@@ -5581,6 +5816,8 @@ const ints& Muon_nTrackerLayers
 
 ){
 
+  std::cout << "RochCorrVec_Function" << std::endl; 
+
   floats CorrectionFactor = RochesterCorrections_testscript2(Year_String, Process_String, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
   return CorrectionFactor;
 
@@ -5599,6 +5836,8 @@ const ints& Muon_nTrackerLayers
 
 ){
 
+  std::cout << "RochCorrVec_Function_data" << std::endl;
+
   floats CorrectionFactor = RochesterCorrections_testscript2(Year_String, Process_String, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
   return CorrectionFactor;
 
@@ -5608,6 +5847,8 @@ const ints& Muon_nTrackerLayers
 
 
 auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec){
+
+  std::cout << "RochCorrMuon4Mo" << std::endl;
 
   TLorentzVector NewVec{};
 
@@ -5625,6 +5866,8 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
 
 //Implementing the PU modelling
 auto PU_function{[/*&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year*/](int PV_npvs_input){
+
+  std::cout << "PU_function" << std::endl;
 
   float PU_Weight_input;
 
@@ -5741,6 +5984,8 @@ auto EGammaFunction{[/*&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_h
 
 auto EGammaSF_egammaEff{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
+  std::cout << "EGammaSF_egammaEff" << std::endl;
+
   return EGammaFunction(Year_String, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
 
 }};
@@ -5750,6 +5995,8 @@ auto EGammaSF_egammaEff{[/*&year, &EGammaFunction*/](const floats& Electron_pt_S
 
 
 auto EGammaSF_egammaEffReco{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  std::cout << "EGammaSF_egammaEffReco" << std::endl;
 
   return EGammaFunction(Year_String, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
 
@@ -5761,6 +6008,8 @@ auto EGammaSF_egammaEffReco{[/*&year, &EGammaFunction*/](const floats& Electron_
 
 auto EGammaSF_egammaEff_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
+  std::cout << "EGammaSF_egammaEff_Sys" << std::endl;
+
   return EGammaFunction(Year_String, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
 
 }};
@@ -5770,6 +6019,8 @@ auto EGammaSF_egammaEff_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_
 
 
 auto EGammaSF_egammaEffReco_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  std::cout << "EGammaSF_egammaEffReco_Sys" << std::endl;
 
   return EGammaFunction(Year_String, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
 
@@ -5947,6 +6198,8 @@ auto MuonSF{[
 
 auto MuonSFTest_ID{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
+  std::cout << "MuonSFTest_ID" << std::endl;
+
   return MuonSF("ID", Year_String, " ", pt, eta);
   
 }};
@@ -5954,6 +6207,8 @@ auto MuonSFTest_ID{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
 
 auto MuonSFTest_Iso{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
+
+  std::cout << "MuonSFTest_Iso" << std::endl;
 
   return MuonSF("Iso", Year_String, " ", pt, eta);
     
@@ -5964,6 +6219,8 @@ auto MuonSFTest_Iso{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
 auto MuonSFTest_ID_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
   
+  std::cout << "MuonSFTest_ID_sys_syst" << std::endl;
+
   if(Year_String == "2016"){
         return MuonSF("ID sys", Year_String, "Up", pt, eta);
   }
@@ -5978,6 +6235,8 @@ auto MuonSFTest_ID_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats&
 
 
 auto MuonSFTest_ID_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
+
+  std::cout << "MuonSFTest_ID_sys_stat" << std::endl;
 
   if(Year_String == "2016"){
 	return MuonSF("ID sys", Year_String, "Down", pt, eta);
@@ -5994,6 +6253,8 @@ auto MuonSFTest_ID_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats&
 
 auto MuonSFTest_Iso_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
 
+  std::cout << "MuonSFTest_Iso_sys_syst" << std::endl;
+
   if(Year_String == "2016"){
         return MuonSF("Iso sys", Year_String, "Up", pt, eta);
   }
@@ -6008,6 +6269,8 @@ auto MuonSFTest_Iso_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats
 
 
 auto MuonSFTest_Iso_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
+
+  std::cout << "MuonSFTest_Iso_sys_stat" << std::endl;
 
   if(Year_String == "2016"){
         return MuonSF("Iso sys", Year_String, "Down", pt, eta);
@@ -6030,11 +6293,15 @@ auto MuonSFTest_Iso_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats
 //dummy column
 auto DummyColumnFunction{[](const floats& pts){
 
+  std::cout << "DummyColumnFunction" << std::endl;
+
   return pts;
 
 }};
 
 auto DummyColumnFunctionInts{[](const ints& charges){
+
+  std::cout << "DummyColumnFunctionInts" << std::endl;
 
   return charges;
 
@@ -6043,6 +6310,8 @@ auto DummyColumnFunctionInts{[](const ints& charges){
 
 //PS weight lambda function
 auto PSWeight{[/*&year, &process*/](floats& PSWeight, const floats& pts){
+
+  std::cout << "PSWeight" << std::endl;
 
   floats Ones(4, 1.0);
 
@@ -6106,6 +6375,8 @@ const bool& HLT_PFHT700_PFMET85_PFMHT85_IDTight,
 const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
 const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
 const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
+
+  std::cout << "MET_triggers_function" << std::endl;
 
   if(Year_String == "2016"){
 	
@@ -6184,6 +6455,8 @@ const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 )-> bool{
+
+  std::cout << "ee_selection_LL_Trig_function" << std::endl;
 
   if(Year_String == "2016"){
 
@@ -6276,6 +6549,8 @@ const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
+
+  std::cout << "mumu_selection_LL_Trig_function" << std::endl;
 
   if(Year_String == "2016"){
 
@@ -6372,6 +6647,8 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
+  std::cout << "emu_selection_LL_Trig_function" << std::endl;
+
   if(Year_String == "2016"){
 
 	return //single lepton or muon+electron and not any of the others
@@ -6455,6 +6732,8 @@ std::vector<std::string> MET_triggers;
 
 //dummy lambda function
 auto DummyBool{[](const bool& dummyinput){
+
+  std::cout << "DummyBool" << std::endl;
 
   return dummyinput > 0;
 
@@ -6549,6 +6828,8 @@ auto ME_histo_function{[/*&SummedWeights*/](){
 auto GeneratorWeight{[/*&SummedWeights, &ME_Up, &ME_Down*/](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
 
+        std::cout << "GeneratorWeight" << std::endl;
+
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
 
 
@@ -6580,7 +6861,9 @@ auto UnweightedTopPt{[](const doubles& pts){return pts;}};
 
 
 auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
-                
+         
+  std::cout << "TopReweighting_topquark" << std::endl;
+       
   return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
         
 }};
@@ -6588,12 +6871,16 @@ auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_s
 
 auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
 
+   std::cout << "TopReweighting_antitopquark" << std::endl;
+
    return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
 
 }};
 
 
 auto TopReweighting_weight{[](const ints& TopReweighting_topquark, const ints& TopReweighting_antitopquark){
+
+  std::cout << "TopReweighting_weight" << std::endl;
 
   doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
   doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
@@ -6613,6 +6900,8 @@ bool NominalRun;
 std::vector<float> CutRanges_ee = {};
 
 auto chi2_ee{[/*&process, &CutRanges_ee, &SBR, &NominalRun*/](const float& w_mass, const float& Top_Mass){
+
+  std::cout << "chi2_ee" << std::endl;
 
   float FiveSigmaW = 5*W_stddev_ee;
 
@@ -6646,6 +6935,8 @@ auto chi2_ee{[/*&process, &CutRanges_ee, &SBR, &NominalRun*/](const float& w_mas
 std::vector<float> CutRanges_mumu = {};
 
 auto chi2_mumu{[/*&process, &CutRanges_mumu, &SBR, &NominalRun*/](const float& w_mass, const float& Top_Mass){
+  
+  std::cout << "chi2_mumu" << std::endl;
 
   float FiveSigmaW = 5*W_stddev_mumu;
 
@@ -6680,6 +6971,8 @@ auto chi2_mumu{[/*&process, &CutRanges_mumu, &SBR, &NominalRun*/](const float& w
 
 auto Chi2Cut_ee{[/*&SBR, &SR*/](const float& Chi2){
 
+  std::cout << "Chi2Cut_ee" << std::endl;
+
   if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
   else if(SR == true){return Chi2 < Chi2_SR_ee;}
   else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
@@ -6691,6 +6984,8 @@ auto Chi2Cut_ee{[/*&SBR, &SR*/](const float& Chi2){
 
 auto Chi2Cut_mumu{[/*&SBR, &SR*/](const float& Chi2){
 
+  std::cout << "Chi2Cut_mumu" << std::endl
+
   if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
   else if(SR == true){return Chi2 < Chi2_SR_mumu;}
   else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
@@ -6699,6 +6994,8 @@ auto Chi2Cut_mumu{[/*&SBR, &SR*/](const float& Chi2){
 
 
 auto chi2_filter_ee{[/*&SBR, &SR*/](const float& chi2_ee){
+
+  std::cout << "chi2_filter_ee" << std::endl;
 
   if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
   else if(SR == true){return chi2_ee < Chi2_SR_ee;}
@@ -6709,6 +7006,8 @@ auto chi2_filter_ee{[/*&SBR, &SR*/](const float& chi2_ee){
 	
 auto chi2_filter_mumu{[/*&SBR, &SR*/](const float& chi2_mumu){
                 
+  std::cout << "chi2_filter_mumu" << std::endl;
+
   if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
   else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
   else{std::cout << "SR and SBR cannot both be false" << std::endl;}
