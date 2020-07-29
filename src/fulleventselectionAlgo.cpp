@@ -4703,16 +4703,17 @@ const ints& w_reco_jets
 
 ){
 
+  const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
+
+  auto RecoW = TLorentzVector{};
+ 
   std::cout << "Inside WLorentzVector" << std::endl;
   std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
   std::cout << "w_pair_eta.size() = " << w_pair_eta.size() << std::endl;
   std::cout << "w_pair_phi.size() = " << w_pair_phi.size() << std::endl;
   std::cout << "w_reco_jets.size() = " << w_reco_jets.size() << std::endl;
-
-  const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
-
-  auto RecoW = TLorentzVector{};
-  
+  std::cout << "nRecoWBosons = " << nRecoWBosons << std::endl;
+   
   for(int i = 0; i < nRecoWBosons; i++){
 
 	  auto Vec = TLorentzVector{};
