@@ -4963,6 +4963,10 @@ const ints& w_reco_jets
 
   for(int i = 0; i < num; i++){
 
+  std::cout << "i = " << i << std::endl;
+  std::cout << "num = " << num << std::endl;
+  std::cout << "w_pair_pt.at(i) = " << w_pair_pt.at(i) << std::endl;
+  
 
   BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
   RecoW.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
@@ -4979,13 +4983,18 @@ const ints& w_reco_jets
 
   }
 
+  std::cout << "index_1 = " << index_1 << std::endl;
 
-  BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
-  RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
-  reco_top = RecoW + BJets;	
+  if(index_1 < 2){
 
+  	BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
+  	RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
+  	reco_top = RecoW + BJets;	
+ 
+ }
+ else{reco_top.SetPtEtaPhiM(0, 0, 0, 0);}
 
-  return reco_top;
+ return reco_top;
 
 }};
 
