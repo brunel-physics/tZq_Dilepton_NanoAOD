@@ -44,8 +44,6 @@ std::fstream& GotoLine(std::fstream& file, unsigned int num){
 		
     file.seekg(std::ios::beg);
 
-    std::cout << "inside go to line" << std::endl;
-
     for(int i=0; i < num - 1; ++i){
         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
@@ -114,7 +112,8 @@ const floats& MuonPhi,
 const ints& Muon_genPartIdx,
 const ints& Muon_nTrackerLayers){
 
-	std::cout << "RochesterCorrections_testscript2" << std::endl;
+
+	std::cout << "print 1" << std::endl;
 
 	std::string RoccoTextFile;
 
@@ -229,6 +228,8 @@ const ints& Muon_nTrackerLayers){
 //Functions for reading the trigger efficiency and SF text files
 double linereader_TriggerSF(const int& LineNumber, const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
 
+   std::cout << "print 2" << std::endl;
+
    std::string TriggerSF_TextFiles;
 
    if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
@@ -257,9 +258,12 @@ double linereader_TriggerSF(const int& LineNumber, const std::string& InputTrigg
 
 int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
 
+   std::cout << "print 3" << std::endl;
+
    std::string TriggerSF_TextFiles;
+
  
-   if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
+  if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
    else if(InputTriggerSF_File == "MC_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
    else if(InputTriggerSF_File == "Data_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_Data_MET_" + year + ".txt";}
    else if(InputTriggerSF_File == "MC_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_MC_ttbar_" + year + ".txt";}
@@ -282,7 +286,7 @@ int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::str
 
 auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
 
-   std::cout << "textfilereader2_TriggerSF" << std::endl;
+   std::cout << "print 4" << std::endl;
 
    int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year, blinding);
    std::vector<double> Value;
@@ -302,6 +306,8 @@ auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std
 //For creating the output directories
 //Creating a directory for all results
 auto DirectoryCreator(const std::string& year, const bool& blinding, const bool& NPL){
+
+        std::cout << "print 5" << std::endl;
 
 	if(year == "2016"){
 
@@ -748,126 +754,46 @@ auto DirectoryCreator(const std::string& year, const bool& blinding, const bool&
 
 namespace{
 
-	constexpr double EndcapMinEta = 1.566;
-	constexpr double BarrelMaxEta = 1.4442;
-	double MaxTrackerEta;
-	double MinElectronPt;
-	double MinMuonPt;
-	double MinElectronPtEmu;
-	double MinMuonPtEmu;
-	double MaxElectronPt;
-	double MaxMuonPt;
-	int NumberOfSimulatedEvents_ee;
-	int NumberOfSimulatedEvents_mumu;
-
-	float W_stddev_ee;
-	float Top_stddev_ee;
-	float W_stddev_mumu;
-	float Top_stddev_mumu;
-
-	float Chi2_SR_ee;
-	float Chi2_SBR_ee;
-	float Chi2_SR_mumu;
-	float Chi2_SBR_mumu;
+constexpr double EndcapMinEta = 1.566;
+constexpr double BarrelMaxEta = 1.4442;
+double MaxTrackerEta;
+double MinElectronPt;
+double MinMuonPt;
+double MinElectronPtEmu;
+double MinMuonPtEmu;
+double MaxElectronPt;
+double MaxMuonPt;
+int NumberOfSimulatedEvents_ee;
+int NumberOfSimulatedEvents_mumu;
 
 
-	std::string JetEtaInput;
-	std::string JetPtInput;
-	std::string JetMassInput;	
-	std::string JetPhiInput;
+float W_stddev_ee;
+float Top_stddev_ee;
+float W_stddev_mumu;
+float Top_stddev_mumu;
+
+float Chi2_SR_ee;
+float Chi2_SBR_ee;
+float Chi2_SR_mumu;
+float Chi2_SBR_mumu;
 
 
-	template<typename T>
-	[[gnu::const]] T select(const T& a, const ints& mask)
-	{
-    		return a[mask];
-	}
+template<typename T>
+[[gnu::const]] T select(const T& a, const ints& mask)
+{
+    return a[mask];
+}
 
-	[[gnu::const]] auto delta_phi(const float phi1, const float phi2)
-	{
-    		return vdt::fast_atan2f(vdt::fast_sinf(phi1 - phi2), vdt::fast_cosf(phi1 - phi2));
-	}
+[[gnu::const]] auto delta_phi(const float phi1, const float phi2)
+{
+    return vdt::fast_atan2f(vdt::fast_sinf(phi1 - phi2), vdt::fast_cosf(phi1 - phi2));
+}
 
-	[[gnu::const]] auto deltaR(const float eta1, const float phi1, const float eta2, const float phi2)
-	{
-    		return std::sqrt(std::pow(eta1 - eta2, 2) + std::pow(delta_phi(phi1, phi2), 2));
-	}
+[[gnu::const]] auto deltaR(const float eta1, const float phi1, const float eta2, const float phi2)
+{
+    return std::sqrt(std::pow(eta1 - eta2, 2) + std::pow(delta_phi(phi1, phi2), 2));
+}
 
-	bool PU_ScaleUp = false;
-	bool PU_ScaleDown = false;
-	bool BTag_ScaleUp = false;
-	bool BTag_ScaleDown = false; 
-	bool JetSmearing_ScaleUp = false;
-	bool JetSmearing_ScaleDown = false;
-	bool JetResolution_ScaleUp = false;
-	bool JetResolution_ScaleDown = false;
-	bool LeptonEfficiencies_ScaleUp = false;
-	bool LeptonEfficiencies_ScaleDown = false;
-	bool PDF_ScaleUp = false;
-	bool PDF_ScaleDown = false; 
-	bool ME_Up = false;
- 	bool ME_Down = false; 
-	bool MET_Up = false;
-	bool MET_Down = false; 
-	bool isr_up = false; 
-	bool isr_down = false;
-	bool fsr_up = false;
-	bool fsr_down = false;	
-        bool SBR = false;
-	bool SR = false;	
-
-	bool Blinding_bool = false;
-	bool NPL_bool = false;
-	bool ttbarCR = false;
-	bool ZPlusJetsCR = false;
-
-
-	TH1* puReweight_2016;
- 	TH1* puReweight_2017;
-	TH1* puReweight_2018;
-	TH2* EGammaEff2016_histo;
-	TH2* EGammaEffSys2016_histo;
-	TH2* EGammaEffReco2016_histo;
-	TH2* EGammaEff2017_histo;
-	TH2* EGammaEffSys2017_histo;
-	TH2* EGammaEffReco_LowPt_2017_histo;
-	TH2* EGammaEffRecoSys_LowPt_2017_histo;
-	TH2* EGammaEffReco_HigherPt_2017_histo;
-	TH2* EGammaEffRecoSys_HigherPt_2017_histo;
-	TH2* EGammaEff2018_histo;
-	TH2* EGammaEffSys2018_histo;
-	TH2* EGammaEffReco2018_histo;
-	TH2* EGammaEffRecoSys2016_histo;
-	TH2* EGammaEffRecoSys2018_histo;
-	TH2* histo_RunsBCDEF_ID_2016;
-	TH2* histo_RunsGH_ID_2016;
-	TH2* histo_RunsBCDEF_ISO_2016;
-	TH2* histo_RunsGH_ISO_2016;
-	TH2* histo_RunsBCDEF_ID_2017;
-	TH2* histo_RunsBCDEF_ID_Sys_2017;
-	TH2* histo_RunsBCDEF_ID_Sys_Stat_2017;
-	TH2* histo_RunsBCDEF_ID_Sys_Syst_2017;
-	TH2* histo_RunsBCDEF_ISO_2017;
-	TH2* histo_RunsBCDEF_ISO_Sys_2017;
-	TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017;
-	TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017;
-	TH2* histo_RunsABCD_ID_2018;
-	TH2* histo_RunsABCD_ISO_2018;
-
-	TFile* EGammaEff_inputfile_2016;
-	TFile* EGammaEffSys_inputfile_2016;
-	TFile* EGammaEffReco_inputfile_2016;
- 	TFile* EGammaEffRecoSys_inputfile_2016;
-	TFile* EGammaEffReco_HigherPt_inputfile_2017;
-	TFile* EGammaEffRecoSys_HigherPt_inputfile_2017;
-	TFile* EGammaEffReco_LowPt_inputfile_2017;
-	TFile* EGammaEffRecoSys_LowPt_inputfile_2017;
-	TFile* EGammaEff_inputfile_2017;
-	TFile* EGammaEffSys_inputfile_2017;
-	TFile* EGammaEff_inputfile_2018;
-	TFile* EGammaEffSys_inputfile_2018;
-	TFile* EGammaEffReco_inputfile_2018;
-	TFile* EGammaEffRecoSys_inputfile_2018;
 
 
 
@@ -876,8 +802,6 @@ namespace{
 template<typename T, typename U>
 [[gnu::const]] bool all_equal(const T& t, const U& u)
 {
-    std::cout << "all_equal" << std::endl;
-
     return t == u;
 }
 
@@ -891,12 +815,7 @@ template<typename T, typename U, typename... Types>
 [[gnu::const]] auto inv_mass(const floats& pts, const floats& etas, const floats& phis, const floats& ms)
 {
 
-    std::cout << "inv_mass" << std::endl;
-    std::cout << "pts.size() = " << pts.size() << std::endl;
-    std::cout << "ms.size() = " << ms.size() << std::endl;
-    std::cout << "phis.size() = " << phis.size() << std::endl;
-    std::cout << "etas.size() = " << etas.size() << std::endl; 
-	
+
 
     if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
     {
@@ -914,25 +833,13 @@ template<typename T, typename U, typename... Types>
         p.SetPtEtaPhiM(pts[i], etas[i], phis[i], ms[i]);
         vec += p;
     }
-
-    float output;
-
-    if( !isinf(abs(vec.M())) ){output = boost::numeric_cast<float>(vec.M());}
-    else{output = 0.0;}
-
-    return output;
 	
+    return boost::numeric_cast<float>(vec.M());
 }
 
 
 [[gnu::const]] auto inv_mass_doubles(const doubles& pts, const doubles& etas, const doubles& phis, const doubles& ms)
 {
-
-    std::cout << "inv_mass_doubles" << std::endl;
-    std::cout << "pts.size() = " << pts.size() << std::endl;
-    std::cout << "ms.size() = " << ms.size() << std::endl;
-    std::cout << "phis.size() = " << phis.size() << std::endl;
-    std::cout << "etas.size() = " << etas.size() << std::endl;
 
 
     if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
@@ -953,7 +860,6 @@ template<typename T, typename U, typename... Types>
     }
 
     return boost::numeric_cast<float>(vec.M());
-
 }
 
 
@@ -962,6 +868,7 @@ template<typename T, typename U, typename... Types>
 
 double linereader(const int& LineNumber, const std::string& year){
 
+   std::cout << "print 6" << std::endl;
    using namespace std;
 
    std::string NormFileString = "Normalisation/NormalisationFactors_" + year + ".txt"; 
@@ -997,10 +904,8 @@ int NBins = 40;
 
 auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
-  std::cout << " EffBTaggedFunction_ee" << std::endl;
-  std::cout << "pts.size() = " << pts.size() << std::endl;
-  std::cout << "etas.size() = " << etas.size() << std::endl;
- 
+  std::cout << "print 7" << std::endl;
+
   floats BTaggedEff{};
 
   for(int i = 0; i < pts.size(); i++){
@@ -1032,9 +937,7 @@ auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const 
 
 auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
-  std::cout << " EffBTaggedFunction_mumu" << std::endl;
-  std::cout << "pts.size() = " << pts.size() << std::endl;
-  std::cout << "etas.size() = " << etas.size() << std::endl;
+  std::cout << "print 9" << std::endl;
 
   floats BTaggedEff{};
 
@@ -1065,9 +968,7 @@ auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](
 
 auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
-  std::cout << "EffNonBTaggedFunction_ee" << std::endl;
-  std::cout << "pts.size() = " << pts.size() << std::endl;
-  std::cout << "etas.size() = " << etas.size() << std::endl;
+  std::cout << "print 10" << std::endl;
 
   floats NonBTaggedEff{};
 
@@ -1098,9 +999,7 @@ auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*
 
 auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
 
-  std::cout << "EffNonBTaggedFunction_mumu" << std::endl;
-  std::cout << "pts.size() = " << pts.size() << std::endl;
-  std::cout << "etas.size() = " << etas.size() << std::endl;
+  std::cout << "print 11" << std::endl;
 
   floats NonBTaggedEff{};
 
@@ -1132,7 +1031,7 @@ auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &
 
 auto EffBTaggedProduct{[](const floats& EffBTagged){
   
-  std::cout << "EffBTaggedProduct" << std::endl;
+  std::cout << "print 12" << std::endl;
 
   float initial = 1;
 
@@ -1153,8 +1052,8 @@ auto EffBTaggedProduct{[](const floats& EffBTagged){
 
 auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
-  std::cout << "EffNonBTaggedProduct" << std::endl;
-
+  std::cout << "print 13" << std::endl;
+ 
   float initial = 1;
 
   for(int i = 0; i < EffNonBTagged.size(); i++ ){
@@ -1172,7 +1071,7 @@ auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
 auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBTaggedProduct){
 
-  std::cout << "ProbBTagMCFunction" << std::endl;
+  std::cout << "print 14" << std::endl;
 
   float MCProb = EffBTaggedProduct * EffNonBTaggedProduct; 
   return MCProb;
@@ -1182,10 +1081,11 @@ auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBT
 
 
 //reading the csv file to obtain the b tagging scale factor for each event
+bool BTag_ScaleUp_bool, BTag_ScaleDown_bool;
 
 auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
-   std::cout << "CMSBTagSF_Function" << std::endl;
+  std::cout << "print 15" << std::endl;
 
   floats ResultVector{};
 
@@ -1215,8 +1115,8 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
 
 	std::string systematic_type_string;
 
-	if(BTag_ScaleUp == true){systematic_type_string = "up";}
-        else if(BTag_ScaleDown == true){systematic_type_string = "down";}
+	if(BTag_ScaleUp_bool == true){systematic_type_string = "up";}
+        else if(BTag_ScaleDown_bool == true){systematic_type_string = "down";}
  	else{systematic_type_string = "central";}
 
         std::vector<std::string> SysTypeTest(pts.size(), "central");
@@ -2353,7 +2253,7 @@ return ResultVector;
 
 auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
- std::cout << "CMSBTagSF" << std::endl;
+ std::cout << "print 16" << std::endl;
 
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
 
@@ -2361,8 +2261,8 @@ auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, c
 
 
 auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
- 
- std::cout << "CMSNonBTagSF" << std::endl;
+
+ std::cout << "print 17" << std::endl;
 
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
@@ -2372,7 +2272,7 @@ auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas
 
 auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF){
 
-  std::cout << "EffBTaggedProductData" << std::endl;
+  std::cout << "print 18" << std::endl;
 
   float initial = 1;
   float output;
@@ -2392,7 +2292,7 @@ auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF)
 
 auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSF){
 
-  std::cout << "EffNonBTaggedProductData" << std::endl;
+  std::cout << "print 19" << std::endl;
 
   float initial = 1;
 
@@ -2416,7 +2316,7 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
 auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& EffNonBTaggedProductData){
 
-  std::cout << "ProbBTagDataFunction" << std::endl;
+  std::cout << "print 20" << std::endl;
 
   float DataProb = EffBTaggedProductData * EffNonBTaggedProductData;
   return DataProb;
@@ -2428,7 +2328,8 @@ auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& Ef
 
 auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
- 	std::cout << "BTagWeightFunction" << std::endl;
+
+	std::cout << "print 21" << std::endl;
 
 	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
 	
@@ -2441,5427 +2342,60 @@ auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
 
 
-//lambda function for implementing the MET uncertainties
-auto METUncertFunction{[/*&MET_Up, &MET_Down*/](
 
-const floats& MET_MetUnclustEnUpDeltaX, 
-const floats& MET_MetUnclustEnUpDeltaY, 
-const floats& MET_phi,
-const floats& MET_sumEt,
-std::vector<TLorentzVector> SmearedJet4Momentum,
-const floats& Jet_pt, 
-const floats& Jet_eta, 
-const floats& Jet_phi, 
-const floats& Jet_mass){
 
-  
-  std::cout << "METUncertFunction" << std::endl;
 
-  std::vector<TLorentzVector> metVecOriginal{};
-  floats metVecOriginal_px;
-  floats metVecOriginal_py;
 
-  std::vector<TLorentzVector> metVec{};
-  std::vector<TLorentzVector> UnsmearedJet{};
-  floats SmearedJetPxVec;
-  floats SmearedJetPyVec;
-  floats UnsmearedJetPx;
-  floats UnsmearedJetPy;
 
 
-  //TLorentzVector for unsmeared jets
-  for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
 
-  //Obtaining the px and py of unsmeared jets
-  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
-  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
-   
 
-  //Obtaining the px and py of smeared jets
-  for(int i = 0; i < SmearedJet4Momentum.size(); i++){
- 
-  	float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
-	float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
- 	SmearedJetPxVec.push_back(SmearedJetPx);
-	SmearedJetPyVec.push_back(SmearedJetPy);
+void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR, const bool& SBR, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
-  }
 
-  //Original MET vector
-  for(int i = 0; i < MET_phi.size(); i++){ 
 
-	(metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i)); 
-	metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
-	metVecOriginal_py.push_back( (metVecOriginal.at(i)).Py() );
 
-  }
+//EnableImplicitMT();
 
-  floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
-  floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
-  floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
-  floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;  
 
-  //For the nominal MET and MET uncertainties
-  
-  floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
-  floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
+std::string branch;
 
-  for(int i = 0; i < MET_phi.size(); i++){
+if(PU_ScaleUp == true){branch = "PU_ScaleUp";}
+else if(PU_ScaleDown == true){branch = "PU_ScaleDown";}
+else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp";}
+else if(BTag_ScaleDown == true){branch = "BTag_ScaleDown";}
+else if(JetSmearing_ScaleUp == true){branch = "JetSmearing_ScaleUp";}
+else if(JetSmearing_ScaleDown == true){branch = "JetSmearing_ScaleDown";}
+else if(JetResolution_ScaleUp == true){branch = "JetResolution_ScaleUp";}
+else if(JetResolution_ScaleDown == true){branch = "JetResolution_ScaleDown";}
+else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp";}
+else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown";}
+else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
+else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
+else if(ME_Up == true){branch = "ME_Up";}
+else if(ME_Down == true){branch = "ME_Down";}
+else if(MET_Up == true){branch = "MET_Up";}
+else if(MET_Down == true){branch = "MET_Down";}
+else if(isr_up == true){branch = "isr_up";}
+else if(isr_down == true){branch = "isr_down";}
+else if(fsr_up == true){branch = "fsr_up";}
+else if(fsr_down == true){branch = "fsr_down";}
+else{branch = "Nominal";}
 
-  	if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
-  	else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
-  	else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
 
- }
+std::cout << "branch = " << branch << std::endl;
 
- //Propagating the jet smearing to the MET
- 
- for(int i = 0; i < SmearedJetPxVec.size(); i++){
- 
- 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
-        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
- 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() - SmearedJetPxVec.at(i));
-        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() - SmearedJetPyVec.at(i));
- 
- }
 
+BTag_ScaleUp_bool = BTag_ScaleUp;
+BTag_ScaleDown_bool = BTag_ScaleDown;
 
-  return metVec;
 
-}};
+std::vector<std::string> input_files;
+std::ofstream CutFlowReport;
+std::string cutflowstring;
 
 
-
-
-
-
-std::string Process_String;
-std::string Year_String;
-
-//For the normalisation factors
-auto NormalisationFactorFunction{[/*&process, &year*/](){
-
-  std::cout << "NormalisationFactorFunction" << std::endl;
-
-  std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
-                                    "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
-                                    "ZPlusJets_PtBinned_0To50", "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250",
-                                    "ZPlusJets_PtBinned_100To250_ext1", "ZPlusJets_PtBinned_100To250_ext2", "ZPlusJets_PtBinned_100To250_ext5",
-                                    "ZPlusJets_PtBinned_250To400", "ZPlusJets_PtBinned_250To400_ext1", "ZPlusJets_PtBinned_250To400_ext2",
-                                    "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1",
-                                    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1",
-                                    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph_NanoAODv5", "ttbar_madgraph_ext", "ttbar_TTToHadronic",
-                                    "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp",
-                                    "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_schannel", "ttbar_hdampUP",
-                                    "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", "SingleTop_tchannel_top_hdampUP",
-                                    "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext",
-                                    "ttbar_fsr_UP", "ttbar_fsr_UP_ext", "ttbar_fsr_DOWN", "ttbar_fsr_DOWN_ext",
-                                    "SingleTop_tW", "SingleTop_tW_ScaleUp", "SingleTop_tW_ScaleDown", "SingleTop_tbarW",
-                                    "SingleTop_tbarW_ScaleUp", "SingleTop_tbarW_ScaleDown", "SingleTop_tHq", "SingleTop_tZq_W_lept_Z_had",
-                                    "SingleTop_tWZ_tWll", "VV_ZZTo2l2nu", "VV_ZZTo2l2nu_ext", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WW1nuqq", "VV_WZTo2L2Q",
-                                    "VV_WZTo3lNu", "VV_WZTo1l2Nu2Q", "VV_WWTo2l2Nu", "VV_WWToLNuQQ", "VV_WWToLNuQQ_ext", "VV_WGToLNuG", "VV_ZGToLLG",
-                                    "VVV_WWWTo4F", "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets", "WPlusJets_ext", "ttbarV_ttWJetsToLNu",
-                                    "ttbarV_ttWJetsToLNu_ext", "ttbarV_ttZToLLNuNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttZToLL", "ttbarV_ttZToLL_ext2", "ttbarV_ttZToLL_ext3",
-                                    "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
-
-
-
-  for(int i = 1; i < ProcessStrings.size(); i++){
-
-        if(Process_String == ProcessStrings.at(i)){return linereader(i, Year_String);}
-        else{continue;}
-
-  }
-
-
-}};
-
-
-
-float SF_ee, SF_mumu, SF_emu;
-float SF_Uncert_ee, SF_Uncert_mumu, SF_Uncert_emu;
-
-
-
-//Event weights
-auto EventWeight_ee{[/*&NormalisationFactorFunction, &SF_ee,                           &SF_Uncert_ee,*/
-                     //&LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
-                     //&PDF_ScaleUp,                 &PDF_ScaleDown,
-                     //&isr_up,                      &isr_down,
-                     //&fsr_up,                      &fsr_down
-                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
-
-
-			std::cout << "EventWeight_ee" << std::endl;
-
-                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-
-
-
-
-}};
-
-
-
-auto EventWeight_mumu{[/*&NormalisationFactorFunction, &SF_mumu,                           &SF_Uncert_mumu,*/
-                       //&LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
-                       //&PDF_ScaleUp,                 &PDF_ScaleDown,
-                       //&isr_up,                      &isr_down,
-                       //&fsr_up,                      &fsr_down
-                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
-
-
-			std::cout << "EventWeight_mumu" << std::endl;
-
-                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(2) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(0) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(3) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(1) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-
-
-}};
-
-
-
-
-
-
-
-
-
-
-
-std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
-
-std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
-
-
-
-std::vector<std::string> MET_uncert_strings = {
-
-"MET_MetUnclustEnUpDeltaX",
-"MET_MetUnclustEnUpDeltaY",
-"MET_phi",
-"MET_sumEt",
-"SmearedJet4Momentum",
-"Jet_pt",
-"Jet_eta",
-"Jet_phi",
-"Jet_mass"
-
-};
-
-
-//Functions for events that pass the ee, mumu, or emu triggers
-//To prevent double counting single and double lepton datasets
-auto SingleElectron{[/*&Year_String*/](
-
-const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG,
-const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
-const bool& HLT_Ele35_WPTight_Gsf,
-const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
-const bool& HLT_Ele27_WPTight_Gsf)-> bool{
-
-  std::cout << "SingleElectron" << std::endl;
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-  if(Year_String == "2016"){
-
-	return  HLT_Ele25_eta2p1_WPTight_Gsf > 0 ||
-		HLT_Ele27_WPTight_Gsf > 0 ||
-		HLT_Ele32_eta2p1_WPTight_Gsf > 0;
-
-  }
-  else if(Year_String == "2017"){
-
-  	return //HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || 
-   	       HLT_Ele35_WPTight_Gsf > 0; 
-
-  }
-  else if(Year_String == "2018"){
-
-	return HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0;
-
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
-
-
-}};
-
-
-auto DoubleElectron{[/*&Year_String*/](
-
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
-
-)->bool{
-
-
-   std::cout << "DoubleElectron" << std::endl;
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-  if(Year_String == "2016"){
-
-	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
-
-  }
-  else if(Year_String == "2017"){
-  
-	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
-   	       HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
-
-  }
-  else if(Year_String == "2018"){
-	
-	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || 
-               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
-
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
-
-
-}};
-
-
-
-auto SingleMuon{[/*&Year_String*/](
-
-const bool& HLT_IsoMu24,
-const bool& HLT_IsoMu27,
-const bool& HLT_IsoMu24_eta2p1
-
-)->bool{
-
-  std::cout << "SingleMuon" << std::endl;
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-  if(Year_String == "2016"){
-
-  	return HLT_IsoMu24  > 0 ||
-	       HLT_IsoMu24_eta2p1  > 0;
-
-  }
-  else if(Year_String == "2017"){
-
-  	return HLT_IsoMu24 > 0 || 
-   	       HLT_IsoMu27 > 0; 
-
-  }
-  else if(Year_String == "2018"){
-
-	return HLT_IsoMu24 > 0;
-
-  }
-  else{std::cout << "Please choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
-
-}};
-
-
-
-auto DoubleMuon{[/*&Year_String*/](
-
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
-
-   std::cout << "DoubleMuon" << std::endl;
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-
-  if(Year_String == "2016"){return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0;}
-  else if(Year_String == "2017"){
-
-  	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || 
-   	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0; 
-
-  }
-  else if(Year_String == "2018"){
-
-	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 ||
-	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0;
-
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
-
-
-}};
-
-
-
-
-auto MuonElectron{[/*&Year_String*/](
-
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
-
-
- std::cout << "MuonElectron" << std::endl;
-
- //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
- //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
- //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-
- if(Year_String == "2016"){
-
-	return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
-               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
-               //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||   (branch not present in MET)
-	       HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
-               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || (branch not present in MET)
-               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0;
-
-
- }
- else if(Year_String == "2017"){
-
- 	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
-   	       HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
-  	       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
-
- }
- else if(Year_String == "2018"){
-
-	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
-               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
-               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0;
-
-
- }
- else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
-
-
-}};
-
-
-
-
-
-
-
-
-//Events that only pass the lepton selection criteria
-
-
-auto LeadingElectron_dz_ECALBarrel_function{[](
-
-const float& LeadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dz){
-
-  std::cout << "LeadingElectron_dz_ECALBarrel_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-	if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;  
-
-
-}};
-
-
-auto SubleadingElectron_dz_ECALBarrel_function{[](
-
-const float& SubleadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dz){
-
-  std::cout << "SubleadingElectron_dz_ECALBarrel_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-
-}};
-
-
-
-auto LeadingElectron_dz_ECALEndcaps_function{[](
-
-const float& LeadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dz){
-
-  floats OutVec{};
-
-  std::cout << "LeadingElectron_dz_ECALEndcaps_function" << std::endl;
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) < 0.2){OutVec.push_back(Electron_dz.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-}};
-
-
-
-auto SubleadingElectron_dz_ECALEndcaps_function{[](
-
-const float& SubleadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dz){
-
-  std::cout << "SubleadingElectron_dz_ECALEndcaps_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) <  0.2){OutVec.push_back(Electron_dz.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-
-}};
-
-
-
-auto LeadingElectron_dxy_ECALBarrel_function{[](
-
-const float& LeadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dxy){
-
-
-  std::cout << "LeadingElectron_dxy_ECALBarrel_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479  && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-}};
-
-
-
-auto SubleadingElectron_dxy_ECALBarrel_function{[](
-
-const float& SubleadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dxy){
-
-  std::cout << "SubleadingElectron_dxy_ECALBarrel_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-}};
-
-auto LeadingElectron_dxy_ECALEndcaps_function{[](
-
-const float& LeadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dxy){
-
-  std::cout << "LeadingElectron_dxy_ECALEndcaps_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0  && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-
-}};
-
-auto SubleadingElectron_dxy_ECALEndcaps_function{[](
-
-const float& SubleadingElectron_pT,
-const floats& Electron_eta_Selection,
-const floats& Electron_dxy){
-
-  std::cout << "SubleadingElectron_dxy_ECALEndcaps_function" << std::endl;
-
-  floats OutVec{};
-
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
-	else{float zero = 0.0; OutVec.push_back(zero);}
-
-  }
-
-  return OutVec;
-
-
-}};
-
-
-
-
-
-
-
-auto OppositeSign{[](const ints& charges){
-
-  std::cout << "OppositeSign" << std::endl;
-
-  return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
-
-}};
-
-auto OppositeSign_emu{[](const ints& charges1, const ints& charges2){
-
-  std::cout << "OppositeSign_emu" << std::endl;
-
-  return (charges1.size() == 1 && charges2.size() == 1) ? signbit(charges1.at(0)) != signbit(charges2.at(0)) : false;
-
-}};
-
-
-auto SameSign{[](const ints& charges){
-
-  std::cout << "SameSign" << std::endl;
-
-  return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
-
-}};
-
-
-auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
-
-  std::cout << "OppositeSignNonPrompt" << std::endl;
-
-  bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
-  bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
-
-  return OppositeSignChargeCheck && (LeptonNonPromptCheck == 1);
-
-}};
-
-
-auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
-  
-  std::cout << "SameSignNonPrompt" << std::endl;
-
-  bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
-  bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
-
-  return SameSignChargeCheck && (LeptonNonPromptCheck == 1);
-
-}};
-
-
-
-auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
-
-  std::cout << "OppositeSignPrompt" << std::endl;
-
-  bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
-  bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});
-
-  return OppositeSignChargeCheck && (LeptonPromptCheck == 1);
-
-}};
-
-
-
-
-auto SameSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
-
-  std::cout << "SameSignPrompt" << std::endl;
-
-  bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
-  bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});  
-
-  return SameSignChargeCheck && (LeptonPromptCheck == 1);
-
-}};
-
-
-
-
-auto ElectronsFunction{[](
-
-const int targetID,
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-){
- 
-  std::cout << "ElectronsFunction" << std::endl;
-
-  return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
-
-}};
-
-
-auto ElectronsFunctionEmu{[](
-
-const int targetID,
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-){
-
-  std::cout << "ElectronsFunctionEmu" << std::endl;
-
-  return (Electron_pt > MinElectronPtEmu && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
-
-}};
-
-
-
-auto TightElectronsFunction{[/*&ElectronsFunction*/](
-
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-
-){
-
-  std::cout << "TightElectronsFunction" << std::endl;
-
-  return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
-
-}};
-
-
-auto TightElectronsFunctionEmu{[/*&ElectronsFunctionEmu*/](
-
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-
-){
-
-  std::cout << "TightElectronsFunctionEmu" << std::endl;
-
-  return ElectronsFunctionEmu(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
-
-}};
-
-
-auto LooseElectronsFunction{[/*&ElectronsFunction*/](
-
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-
-){
-
-  std::cout << "LooseElectronsFunction" << std::endl;
-
-  return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
-
-}};
-
-
-auto LooseElectronsFunctionEmu{[/*&ElectronsFunctionEmu*/](
-
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-
-){
-
-  std::cout << "LooseElectronsFunctionEmu" << std::endl;
-
-  return ElectronsFunctionEmu(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
-
-}};
-
-
-auto MuonsFunction{[](
-
-const float target_iso, 
-const bools& isPFs, 
-const floats& Muon_pt, 
-const floats& Muon_eta, 
-const bools& ids, 
-const floats& isos
-
-){
-
-  std::cout << "MuonsFunction" << std::endl;
-
-  return (isPFs && Muon_pt > MinMuonPt && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
-
-}};
-
-
-auto MuonsFunctionEmu{[](
-
-const float target_iso,
-const bools& isPFs,
-const floats& Muon_pt,
-const floats& Muon_eta,
-const bools& ids,
-const floats& isos
-
-){
-
-  std::cout << "MuonsFunctionEmu" << std::endl;
-
-  return (isPFs && Muon_pt > MinMuonPtEmu && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
-
-}};
-
-
-auto TightMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
-
-  std::cout << "TightMuonsFunction" << std::endl;
-
-  return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
-
-}};
-
-
-auto TightMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
-
-  std::cout << "TightMuonsFunctionEmu" << std::endl;
-
-  return MuonsFunctionEmu(0.25, isPFs, pts, etas, ids, isos);
-
-}};
-
-
-auto LooseMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
-
-  std::cout << "LooseMuonsFunction" << std::endl;
-
-  return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
-
-}};
-
-
-auto LooseMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
- 
-  std::cout << "LooseMuonsFunctionEmu" << std::endl;
-
-  return MuonsFunctionEmu(0.15, isPFs, pts, etas, ids, isos);
-
-}};
-
-
-auto lep_cut_ee{[](
-
-const floats& tight_ele_pts, 
-const floats& loose_ele_pts, 
-const bool os,
-const unsigned int& nElectron,
-const floats& LeadingElectron_dz_ECALBarrel,
-const floats& LeadingElectron_dxy_ECALBarrel,
-const floats& LeadingElectron_dz_ECALEndcaps,
-const floats& LeadingElectron_dxy_ECALEndcaps,
-const floats& SubleadingElectron_dz_ECALBarrel,
-const floats& SubleadingElectron_dxy_ECALBarrel,
-const floats& SubleadingElectron_dz_ECALEndcaps,
-const floats& SubleadingElectron_dxy_ECALEndcaps
-){
-
-  std::cout << "lep_cut_ee" << std::endl;
-
-  const bool ele_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
-  bool lead_pt_cut{false};
-
-  lead_pt_cut = tight_ele_pts.empty() ? false : *max_element(tight_ele_pts.begin(), tight_ele_pts.end()) > MaxElectronPt;
-
-
-  return
-
-  os &&
-  lead_pt_cut &&
-  ele_cut &&
-  nElectron == 2 &&
-  LeadingElectron_dz_ECALBarrel.at(0) < 0.1 &&
-  LeadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
-  LeadingElectron_dz_ECALEndcaps.at(0) < 0.2 &&
-  LeadingElectron_dxy_ECALEndcaps.at(0) < 0.1 &&
-  SubleadingElectron_dz_ECALBarrel.at(0) < 0.1 &&
-  SubleadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
-  SubleadingElectron_dz_ECALEndcaps.at(0) < 0.2 &&
-  SubleadingElectron_dxy_ECALEndcaps.at(0) < 0.1;
-
-}};
-
-
-
-auto lep_cut_mumu{[](const floats& tight_mu_pts, const floats& loose_mu_pts, const bool os, const unsigned int nMuon) {
-
-  std::cout << "lep_cut_mumu" << std::endl;
-
-  const bool mu_cut{tight_mu_pts.size() == 2 && tight_mu_pts.size() == loose_mu_pts.size()};
-  bool lead_pt_cut{false};
-
-  lead_pt_cut = tight_mu_pts.empty() ? false : *std::max_element(tight_mu_pts.begin(), tight_mu_pts.end()) > MaxMuonPt;
-
-  return 
-
-  os && 
-  lead_pt_cut && 
-  mu_cut &&
-  nMuon == 2;
-
-  }};
-
-
-
-//emu only for ttbar control region and trigger SF calculations
-auto lep_cut_emu{[](
-
-const floats& tight_ele_pts,
-const floats& loose_ele_pts,
-const bool os,
-const unsigned int& nElectron,
-const floats& tight_mu_pts, 
-const floats& loose_mu_pts, 
-const unsigned int nMuon
-
-){
-
-  std::cout << "lep_cut_emu" << std::endl;
-
-  const bool emu_cut{tight_ele_pts.size() == 1 && tight_mu_pts.size() == 1 && (tight_mu_pts.size() == loose_mu_pts.size()) && (tight_mu_pts.size() == loose_mu_pts.size())};
-
-  return 
-
-  os &&
-  emu_cut &&
-  nElectron == 1 &&
-  nMuon == 1;
-
-}};
-
-
-
-
-
-auto LeadingVariable{[](const floats& variable){
-
-  std::cout << "LeadingVariable" << std::endl;
-
-  if(variable.size() > 0){
-
-  float first_largest_value = variable.at(0);
-
-        for(int i = 1; i < variable.size(); i++){
-
-                if(variable.at(i) > first_largest_value){
-                        first_largest_value = variable.at(i);
-
-                }
-
-        }
-
-  return first_largest_value;
-
-  }
-  else{float zero = 0.0; return zero;}
-
-}};
-
-
-
-
-auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
-  
-  std::cout << "LeadingVariableEmu" << std::endl;
-
-  float first_largest_value_electron, first_largest_value_muon; 
-
-  if(variable1.size() > 0){
-
-  first_largest_value_electron = variable1.at(0);
-
-        for(int i = 1; i < variable1.size(); i++){
-
-                if(variable1.at(i) > first_largest_value_electron){
-                        first_largest_value_electron = variable1.at(i);
-
-                }
-
-        }
-
-  }
-
-  if(variable2.size() > 0){
-  
-  first_largest_value_muon = variable2.at(0);
-        
-        for(int i = 1; i < variable2.size(); i++){
-                
-                if(variable2.at(i) > first_largest_value_muon){
-                        first_largest_value_muon = variable2.at(i);
-                
-                }
-        
-        }
-
-  }
-
-
-  if(first_largest_value_electron > first_largest_value_muon){return first_largest_value_electron;}
-  else{return first_largest_value_muon;}
-
-
-}};
-
-
-
-auto SubleadingVariable{[](const floats& variable){
-
-  std::cout << "SubleadingVariable" << std::endl;
-
-  if(variable.size() == 0){float zero = 0.0; return zero;}
-  else{
-
-  	if(variable.size() > 1){
-
-  	float first_largest_value = variable.at(0);
-
-	  	for(int i = 1; i < variable.size(); i++){
-
-			if(variable.at(i) > first_largest_value){
-				first_largest_value = variable.at(i);
-
-			}
-
-	  	}
-
-  	float second_largest_value = INT_MIN;
-
-	  	for(int i = 0; i < variable.size(); i++){
-
-			if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
-				second_largest_value = variable.at(i);
-			}
-	
-	  	}
-
-
-  	return second_largest_value;
-
-
-  	}
-  	else{return variable.at(0);}
-
-  }
-
-
-}};
-
-
-
-auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
-
-  std::cout << "SubleadingVariableEmu" << std::endl;
-
-  float first_largest_value_electron, first_largest_value_muon;
-
-  if(variable1.size() > 0){
-
-  first_largest_value_electron = variable1.at(0);
-
-        for(int i = 1; i < variable1.size(); i++){
-
-                if(variable1.at(i) > first_largest_value_electron){
-                        first_largest_value_electron = variable1.at(i);
-
-                }
-
-        }
-
-  }
-
-  if(variable2.size() > 0){
-
-  first_largest_value_muon = variable2.at(0);
-
-        for(int i = 1; i < variable2.size(); i++){
-
-                if(variable2.at(i) > first_largest_value_muon){
-                        first_largest_value_muon = variable2.at(i);
-
-                }
-
-        }
-
-  }
-
-
-  if(first_largest_value_electron < first_largest_value_muon){return first_largest_value_electron;}
-  else{return first_largest_value_muon;}
-
-
-}};
-
-
-auto ThirdLeadingVariable{[](const floats& variable){
-
-  std::cout << "ThirdLeadingVariable" << std::endl;
-
-  if(variable.size() > 2){
-
-  float first_largest_value = variable.at(0);
-
-        for(int i = 1; i < variable.size(); i++){
-
-                if(variable.at(i) > first_largest_value){
-                        first_largest_value = variable.at(i);
-
-                }
-
-        }
-
-  float second_largest_value = INT_MIN;
-
-        for(int i = 0; i < variable.size(); i++){
-
-                if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
-                        second_largest_value = variable.at(i);
-                }
-        
-        }
-
-
-  float third_largest_value = INT_MIN;
-
-	for(int i = 0; i < variable.size(); i++){
-	
-		if( (variable.at(i) > third_largest_value) && (variable.at(i) < second_largest_value) ){
-		
-			third_largest_value = variable.at(i);			
-
-		}
-	
-	}
-
-
-  return third_largest_value;
-
-
-  }
-
-}};
-
-
-
-auto FourthLeadingVariable{[](const floats& variable){
-
-  std::cout << "FourthLeadingVariable" << std::endl;
-
-  if(variable.size() > 3){
-
-  float first_largest_value = variable.at(0);
-
-        for(int i = 1; i < variable.size(); i++){
-
-                if(variable.at(i) > first_largest_value){
-                        first_largest_value = variable.at(i);
-
-                }
-
-        }
-
-  float second_largest_value = INT_MIN;
-
-        for(int i = 0; i < variable.size(); i++){
-
-                if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
-                        second_largest_value = variable.at(i);
-                }
-
-        }
-
-
-  float third_largest_value = INT_MIN;
-
-        for(int i = 0; i < variable.size(); i++){
-
-                if( (variable.at(i) > third_largest_value) && (variable.at(i) < second_largest_value) ){
-
-                        third_largest_value = variable.at(i);
-
-                }
-
-        }
-
-
-  float fourth_largest_value = INT_MIN;
-
-	for(int i = 0; i < variable.size(); i++){
-
-                if( (variable.at(i) > fourth_largest_value) && (variable.at(i) < third_largest_value) ){
-
-                        fourth_largest_value = variable.at(i);
-
-                }
-
-        }
-
-
-  return fourth_largest_value;
-
-
-  }
-
-
-}};
-
-
-
-
-auto MET_function{[](const floats& MET_input){
-
-  std::cout << "MET_function" << std::endl;
-  return MET_input;
-
-}};
-
-
-
-
-auto deltaRcheck_float{[](
-
-const float& Object1_eta,
-const float& Object1_phi,
-const float& Object2_eta,
-const float& Object2_phi
-){
-
-  std::cout << "deltaRcheck_float" << std::endl;
-
-  float dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
-  return dR;
-
-}};
-
-auto deltaRcheck_4floats{[](
-
-const floats& Object1_eta,
-const floats& Object1_phi,
-const floats& Object2_eta,
-const floats& Object2_phi
-
-){
-
-  std::cout << "deltaRcheck_4floats" << std::endl;
-
-  floats dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
-  return dR;
-
-}};
-
-
-auto deltaRcheck_floats{[](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
-
-  std::cout << "deltaRcheck_floats" << std::endl;
-
-  floats min_dRs{};
-
-  if(Object2_phi.size() > 1){
-
-  	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return std::min(deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)), deltaR(Object1_eta, Object1_phi, Object2_eta.at(1), Object2_phi.at(1))); });
-
-  }
-  else{
-
-	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)); });
-
-  }
-
-  return min_dRs;
- 
-}};
-
-
-
-auto deltaRcheck_Top_function{[](
-
-const doubles& Object1_phi_Selection,
-const doubles& Object1_eta_Selection,
-const float& Object2_eta_Selection,
-const float& Object2_phi_Selection
-){
-
-  std::cout << "deltaRcheck_Top_function" << std::endl;
-
-  doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
-  return dR;
-
-}};
-
-
-
-auto deltaRcheck_WTop_function{[](
-
-const floats& Object1_phi_Selection,
-const floats& Object1_eta_Selection,
-const doubles& Object2_eta_Selection,
-const doubles& Object2_phi_Selection
-){
-
-  std::cout << "deltaRcheck_WTop_function" << std::endl;
-
-  doubles dR_vec{};
-
-  for(int i = 0; i < Object1_phi_Selection.size(); i++){
-
-  	double dR = sqrt(pow(Object1_eta_Selection.at(i) - Object2_eta_Selection.at(0), 2) + pow(Object1_phi_Selection.at(i) - Object2_phi_Selection.at(0), 2));
-  	dR_vec.push_back(dR);
-
-  }
-
-  return dR_vec;
-
-
-}};
-
-
-auto deltaRcheck_W_function{[](
-
-const doubles& Object1_phi_Selection,
-const doubles& Object1_eta_Selection,
-const doubles& Object2_eta_Selection,
-const doubles& Object2_phi_Selection
-){
-
-  std::cout << "deltaRcheck_W_function" << std::endl;
-
-  doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
-  return dR;
-
-}};
-
-
-
-auto deltaRcheck_W_function2{[](
-
-const doubles& Object1_phi_Selection,
-const doubles& Object1_eta_Selection,
-const float& Object2_eta_Selection,
-const float& Object2_phi_Selection
-){
-
-  std::cout << "deltaRcheck_W_function2" << std::endl;
- 
-  doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
-  return dR;
-
-}};
-
-
-
-auto DeltaPhi_function{[](
-
-const floats& Object1_phi_Selection,
-const floats& Object2_phi_Selection
-
-){
-
-  std::cout << "DeltaPhi_function" << std::endl;
-
-  floats dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
-  return dPhi;
-
-}};
-
-
-
-
-auto DeltaPhi_function2{[](
-
-const doubles& Object1_phi_Selection,
-const doubles& Object2_phi_Selection
-
-){
-
-  std::cout << "DeltaPhi_function2" << std::endl;
-
-  doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
-  return dPhi;
-
-
-}};
-
-
-
-auto DeltaPhi_function3{[](
-
-const doubles& Object1_phi_Selection,
-const floats& Object2_phi_Selection
-
-){
-
-  std::cout << "DeltaPhi_function3" << std::endl;
-
-  doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
-  return dPhi;
-
-
-}};
-
-
-
-auto DeltaPhi_function4{[](
-
-const floats& Object1_phi,
-const doubles& Object2_phi
-
-){
-
- std::cout << "DeltaPhi_function4" << std::endl;
-
- doubles dPhi_vec{};
-
- for(int i = 0; i < Object1_phi.size(); i++){
-
- 	double dPhi = Object1_phi.at(i) - Object2_phi.at(0);
-	dPhi_vec.push_back(dPhi);
-
- }
-
- return dPhi_vec;
-
-}};
-
-
-
-auto DeltaPhi_doublesandfloat{[](
-
-const doubles& Object1_phi,
-const float& Object2_phi
-
-){
-
-  std::cout << "DeltaPhi_doublesandfloat" << std::endl;
-
-  doubles dPhi = abs(Object1_phi - Object2_phi);
-  return dPhi;
-
-}};
-
-auto DeltaPhi_floatandfloat{[](
-
-const float& Object1_phi,
-const float& Object2_phi
-
-){
-
-  std::cout << "DeltaPhi_floatandfloat" << std::endl;
-
-  double dPhi = abs(Object1_phi - Object2_phi);
-  return dPhi;
-
-}};
-
-
-
-
-auto tight_jets_function{[/*&year*/](
-
-const floats& Jet_pt_Selection,
-const floats& Jet_eta_Selection,
-const ints& Jet_jetId_Selection,
-const floats& dRJet_lep){
-
-  std::cout << "tight_jets_function" << std::endl;
-
-  int JetId;
-
-  if(Year_String == "2016"){JetId = 1;} //1 is loose 
-  else if(Year_String == "2017" || Year_String == "2018"){JetId = 2;} //2 is tight
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
-
-  return
-
-  Jet_pt_Selection > 30 &&
-  Jet_eta_Selection < 4.7 &&
-  Jet_jetId_Selection >= JetId &&
-  dRJet_lep > 0.4;
-
-
-}};
-
-
-auto jet_selection_function{[](const ints& tight_jets) {
-
-  std::cout << "jet_selection_function" << std::endl;
-
-  auto njet{count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
-  return njet >= 4 && njet <= 6;
-
-}};
-
-
-auto SumSquared2LeadingJets_pT{[](
-
-const float& LeadingJetPt,
-const float& SubleadingJetPt
-
-){
-
-  std::cout << "SumSquared2LeadingJets_pT" << std::endl;
-
-  double SumSquaredPt = pow(LeadingJetPt + SubleadingJetPt, 2);
-  return SumSquaredPt;
-
-
-}};
-
-
-auto JetPtSum{[](
-
-const float& LeadingJetPt,
-const float& SubleadingJetPt,
-const float& ThirdJetPt,
-const float& FourthJetPt
-
-){
-
-  std::cout << "JetPtSum" << std::endl;
-
-  float JetPtSum = LeadingJetPt + SubleadingJetPt + ThirdJetPt + FourthJetPt;
-  return JetPtSum;
-
-}};
-
-
-auto JetEtaSum{[](
-
-const float& LeadingJetEta,
-const float& SubleadingJetEta,
-const float& ThirdJetEta,
-const float& FourthJetEta
-
-){
-
-  std::cout << "JetEtaSum" << std::endl;
-
-  float JetEtaSum = LeadingJetEta + SubleadingJetEta + ThirdJetEta + FourthJetEta;
-  return JetEtaSum;
-
-}};
-
-
-auto JetPhiSum{[](
-
-const float& LeadingJetPhi,
-const float& SubleadingJetPhi,
-const float& ThirdJetPhi,
-const float& FourthJetPhi
-
-){
-
-  std::cout << "JetPhiSum" << std::endl;
-
-  float JetPhiSum = LeadingJetPhi + SubleadingJetPhi + ThirdJetPhi + FourthJetPhi;
-  return JetPhiSum;
-
-}};
-
-
-
-auto LepPtSum{[](
-
-const float& LeadingLepPt,
-const float& SubleadingLepPt
-
-){
-
-  std::cout << "LepPtSum" << std::endl;
-
-  float LepPtSum = LeadingLepPt + SubleadingLepPt;
-  return LepPtSum;
-
-}};
-
-
-
-auto LepEtaSum{[](
-
-const float& LeadingLepEta,
-const float& SubleadingLepEta
-
-){
-
-  std::cout << "LepEtaSum" << std::endl;
-
-  float LepEtaSum = LeadingLepEta + SubleadingLepEta;
-  return LepEtaSum;
-
-}};
-
-
-
-auto LepPhiSum{[](
-
-const float& LeadingLepPhi,
-const float& SubleadingLepPhi
-
-){
-
-  std::cout << "LepPhiSum" << std::endl;
-
-  float LepPhiSum = LeadingLepPhi + SubleadingLepPhi;
-  return LepPhiSum;
-
-}};
-
-
-
-auto HT{[](const float& Pt){
- 
-  std::cout << "HT" << std::endl;
-
-  float HT = abs(Pt);
-  return HT;
-
-}};
-
-
-auto HT_double{[](const doubles& Pt){
-
-  std::cout << "HT_double" << std::endl;  
-
-  doubles HT = abs(Pt);
-  return HT;
-
-}};
-
-
-auto HT_floats{[](const floats& Pt){
-
-  std::cout << "HT_floats" << std::endl;
-
-  floats HT = abs(Pt);
-  return HT;
-
-}};
-
-
-auto TotJetHT{[](
-
-const float& LeadingJetHT,
-const float& SubleadingJetHT,
-const float& ThirdJetHT,
-const float& FourthJetHT
-
-){
-  
-  std::cout << "TotJetHT" << std::endl;
-
-  float TotJetHT = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
-  return TotJetHT;
-
-}};
-
-
-
-auto TotLepHT{[](
-
-const float& LeadingLeptonHT,
-const float& SubleadingLeptonHT
-
-){
-
-  std::cout << "TotLepHT" << std::endl;
-
-  float TotLepHT = LeadingLeptonHT + SubleadingLeptonHT;
-  return TotLepHT;
-
-}};
-
-auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
-
-  std::cout << "TotHTOverTotpT" << std::endl;
-
-  float TotHTOverTotpT = TotHT / TotpT;
-  return TotHTOverTotpT;
-
-
-}};
-
-auto TotHTOverTotpT_floats{[](const floats& TotHT, const floats& TotpT){
-
-  std::cout << "TotHTOverTotpT_floats" << std::endl;
-
-  floats TotHTOverTotpT = TotHT / TotpT;
-  return TotHTOverTotpT;
-
-
-}};
-
-auto InvMass_AllJets{[](
-
-const float& LeadingJetPt,
-const float& SubleadingJetPt,
-const float& ThirdJetPt,
-const float& FourthJetPt,
-const float& LeadingJetEta,
-const float& SubleadingJetEta,
-const float& ThirdJetEta,
-const float& FourthJetEta,
-const float& LeadingJetPhi,
-const float& SubleadingJetPhi,
-const float& ThirdJetPhi,
-const float& FourthJetPhi,
-const float& LeadingJetMass,
-const float& SubleadingJetMass,
-const float& ThirdJetMass,
-const float& FourthJetMass,
-const unsigned int& nJet 
-
-){
-
-  std::cout << "InvMass_AllJets" << std::endl;
-
-  TLorentzVector Jet1 = {};
-  TLorentzVector Jet2 = {};
-  TLorentzVector Jet3 = {};
-  TLorentzVector Jet4 = {};
-
-
-  Jet1.SetPtEtaPhiM(LeadingJetPt, LeadingJetEta, LeadingJetPhi, LeadingJetMass);
-  Jet2.SetPtEtaPhiM(SubleadingJetPt, SubleadingJetEta, SubleadingJetPhi, SubleadingJetMass);
-  Jet3.SetPtEtaPhiM(ThirdJetPt, ThirdJetEta, ThirdJetPhi, ThirdJetMass);
-  Jet4.SetPtEtaPhiM(FourthJetPt, FourthJetEta, FourthJetPhi, FourthJetMass);
-
-  float InvMassAllJets = (Jet1 + Jet2 + Jet3 + Jet4).M();
-
-  return InvMassAllJets;
-
-}};
-
-auto InvMass_3Jets{[](
-
-const float& LeadingJetPt,
-const float& SubleadingJetPt,
-const float& ThirdJetPt,
-const float& LeadingJetEta,
-const float& SubleadingJetEta,
-const float& ThirdJetEta,
-const float& LeadingJetPhi,
-const float& SubleadingJetPhi,
-const float& ThirdJetPhi,
-const float& LeadingJetMass,
-const float& SubleadingJetMass,
-const float& ThirdJetMass,
-const unsigned int nJet
-
-){
-  
-  std::cout << "InvMass_3Jets" << std::endl;
-
-  TLorentzVector Jet1 = {};
-  TLorentzVector Jet2 = {};
-  TLorentzVector Jet3 = {};
-
-  Jet1.SetPtEtaPhiM(LeadingJetPt, LeadingJetEta, LeadingJetPhi, LeadingJetMass);
-  Jet2.SetPtEtaPhiM(SubleadingJetPt, SubleadingJetEta, SubleadingJetPhi, SubleadingJetMass);
-  Jet3.SetPtEtaPhiM(ThirdJetPt, ThirdJetEta, ThirdJetPhi, ThirdJetMass);
-
-  float InvMass3Jets = (Jet1 + Jet2 + Jet3).M();
-
-  return InvMass3Jets;
-
-}};
-
-
-auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
-     
-	std::cout << "bjet_id" << std::endl;
-
-	return tight_jets && (btags > 0.8838f) && (etas < MaxTrackerEta);
-}};
-
-
-auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
-
-  std::cout << "nonbjet_id" << std::endl;
-
-  return tight_jets && (btags == 0) && (etas < MaxTrackerEta);
-
-
-}};
-
-
-auto bjet_cut{[](const ints& bjets) {
-
-	std::cout << "bjet_cut" << std::endl;
-
-        const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
-        return nbjet >= 1 && nbjet <= 2;
-
-}};
-
-//Lambda functions between lines 1211 and 1242 are only for calculating b-tagging efficiency
-//For the numerators
-auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "BTAGEFF_bjet_id_WP" << std::endl;
-
-	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
-	
-}};
-
-
-auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "BTAGEFF_charm_id_WP" << std::endl;
-
-       return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
-        
-      std::cout << "BTAGEFF_lightjets_id_WP" << std::endl;
-
-      return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
-                
-	std::cout << "BTAGEFF_gluon_id_WP" << std::endl;
-
-      return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
-
-	std::cout << "BTAGEFF_nonbjet_id_WP" << std::endl;
-
-    return abs(Jet_partonFlavour) != 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-//For the denominators
-auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "BTAGEFF_bjet_id" << std::endl;
-
-	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "BTAGEFF_charm_id" << std::endl;
-
-	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-
-auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "BTAGEFF_lightjets_id" << std::endl;
-
-	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
-
-	std::cout << "BTAGEFF_gluon_id" << std::endl;
-
-        return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
-	
-	 std::cout << "BTAGEFF_nonbjet_id" << std::endl;
-
-	 return abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
-
-}};
-
-
-
-
-
-auto numberofbjets{[](const ints& bjets) {
-
-	std::cout << "numberofbjets" << std::endl;
-
-        const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
-        return nbjet;
-
-}};
-
-
-
-auto bjet_variable{[](
-
-const floats& Jet_variable,
-const unsigned int& nJet,
-const ints& lead_bjet
-
-){
-
-  std::cout << " bjet_variable " << std::endl;
-
-  floats vec{};
-
-  for(int i = 0; i < nJet; i++){
-        if(lead_bjet.at(i) == 1){ 
-		vec.push_back(Jet_variable.at(i));
-	}
-
-  }
-
-  return vec;
-
-}};
-
-
-
-auto BLorentzVector{[](
-
-const floats& bjet_pt,
-const floats& bjet_eta,
-const floats& bjet_phi,
-const floats& bjet_mass
-
-){
-
-  std::cout << "BLorentzVector" << std::endl;
-
-  auto BJets = TLorentzVector{};
-
-  for(int i = 0; i < bjet_pt.size(); i++){
-
-	auto Vec = TLorentzVector{};
-	Vec.SetPtEtaPhiM(bjet_pt.at(i), bjet_eta.at(i), bjet_phi.at(i), bjet_mass.at(i));
-	BJets += Vec;
-
-  }
-
-
-
-  return BJets;
-
-}};
-
-
-auto LeadingBJetOutputDiscriminant{[](
-
-const float& LeadingJetpT,
-const floats& Jet_btagCSVV2,
-const ints& tight_jets,
-const floats& Jet_eta_Selection
-
-){
-
-  std::cout << "LeadingBJetOutputDiscriminant" << std::endl;
-
-  return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
-
-}};
-
-
-
-
-auto SubleadingBJetOutputDiscriminant{[](
-
-const float& SubleadingJetpT,
-const floats& Jet_btagCSVV2,
-const ints& tight_jets,
-const floats& Jet_eta_Selection
-
-){
-
-  std::cout << "SubleadingBJetOutputDiscriminant" << std::endl;
-
-  return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
-
-}};
-
-
-
-
-auto ThirdBJetOutputDiscriminant{[](
-
-const float& ThirdJetpT,
-const floats& Jet_btagCSVV2,
-const ints& tight_jets,
-const floats& Jet_eta_Selection
-
-){
-
-  std::cout << "ThirdBJetOutputDiscriminant" << std::endl;
-
-  return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
-
-}};
-
-
-
-auto FourthBJetOutputDiscriminant{[](
-
-const float& FourthJetpT,
-const floats& Jet_btagCSVV2,
-const ints& tight_jets,
-const floats& Jet_eta_Selection
-
-){
-
-  std::cout << "FourthBJetOutputDiscriminant" << std::endl;
-
-  return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
-
-}};
-
-
-
-auto BJetOutputDiscriminant{[](
-
-const ints& BJetBTags,
-const floats& Jet_btagCSVV2 
-){
-
-  std::cout << "BJetOutputDiscriminant" << std::endl;
-
-  floats btagoutput{};
-
-  for(int i = 0; i < BJetBTags.size(); i++){
-	if(BJetBTags.at(i) != 0){
-		btagoutput.push_back(Jet_btagCSVV2.at(i));
-	}
-  }
-
-  return btagoutput;
-
-}};
-
-
-
-// W mass cut
-
-constexpr float W_MASS = 80.385f;
-constexpr float W_MASS_CUT = 20.f;
-
-auto find_lead_mask{[](const ints& mask, const floats& vals) {
-  
-  std::cout << "inside find_lead_mask" << std::endl;
-
-  const auto masked_vals{mask * vals};
-
-  const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
-  ints lead_mask(masked_vals.size(), 0); // must be ()
-  lead_mask.at(max_idx) = 1;
-  return lead_mask;
-
-
-}};
-
-
-auto find_w_pair{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
-
-
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << "Inside find_w_pair" << std::endl;
-std::cout << "pts.size() = " << pts.size() << std::endl;
-std::cout << "etas.size() = " << etas.size() << std::endl;
-std::cout << "phis.size() = " << phis.size() << std::endl;
-std::cout << "ms.size() = " << ms.size() << std::endl;
-std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
-std::cout << "lead_bjet.size() = " << lead_bjet.size() << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-
-double w_reco_mass{std::numeric_limits<double>::infinity()};
-size_t jet_index_1{std::numeric_limits<size_t>::max()};
-size_t jet_index_2{std::numeric_limits<size_t>::max()};
-const size_t njets{pts.size()};
-
-
-for (size_t i{0}; i < njets; ++i){
-	for (size_t j{i + 1}; j < njets; ++j)
-            {
-             
-	        if (tight_jets[i] != 0 && tight_jets[j] != 0
-                    && lead_bjet[i] != 1 && lead_bjet[j] != 1)
-                {
-                    continue;
-                }
-
-                auto jet1{TLorentzVector{}};
-                auto jet2{TLorentzVector{}};
-                jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
-                jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
-
-                if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
-                {
-                    w_reco_mass = reco_mass;
-                    jet_index_1 = i;
-                    jet_index_2 = j;
-                }
-            }
-        }
-
-        ints w_pair(njets, 0);
-        w_pair.at(jet_index_1) = 1;
-        w_pair.at(jet_index_2) = 1;
-        return w_pair;
-
-}};
-
-
-
-auto w_mass_cut{[](const float& w_mass) {
-
-  std::cout << "w_mass_cut" << std::endl;
-	
-  //return ( abs(w_mass - W_MASS) < W_MASS_CUT );
-  return w_mass;
-
-}};
-
-
-
-auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
-	
-  std::cout << "w_mass_cut_ZPlusJetsCR" << std::endl;
-
-  return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50);
-
-}};
-
-
-
-auto WPairJet1{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
-
-
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << "inside WPairJet1" << std::endl;
-std::cout << "pts.size() = " << std::endl;
-std::cout << "etas.size() = " << std::endl;
-std::cout << "phis.size() = " << std::endl;
-std::cout << "ms.size() = " << std::endl;
-std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
-std::cout << "lead_bjet.size() = " << lead_bjet.size() << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-
-double w_reco_mass{std::numeric_limits<double>::infinity()};
-size_t jet_index_1{std::numeric_limits<size_t>::max()};
-size_t jet_index_2{std::numeric_limits<size_t>::max()};
-const size_t njets{pts.size()};
-
-auto jet1{TLorentzVector{}};
-auto jet2{TLorentzVector{}};
-
-
-for (size_t i{0}; i < njets; ++i){
-        for (size_t j{i + 1}; j < njets; ++j)
-            {
-                if (tight_jets[i] != 0 && tight_jets[j] != 0
-                    && lead_bjet[i] != 1 && lead_bjet[j] != 1)
-                {
-                    continue;
-                }
-
-                jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
-                jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
-
-                if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
-                {
-                    w_reco_mass = reco_mass;
-                    jet_index_1 = i;
-                    jet_index_2 = j;
-                }
-            }
-        }
-
-	jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
-	jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
-        return jet1;
-    
-}};
-
-
-auto WPairJet2{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
-
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << "inside WPairJet2" << std::endl;
-std::cout << "pts.size() = " << std::endl;
-std::cout << "etas.size() = " << std::endl;
-std::cout << "phis.size() = " << std::endl;
-std::cout << "ms.size() = " << std::endl;
-std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
-std::cout << "lead_bjet.size() = " << lead_bjet.size() << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-std::cout << '\n' << std::endl;
-
-double w_reco_mass{std::numeric_limits<double>::infinity()};
-size_t jet_index_1{std::numeric_limits<size_t>::max()};
-size_t jet_index_2{std::numeric_limits<size_t>::max()};
-const size_t njets{pts.size()};
-
-auto jet1{TLorentzVector{}};
-auto jet2{TLorentzVector{}};
-
-
-for (size_t i{0}; i < njets; ++i){
-        for (size_t j{i + 1}; j < njets; ++j)
-            {
-                if (tight_jets[i] != 0 && tight_jets[j] != 0
-                    && lead_bjet[i] != 1 && lead_bjet[j] != 1)
-                {
-                    continue;
-                }
-
-                jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
-                jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
-
-                if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
-                {
-                    w_reco_mass = reco_mass;
-                    jet_index_1 = i;
-                    jet_index_2 = j;
-                }
-            }
-        }
-
-	jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
-        jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
-        return jet2;
-    
-}};
-
-
-
-auto TLorentzVectorMass{[](const TLorentzVector& object){
-
-  std::cout << "TLorentzVectorMass" << std::endl;
-
-  doubles vec{};
-  vec.push_back(object.M());
-  return vec;
-
-}};
-
-
-auto TLorentzVectorMass_float{[](const TLorentzVector& object){
-  
-  std::cout << "TLorentzVectorMass_float" << std::endl;
-
-  floats vec{};
-  vec.push_back(object.M());
-  return vec;
-
-}};
-
-
-auto TLorentzVectorPt{[](const TLorentzVector& object){
-
-  std::cout << "TLorentzVectorPt" << std::endl;
-
-  doubles vec{};
-  vec.push_back(object.Pt());
-  return vec;
-
-}};
-
-
-
-auto TLorentzVectorPt_float{[](const TLorentzVector& object){
-  
-  std::cout << "TLorentzVectorPt_float" << std::endl;
-
-  floats vec{};
-  vec.push_back(object.Pt());
-  return vec;
-
-}};
-
-
-auto TLorentzVectorPhi{[](const TLorentzVector& object){
-
-  std::cout << "TLorentzVectorPhi" << std::endl;
-
-  doubles vec{};
-  vec.push_back(object.Phi());
-  return vec;
-
-}};
-
-
-auto TLorentzVectorPhi_float{[](const TLorentzVector& object){
-
-  std::cout << "TLorentzVectorPhi_float" << std::endl;
-
-  floats vec{};
-  vec.push_back(object.Phi());
-  return vec;
-
-}};
-
-
-auto TLorentzVectorEta{[](const TLorentzVector& object){
-
-  std::cout << "TLorentzVectorEta" << std::endl;
-
-  doubles vec{};
-  vec.push_back(object.Eta());
-  return vec;
-
-}};
-
-
-
-auto TLorentzVectorEta_float{[](const TLorentzVector& object){
-
-  std::cout << "TLorentzVectorEta_float" << std::endl;
-
-  floats vec{};
-  vec.push_back(object.Eta());
-  return vec;
-
-}};
-
-
-
-
-
-
-
-constexpr float Z_MASS{91.1876f};
-constexpr float Z_MASS_CUT{20.f};
-
-auto z_mass_cut{[](const float& z_mass) {
-
-  std::cout << "z_mass_cut" << std::endl;
-
-  return abs(z_mass - Z_MASS) < Z_MASS_CUT;
-
-}};
-
-
-auto RecoZ{[](
-
-const unsigned int& nLepton,
-const float& LeadingleptonPt,
-const float& LeadingleptonEta,
-const float& LeadingleptonPhi,
-const float& LeadingleptonMass,
-const float& SubleadingleptonPt,
-const float& SubleadingleptonEta,
-const float& SubleadingleptonPhi,
-const float& SubleadingleptonMass
-
-){
-
-  std::cout << "RecoZ" << std::endl;
-
-  TLorentzVector ZBoson = {};
-  TLorentzVector LeadingLepton = {};
-  TLorentzVector SubleadingLepton = {};
-
-  LeadingLepton.SetPtEtaPhiM(LeadingleptonPt, LeadingleptonEta, LeadingleptonPhi, LeadingleptonMass);
-  SubleadingLepton.SetPtEtaPhiM(SubleadingleptonPt, SubleadingleptonEta, SubleadingleptonPhi, SubleadingleptonMass);
-
-  ZBoson = LeadingLepton + SubleadingLepton;
-
-  return ZBoson;
-
-}};
-
-
-auto RecoZHT{[](const doubles& RecoZPt){
-
-  std::cout << "RecoZHT" << std::endl;
-
-  doubles RecoZHT = abs(RecoZPt);
-  return RecoZHT;
-
-}};
-
-
-auto RecoWHT{[](const floats& RecoWPt){
-
-  std::cout << "RecoWHT" << std::endl;
-
-  floats RecoWHT = abs(RecoWPt);
-  return RecoWHT;
-
-}};
-
-
-
-auto WLorentzVector{[](
-
-const floats& w_pair_pt,
-const floats& w_pair_eta, 
-const floats& w_pair_phi, 
-const float& w_mass, 
-const ints& w_reco_jets
-
-){
-
-  const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
-
-  auto RecoW = TLorentzVector{};
- 
-  std::cout << "Inside WLorentzVector" << std::endl;
-  std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
-  std::cout << "w_pair_eta.size() = " << w_pair_eta.size() << std::endl;
-  std::cout << "w_pair_phi.size() = " << w_pair_phi.size() << std::endl;
-  std::cout << "w_reco_jets.size() = " << w_reco_jets.size() << std::endl;
-  std::cout << "nRecoWBosons = " << nRecoWBosons << std::endl;
-   
-  for(int i = 0; i < nRecoWBosons; i++){
-
-	  auto Vec = TLorentzVector{};
-	  Vec.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
-	  RecoW += Vec;
-
-  }
-
-
-  return RecoW;
-
-}};
-
-constexpr float TOP_MASS = 173.3;
-
-auto top_reconstruction_function{[](
-
-const floats& bjets_pt,
-const floats& bjets_eta,
-const floats& bjets_phi,
-const floats& bjets_mass,
-const unsigned int& nJet,
-const floats& w_pair_pt,
-const floats& w_pair_eta,
-const floats& w_pair_phi,
-const float& w_mass, 
-const ints& w_reco_jets
-
-){
-
-  std::cout << "top_reconstruction_function" << std::endl;
-  std::cout << "bjets_pt.size()" << bjets_pt.size() << std::endl;
-  std::cout << "bjets_eta.size()" << bjets_eta.size() << std::endl;
-  std::cout << "bjets_phi.size()" << bjets_phi.size() << std::endl;
-  std::cout << "bjets_mass.size()" << bjets_mass.size() << std::endl;
-  std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
-  std::cout << "w_pair_eta.size() = " << w_pair_eta.size() << std::endl;
-  std::cout << "w_pair_phi.size() = " << w_pair_phi.size() << std::endl;
-  std::cout << "w_reco_jets.size() = " << w_reco_jets.size() << std::endl;
-
-  auto reco_top = TLorentzVector{}; 
-  auto BJets = TLorentzVector{};
-  auto RecoW = TLorentzVector{};
-
-  double top_reco_mass = std::numeric_limits<double>::infinity();
-  size_t index_1{std::numeric_limits<size_t>::max()};
-  const size_t num{w_pair_pt.size()};
-
-  for(int i = 0; i < num; i++){
-
-  std::cout << "i = " << i << std::endl;
-  std::cout << "num = " << num << std::endl;
-  std::cout << "w_pair_pt.at(i) = " << w_pair_pt.at(i) << std::endl;
-  
-
-  BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
-  RecoW.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
-		
-  const double reco_mass = (RecoW + BJets).M(); 
-
-  if(abs(TOP_MASS - reco_mass) < abs(TOP_MASS - top_reco_mass)){
-
-	  top_reco_mass = reco_mass;
-	  index_1 = i;
-
-  }
-
-
-  }
-
-  std::cout << "index_1 = " << index_1 << std::endl;
-
-  if(index_1 < 2){
-
-  	BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
-  	RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
-  	reco_top = RecoW + BJets;	
- 
- }
- else{reco_top.SetPtEtaPhiM(0, 0, 0, 0);}
-
- return reco_top;
-
-}};
-
-
-
-auto TotalHT_System{[](
-
-const doubles& RecoZHT,
-const floats& RecoWHT,
-const doubles& Top_HT,
-const float& TotLepHT,
-const float& TotJetHT
-
-){
-
-  std::cout << "TotalHT_System" << std::endl;
-
-  floats TotalHTSystem = RecoZHT + RecoWHT.at(0) + Top_HT + TotLepHT + TotJetHT;
-  return TotalHTSystem;
-
-}};
-
-auto TotalPt_System{[](
-
-const doubles& RecoZPt,
-const floats& RecoWPt,
-const doubles& Top_Pt,
-const float& TotLepPt,
-const float& TotJetPt
-
-){
-
-  std::cout << "TotalPt_System" << std::endl;
-
-  floats TotalPtSystem = RecoZPt + RecoWPt.at(0) + Top_Pt + TotLepPt + TotJetPt;
-  return TotalPtSystem;
-
-}};
-
-
-auto TotalEta_System{[](
-
-const doubles& RecoZEta,
-const floats& RecoWEta,
-const doubles& Top_Eta,
-const float& TotLepEta,
-const float& TotJetEta
-
-){
-
-  std::cout << "TotalEta_System" << std::endl;
-
-  doubles TotalEtaSystem = RecoZEta + RecoWEta.at(0) + Top_Eta + TotLepEta + TotJetEta;
-  return TotalEtaSystem;
-
-}};
-
-
-auto TotalPhi_System{[](
-
-const doubles& RecoZPhi,
-const floats& RecoWPhi,
-const doubles& Top_Phi,
-const float& TotLepPhi,
-const float& TotJetPhi
-
-){
-
-  std::cout << "TotalPhi_System" << std::endl;
-
-  doubles TotalPhiSystem = RecoZPhi + RecoWPhi.at(0) + Top_Phi + TotLepPhi + TotJetPhi;
-  return TotalPhiSystem;
-
-
-}};
-
-
-//Minimum delta R between the Z boson candidate and any jet
-auto MinDeltaR{[](
-
-const unsigned int& nJet,
-const doubles& RecoZPhi,
-const doubles& RecoZEta,
-const floats& Jet_Phi_Selection,
-const floats& Jet_eta_Selection
-){
-
-    std::cout << "MinDeltaR" << std::endl;
-    std::cout << "RecoZPhi.size() = " << RecoZPhi.size() << std::endl;
-    std::cout << "RecoZEta.size() = " << RecoZEta.size() << std::endl;
-    std::cout << "Jet_Phi_Selection.size() = " << Jet_Phi_Selection.size() << std::endl;
-    std::cout << "Jet_eta_Selection.size() = " << Jet_eta_Selection.size() << std::endl;
-
-
-    doubles output_vec;
-  
-    for(int i; i < nJet; i++){
-
-    	double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
-    	double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
-
-    	double Output = (DeltaR2 < DeltaR) ? DeltaR2 : DeltaR;  
-    	output_vec.push_back(Output);
-
-    }
-
-    return output_vec;
-
-}};
-
-
-//Minimum delta phi between the Z boson candidate and any jet
-auto MinDeltaPhi{[](
-
-const unsigned int& nJet,
-const doubles& RecoZPhi,
-const floats& Jet_Phi_Selection
-){
-
-
-  std::cout << "MinDeltaPhi" << std::endl;
-  std::cout << "RecoZPhi.size() = " << RecoZPhi.size() << std::endl;
-  std::cout << "Jet_Phi_Selection.size() = " << Jet_Phi_Selection.size() << std::endl;
-
-  double output;
-  doubles output_vec{};
-
-  for(int i; i < nJet; i++){
-
-    double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
-    double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
-
-    output = (DeltaPhi2 < DeltaPhi) ? DeltaPhi2 : DeltaPhi;
-    output_vec.push_back(output);
-
-  }
-
-  return output_vec;
-
-}};
-
-
-auto dR_LeadingLepton_LeadingBJet{[](
-
-const floats& bjeteta,
-const float& LeadingLeptonEta,
-const floats& bjetphi,
-const float& LeadingLeptonPhi
-
-){
-
-  std::cout << "dR_LeadingLepton_LeadingBJet" << std::endl;
-
-  doubles DeltaR = sqrt(pow(LeadingLeptonPhi - bjetphi, 2) + pow(LeadingLeptonEta - bjeteta, 2));
-  return DeltaR;
-
-}};
-
-
-
-auto dR_SubleadingLepton_LeadingBJet{[](
-
-const floats& bjeteta,
-const float& SubleadingLeptonEta,
-const floats& bjetphi,
-const float& SubleadingLeptonPhi
-
-){
-
-  std::cout << "dR_SubleadingLepton_LeadingBJet" << std::endl;
-
-  doubles DeltaR = sqrt(pow(SubleadingLeptonPhi - bjetphi, 2) + pow(SubleadingLeptonEta - bjeteta, 2));
-  return DeltaR;
-
-}};
-
-
-auto DeltaPhi_Lepton_BJet{[](
-
-const floats& Jet_phi_Selection,
-const float& LeptonPhi
-
-){
-
-  std::cout << "DeltaPhi_Lepton_BJet" << std::endl;
- 
-  doubles DeltaPhi = LeptonPhi - Jet_phi_Selection;
-  return DeltaPhi;
-
-}};
-
-
-
-auto TransverseWMass{[](
-
-const double& dPhi_j1j2,
-const doubles& WPairJet1Pt,
-const doubles& WPairJet2Pt
-
-){
-
-  std::cout << "TransverseWMass" << std::endl;
-
-  doubles mtW = sqrt(2 * WPairJet1Pt * WPairJet2Pt * (1 - cos(dPhi_j1j2)) );
-  return mtW;
-
-}};
-
-
-auto filter_function{[](
-
-const bool& Flag_goodVertices_Selection, 
-const bool& Flag_globalSuperTightHalo2016Filter_Selection, 
-const bool& Flag_HBHENoiseFilter_Selection, 
-const bool& Flag_HBHENoiseIsoFilter_Selection, 
-const bool& Flag_EcalDeadCellTriggerPrimitiveFilter_Selection, 
-const bool& Flag_BadPFMuonFilter_Selection, 
-const bool& Flag_BadChargedCandidateFilter_Selection, 
-const bool& Flag_ecalBadCalibFilter_Selection, 
-const bool& Flag_eeBadScFilter_Selection
-)-> bool{
-
-
-std::cout << "filter_function" << std::endl;
-
-return  
-
-Flag_goodVertices_Selection > 0 || 
-Flag_globalSuperTightHalo2016Filter_Selection > 0 || 
-Flag_HBHENoiseFilter_Selection > 0 || 
-Flag_HBHENoiseIsoFilter_Selection > 0 || 
-Flag_EcalDeadCellTriggerPrimitiveFilter_Selection > 0 || 
-Flag_BadPFMuonFilter_Selection > 0 || 
-Flag_BadChargedCandidateFilter_Selection > 0 || 
-Flag_ecalBadCalibFilter_Selection > 0 || 
-Flag_eeBadScFilter_Selection > 0;
-
-}};
-
-
-
-//Lambda function for jet smearing simulation corrections (scaling method)
-//Twiki link: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution#Smearing_procedures
-
-//Reading the JER and SF text files
-std::string FileNameJetSmear;
-
-
-auto RowReader2{[/*&FileNameJetSmear*/](
-
-const int& LineSpecified, 
-const bool& sigmaJER, 
-const bool& SF, 
-const bool& up, 
-const bool& down,
-const floats& Jet_eta,
-const floats& Jet_rho,
-const floats& Jet_pt) { 
-
-
-  std::cout << "RowReader2" << std::endl;
-
-  float Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11;
-  
-  if(Year_String == "2016"){
-
-  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-  	else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-  }
-  else if(Year_String == "2017"){
-
-	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-  }
-  else if(Year_String == "2018"){
-
-  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-  	else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-  }
-  else{std::cout << "The year can only be 2016, 2017 or 2018" << std::endl;}
-
-
-  std::ifstream file;
-  file.open(FileNameJetSmear);
-
-  if (file.good())
-  {
-    std::string str = "";
-
-    int line_number = 0;
-	
-	 while(getline(file, str) && line_number != LineSpecified){
-		++line_number;
-	}
-	if(line_number == LineSpecified){
-		if(sigmaJER == true && SF == false && up == false && down == false){
-			file >> Col1;
-                	file >> Col2;
-                	file >> Col3;
-                	file >> Col4;
-                	file >> Col5;
-                	file >> Col6;
-                	file >> Col7;
-                	file >> Col8;
-                	file >> Col9;
-                	file >> Col10;
-                	file >> Col11;
-		}
-		else if(sigmaJER == false && SF == true && up == false && down == false){
-			file >> Col1;
-                        file >> Col2;
-                        file >> Col3;
-                        file >> Col4;
-                        file >> Col5;
-                        file >> Col6;
-		}
-		else if(sigmaJER == false && SF == false && up == true && down == false){
-                        file >> Col1;
-                        file >> Col2;
-                        file >> Col3;
-                        file >> Col4;
-                        file >> Col5;
-                        file >> Col6;
-                }
-		else if(sigmaJER == false && SF == false && up == false && down == true){
-                        file >> Col1;
-                        file >> Col2;
-                        file >> Col3;
-                        file >> Col4;
-                        file >> Col5;
-                        file >> Col6;
-                }
-		else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-	}
-
-  }
- 
-  file.close(); 
- 
-
-  floats AnswerVec{};
- 
-  for(int i = 0; i < Jet_pt.size(); i++){
-
-	if(  (Jet_eta.at(i) > abs(Col1) && Jet_eta.at(i) < abs(Col2)) && 
-	     (Jet_rho.at(0) > abs(Col3) && Jet_rho.at(0) < abs(Col4)) &&
-	     (Jet_pt.at(i) > abs(Col6) && Jet_pt.at(i) < abs(Col7) ) ){
-
-  		if(sigmaJER == true && SF == false && up == false && down == false){
-
-        		float answer = sqrt( Col8*abs(Col8) / (Jet_pt.at(i)*Jet_pt.at(i))+Col9*Col9*pow(Jet_pt.at(i),Col11)+Col10*Col10 );
-			AnswerVec.push_back(answer);
-
-		}
- 	 	else if(sigmaJER == false && SF == true && up == false && down == false){
-        
-        		AnswerVec.push_back(Col4);
-
-  		}
-  		else if(sigmaJER == false && SF == false && up == true && down == false){
-
-        		float UpValue = Col6 - Col4;
-        		AnswerVec.push_back(UpValue);
-
-		}
-  		else if(sigmaJER == false && SF == false && up == false && down == true){
-	
-        		float DownValue = Col4 - Col5;
-        		AnswerVec.push_back(DownValue);
-
-  		}
-  		else{std::cout << "bools cannot be all true or all false" << std::endl; std::cout << "sigmaJER = " << sigmaJER << std::endl; std::cout << "SF = " << SF << std::endl; std::cout << "up = " << up << std::endl; std::cout << "down = " << down << std::endl;} 
-
-
-	}
-	else{float zero = 0.0; AnswerVec.push_back(zero);}
-
-  
-   } //end of for loop
-
-
-   return AnswerVec;
-
-
-}}; 
-
-
-
-
-auto linecounter{[/*&FileNameJetSmear*/](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
-
-   int number_of_lines = 0;
-   std::string line;
-
-
-   if(Year_String == "2016"){
-
-        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
-        else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-  }
-  else if(Year_String == "2017"){
-
-        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
-        else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-  }
-  else if(Year_String == "2018"){
-
-        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
-        else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-  }
-  else{std::cout << "The year can only be 2016, 2017 or 2018" << std::endl;} 
-
-
-   std::ifstream myfile(FileNameJetSmear);
-
-   while (getline(myfile, line))
-        ++number_of_lines;
-    	return number_of_lines;
-
-}};
-
-
-
-
-auto RowReader3{[/*&RowReader2, &linecounter*/](
-
-const bool& SigmaJER, 
-const bool& JetSmearScaleFactor, 
-const bool& Up, 
-const bool& Down,
-const floats& Jet_eta, 
-const floats& Jet_rho, 
-const floats& Jet_pt
-){
-
- 
-  std::cout << "RowReader3" << std::endl;
-
-  int k;
-
-  for(int i = 0; i < linecounter(SigmaJER, JetSmearScaleFactor, Up, Down) + 1; i++){
-
-		std::string quantity; 
-
-		if(SigmaJER == true && JetSmearScaleFactor == false && Up == false && Down == false){quantity = "sigma JER";}
-   		else if(SigmaJER == false && JetSmearScaleFactor == true && Up == false && Down == false){quantity = "SF";}
-   		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == true && Down == false){quantity = "SF (up variation)";}
-   		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == false && Down == true){quantity = "SF (down variation)";}
-   		else{std::cout << "Please enter an appropriate file name" << std::endl;}
-
-
-
-		bool check = any_of(RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).begin(),
-				    RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).end(),
-				    [](float j){return j != 0;});
-
-
-		if(check == 1){k = i; break;}
-		else{continue;}
-
-
-  }
-
-
-  float factor;
-
-
-  for(int i = 0; i < RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).size(); i++){
-
-	if(RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i) != 0){factor = RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i);}
-	else{continue;}
-
-  }
-
-  return factor;
-
-
-}};
-
-
-
-
-
-
-
-
-
-//sigma_JER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_PtResolution_AK4PF.txt
-auto sigma_JER{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
-
-  std::cout << "sigma_JER" << std::endl;
-
-  bool SigmaJER = true;
-  bool JetSmearScaleFactor = false;
-  bool Up = false;
-  bool Down = false;
-
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
-
-
-auto sigma_JER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
-
-  std::cout << "sigma_JER_up" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = true;
-  bool Down = false;
-
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
-
-
-auto sigma_JER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
-
-  std::cout << "sigma_JER_down" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = false;
-  bool Down = true;
-  
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
-
-//SJER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_SF_AK4PF.txt 
-auto SJER_nominal{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
-
-  std::cout << "SJER_nominal" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = true;
-  bool Up = false;
-  bool Down = false;
- 
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-
-}};
-
-auto SJER_up{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
-
-  std::cout << "SJER_up" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = true;
-  bool Down = false;
-  
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-
-}};
-
-auto SJER_down{[/*&RowReader3*/](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
-
-  std::cout << "SJER_down" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = false;
-  bool Down = true;
-  
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-
-}};
-
-
-
-
-
-//Calculating the jet smearing correction factor using the hybrid method
-auto MaxComparison{[](const float& sJER_nominal){
-
- std::cout << "MaxComparison" << std::endl;
-
- float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
-
- if(MaximumFloats > 0){
- 	return MaximumFloats;
- }
- else{
-	float zero = 0.0;
-	return zero;
- }
-
-
-}};
-
-
-auto JetSmearingFunction_HybridMethod{[/*&MaxComparison*/](
-
-const floats& pT,
-const floats& eta,      
-const floats& phi, 
-const floats& pT_ptcl, 
-const floats& eta_ptcl, 
-const floats& phi_ptcl, 
-const float& sJER_nominal, 
-const float& sigma_JER,
-const ints& Jet_genJetIdx){
-
-  std::cout << "JetSmearingFunction_HybridMethod" << std::endl;
-
-  floats cJER_vec{};
-
-  for(int i = 0; i < pT.size(); i++){
-
-	float cJER_Scaling;
-	float N = gRandom->Gaus(0, sigma_JER);
-        float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
-
-
-  	if(Jet_genJetIdx.at(i) != -1){
-
-		int j = Jet_genJetIdx.at(i);
-
-			if( j < pT_ptcl.size() ){
-
-				double dphi = phi.at(i) - phi_ptcl.at(j);
-        			double deta = eta.at(i) - eta_ptcl.at(j);
-        			double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
-        			const double RCone = 0.4;
-
- 				if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
-
-					cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
-					cJER_vec.push_back(cJER_Scaling);
-		
-				}
-				else{cJER_vec.push_back(cJER_Stochastic);}
-
-			}
-			else{cJER_vec.push_back(cJER_Stochastic);}
-
-  	}
-  	else{cJER_vec.push_back(cJER_Stochastic);}
-
-
-  }
-
-  return cJER_vec;
-  
-
-}};
-
-
-
-
-
-
-
-
-
-auto ApplyCJER{[](
-
-const floats& JetPt, 
-const floats& JetEta,
-const floats& JetPhi,
-const floats& JetMass, 
-const floats& cJER, 
-const unsigned int& nJet
-
-){
-
-  std::cout << "ApplyCJER" << std::endl;
-
-  std::vector<TLorentzVector> OutputVec{};
-
-  for(int i = 0; i < nJet; i++){
-
-    TLorentzVector JetFourMomentum_New{};
-    float JetPt_new = JetPt.at(i) * cJER.at(0);
-    float JetEta_new = JetEta.at(i) * cJER.at(0);
-    float JetPhi_new = JetPhi.at(i) * cJER.at(0);
-    float JetMass_new = JetMass.at(i) * cJER.at(0);
-
-
-    JetFourMomentum_New.SetPtEtaPhiM(JetPt_new, JetEta_new, JetPhi_new, JetMass_new);
-
-    OutputVec.push_back(JetFourMomentum_New);
-
-  }
-
- return OutputVec; 
-
-}};
-
-
-//To get the properties of the smeared jet
-auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
-
- std::cout << "GetSmearedJetPt" << std::endl;
-
- floats NewPtVec = {};
-
- for(int i = 0; i < JetPt.size(); i++){
-
-        float NewPt = (SmearedJet4Momentum.at(i)).Pt();
- 	NewPtVec.push_back(NewPt);
-
- }
-
- return NewPtVec;
-
-}};
-
-
-auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
-
- std::cout << "GetSmearedJetPhi" << std::endl;
-
- floats NewPhiVec{};
-
- for(int i = 0; i < JetPhi.size(); i++){
-
-	float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
-        NewPhiVec.push_back(NewPhi);
-
- }
- 
- return NewPhiVec;
-
-}};
-
- 
-auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
-
- std::cout << "GetSmearedJetEta" << std::endl;
-
- floats NewEtaVec = {};
-
- for(int i = 0; i < JetEta.size(); i++){
-
-        float NewEta = (SmearedJet4Momentum.at(i)).Eta();
-        NewEtaVec.push_back(NewEta);
-
- }
-
- return NewEtaVec;
-
-}};
-
-
-auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
-
- std::cout << "GetSmearedJetMass" << std::endl;
-
- floats NewMassVec = {};
-
- for(int i = 0; i < JetMass.size(); i++){
-
-	float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
-        float NewPt = (SmearedJet4Momentum.at(i)).Pt();
-        float NewEta = (SmearedJet4Momentum.at(i)).Eta();
-        float NewMass = (SmearedJet4Momentum.at(i)).M();
-		
-	NewMassVec.push_back(NewMass);
-
- }
-
- return NewMassVec;
-
-}};
-
-
-//For the Rochester corrections
-auto MuonFourMomentum{[](
-
-const floats& Muon_pt,
-const floats& Muon_eta,
-const floats& Muon_phi,
-const floats& Muon_mass
-
-){
-
-  std::cout << "MuonFourMomentum" << std::endl;
-  
-  TLorentzVector Muon4Mo{};
-  
-  for(int i = 0; i < Muon_pt.size(); i++){
-	
-  	TLorentzVector vec{};
-  	vec.SetPtEtaPhiM(Muon_pt.at(i), Muon_eta.at(i), Muon_phi.at(i), Muon_mass.at(i));
-  	Muon4Mo += vec;
-
-  }
-  return Muon4Mo;
-
-}};
-
-
-
-auto RochCorrVec_Function{[/*&process, &year*/](
-
-const ints& MuonCharge, 
-const floats& MuonPt, 
-const floats& MuonEta, 
-const floats& MuonPhi, 
-const ints& Muon_genPartIdx, 
-const ints& Muon_nTrackerLayers
-
-){
-
-  std::cout << "RochCorrVec_Function" << std::endl; 
-
-  floats CorrectionFactor = RochesterCorrections_testscript2(Year_String, Process_String, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
-  return CorrectionFactor;
-
-}};
-
-
-
-auto RochCorrVec_Function_data{[/*&process, &year*/](
-
-const ints& MuonCharge,
-const floats& MuonPt,
-const floats& MuonEta,
-const floats& MuonPhi,
-const ints& DummyColumnInts,
-const ints& Muon_nTrackerLayers
-
-){
-
-  std::cout << "RochCorrVec_Function_data" << std::endl;
-
-  floats CorrectionFactor = RochesterCorrections_testscript2(Year_String, Process_String, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
-  return CorrectionFactor;
-
-}};
-
-
-
-
-auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec){
-
-  std::cout << "RochCorrMuon4Mo" << std::endl;
-
-  TLorentzVector NewVec{};
-
-  double NewVecMass = Muon4Mo.M() * RochCorrVec.at(0);
-  double NewVecPt = Muon4Mo.Pt() * RochCorrVec.at(0);
-  double NewVecPhi = Muon4Mo.Phi() * RochCorrVec.at(0);
-  double NewVecEta = Muon4Mo.Eta() * RochCorrVec.at(0);
-
-  NewVec.SetPtEtaPhiM(NewVecPt, NewVecEta, NewVecPhi, NewVecMass);
-  return NewVec;
-
-}};
-
-
-
-//Implementing the PU modelling
-auto PU_function{[/*&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year*/](int PV_npvs_input){
-
-  std::cout << "PU_function" << std::endl;
-
-  float PU_Weight_input;
-
-  if(Year_String == "2016"){
-        PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else if(Year_String == "2017"){
-        PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else if(Year_String == "2018"){
-        PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
-
-
-  return PU_Weight_input;
-
-}};
-
-
-
-//EGamma SF functions
-auto EGammaFunction{[/*&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
-		     &EGammaEffReco2016_histo, 	     	     &EGammaEffRecoSys2016_histo,
-		     &EGammaEff2017_histo,                   &EGammaEffSys2017_histo, 
-		     &EGammaEffReco_LowPt_2017_histo,        &EGammaEffRecoSys_LowPt_2017_histo,
-		     &EGammaEffReco_HigherPt_2017_histo,     &EGammaEffRecoSys_HigherPt_2017_histo,
-		     &EGammaEff2018_histo,	             &EGammaEffSys2018_histo,
-		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo*/
-		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
-
-
-   std::cout << "EGammaFunction" << std::endl;
-
-   floats OutputVector{};
-   floats OutputVectorFinal{};
-
-   for(int i = 0; i < pt.size(); i++){
-
-  	if( abs(SuperClusterEta.at(i)) < 2.5 ){
-
-		//2016
-		int Bin_EGammaEff2016 = EGammaEff2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-		int Bin_EGammaEffSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-		int Bin_EGammaEffReco2016 = EGammaEffReco2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-                int Bin_EGammaEffRecoSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-
-		//2017
-		int Bin_EGammaEff2017 = EGammaEff2017_histo->FindBin(SuperClusterEta.at(i), pt.at(i));
-		int Bin_EGammaEffSys2017 = EGammaEffSys2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-		int Bin_EGammaEffReco_LowPt_2017 = EGammaEffReco_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-		int Bin_EGammaEffRecoSys_LowPt_2017 = EGammaEffRecoSys_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-		int Bin_EGammaEffReco_HigherPt_2017 = EGammaEffReco_HigherPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-                int Bin_EGammaEffRecoSys_HigherPt_2017 = EGammaEffRecoSys_HigherPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-
-
-		//2018
-		int Bin_EGammaEff2018 = EGammaEff2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-                int Bin_EGammaEffSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-                int Bin_EGammaEffReco2018 = EGammaEffReco2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-                int Bin_EGammaEffRecoSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
-
-		float EGammaSF;
-
-		if(year == "2016"){
-			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
-			else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2016_histo->GetBinError(Bin_EGammaEffRecoSys2016);}
-			else if(type == "EGammaEff"){EGammaSF = EGammaEff2016_histo->GetBinContent(Bin_EGammaEff2016);}
-			else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2016_histo->GetBinContent(Bin_EGammaEffReco2016);}
-			else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2016" << std::endl;}
-		}
-		else if(year == "2017"){
-			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2017_histo->GetBinError(Bin_EGammaEffSys2017);}
-                        else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGammaSF = EGammaEffRecoSys_LowPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_LowPt_2017);}
-			else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGammaSF = EGammaEffRecoSys_HigherPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_HigherPt_2017);}
-                        else if(type == "EGammaEff"){EGammaSF = EGammaEff2017_histo->GetBinContent(Bin_EGammaEff2017);}
-			else if(type == "EGammaEffReco" && pt.at(i) <= 20){EGammaSF = EGammaEffReco_LowPt_2017_histo->GetBinContent(Bin_EGammaEffReco_LowPt_2017);}
-                        else if(type == "EGammaEffReco" && pt.at(i) > 20){EGammaSF = EGammaEffReco_HigherPt_2017_histo->GetBinContent(Bin_EGammaEffReco_HigherPt_2017);}
-                        else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2017" << std::endl;}
-
-		}
-		else if(year == "2018"){
-			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2018_histo->GetBinError(Bin_EGammaEffSys2018);}
-                        else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2018_histo->GetBinError(Bin_EGammaEffRecoSys2018);}
-                        else if(type == "EGammaEff"){EGammaSF = EGammaEff2018_histo->GetBinContent(Bin_EGammaEff2018);}
-                        else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2018_histo->GetBinContent(Bin_EGammaEffReco2018);}
-                        else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2018" << std::endl;}
-
-		}
-	
-
-		OutputVector.push_back(EGammaSF);
-		
-  	}
-  	else{OutputVector.push_back(1.0);}
-
-
-
-  } //end of for loop
-
-
-  for(int i = 0; i < OutputVector.size(); i++){
-
-	if(OutputVector.at(i) == 0){OutputVectorFinal.push_back(1.0);}
-	else{OutputVectorFinal.push_back( OutputVector.at(i) );}
-
-  }
-
-  return OutputVectorFinal.at(0);
-
-}};
-
-
-
-auto EGammaSF_egammaEff{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
-
-  std::cout << "EGammaSF_egammaEff" << std::endl;
-
-  return EGammaFunction(Year_String, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
-
-}};
-
-
-
-
-
-auto EGammaSF_egammaEffReco{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
-
-  std::cout << "EGammaSF_egammaEffReco" << std::endl;
-
-  return EGammaFunction(Year_String, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
-
-}};
-
-
-
-
-
-auto EGammaSF_egammaEff_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
-
-  std::cout << "EGammaSF_egammaEff_Sys" << std::endl;
-
-  return EGammaFunction(Year_String, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
-
-}};
-
-
-
-
-
-auto EGammaSF_egammaEffReco_Sys{[/*&year, &EGammaFunction*/](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
-
-  std::cout << "EGammaSF_egammaEffReco_Sys" << std::endl;
-
-  return EGammaFunction(Year_String, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
-
-}};
-
-
-
-
-auto MuonSF{[
-/*
-&year,
-&histo_RunsBCDEF_ID_2016,
-&histo_RunsGH_ID_2016,
-&histo_RunsBCDEF_ISO_2016,
-&histo_RunsGH_ISO_2016,
-&histo_RunsBCDEF_ID_2017,
-&histo_RunsBCDEF_ID_Sys_2017,
-&histo_RunsBCDEF_ID_Sys_Stat_2017,
-&histo_RunsBCDEF_ID_Sys_Syst_2017,
-&histo_RunsBCDEF_ISO_2017,
-&histo_RunsBCDEF_ISO_Sys_2017,
-&histo_RunsBCDEF_ISO_Sys_Stat_2017,
-&histo_RunsBCDEF_ISO_Sys_Syst_2017,
-&histo_RunsABCD_ID_2018,
-&histo_RunsABCD_ISO_2018
-*/
-
-](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
-
-
-  std::cout << "MuonSF" << std::endl;
-
-  floats AbsEta = abs(eta);
-
-  float lumiRunBCDEF = 19713.888;
-  float lumiRunGH = 16146.178;
-
-  floats MuonSFOutput{};
-
-
-  for(int i = 0; i < pt.size(); i++){
-
-  	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){ 
-
-		if(Year_String == "2016"){
-
-			float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinContent( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinContent( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinError( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinError( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinError( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinError( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-
-			float Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsBCDEF, MuonSF_RunsBCDEF, Error_RunsGH, MuonSF_RunsGH;
-
-
-			if(type == "ID" || type == "ID sys"){
-
-				MuonSF_RunsBCDEF = MuonSF_RunsBCDEF_ID_2016; MuonSF_RunsGH = MuonSF_RunsGH_ID_2016;
-				Error_RunsBCDEF = Error_RunsBCDEF_ID_2016; Error_RunsGH = Error_RunsGH_ID_2016;
-			
-			}		
-			else if(type == "Iso" || type == "Iso sys"){
-
-				MuonSF_RunsBCDEF = MuonSF_RunsBCDEF_ISO_2016; MuonSF_RunsGH = MuonSF_RunsGH_ISO_2016;
-				Error_RunsBCDEF = Error_RunsBCDEF_ISO_2016; Error_RunsGH = Error_RunsGH_ISO_2016;
-
-			}
-			else{std::cout << "For 2016, type must be ID, ID sys, Iso or Iso sys" << std::endl;}
-
-
-			MuonSF_RunsBCDEFGH = ( (MuonSF_RunsBCDEF * lumiRunBCDEF) + (MuonSF_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
-			Error_RunsBCDEFGH = ( (Error_RunsBCDEF * lumiRunBCDEF) + (Error_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
-
-
-
-
-			if(type == "ID sys"){
-
-				if(UpOrDown == "Up"){
-
-					MuonSF_RunsBCDEFGH += Error_RunsBCDEFGH + 0.01;
-					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
-
-				}
-				else if(UpOrDown == "Down"){
-
-					MuonSF_RunsBCDEFGH -= Error_RunsBCDEFGH - 0.01;
-					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
-
-				}
-				else{std::cout << "Select an up or down uncertainty" << std::endl;}
-
-			}
-			else if(type == "Iso sys"){
-
-				if(UpOrDown == "Up"){
-
-					MuonSF_RunsBCDEFGH += Error_RunsBCDEFGH + 0.005;
-					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
-
-				}
-				else if(UpOrDown == "Down"){
-
-					MuonSF_RunsBCDEFGH -= Error_RunsBCDEFGH - 0.005;
-					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
-
-				}
-				else{std::cout << "Select an up or down uncertainty" << std::endl;}
-
-			}
-			else{MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);}
-
-		}
-		else if(Year_String == "2017"){
-
-			float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinContent( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinError( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinError( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinError( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-
-
-			if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ID_2017);}
-			else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ISO_2017);}
-			else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_2017);}
-			else if(type == "ID sys (stat)"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_Stat_2017);} 
-			else if(type == "ID sys (syst)"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_Syst_2017);}
-			else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_2017);} 
-			else if(type == "Iso sys (stat)"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_Stat_2017);} 
-			else if(type == "Iso sys (syst)"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_Syst_2017);}
-			else{std::cout << "Incorrect type for 2017 muon SF function" << std::endl;}
-
-		}
-		else if(Year_String == "2018"){
-
-			float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-			float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-			float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-
-			if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsABCD_ID_2018);}
-			else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
-			else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsABCD_ISO_2018);}
-			else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsABCD_ISO_2018);}
-			else{std::cout << "Error with Muon SF type (2018)" << std::endl;}
-
-		}
-		else{std::cout << "Code only for 2016, 2017 or 2018." << std::endl;}
-
-	}
-	else{std::cout << "inside else statement for pushing back muon SF output" << std::endl; float One = 1.0; MuonSFOutput.push_back(One);}
-
-
-  }
-
-  return MuonSFOutput.at(0); 
-
-
-}};
-
-
-auto MuonSFTest_ID{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
-
-  std::cout << "MuonSFTest_ID" << std::endl;
-
-  return MuonSF("ID", Year_String, " ", pt, eta);
-  
-}};
-
-
-
-auto MuonSFTest_Iso{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
-
-  std::cout << "MuonSFTest_Iso" << std::endl;
-
-  return MuonSF("Iso", Year_String, " ", pt, eta);
-    
-}};
-
-
-
-
-auto MuonSFTest_ID_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
-  
-  std::cout << "MuonSFTest_ID_sys_syst" << std::endl;
-
-  if(Year_String == "2016"){
-        return MuonSF("ID sys", Year_String, "Up", pt, eta);
-  }
-  else if(Year_String == "2017"){
-        return MuonSF("ID sys (syst)", Year_String, " ", pt, eta);
-  }  
-  else{std::cout << "Need to add 2018" << std::endl;}
-
-}};
-
-
-
-
-auto MuonSFTest_ID_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
-
-  std::cout << "MuonSFTest_ID_sys_stat" << std::endl;
-
-  if(Year_String == "2016"){
-	return MuonSF("ID sys", Year_String, "Down", pt, eta);
-  }
-  else if(Year_String == "2017"){
-  	return MuonSF("ID sys (stat)", Year_String, " ", pt, eta);
-  }
-  else{std::cout << "Need to add 2018" << std::endl;}  
-
-}};
-
-
-
-
-auto MuonSFTest_Iso_sys_syst{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
-
-  std::cout << "MuonSFTest_Iso_sys_syst" << std::endl;
-
-  if(Year_String == "2016"){
-        return MuonSF("Iso sys", Year_String, "Up", pt, eta);
-  }
-  else if(Year_String == "2017"){
-        return MuonSF("Iso sys (syst)", Year_String, " ", pt, eta);
-  }
-  else{std::cout << "Need to add 2018" << std::endl;}
-
-}};
-
-
-
-
-auto MuonSFTest_Iso_sys_stat{[/*&MuonSF, &year*/](const floats& pt, const floats& eta){
-
-  std::cout << "MuonSFTest_Iso_sys_stat" << std::endl;
-
-  if(Year_String == "2016"){
-        return MuonSF("Iso sys", Year_String, "Down", pt, eta);
-  }
-  else if(Year_String == "2017"){
-        return MuonSF("Iso sys (stat)", Year_String, " ", pt, eta);
-  }
-  else{std::cout << "Need to add 2018" << std::endl;}
-
-}};
-
-
-
-
-
-
-
-
-
-//dummy column
-auto DummyColumnFunction{[](const floats& pts){
-
-  std::cout << "DummyColumnFunction" << std::endl;
-
-  return pts;
-
-}};
-
-auto DummyColumnFunctionInts{[](const ints& charges){
-
-  std::cout << "DummyColumnFunctionInts" << std::endl;
-
-  return charges;
-
-}};
-
-
-//PS weight lambda function
-auto PSWeight{[/*&year, &process*/](floats& PSWeight, const floats& pts){
-
-  std::cout << "PSWeight" << std::endl;
-
-  floats Ones(4, 1.0);
-
-  if(Year_String == "2017" || Year_String == "2018"){
-
-  	if(Process_String == "tZq" ||
-	   Process_String == "SingleTop_tbarW" ||
-	   Process_String == "SingleTop_schannel" ||
-	   Process_String == "SingleTop_tchannel_top" ||
-	   Process_String == "SingleTop_tchannel_tbar" ||
-	   Process_String == "ttbarV_ttgamma" ||
-	   Process_String == "ttbar_TTToHadronic" ||
-	   Process_String == "ttbar_TTToSemileptonic"){return PSWeight;}
-	else{return Ones;}
-
- 
- }
- else{return Ones;}
-
-
-}};
-
-
-
-//Functions for trigger SFs
-///Lambda function for the MET triggers
-
-
-auto MET_triggers_function{[/*&year*/](
-
-const bool& HLT_MET200,
-const bool& HLT_MET250,
-const bool& HLT_PFMET120_PFMHT120_IDTight,
-const bool& HLT_PFMET170_HBHECleaned,
-const bool& HLT_PFHT300_PFMET100,
-//const bool& HLT_MET105_IsoTrk50, //(not in run B)
-//const bool& HLT_MET120_IsoTrk50, //(not in run B)
-//const bool& HLT_HT430_DisplacedDijet40_DisplacedTrack, //(not in run B)
-//const bool& HLT_HT650_DisplacedDijet60_Inclusive, //(not in run B)
-//const bool& HLT_HT750_DisplacedDijet80_Inclusive, //(not in run B)
-//const bool& HLT_PFMET120_PFMHT120_IDTight_HFCleaned, //(not in any)
-//const bool& HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF, //(not in any)
-//const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned, //(not in any)
-//const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60, //(not in run B)
-const bool& HLT_PFMET130_PFMHT130_IDTight,
-const bool& HLT_PFMET140_PFMHT140_IDTight,
-//const bool& HLT_PFMET200_HBHE_BeamHaloCleaned, //(not in run B)
-//const bool& HLT_PFMET250_HBHECleaned, //(not in run B)
-//const bool& HLT_PFMET300_HBHECleaned, //(not in run B)
-//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned, (not in any)
-//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF, (not in any)
-//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60, //(not in run B)
-const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight,
-//const bool& HLT_PFMETNoMu130_PFMHTNoMu130_IDTight, //(not in run B)
-//const bool& HLT_PFMETNoMu140_PFMHTNoMu140_IDTight, //(not in run B)
-const bool& HLT_PFHT1050,
-const bool& HLT_PFHT180,
-const bool& HLT_PFHT500_PFMET100_PFMHT100_IDTight,
-const bool& HLT_PFHT500_PFMET110_PFMHT110_IDTight,
-const bool& HLT_PFHT700_PFMET85_PFMHT85_IDTight,
-const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
-const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
-const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
-
-  std::cout << "MET_triggers_function" << std::endl;
-
-  if(Year_String == "2016"){
-	
-	return HLT_MET200 > 0 ||
-        HLT_MET250 > 0 ||
-        HLT_PFMET120_PFMHT120_IDTight > 0 ||
-        HLT_PFMET170_HBHECleaned > 0 ||
-        HLT_PFHT300_PFMET100 > 0;
-
-  }
-  else if(Year_String == "2017" || Year_String == "2018"){
-
-  return 
-
-  //HLT_MET105_IsoTrk50 > 0 || //(not in run B)
-  //HLT_MET120_IsoTrk50 > 0 || //(not in run B)
-  //HLT_HT430_DisplacedDijet40_DisplacedTrack > 0 || //(not in run B)
-  //HLT_HT650_DisplacedDijet60_Inclusive > 0 || //(not in run B)
-  //HLT_HT750_DisplacedDijet80_Inclusive > 0 || //(not in run B)
-  //HLT_PFMET120_PFMHT120_IDTight_HFCleaned > 0 || //(not in any)
-  //HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF > 0 || //(not in any)
-  //HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned > 0 || //(not in any)
-  //HLT_PFMET120_PFMHT120_IDTight_PFHT60 > 0 || //(not in run B)
-  HLT_PFMET120_PFMHT120_IDTight > 0 ||
-  HLT_PFMET130_PFMHT130_IDTight > 0 ||
-  HLT_PFMET140_PFMHT140_IDTight > 0 ||
-  //HLT_PFMET200_HBHE_BeamHaloCleaned > 0 || //(not in run B)
-  //HLT_PFMET250_HBHECleaned > 0 || //(not in run B)
-  //HLT_PFMET300_HBHECleaned > 0 || //(not in run B)
-  //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned > 0 || (not in any)
-  //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF > 0 || (not in any)
-  //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60 > 0 || //(not in run B)
-  HLT_PFMETNoMu120_PFMHTNoMu120_IDTight > 0 ||
-  //HLT_PFMETNoMu130_PFMHTNoMu130_IDTight > 0 || //(not in run B)
-  //HLT_PFMETNoMu140_PFMHTNoMu140_IDTight > 0 || //(not in run B)
-  HLT_PFHT1050 > 0 ||
-  HLT_PFHT180 > 0 ||
-  HLT_PFHT500_PFMET100_PFMHT100_IDTight > 0 ||
-  HLT_PFHT500_PFMET110_PFMHT110_IDTight > 0 ||
-  HLT_PFHT700_PFMET85_PFMHT85_IDTight > 0 ||
-  HLT_PFHT700_PFMET95_PFMHT95_IDTight > 0 ||
-  HLT_PFHT800_PFMET75_PFMHT75_IDTight > 0 ||
-  HLT_PFHT800_PFMET85_PFMHT85_IDTight > 0;
-
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
-
-}};
-
-
-
-
-
-
-//Events that pass the selection criteria and the lepton triggers
-
-auto ee_selection_LL_Trig_function{[/*&year*/](
-
-const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
-const bool& HLT_Ele35_WPTight_Gsf, 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
-const bool& HLT_IsoMu27, 
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
-const bool& HLT_Ele27_WPTight_Gsf, 
-const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
-const bool& HLT_IsoMu24,
-const bool& HLT_IsoMu24_eta2p1,
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
-)-> bool{
-
-  std::cout << "ee_selection_LL_Trig_function" << std::endl;
-
-  if(Year_String == "2016"){
-
-	return //single or double electron and not any of the others
-	
-	(HLT_Ele25_eta2p1_WPTight_Gsf > 0 || //single electron 
-	 HLT_Ele27_WPTight_Gsf > 0 || //single electron
-	 HLT_Ele32_eta2p1_WPTight_Gsf > 0 || //single electron
-	 HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) //double electron 
-	 && 
-	(HLT_IsoMu24 <= 0 || //single muon
-	 HLT_IsoMu24_eta2p1 <= 0 || //single muon
-	 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-	 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
-	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-	 HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-	 HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-	 HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-	 HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
-
-
-  }
-  else if(Year_String == "2017"){
-
-  return 
-
-  (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
-   HLT_Ele35_WPTight_Gsf > 0 || //single electron
-   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //double electron
-   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) && // double electron
-  (//HLT_IsoMu24 <= 0 || //single muon
-   HLT_IsoMu27 <= 0 || //single muon
-   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
-   //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0 || //double muon (not in MET run B)
-   //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET run B)
-   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-   //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET run B)
-   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-   //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET run B)
-   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
-
-  }
-  else if(Year_String == "2018"){
-
-	return (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
-		HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //single electron
-		HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) //double electron
-
-		&&
-
-		(HLT_IsoMu24 <= 0 || //single muon
-		 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
-		 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0 || //double muon
-		 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-		 HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-		 HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
-
-
-  }
-  else{std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl;}
-
-}};
-
-
-auto mumu_selection_LL_Trig_function{[/*&year*/](
-
-const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
-const bool& HLT_Ele35_WPTight_Gsf, 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
-//const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8, (not in MET Run B)
-const bool& HLT_IsoMu27, 
-//const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL, (not in MET run B)
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-//const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET run B)
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-//const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET run B)
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
-const bool& HLT_Ele25_eta2p1_WPTight_Gsf,
-const bool& HLT_Ele27_WPTight_Gsf, 
-const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
-const bool& HLT_IsoMu24,
-const bool& HLT_IsoMu24_eta2p1,
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
-
-
-  std::cout << "mumu_selection_LL_Trig_function" << std::endl;
-
-  if(Year_String == "2016"){
-
-        return //single or double muon and not any of the others
-
-	(HLT_IsoMu24 > 0 || //single muon
-         HLT_IsoMu24_eta2p1 > 0 || //single muon
-         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || //double muon
-         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //double muon
-
-	&&
-
-        (HLT_Ele25_eta2p1_WPTight_Gsf <= 0 || //single electron 
-         HLT_Ele27_WPTight_Gsf <= 0 || //single electron
-         HLT_Ele32_eta2p1_WPTight_Gsf <= 0 || //single electron
-         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron 
-         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
-
-
-  }
-  else if(Year_String == "2017"){
-
-  return
- 
-  (HLT_IsoMu27 > 0  || //single muon
-  HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || //double muon
-  HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //|| //double muon
-  //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0) && //double muon (not in MET Run B)
-  && (//HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET Run B)
-  HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-  //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET Run B)
-  HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-  //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET Run B)
-  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-  HLT_Ele32_WPTight_Gsf_L1DoubleEG <= 0 || //single electron
-  HLT_Ele35_WPTight_Gsf <= 0 || //single electron
-  HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //double electron
-  HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0);  //double electron
-
-  }
-  else if(Year_String == "2018"){
-
-	return //single or double muon and not any of the others
-	
-	(HLT_IsoMu24 > 0 || //single muon
-         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 || //double muon
-         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0) //double muon
-
-	&&
-
-	(HLT_Ele32_WPTight_Gsf_L1DoubleEG <= 0 || //single electron
-         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //single electron
-         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron
-	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
-         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
-
-  }
-  else{std::cout << "Choose 2016, 2017 or 2018" << std::endl;}
-  
-
-}};
-
-
-auto emu_selection_LL_Trig_function{[/*&year*/](
-
-const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
-const bool& HLT_Ele35_WPTight_Gsf, 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
-//const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8, (not in MET Run B)
-const bool& HLT_IsoMu27, 
-//const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL, (not in MET Run B)
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-//const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET Run B) 
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-//const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET Run B)
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
-const bool& HLT_Ele25_eta2p1_WPTight_Gsf,
-const bool& HLT_Ele27_WPTight_Gsf, 
-const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
-const bool& HLT_IsoMu24,
-const bool& HLT_IsoMu24_eta2p1,
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
-
-
-  std::cout << "emu_selection_LL_Trig_function" << std::endl;
-
-  if(Year_String == "2016"){
-
-	return //single lepton or muon+electron and not any of the others
-
-        (HLT_IsoMu24 > 0 || //single muon
-         HLT_IsoMu24_eta2p1 > 0 || //single muon
-	 HLT_Ele25_eta2p1_WPTight_Gsf > 0 || //single electron 
-         HLT_Ele27_WPTight_Gsf > 0 || //single electron
-         HLT_Ele32_eta2p1_WPTight_Gsf > 0 || //single electron
-	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
-         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
-         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
-         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
-         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
-         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0) //muon electron
-
-         &&
-
-         (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
-          HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron 
-
-
-
-  }
-  else if(Year_String == "2017"){
-
-  	return 
-
-  	(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || // double electron
-  	HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron
-  	HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-  	HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 //|| //double muon
-  	//HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0) && //double muon (not in MET Run B)
-  	) &&
-
-  	(HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
-  	HLT_Ele35_WPTight_Gsf > 0 || //single electron
-  	HLT_IsoMu27 > 0 || //single muon
-  	//HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //muon+electron (not in MET Run B)
-  	HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron
-  	//HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon+electron (not in MET Run B)
-  	HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron 
-  	//HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon+electron (not in MET Run B)
-  	HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0); //muon+electron
-
-  }
-  else if(Year_String == "2018"){
-
-	 return //single lepton or muon+electron and not any of the others
-
-        (HLT_IsoMu24 > 0 || //single muon
-	 HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
-         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //single electron
-         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron
-         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron
-         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0) //muon+electron
-
-	 &&
-
-         (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 || //double muon
-          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0 || //double muon
-          HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron
-	
-  }
-  else{std::cout << "Input 2016, 2017 or 2018" << std::endl;}
-
-}};
-
-
-
-
-
-
-
-
-//MET triggers
-std::vector<std::string> MET_triggers;
-
-
-
-//dummy lambda function
-auto DummyBool{[](const bool& dummyinput){
-
-  std::cout << "DummyBool" << std::endl;
-
-  return dummyinput > 0;
-
-}};
-
-
-
-//For ME_Up and ME_Down
-ints SummedWeights(14, 0);
-
-auto NominalWeight{[/*&PDF_ScaleUp, &PDF_ScaleDown*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
-
-  std::cout << "NominalWeight" << std::endl;
-
-  float PdfMin = 1.0;
-  float PdfMax = 1.0;
-
-  //For the min and max Pdf weights
-  for(int i = 0; i < LHEPdfWeight.size(); i++){
-
-
-        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
-
-        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
-        else{continue;}
-
-        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
-        else{continue;}
-
-  }
-
-
-  if(PDF_ScaleUp == true){return PdfMax;}
-  else if(PDF_ScaleDown == true){return PdfMin;}
-  else{float One = 1.0; return One;}
-
-
-}};
-
-
-
-
-auto ME_uncert_function{[/*&SummedWeights*/](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
-
-  std::cout << "ME_uncert_function" << std::endl;
-
-  floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
-
-  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
-
-
-  ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
-  ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
-  (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
-  ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++; //fsr up
-  ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
-  (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
-
-
-  //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
-
-  int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12]; 
-  int TotalNumNegative = SummedWeights[1] + SummedWeights[3] + SummedWeights[5] + SummedWeights[7] + SummedWeights[9] + SummedWeights[11] + SummedWeights[13]; 
-
-
-  float ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
-
-  return ME_SF;
-
-}};
-
-
-
-//Histogram for ME uncertainties
-auto ME_histo_function{[/*&SummedWeights*/](){
-
-  std::cout << "ME_histo_function" << std::endl;
-
-  ints numerators;
-
-  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
-
-  return numerators;
-
-}};
-
-
-
-
-
-//SFs for ME up and down
-auto GeneratorWeight{[/*&SummedWeights, &ME_Up, &ME_Down*/](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
-
-
-        std::cout << "GeneratorWeight" << std::endl;
-
- 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
-
-
-	if(ME_Up == true){
-
-		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
-                return generatorWeight_ScaleUp; 
-	
-	}
-	else if(ME_Down == true){	
-
-		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
-		return generatorWeight_ScaleDown; 
-
-	}
-	else{	
-
-		float generatorWeight = (TotalNumPositive / ME_numerator_histo.at(4)) * ( CalculatedNominalWeight / abs(CalculatedNominalWeight) );
-		return generatorWeight; 
-
-	}
-
-}};
-
-
-
-
-auto UnweightedTopPt{[](const doubles& pts){return pts;}};
-
-
-auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
-         
-  std::cout << "TopReweighting_topquark" << std::endl;
-       
-  return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
-        
-}};
-
-
-auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
-
-   std::cout << "TopReweighting_antitopquark" << std::endl;
-
-   return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
-
-}};
-
-
-auto TopReweighting_weight{[](const ints& TopReweighting_topquark, const ints& TopReweighting_antitopquark){
-
-  std::cout << "TopReweighting_weight" << std::endl;
-
-  doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
-  doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
-  doubles weight = sqrt( SF_top * SF_antitop);
-
-  return weight;
-
-}};
-
-
-
-
-//Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
-bool NominalRun;
-
-
-std::vector<float> CutRanges_ee = {};
-
-auto chi2_ee{[/*&process, &CutRanges_ee, &SBR, &NominalRun*/](const float& w_mass, const float& Top_Mass){
-
-  std::cout << "chi2_ee" << std::endl;
-
-  float FiveSigmaW = 5*W_stddev_ee;
-
-  //calculating chi2
-  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
-
-  float LowerBound = W_MASS - FiveSigmaW;
-  float UpperBound = W_MASS + FiveSigmaW;
-
-  if(Process_String == "tZq" && NominalRun == true && SBR == true){
-
-        //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-        if(w_mass > LowerBound && w_mass < UpperBound){
-                CutRanges_ee.push_back(chi2);
-                return chi2;
-        }   
-        else{   
-                std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
-                float out = 999.0;
-                return out;
-        }
-
-  }   
-  else{return chi2;}
-
-
-}};
-
-
-
-std::vector<float> CutRanges_mumu = {};
-
-auto chi2_mumu{[/*&process, &CutRanges_mumu, &SBR, &NominalRun*/](const float& w_mass, const float& Top_Mass){
-  
-  std::cout << "chi2_mumu" << std::endl;
-
-  float FiveSigmaW = 5*W_stddev_mumu;
-
-  float LowerBound = W_MASS - FiveSigmaW;
-  float UpperBound = W_MASS + FiveSigmaW;
-
-
-  //calculating chi2
-  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
-
-
-  if(Process_String == "tZq" && NominalRun == true && SBR == true){
- 
-        //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-        if(w_mass > LowerBound && w_mass < UpperBound){
-                CutRanges_mumu.push_back(chi2);
-                return chi2;
-        }
-        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
-             float out = 999.0;
-             return out;
-        }
-
-
-  }  
-  else{return chi2;}
-
-
-}};
-
-
-
-auto Chi2Cut_ee{[/*&SBR, &SR*/](const float& Chi2){
-
-  std::cout << "Chi2Cut_ee" << std::endl;
-
-  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
-  else if(SR == true){return Chi2 < Chi2_SR_ee;}
-  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
-
-}};
-
-
-
-
-auto Chi2Cut_mumu{[/*&SBR, &SR*/](const float& Chi2){
-
-  std::cout << "Chi2Cut_mumu" << std::endl;
-
-  if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
-  else if(SR == true){return Chi2 < Chi2_SR_mumu;}
-  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
-
-}};
-
-
-auto chi2_filter_ee{[/*&SBR, &SR*/](const float& chi2_ee){
-
-  std::cout << "chi2_filter_ee" << std::endl;
-
-  if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
-  else if(SR == true){return chi2_ee < Chi2_SR_ee;}
-  else{std::cout << "SR and SBR cannot both be false" << std::endl;}
-
-}};
-
-	
-auto chi2_filter_mumu{[/*&SBR, &SR*/](const float& chi2_mumu){
-                
-  std::cout << "chi2_filter_mumu" << std::endl;
-
-  if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
-  else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
-  else{std::cout << "SR and SBR cannot both be false" << std::endl;}
-        
-}};
-
-
-std::string Chi2Range_string;
-
-
-
-std::string PSWeightString_ee;
-std::string PSWeightString_mumu;
-
-
-
-
-
-std::vector<std::string> leptontriggers_strings;
-
-
-std::vector<std::string> sJER_sigmaJER_strings = {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"};
-
-std::string SJER;
-std::string SIGMAJER;
-
-
-std::vector<std::string> ApplyCJER_strings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"};
-
-
-std::vector<std::string> flags_strings = {
-"Flag_goodVertices", 
-"Flag_globalSuperTightHalo2016Filter", 
-"Flag_HBHENoiseFilter", 
-"Flag_HBHENoiseIsoFilter", 
-"Flag_EcalDeadCellTriggerPrimitiveFilter", 
-"Flag_BadPFMuonFilter", 
-"Flag_BadChargedCandidateFilter", 
-"Flag_ecalBadCalibFilter", 
-"Flag_eeBadScFilter"
-};
-
-
-std::vector<std::string> mumu_strings = {
-"nMuon", 
-"Muon_tightId_Selection", 
-"Muon_pfIsoId_Selection", 
-"Muon_eta", 
-"Muon_charge_Selection", 
-"Muon_pt_Selection", 
-"Muon_isPFcand_Selection"};
-
-
-std::vector<std::string> deltaR_j1j2_strings = {
-"LeadingJetEta",
-"LeadingJetPhi",
-"SubleadingJetEta",
-"SubleadingJetPhi",
-};
-
-std::vector<std::string> InvMass_AllJets_strings = {
-"LeadingJetpT",
-"SubleadingJetpT",
-"ThirdJetpT",
-"FourthJetpT",
-"LeadingJetEta",
-"SubleadingJetEta",
-"ThirdJetEta",
-"FourthJetEta",
-"LeadingJetPhi",
-"SubleadingJetPhi",
-"ThirdJetPhi",
-"FourthJetPhi",
-"LeadingJetMass",
-"SubleadingJetMass",
-"ThirdJetMass",
-"FourthJetMass",
-"nJet"
-};
-
-
-std::vector<std::string> InvMass_3Jets_strings = {
-"LeadingJetpT",
-"SubleadingJetpT",
-"ThirdJetpT",
-"LeadingJetEta",
-"SubleadingJetEta",
-"ThirdJetEta",
-"LeadingJetPhi",
-"SubleadingJetPhi",
-"ThirdJetPhi",
-"LeadingJetMass",
-"SubleadingJetMass",
-"ThirdJetMass",
-"nJet"
-};
-
-
-
-
-std::vector<std::string> top_strings = {
-"bjetpt",
-"bjeteta",
-"bjetphi",
-"bjetmass",
-"nJet",
-"w_pair_pt", 
-"w_pair_eta", 
-"w_pair_phi", 
-"w_mass",
-"w_reco_jets"};
-
-std::vector<std::string> deltaR_Top_LeadingElectron_strings = {
-"Top_Phi",
-"Top_Eta",
-"LeadingElectronEta",
-"LeadingElectronPhi"
-};
-
-std::vector<std::string> deltaR_Top_LeadingMuon_strings = {
-"Top_Phi",
-"Top_Eta",
-"LeadingMuonEta",
-"LeadingMuonPhi"
-};
-
-std::vector<std::string> deltaR_Top_SubleadingElectron_strings = {
-"Top_Phi",
-"Top_Eta",
-"SubleadingElectronEta",
-"SubleadingElectronPhi"
-};
-
-std::vector<std::string> deltaR_Top_SubleadingMuon_strings = {
-"Top_Phi",
-"Top_Eta",
-"SubleadingMuonEta",
-"SubleadingMuonPhi"
-};
-
-std::vector<std::string> deltaR_Top_LeadingJet_strings = {
-"Top_Phi",
-"Top_Eta",
-"SubleadingJetEta",
-"SubleadingJetPhi"
-};
-
-std::vector<std::string> deltaR_Top_SubleadingJet_strings = {
-"Top_Phi",
-"Top_Eta",
-"SubleadingJetEta",
-"SubleadingJetPhi"
-};
-
-std::vector<std::string> deltaR_Top_ThirdJet_strings = {
-"Top_Phi",
-"Top_Eta",
-"ThirdJetEta",
-"ThirdJetPhi"
-};
-
-std::vector<std::string> deltaR_Top_FourthJet_strings = {
-"Top_Phi",
-"Top_Eta",
-"FourthJetEta",
-"FourthJetPhi"
-};
-
-
-std::vector<std::string> deltaR_WJet1_WJet2_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"WPairJet2Phi",
-"WPairJet2Eta",
-};
-
-std::vector<std::string> deltaR_Z_Top_strings = {
-"RecoZPhi",
-"RecoZEta",
-"Top_Phi",
-"Top_Eta",
-};
-
-std::vector<std::string> deltaR_WJet1_LeadingElectron_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"LeadingElectronPhi",
-"LeadingElectronEta"
-};
-
-std::vector<std::string> deltaR_WJet1_SubleadingElectron_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"SubleadingElectronPhi",
-"SubleadingElectronEta"
-};
-
-std::vector<std::string> deltaR_WJet1_LeadingMuon_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"LeadingMuonPhi",
-"LeadingMuonEta"
-};
-
-std::vector<std::string> deltaR_WJet1_SubleadingMuon_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"SubleadingMuonPhi",
-"SubleadingMuonEta"
-};
-
-
-std::vector<std::string> deltaR_WJet1_LeadingJet_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"LeadingJetPhi",
-"LeadingJetEta"
-};
-
-std::vector<std::string> deltaR_WJet1_SubleadingJet_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"SubleadingJetPhi",
-"SubleadingJetEta"
-};
-
-std::vector<std::string> deltaR_WJet1_ThirdJet_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"ThirdJetPhi",
-"ThirdJetEta"
-};
-
-std::vector<std::string> deltaR_WJet1_FourthJet_strings = {
-"WPairJet1Phi",
-"WPairJet1Eta",
-"FourthJetPhi",
-"FourthJetEta"
-};
-
-std::vector<std::string> deltaR_WJet2_LeadingElectron_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"LeadingElectronPhi",
-"LeadingElectronEta"
-};
-
-std::vector<std::string> deltaR_WJet2_SubleadingElectron_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"SubleadingElectronPhi",
-"SubleadingElectronEta"
-};
-
-
-std::vector<std::string> deltaR_WJet2_LeadingMuon_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"LeadingMuonPhi",
-"LeadingMuonEta"
-};
-
-std::vector<std::string> deltaR_WJet2_SubleadingMuon_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"SubleadingMuonPhi",
-"SubleadingMuonEta"
-};
-
-
-std::vector<std::string> deltaR_WJet2_LeadingJet_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"LeadingJetPhi",
-"LeadingJetEta"
-};
-
-std::vector<std::string> deltaR_WJet2_SubleadingJet_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"SubleadingJetPhi",
-"SubleadingJetEta"
-};
-
-std::vector<std::string> deltaR_WJet2_ThirdJet_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"ThirdJetPhi",
-"ThirdJetEta"
-};
-
-std::vector<std::string> deltaR_WJet2_FourthJet_strings = {
-"WPairJet2Phi",
-"WPairJet2Eta",
-"FourthJetPhi",
-"FourthJetEta"
-};
-
-
-std::vector<std::string> deltaR_Z_LeadingJet_strings = {
-"RecoZPhi",
-"RecoZEta",
-"LeadingJetPhi",
-"LeadingJetEta"
-};
-
-std::vector<std::string> deltaR_Z_SubleadingJet_strings = {
-"RecoZPhi",
-"RecoZEta",
-"SubleadingJetPhi",
-"SubleadingJetEta"
-};
-
-std::vector<std::string> deltaR_Z_ThirdJet_strings = {
-"RecoZPhi",
-"RecoZEta",
-"ThirdJetPhi",
-"ThirdJetEta"
-};
-
-std::vector<std::string> deltaR_Z_FourthJet_strings = {
-"RecoZPhi",
-"RecoZEta",
-"FourthJetPhi",
-"FourthJetEta"
-};
-
-std::vector<std::string> deltaR_Top_W_strings = {
-"w_pair_eta",
-"w_pair_phi",
-"Top_Eta",
-"Top_Phi"
-};
-
-std::vector<std::string> deltaR_W_Z_strings = {
-"w_pair_phi",
-"w_pair_eta",
-"RecoZEta",
-"RecoZPhi"
-};
-
-std::vector<std::string> RecoZstrings_ee{
-"nElectron",
-"LeadingElectron_pT",
-"LeadingElectronEta",
-"LeadingElectronPhi",
-"LeadingElectronMass",
-"SubleadingElectron_pT",
-"SubleadingElectronEta",
-"SubleadingElectronPhi",
-"SubleadingElectronMass"
-};
-
-std::vector<std::string> RecoZstrings_mumu = {
-"nMuon",
-"LeadingMuon_pT",
-"LeadingMuonEta",
-"LeadingMuonPhi",
-"LeadingMuonMass",
-"SubleadingMuon_pT",
-"SubleadingMuonEta",
-"SubleadingMuonPhi",
-"SubleadingMuonMass"
-};
-
-
-std::vector<std::string> TotalHT_System_strings = {
-"RecoZHT",
-"RecoWHT",
-"Top_HT",
-"TotLepHT",
-"TotJetHT"
-};
-
-std::vector<std::string> TotalPt_System_strings = {
-"RecoZPt",
-"w_pair_pt",
-"Top_Pt",
-"LepPtSum",
-"JetPtSum"
-};
-
-std::vector<std::string> TotalPt_Systemstrings_data = {
-"RecoZPt",
-"w_pair_pt",
-"Top_Pt",
-"LepPtSum",
-"JetPtSum"
-};
-
-
-std::vector<std::string> TotalEta_System_strings = {
-"RecoZEta",
-"w_pair_eta",
-"Top_Eta",
-"LepEtaSum",
-"JetEtaSum"
-};
-
-
-std::vector<std::string> TotalPhi_System_strings = {
-"RecoZEta",
-"w_pair_eta",
-"Top_Eta",
-"LepPhiSum",
-"JetPhiSum"
-};
-
-
-std::vector<std::string> dR_Z_WPairJet1_strings = {
-"RecoZPhi",
-"RecoZEta",
-"WPairJet1Eta",
-"WPairJet1Phi"
-};
-
-std::vector<std::string> dR_Z_WPairJet2_strings = {
-"RecoZPhi",
-"RecoZEta",
-"WPairJet2Eta",
-"WPairJet2Phi"
-};
-
-
-
-std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_ee = {
-"bjeteta",
-"LeadingElectronEta",
-"bjetphi",
-"LeadingElectronPhi"
-};
-
-std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_ee = {
-"bjeteta",
-"SubleadingElectronEta",
-"bjetphi",
-"SubleadingElectronPhi"
-};
-
-std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_mumu = {
-"bjeteta",
-"LeadingMuonEta",
-"bjetphi",
-"LeadingMuonPhi"
-};
-
-std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_mumu = {
-"bjeteta",
-"SubleadingMuonEta",
-"bjetphi",
-"SubleadingMuonPhi"
-};
-
-
-
-
-
-
-std::vector<std::string> lep_cut_ee_strings;
-std::vector<std::string> lep_cut_mumu_strings;
-
-
-
-std::vector<std::string> lep_cut_emu_strings = {
-"Electron_pt_SelectionEmu",
-"LooseElectron_pt_SelectionEmu",
-"OppositeSign_emu",
-"nElectron",
-"Muon_pt_SelectionEmu", 
-"LooseMuon_pt_SelectionEmu",
-"nMuon"
-
-};
-
-
-
-
-
-
-
-void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR_bool, const bool& SBR_bool, const bool& ZPlusJetsCR_bool, const bool& ttbarCR_bool, const std::string& year, const bool& PU_ScaleUp_bool, const bool& PU_ScaleDown_bool, const bool& BTag_ScaleUp_bool, const bool& BTag_ScaleDown_bool, const bool& JetSmearing_ScaleUp_bool, const bool& JetSmearing_ScaleDown_bool, const bool& JetResolution_ScaleUp_bool, const bool& JetResolution_ScaleDown_bool, const bool& LeptonEfficiencies_ScaleUp_bool, const bool& LeptonEfficiencies_ScaleDown_bool, const bool& PDF_ScaleUp_bool, const bool& PDF_ScaleDown_bool, const bool& ME_Up_bool, const bool& ME_Down_bool, const bool& MET_Up_bool, const bool& MET_Down_bool, const bool& isr_up_bool, const bool& isr_down_bool, const bool& fsr_up_bool, const bool& fsr_down_bool){
-
-
-
-  //EnableImplicitMT();
-
-
-  Process_String = process;
-  Blinding_bool = blinding;
-  NPL_bool = NPL;
-  SR = SR_bool;
-  SBR = SBR_bool;
-  ZPlusJetsCR = ZPlusJetsCR_bool;
-  ttbarCR = ttbarCR_bool;
-  Year_String = year;
-
-  std::string branch;
-
-  if(SBR_bool == true){SBR = true;}
-  else if(SR_bool == true){SR = true;}
-  else{std::cout << "Neither SBR_bool nor SR_bool are true" << std::endl;}
-
-
-  if(PU_ScaleUp_bool == true){branch = "PU_ScaleUp"; PU_ScaleUp = true;}
-  else if(PU_ScaleDown_bool == true){branch = "PU_ScaleDown"; PU_ScaleDown = true;}
-  else if(BTag_ScaleUp_bool == true){branch = "BTag_ScaleUp"; BTag_ScaleUp = true;}
-  else if(BTag_ScaleDown_bool == true){branch = "BTag_ScaleDown"; BTag_ScaleDown = true;}
-  else if(JetSmearing_ScaleUp_bool == true){branch = "JetSmearing_ScaleUp"; JetSmearing_ScaleUp = true;}
-  else if(JetSmearing_ScaleDown_bool == true){branch = "JetSmearing_ScaleDown"; JetSmearing_ScaleDown = true;}
-  else if(JetResolution_ScaleUp_bool == true){branch = "JetResolution_ScaleUp"; JetResolution_ScaleUp = true;}
-  else if(JetResolution_ScaleDown_bool == true){branch = "JetResolution_ScaleDown"; JetResolution_ScaleDown = true;}
-  else if(LeptonEfficiencies_ScaleUp_bool == true){branch = "LeptonEfficiencies_ScaleUp"; LeptonEfficiencies_ScaleUp = true;}
-  else if(LeptonEfficiencies_ScaleDown_bool == true){branch = "LeptonEfficiencies_ScaleDown"; LeptonEfficiencies_ScaleDown = true;}
-  else if(PDF_ScaleUp_bool == true){branch = "PDF_ScaleUp"; PDF_ScaleUp = true;}
-  else if(PDF_ScaleDown_bool == true){branch = "PDF_ScaleDown"; PDF_ScaleDown = true;}
-  else if(ME_Up_bool == true){branch = "ME_Up"; ME_Up = true;}
-  else if(ME_Down_bool == true){branch = "ME_Down"; ME_Down = true;}
-  else if(MET_Up_bool == true){branch = "MET_Up"; MET_Up = true;}
-  else if(MET_Down_bool == true){branch = "MET_Down"; MET_Down = true;}
-  else if(isr_up_bool == true){branch = "isr_up"; isr_up = true;}
-  else if(isr_down_bool == true){branch = "isr_down"; isr_down = true;}
-  else if(fsr_up_bool == true){branch = "fsr_up"; fsr_up = true;}
-  else if(fsr_down_bool == true){branch = "fsr_down"; fsr_down = true;}
-  else{branch = "Nominal";}
-
-
-  std::cout << "branch = " << branch << std::endl;
-
-  std::string RunType;
-
-  if(process != "data_EGRunB"              && process != "data_EGRunC"              && process != "data_EGRunD"              && process != "data_DoubleEGRunB" && 
-     process != "data_DoubleEGRunC"        && process != "data_DoubleEGRunD"        && process != "data_DoubleEGRunE"        && process != "data_DoubleEGRunF" &&
-     process != "data_DoubleEGRunG"        && process != "data_DoubleEGRunH"        && process != "data_SingleElectronRunB"  && process != "data_SingleElectronRunC" &&
-     process != "data_SingleElectronRunD"  && process != "data_SingleElectronRunE"  && process != "data_SingleElectronRunF"  && process != "data_SingleElectronRunG" &&
-     process != "data_SingleElectronRunH"  && process != "data_DoubleMuonRunB"      && process != "data_DoubleMuonRunC"      && process != "data_DoubleMuonRunD" &&
-     process != "data_DoubleMuonRunE"      && process != "data_DoubleMuonRunF"      && process != "data_DoubleMuonRunG"      && process != "data_DoubleMuonRunH" &&
-     process != "data_SingleMuonRunB"      && process != "data_SingleMuonRunC"      && process != "data_SingleMuonRunD"      && process != "data_SingleMuonRunE" &&
-     process != "data_SingleMuonRunF"      && process != "data_SingleMuonRunG"      && process != "data_SingleMuonRunH"      && process != "data_DoubleEGRunB2" &&
-     process != "data_DoubleEGRunC2"       && process != "data_DoubleEGRunD2"       && process != "data_DoubleEGRunE2"       && process != "data_DoubleEGRunF2" &&
-     process != "data_DoubleEGRunG2"       && process != "data_DoubleEGRunH2"       && process != "data_SingleElectronRunB2" && process != "data_SingleElectronRunC2" &&
-     process != "data_SingleElectronRunD2" && process != "data_SingleElectronRunE2" && process != "data_SingleElectronRunF2" && process != "data_SingleElectronRunG2" &&
-     process != "data_SingleElectronRunH2" && process != "data_DoubleMuonRunB2"     && process != "data_DoubleMuonRunC2"     && process != "data_DoubleMuonRunD2" &&
-     process != "data_DoubleMuonRunE2"     && process != "data_DoubleMuonRunF2"     && process != "data_DoubleMuonRunG2"     && process != "data_DoubleMuonRunH2" &&
-     process != "data_SingleMuonRunB2"     && process != "data_SingleMuonRunC2"     && process != "data_SingleMuonRunD2"     && process != "data_SingleMuonRunE2" &&
-     process != "data_SingleMuonRunF2"     && process != "data_SingleMuonRunG2"     && process != "data_SingleMuonRunH2"){
-
-	RunType = "MC";
-
- }
- else if(  process == "data_DoubleEGRunB"        || process == "data_DoubleEGRunC"        || process == "data_DoubleEGRunD"        || process == "data_DoubleEGRunE" ||
-	   process == "data_DoubleEGRunF"        || process == "data_DoubleEGRunG"        || process == "data_DoubleEGRunH"        || process == "data_DoubleEGRunB2" ||
-           process == "data_DoubleEGRunC2"       || process == "data_DoubleEGRunD2"       || process == "data_DoubleEGRunE2"       || process == "data_DoubleEGRunF2" ||
-	   process == "data_DoubleEGRunG2"       || process == "data_DoubleEGRunH2" 	  || process == "data_EGRunB"              || process == "data_EGRunC" ||
-	   process == "data_EGRunD"              || process == "data_SingleElectronRunB"  || process == "data_SingleElectronRunC"  || process == "data_SingleElectronRunD" ||
-	   process == "data_SingleElectronRunE"  || process == "data_SingleElectronRunF"  || process == "data_SingleElectronRunG"  || process == "data_SingleElectronRunH" ||
-           process == "data_DoubleMuonRunB"      || process == "data_DoubleMuonRunC"      || process == "data_DoubleMuonRunD"      || process == "data_DoubleMuonRunE" ||
-	   process == "data_DoubleMuonRunF"      || process == "data_DoubleMuonRunG"      || process == "data_DoubleMuonRunH"      || process == "data_SingleMuonRunB" ||
-           process == "data_SingleMuonRunC"      || process == "data_SingleMuonRunD"      || process == "data_SingleMuonRunE"      || process == "data_SingleMuonRunF" ||
-           process == "data_SingleMuonRunG"      || process == "data_SingleMuonRunH"      || process == "data_SingleElectronRunB2" || process == "data_SingleElectronRunC2" ||
-           process == "data_SingleElectronRunD2" || process == "data_SingleElectronRunE2" || process == "data_SingleElectronRunF2" || process == "data_SingleElectronRunG2" ||
-           process == "data_SingleElectronRunH2" || process == "data_DoubleMuonRunB2"     || process == "data_DoubleMuonRunC2"     || process == "data_DoubleMuonRunD2" ||
-	   process == "data_DoubleMuonRunE2"     || process == "data_DoubleMuonRunF2"     || process == "data_DoubleMuonRunG2"     || process == "data_DoubleMuonRunH2" ||
-	   process == "data_SingleMuonRunB2"     || process == "data_SingleMuonRunC2"     || process == "data_SingleMuonRunD2"     || process == "data_SingleMuonRunE2" ||
-           process == "data_SingleMuonRunF2"     || process == "data_SingleMuonRunG2"     || process == "data_SingleMuonRunH2"){
-
-
-	RunType = "Data";
-
-  }
- else{std::cout << "ERROR: Process is " << process << std::endl;}
-
-
-  std::vector<std::string> input_files;
-  std::ofstream CutFlowReport;
-  std::string cutflowstring;
-
-
-
-
-  if(Year_String == "2016"){
-        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-  }
-  else if(Year_String == "2017" || year == "2018"){
-        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-  }
-  else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
-
-
-  if(RunType == "MC"){
-
-    JetMassInput = "SmearedJetMass";
-    JetPtInput = "SmearedJetPt";
-    JetEtaInput = "SmearedJetEta";
-    JetPhiInput = "SmearedJetPhi";
-
-
-  }
-  else if(RunType == "Data"){
-
-    JetMassInput = "Jet_mass";
-    JetPtInput = "Jet_pt";
-    JetEtaInput = "Jet_eta";
-    JetPhiInput = "Jet_phi";
-
-  }
-  else{std::cout << "Please choose MC or data as the input" << std::endl;}
-
- 
-  if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
-     BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
-     JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 &&
-     PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      &&
-     MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     &&
-     fsr_up == 0                && fsr_down == 0){NominalRun = true;}
-  else{NominalRun = false;}
-
-
-
-
-  if(JetSmearing_ScaleUp == true){SJER = "sJER_up";}
-  else if(JetSmearing_ScaleDown == true){SJER = "sJER_down";}
-  else{SJER = "sJER_Nominal";}
-
-  if(JetResolution_ScaleUp == true){SIGMAJER = "sigma_JER_up";}
-  else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
-  else{SIGMAJER = "sigma_JER";} 
-
-
- 
-  if( (year == "2017" || year == "2018") &&
-      (process == "tZq" ||
-       process == "SingleTop_tbarW" ||
-       process == "SingleTop_schannel" ||
-       process == "SingleTop_tchannel_top" ||
-       process == "SingleTop_tchannel_tbar" ||
-       process == "ttbarV_ttgamma" ||
-       process == "ttbar_TTToHadronic" ||
-       process == "ttbar_TTToSemileptonic") ){
-
-         PSWeightString_ee = "PSWeight";
-         PSWeightString_mumu = "PSWeight";
-
-  }
-  else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";} 
-
-
-
-
-  if(Year_String == "2016"){
-
-        MET_triggers = {"HLT_MET200",
-                        "HLT_MET250",
-                        "HLT_PFMET120_PFMHT120_IDTight",
-                        "HLT_PFMET170_HBHECleaned",
-                        "HLT_PFHT300_PFMET100",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool"};
-
-
-  }
-  else if(Year_String == "2017" || Year_String == "2018"){
-
-        MET_triggers = {"DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "HLT_PFMET130_PFMHT130_IDTight",
-                        "HLT_PFMET140_PFMHT140_IDTight",
-                        "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-                        "HLT_PFHT1050",
-                        "HLT_PFHT180",
-                        "HLT_PFHT500_PFMET100_PFMHT100_IDTight",
-                        "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-                        "HLT_PFHT700_PFMET85_PFMHT85_IDTight",
-                        "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-                        "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
-                        "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
-
-  }
-  else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;} 
-
-
-
- if(year == "2016"){
-
-        leptontriggers_strings = {
-
-        "DummyBool", //single electron (for 2018 only)
-        "DummyBool", //single electron (for 2017 only)
-        "DummyBool", //double electron (for 2017 and 2018)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-        "DummyBool", //double muon (for 2017 and 2018)
-        "DummyBool", //single muon (for 2017 only)
-//      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-//      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-//      "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-        "DummyBool",
-        "DummyBool",
-        "DummyBool",
-        "HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-        "HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
-        "HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-        "HLT_IsoMu24", //single muon (all years)
-//      "HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
-        "DummyBool",
-        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-//      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
-        "DummyBool",
-        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-        "DummyBool" //double muon (for 2018 only)
-
-	};
-
-  }
-  else if(year == "2017"){
-
-        leptontriggers_strings = {
-
-        "DummyBool", //single electron (for 2018 only)
-        "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
-        "HLT_IsoMu27", //single muon (for 2017 only)
-        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "HLT_IsoMu24", //single muon (all years)
-        "DummyBool", //single muon (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool" //double muon (for 2018 only)       
-
-  };
-
- }
-  else if(year == "2018"){
-
-        leptontriggers_strings = {
-
-        "HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
-        "DummyBool", //single electron (for 2017 only)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-        "DummyBool", //double muon (for 2016 and 2017)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
-        "DummyBool", //single muon (for 2017 only)
-        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "HLT_IsoMu24", //single muon (all years)
-        "DummyBool", //single muon (for 2016 only)      
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
-
- 	};
-
-  }
-  else{std::cout << "choose 2016, 2017 or 2018 for leptontriggers_strings" << std::endl;}  
-
-
-  if(NPL == true){
-
-        lep_cut_ee_strings = {
-        "Electron_pt_Selection",
-        "LooseElectron_pt_Selection",
-        "SameSign",
-        "nElectron",
-        "LeadingElectron_dz_ECALBarrel",
-        "LeadingElectron_dxy_ECALBarrel",
-        "LeadingElectron_dz_ECALEndcaps",
-        "LeadingElectron_dxy_ECALEndcaps",
-        "SubleadingElectron_dz_ECALBarrel",
-        "SubleadingElectron_dxy_ECALBarrel",
-        "SubleadingElectron_dz_ECALEndcaps",
-        "SubleadingElectron_dxy_ECALEndcaps"
-
-        };
-
-
-        lep_cut_mumu_strings = {
-        "Muon_pt_Selection",
-        "LooseMuon_pt_Selection",
-        "SameSign",
-        "nMuon"
-        };
-
- }
- else{
-
-        lep_cut_ee_strings = {
-        "Electron_pt_Selection",
-        "LooseElectron_pt_Selection",
-        "OppositeSign",
-        "nElectron",
-        "LeadingElectron_dz_ECALBarrel",
-        "LeadingElectron_dxy_ECALBarrel",
-        "LeadingElectron_dz_ECALEndcaps",
-        "LeadingElectron_dxy_ECALEndcaps",
-        "SubleadingElectron_dz_ECALBarrel",
-        "SubleadingElectron_dxy_ECALBarrel",
-        "SubleadingElectron_dz_ECALEndcaps",
-        "SubleadingElectron_dxy_ECALEndcaps"
-
-        };
-
-        lep_cut_mumu_strings = {
-        "Muon_pt_Selection",
-        "LooseMuon_pt_Selection",
-        "OppositeSign",
-        "nMuon"
-        };
-
- } 
-
-
-
-  if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
+if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
 
 	if(blinding == false){
 
@@ -8215,62 +2749,3485 @@ auto d_dataframe = d.Range(0, 1000000);
 
 
 
+//Functions for events that pass the ee, mumu, or emu triggers
+//To prevent double counting single and double lepton datasets
+auto SingleElectron{[&year](
+
+const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG,
+const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
+const bool& HLT_Ele35_WPTight_Gsf,
+const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
+const bool& HLT_Ele27_WPTight_Gsf)-> bool{
+
+   std::cout << "print 22" << std::endl;
+
+  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+  if(year == "2016"){
+
+	return  HLT_Ele25_eta2p1_WPTight_Gsf > 0 ||
+		HLT_Ele27_WPTight_Gsf > 0 ||
+		HLT_Ele32_eta2p1_WPTight_Gsf > 0;
+
+  }
+  else if(year == "2017"){
+
+  	return //HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || 
+   	       HLT_Ele35_WPTight_Gsf > 0; 
+
+  }
+  else if(year == "2018"){
+
+	return HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0;
+
+  }
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+
+
+}};
+
+
+auto DoubleElectron{[&year](
+
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+
+)->bool{
+
+
+  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+  std::cout << "print 23" << std::endl;
+
+  if(year == "2016"){
+
+	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+
+  }
+  else if(year == "2017"){
+  
+	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
+   	       HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
+
+  }
+  else if(year == "2018"){
+	
+	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || 
+               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+
+  }
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+
+
+}};
+
+
+
+auto SingleMuon{[&year](
+
+const bool& HLT_IsoMu24,
+const bool& HLT_IsoMu27,
+const bool& HLT_IsoMu24_eta2p1
+
+)->bool{
+
+   std::cout << "print 24" << std::endl;  
+
+  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+  if(year == "2016"){
+
+  	return HLT_IsoMu24  > 0 ||
+	       HLT_IsoMu24_eta2p1  > 0;
+
+  }
+  else if(year == "2017"){
+
+  	return HLT_IsoMu24 > 0 || 
+   	       HLT_IsoMu27 > 0; 
+
+  }
+  else if(year == "2018"){
+
+	return HLT_IsoMu24 > 0;
+
+  }
+  else{std::cout << "Please choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+
+}};
+
+
+
+auto DoubleMuon{[&year](
+
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
+
+  std::cout << "print 25" << std::endl;
+
+  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+
+  if(year == "2016"){return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0;}
+  else if(year == "2017"){
+
+  	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || 
+   	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0; 
+
+  }
+  else if(year == "2018"){
+
+	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 ||
+	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0;
+
+  }
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+
+
+}};
+
+
+
+
+auto MuonElectron{[&year](
+
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
+
+
+  std::cout << "print 26" << std::endl;
+
+ //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+ //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+ //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+
+ if(year == "2016"){
+
+	return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
+               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
+               //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||   (branch not present in MET)
+	       HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
+               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || (branch not present in MET)
+               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0;
+
+
+ }
+ else if(year == "2017"){
+
+ 	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+   	       HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+  	       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
+
+ }
+ else if(year == "2018"){
+
+	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
+               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
+               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+
+
+ }
+ else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+
+
+}};
+
+
+
+
+
+
+
+
+
+
+
+if(year == "2016"){
+        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
+        else{MinElectronPt = 25; MinMuonPt = 25;}
+}
+else if(year == "2017" || year == "2018"){
+	if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
+        else{MinElectronPt = 25; MinMuonPt = 25;}
+}
+else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
+
+
+
+std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
+
+if(
+
+process != "data_DoubleEGRunB" &&
+process != "data_DoubleEGRunC" &&
+process != "data_DoubleEGRunD" &&
+process != "data_DoubleEGRunE" &&
+process != "data_DoubleEGRunF" &&
+process != "data_DoubleEGRunG" &&
+process != "data_DoubleEGRunH" &&
+process != "data_DoubleEGRunB2" &&
+process != "data_DoubleEGRunC2" &&
+process != "data_DoubleEGRunD2" &&
+process != "data_DoubleEGRunE2" &&
+process != "data_DoubleEGRunF2" &&
+process != "data_DoubleEGRunG2" &&
+process != "data_DoubleEGRunH2" &&
+process != "data_EGRunB" &&
+process != "data_EGRunC" &&
+process != "data_EGRunD" &&
+process != "data_SingleElectronRunB" &&
+process != "data_SingleElectronRunC" &&
+process != "data_SingleElectronRunD" &&
+process != "data_SingleElectronRunE" &&
+process != "data_SingleElectronRunF" &&
+process != "data_SingleElectronRunG" &&
+process != "data_SingleElectronRunH" &&
+process != "data_DoubleMuonRunB" &&
+process != "data_DoubleMuonRunC" &&
+process != "data_DoubleMuonRunD" &&
+process != "data_DoubleMuonRunE" &&
+process != "data_DoubleMuonRunF" &&
+process != "data_DoubleMuonRunG" &&
+process != "data_DoubleMuonRunH" &&
+process != "data_SingleMuonRunB" &&
+process != "data_SingleMuonRunC" &&
+process != "data_SingleMuonRunD" &&
+process != "data_SingleMuonRunE" &&
+process != "data_SingleMuonRunF" &&
+process != "data_SingleMuonRunG" &&
+process != "data_SingleMuonRunH" &&
+process != "data_SingleElectronRunB2" &&
+process != "data_SingleElectronRunC2" &&
+process != "data_SingleElectronRunD2" &&
+process != "data_SingleElectronRunE2" &&
+process != "data_SingleElectronRunF2" &&
+process != "data_SingleElectronRunG2" &&
+process != "data_SingleElectronRunH2" &&
+process != "data_DoubleMuonRunB2" &&
+process != "data_DoubleMuonRunC2" &&
+process != "data_DoubleMuonRunD2" &&
+process != "data_DoubleMuonRunE2" &&
+process != "data_DoubleMuonRunF2" &&
+process != "data_DoubleMuonRunG2" &&
+process != "data_DoubleMuonRunH2" &&
+process != "data_SingleMuonRunB2" &&
+process != "data_SingleMuonRunC2" &&
+process != "data_SingleMuonRunD2" &&
+process != "data_SingleMuonRunE2" &&
+process != "data_SingleMuonRunF2" &&
+process != "data_SingleMuonRunG2" &&
+process != "data_SingleMuonRunH2" 
+
+){
+
+
+  JetMassInput = "SmearedJetMass";
+  JetPtInput = "SmearedJetPt";
+  JetEtaInput = "SmearedJetEta";
+  JetPhiInput = "SmearedJetPhi";
+
+
+}
+else if(
+
+process == "data_DoubleEGRunB" ||
+process == "data_DoubleEGRunC" ||
+process == "data_DoubleEGRunD" ||
+process == "data_DoubleEGRunE" ||
+process == "data_DoubleEGRunF" ||
+process == "data_DoubleEGRunG" ||
+process == "data_DoubleEGRunH" ||
+process == "data_DoubleEGRunB2" ||
+process == "data_DoubleEGRunC2" ||
+process == "data_DoubleEGRunD2" ||
+process == "data_DoubleEGRunE2" ||
+process == "data_DoubleEGRunF2" ||
+process == "data_DoubleEGRunG2" ||
+process == "data_DoubleEGRunH2" ||
+process == "data_EGRunB" ||
+process == "data_EGRunC" ||
+process == "data_EGRunD" ||
+process == "data_SingleElectronRunB" ||
+process == "data_SingleElectronRunC" ||
+process == "data_SingleElectronRunD" ||
+process == "data_SingleElectronRunE" ||
+process == "data_SingleElectronRunF" ||
+process == "data_SingleElectronRunG" ||
+process == "data_SingleElectronRunH" ||
+process == "data_DoubleMuonRunB" ||
+process == "data_DoubleMuonRunC" ||
+process == "data_DoubleMuonRunD" ||
+process == "data_DoubleMuonRunE" ||
+process == "data_DoubleMuonRunF" ||
+process == "data_DoubleMuonRunG" ||
+process == "data_DoubleMuonRunH" ||
+process == "data_SingleMuonRunB" ||
+process == "data_SingleMuonRunC" ||
+process == "data_SingleMuonRunD" ||
+process == "data_SingleMuonRunE" ||
+process == "data_SingleMuonRunF" ||
+process == "data_SingleMuonRunG" ||
+process == "data_SingleMuonRunH" ||
+process == "data_SingleElectronRunB2" ||
+process == "data_SingleElectronRunC2" ||
+process == "data_SingleElectronRunD2" ||
+process == "data_SingleElectronRunE2" ||
+process == "data_SingleElectronRunF2" ||
+process == "data_SingleElectronRunG2" ||
+process == "data_SingleElectronRunH2" ||
+process == "data_DoubleMuonRunB2" ||
+process == "data_DoubleMuonRunC2" ||
+process == "data_DoubleMuonRunD2" ||
+process == "data_DoubleMuonRunE2" ||
+process == "data_DoubleMuonRunF2" ||
+process == "data_DoubleMuonRunG2" ||
+process == "data_DoubleMuonRunH2" ||
+process == "data_SingleMuonRunB2" ||
+process == "data_SingleMuonRunC2" ||
+process == "data_SingleMuonRunD2" ||
+process == "data_SingleMuonRunE2" ||
+process == "data_SingleMuonRunF2" ||
+process == "data_SingleMuonRunG2" ||
+process == "data_SingleMuonRunH2" 
+
+){
+
+
+  JetMassInput = "Jet_mass";
+  JetPtInput = "Jet_pt";
+  JetEtaInput = "Jet_eta";
+  JetPhiInput = "Jet_phi";
+
+}
+else{std::cout << "Please choose MC or data as the input" << std::endl;}
+
+
+
+//Events that only pass the lepton selection criteria
+
+
+auto LeadingElectron_dz_ECALBarrel_function{[](
+
+const float& LeadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dz){
+
+  std::cout << "print 27" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+	if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;  
+
+
+}};
+
+
+auto SubleadingElectron_dz_ECALBarrel_function{[](
+
+const float& SubleadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dz){
+
+  std::cout << "print 28" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+
+}};
+
+
+
+auto LeadingElectron_dz_ECALEndcaps_function{[](
+
+const float& LeadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dz){
+
+  std::cout << "print 29" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) < 0.2){OutVec.push_back(Electron_dz.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+}};
+
+
+
+auto SubleadingElectron_dz_ECALEndcaps_function{[](
+
+const float& SubleadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dz){
+
+  std::cout << "print 30" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) <  0.2){OutVec.push_back(Electron_dz.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+
+}};
+
+
+
+auto LeadingElectron_dxy_ECALBarrel_function{[](
+
+const float& LeadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dxy){
+
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479  && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+}};
+
+
+
+auto SubleadingElectron_dxy_ECALBarrel_function{[](
+
+const float& SubleadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dxy){
+
+  std::cout << "print 31" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+}};
+
+auto LeadingElectron_dxy_ECALEndcaps_function{[](
+
+const float& LeadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dxy){
+
+
+  std::cout << "print 32" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0  && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+
+}};
+
+auto SubleadingElectron_dxy_ECALEndcaps_function{[](
+
+const float& SubleadingElectron_pT,
+const floats& Electron_eta_Selection,
+const floats& Electron_dxy){
+
+  std::cout << "print 33" << std::endl;
+
+  floats OutVec{};
+
+  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+
+        if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
+	else{float zero = 0.0; OutVec.push_back(zero);}
+
+  }
+
+  return OutVec;
+
+
+}};
+
+
+
+
+
+
+
+auto OppositeSign{[](const ints& charges){
+
+  std::cout << "print 34" << std::endl;
+  return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
+
+}};
+
+auto OppositeSign_emu{[](const ints& charges1, const ints& charges2){
+
+  std::cout << "print 35" << std::endl;
+  return (charges1.size() == 1 && charges2.size() == 1) ? signbit(charges1.at(0)) != signbit(charges2.at(0)) : false;
+
+}};
+
+
+auto SameSign{[](const ints& charges){
+
+  std::cout << "print 36" << std::endl;
+  return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
+
+}};
+
+
+auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+
+  std::cout << "print 37" << std::endl;
+  bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
+  bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
+
+  return OppositeSignChargeCheck && (LeptonNonPromptCheck == 1);
+
+}};
+
+
+auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+  
+  std::cout << "print 38" << std::endl;
+
+  bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
+  bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
+
+  return SameSignChargeCheck && (LeptonNonPromptCheck == 1);
+
+}};
+
+
+
+auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+
+  std::cout << "print 39" << std::endl;
+  bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
+  bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});
+
+  return OppositeSignChargeCheck && (LeptonPromptCheck == 1);
+
+}};
+
+
+
+
+auto SameSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
+
+  std::cout << "print 40" << std::endl;  
+
+  bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
+  bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});  
+
+  return SameSignChargeCheck && (LeptonPromptCheck == 1);
+
+}};
+
+
+
+
+auto ElectronsFunction{[](
+
+const int targetID,
+const floats& Electron_pt,
+const floats& Electron_eta,
+const ints& Electron_cutBased,
+const bools& Electron_isPFcand
+
+){
+ 
+  std::cout << "print 41" << std::endl;
+  return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
+
+}};
+
+
+auto ElectronsFunctionEmu{[](
+
+const int targetID,
+const floats& Electron_pt,
+const floats& Electron_eta,
+const ints& Electron_cutBased,
+const bools& Electron_isPFcand
+
+){
+
+  std::cout << "print 42" << std::endl;
+
+  return (Electron_pt > MinElectronPtEmu && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
+
+}};
+
+
+
+auto TightElectronsFunction{[&ElectronsFunction](
+
+const floats& Electron_pt,
+const floats& Electron_eta,
+const ints& Electron_cutBased,
+const bools& Electron_isPFcand
+
+
+){
+
+  std::cout << "print 43" << std::endl;
+  return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
+
+}};
+
+
+auto TightElectronsFunctionEmu{[&ElectronsFunctionEmu](
+
+const floats& Electron_pt,
+const floats& Electron_eta,
+const ints& Electron_cutBased,
+const bools& Electron_isPFcand
+
+
+){
+
+  std::cout << "print 44" << std::endl;
+  return ElectronsFunctionEmu(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
+
+}};
+
+
+auto LooseElectronsFunction{[&ElectronsFunction](
+
+const floats& Electron_pt,
+const floats& Electron_eta,
+const ints& Electron_cutBased,
+const bools& Electron_isPFcand
+
+
+){
+
+  std::cout << "print 45" << std::endl;
+  return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
+
+}};
+
+
+auto LooseElectronsFunctionEmu{[&ElectronsFunctionEmu](
+
+const floats& Electron_pt,
+const floats& Electron_eta,
+const ints& Electron_cutBased,
+const bools& Electron_isPFcand
+
+
+){
+
+  std::cout << "print 46" << std::endl;
+  return ElectronsFunctionEmu(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
+
+}};
+
+
+auto MuonsFunction{[](
+
+const float target_iso, 
+const bools& isPFs, 
+const floats& Muon_pt, 
+const floats& Muon_eta, 
+const bools& ids, 
+const floats& isos
+
+){
+
+  std::cout << "print 47" << std::endl;
+  return (isPFs && Muon_pt > MinMuonPt && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
+
+}};
+
+
+auto MuonsFunctionEmu{[](
+
+const float target_iso,
+const bools& isPFs,
+const floats& Muon_pt,
+const floats& Muon_eta,
+const bools& ids,
+const floats& isos
+
+){
+
+  std::cout << "print 48" << std::endl;
+  return (isPFs && Muon_pt > MinMuonPtEmu && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
+
+}};
+
+
+auto TightMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+
+  std::cout << "print 49" << std::endl;
+  return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
+
+}};
+
+
+auto TightMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+
+  std::cout << "print 50" << std::endl;
+  return MuonsFunctionEmu(0.25, isPFs, pts, etas, ids, isos);
+
+}};
+
+
+auto LooseMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+
+  std::cout << "print 51" << std::endl;
+  return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
+
+}};
+
+
+auto LooseMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+ 
+  std::cout << "print 52" << std::endl;
+  return MuonsFunctionEmu(0.15, isPFs, pts, etas, ids, isos);
+
+}};
+
+
+auto lep_cut_ee{[](
+
+const floats& tight_ele_pts, 
+const floats& loose_ele_pts, 
+const bool os,
+const unsigned int& nElectron,
+const floats& LeadingElectron_dz_ECALBarrel,
+const floats& LeadingElectron_dxy_ECALBarrel,
+const floats& LeadingElectron_dz_ECALEndcaps,
+const floats& LeadingElectron_dxy_ECALEndcaps,
+const floats& SubleadingElectron_dz_ECALBarrel,
+const floats& SubleadingElectron_dxy_ECALBarrel,
+const floats& SubleadingElectron_dz_ECALEndcaps,
+const floats& SubleadingElectron_dxy_ECALEndcaps
+){
+
+  std::cout << "print 53" << std::endl;
+
+  const bool ele_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
+  bool lead_pt_cut{false};
+
+  lead_pt_cut = tight_ele_pts.empty() ? false : *max_element(tight_ele_pts.begin(), tight_ele_pts.end()) > MaxElectronPt;
+
+
+  return
+
+  os &&
+  lead_pt_cut &&
+  ele_cut &&
+  nElectron == 2 &&
+  LeadingElectron_dz_ECALBarrel.at(0) < 0.1 &&
+  LeadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
+  LeadingElectron_dz_ECALEndcaps.at(0) < 0.2 &&
+  LeadingElectron_dxy_ECALEndcaps.at(0) < 0.1 &&
+  SubleadingElectron_dz_ECALBarrel.at(0) < 0.1 &&
+  SubleadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
+  SubleadingElectron_dz_ECALEndcaps.at(0) < 0.2 &&
+  SubleadingElectron_dxy_ECALEndcaps.at(0) < 0.1;
+
+}};
+
+
+
+auto lep_cut_mumu{[](const floats& tight_mu_pts, const floats& loose_mu_pts, const bool os, const unsigned int nMuon) {
+
+  std::cout << "print 54" << std::endl;
+        
+  const bool mu_cut{tight_mu_pts.size() == 2 && tight_mu_pts.size() == loose_mu_pts.size()};
+  bool lead_pt_cut{false};
+
+  lead_pt_cut = tight_mu_pts.empty() ? false : *std::max_element(tight_mu_pts.begin(), tight_mu_pts.end()) > MaxMuonPt;
+
+  return 
+
+  os && 
+  lead_pt_cut && 
+  mu_cut &&
+  nMuon == 2;
+
+  }};
+
+
+
+//emu only for ttbar control region and trigger SF calculations
+auto lep_cut_emu{[](
+
+const floats& tight_ele_pts,
+const floats& loose_ele_pts,
+const bool os,
+const unsigned int& nElectron,
+const floats& tight_mu_pts, 
+const floats& loose_mu_pts, 
+const unsigned int nMuon
+
+){
+
+
+  std::cout << "print 55" << std::endl;
+
+  const bool emu_cut{tight_ele_pts.size() == 1 && tight_mu_pts.size() == 1 && (tight_mu_pts.size() == loose_mu_pts.size()) && (tight_mu_pts.size() == loose_mu_pts.size())};
+
+  return 
+
+  os &&
+  emu_cut &&
+  nElectron == 1 &&
+  nMuon == 1;
+
+}};
+
+
+
+
+
+auto LeadingVariable{[](const floats& variable){
+
+  std::cout << "print 56" << std::endl;
+
+  if(variable.size() > 0){
+
+  float first_largest_value = variable.at(0);
+
+        for(int i = 1; i < variable.size(); i++){
+
+                if(variable.at(i) > first_largest_value){
+                        first_largest_value = variable.at(i);
+
+                }
+
+        }
+
+  return first_largest_value;
+
+  }
+  else{float zero = 0.0; return zero;}
+
+}};
+
+
+
+
+auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
+  
+  std::cout << "print 57" << std::endl;
+  float first_largest_value_electron, first_largest_value_muon; 
+
+  if(variable1.size() > 0){
+
+  first_largest_value_electron = variable1.at(0);
+
+        for(int i = 1; i < variable1.size(); i++){
+
+                if(variable1.at(i) > first_largest_value_electron){
+                        first_largest_value_electron = variable1.at(i);
+
+                }
+
+        }
+
+  }
+
+  if(variable2.size() > 0){
+  
+  first_largest_value_muon = variable2.at(0);
+        
+        for(int i = 1; i < variable2.size(); i++){
+                
+                if(variable2.at(i) > first_largest_value_muon){
+                        first_largest_value_muon = variable2.at(i);
+                
+                }
+        
+        }
+
+  }
+
+
+  if(first_largest_value_electron > first_largest_value_muon){return first_largest_value_electron;}
+  else{return first_largest_value_muon;}
+
+
+}};
+
+
+
+auto SubleadingVariable{[](const floats& variable){
+
+  std::cout << "print 58" << std::endl;
+
+  if(variable.size() == 0){float zero = 0.0; return zero;}
+  else{
+
+  	if(variable.size() > 1){
+
+  	float first_largest_value = variable.at(0);
+
+	  	for(int i = 1; i < variable.size(); i++){
+
+			if(variable.at(i) > first_largest_value){
+				first_largest_value = variable.at(i);
+
+			}
+
+	  	}
+
+  	float second_largest_value = INT_MIN;
+
+	  	for(int i = 0; i < variable.size(); i++){
+
+			if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
+				second_largest_value = variable.at(i);
+			}
+	
+	  	}
+
+
+  	return second_largest_value;
+
+
+  	}
+  	else{return variable.at(0);}
+
+  }
+
+
+}};
+
+
+
+auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
+
+  std::cout << "print 59" << std::endl;
+ 
+  float first_largest_value_electron, first_largest_value_muon;
+
+  if(variable1.size() > 0){
+
+  first_largest_value_electron = variable1.at(0);
+
+        for(int i = 1; i < variable1.size(); i++){
+
+                if(variable1.at(i) > first_largest_value_electron){
+                        first_largest_value_electron = variable1.at(i);
+
+                }
+
+        }
+
+  }
+
+  if(variable2.size() > 0){
+
+  first_largest_value_muon = variable2.at(0);
+
+        for(int i = 1; i < variable2.size(); i++){
+
+                if(variable2.at(i) > first_largest_value_muon){
+                        first_largest_value_muon = variable2.at(i);
+
+                }
+
+        }
+
+  }
+
+
+  if(first_largest_value_electron < first_largest_value_muon){return first_largest_value_electron;}
+  else{return first_largest_value_muon;}
+
+
+}};
+
+
+auto ThirdLeadingVariable{[](const floats& variable){
+
+  std::cout << "print 60" << std::endl;
+
+  if(variable.size() > 2){
+
+  float first_largest_value = variable.at(0);
+
+        for(int i = 1; i < variable.size(); i++){
+
+                if(variable.at(i) > first_largest_value){
+                        first_largest_value = variable.at(i);
+
+                }
+
+        }
+
+  float second_largest_value = INT_MIN;
+
+        for(int i = 0; i < variable.size(); i++){
+
+                if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
+                        second_largest_value = variable.at(i);
+                }
+        
+        }
+
+
+  float third_largest_value = INT_MIN;
+
+	for(int i = 0; i < variable.size(); i++){
+	
+		if( (variable.at(i) > third_largest_value) && (variable.at(i) < second_largest_value) ){
+		
+			third_largest_value = variable.at(i);			
+
+		}
+	
+	}
+
+
+  return third_largest_value;
+
+
+  }
+
+}};
+
+
+
+auto FourthLeadingVariable{[](const floats& variable){
+
+  std::cout << "print 61" << std::endl;
+
+  if(variable.size() > 3){
+
+  float first_largest_value = variable.at(0);
+
+        for(int i = 1; i < variable.size(); i++){
+
+                if(variable.at(i) > first_largest_value){
+                        first_largest_value = variable.at(i);
+
+                }
+
+        }
+
+  float second_largest_value = INT_MIN;
+
+        for(int i = 0; i < variable.size(); i++){
+
+                if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
+                        second_largest_value = variable.at(i);
+                }
+
+        }
+
+
+  float third_largest_value = INT_MIN;
+
+        for(int i = 0; i < variable.size(); i++){
+
+                if( (variable.at(i) > third_largest_value) && (variable.at(i) < second_largest_value) ){
+
+                        third_largest_value = variable.at(i);
+
+                }
+
+        }
+
+
+  float fourth_largest_value = INT_MIN;
+
+	for(int i = 0; i < variable.size(); i++){
+
+                if( (variable.at(i) > fourth_largest_value) && (variable.at(i) < third_largest_value) ){
+
+                        fourth_largest_value = variable.at(i);
+
+                }
+
+        }
+
+
+  return fourth_largest_value;
+
+
+  }
+
+
+}};
+
+
+
+
+auto MET_function{[](const floats& MET_input){
+
+  std::cout << "print 62" << std::endl;
+  return MET_input;
+
+}};
+
+
+
+
+auto deltaRcheck_float{[](
+
+const float& Object1_eta,
+const float& Object1_phi,
+const float& Object2_eta,
+const float& Object2_phi
+){
+
+  std::cout << "print 63" << std::endl;
+
+  float dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
+  return dR;
+
+}};
+
+auto deltaRcheck_4floats{[](
+
+const floats& Object1_eta,
+const floats& Object1_phi,
+const floats& Object2_eta,
+const floats& Object2_phi
+
+){
+
+  std::cout << "print 64" << std::endl;
+
+  floats dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
+  return dR;
+
+}};
+
+
+auto deltaRcheck_floats{[](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
+
+  std::cout << "print 65" << std::endl;
+
+  floats min_dRs{};
+
+  if(Object2_phi.size() > 1){
+
+  	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return std::min(deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)), deltaR(Object1_eta, Object1_phi, Object2_eta.at(1), Object2_phi.at(1))); });
+
+  }
+  else{
+
+	transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)); });
+
+  }
+
+  return min_dRs;
+ 
+}};
+
+
+
+auto deltaRcheck_Top_function{[](
+
+const doubles& Object1_phi_Selection,
+const doubles& Object1_eta_Selection,
+const float& Object2_eta_Selection,
+const float& Object2_phi_Selection
+){
+
+  std::cout << "print 66" << std::endl;
+
+  doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
+  return dR;
+
+}};
+
+
+
+auto deltaRcheck_WTop_function{[](
+
+const floats& Object1_phi_Selection,
+const floats& Object1_eta_Selection,
+const doubles& Object2_eta_Selection,
+const doubles& Object2_phi_Selection
+){
+
+  std::cout << "print 67" << std::endl;
+
+  doubles dR_vec{};
+
+  for(int i = 0; i < Object1_phi_Selection.size(); i++){
+
+  	double dR = sqrt(pow(Object1_eta_Selection.at(i) - Object2_eta_Selection.at(0), 2) + pow(Object1_phi_Selection.at(i) - Object2_phi_Selection.at(0), 2));
+  	dR_vec.push_back(dR);
+
+  }
+
+  return dR_vec;
+
+
+}};
+
+
+auto deltaRcheck_W_function{[](
+
+const doubles& Object1_phi_Selection,
+const doubles& Object1_eta_Selection,
+const doubles& Object2_eta_Selection,
+const doubles& Object2_phi_Selection
+){
+
+  std::cout << "print 68" << std::endl;
+
+  doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
+  return dR;
+
+}};
+
+
+
+auto deltaRcheck_W_function2{[](
+
+const doubles& Object1_phi_Selection,
+const doubles& Object1_eta_Selection,
+const float& Object2_eta_Selection,
+const float& Object2_phi_Selection
+){
+ 
+  std::cout << "print 69" << std::endl;
+
+  doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
+  return dR;
+
+}};
+
+
+
+auto DeltaPhi_function{[](
+
+const floats& Object1_phi_Selection,
+const floats& Object2_phi_Selection
+
+){
+
+  std::cout << "print 70" << std::endl;
+
+  floats dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
+  return dPhi;
+
+}};
+
+
+
+
+auto DeltaPhi_function2{[](
+
+const doubles& Object1_phi_Selection,
+const doubles& Object2_phi_Selection
+
+){
+
+  std::cout << "print 71" << std::endl;
+
+  doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
+  return dPhi;
+
+
+}};
+
+
+
+auto DeltaPhi_function3{[](
+
+const doubles& Object1_phi_Selection,
+const floats& Object2_phi_Selection
+
+){
+
+  std::cout << "print 72" << std::endl;
+
+  doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
+  return dPhi;
+
+
+}};
+
+
+
+auto DeltaPhi_function4{[](
+
+const floats& Object1_phi,
+const doubles& Object2_phi
+
+){
+
+ std::cout << "print 73" << std::endl;
+
+ doubles dPhi_vec{};
+
+ for(int i = 0; i < Object1_phi.size(); i++){
+
+ 	double dPhi = Object1_phi.at(i) - Object2_phi.at(0);
+	dPhi_vec.push_back(dPhi);
+
+ }
+
+ return dPhi_vec;
+
+}};
+
+
+
+auto DeltaPhi_doublesandfloat{[](
+
+const doubles& Object1_phi,
+const float& Object2_phi
+
+){
+
+  std::cout << "print 74" << std::endl;
+
+  doubles dPhi = abs(Object1_phi - Object2_phi);
+  return dPhi;
+
+}};
+
+auto DeltaPhi_floatandfloat{[](
+
+const float& Object1_phi,
+const float& Object2_phi
+
+){
+
+  std::cout << "print 75" << std::endl;
+
+  double dPhi = abs(Object1_phi - Object2_phi);
+  return dPhi;
+
+}};
+
+
+
+
+auto tight_jets_function{[&year](
+
+const floats& Jet_pt_Selection,
+const floats& Jet_eta_Selection,
+const ints& Jet_jetId_Selection,
+const floats& dRJet_lep){
+
+  std::cout << "print 76" << std::endl;
+
+  int JetId;
+
+  if(year == "2016"){JetId = 1;} //1 is loose 
+  else if(year == "2017" || year == "2018"){JetId = 2;} //2 is tight
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
+
+  return
+
+  Jet_pt_Selection > 30 &&
+  Jet_eta_Selection < 4.7 &&
+  Jet_jetId_Selection >= JetId &&
+  dRJet_lep > 0.4;
+
+
+}};
+
+
+auto jet_selection_function{[](const ints& tight_jets) {
+
+  std::cout << "print 77" << std::endl;
+
+  auto njet{count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
+  return njet >= 4 && njet <= 6;
+
+}};
+
+
+auto SumSquared2LeadingJets_pT{[](
+
+const float& LeadingJetPt,
+const float& SubleadingJetPt
+
+){
+
+  std::cout << "print 78" << std::endl;
+
+  double SumSquaredPt = pow(LeadingJetPt + SubleadingJetPt, 2);
+  return SumSquaredPt;
+
+
+}};
+
+
+auto JetPtSum{[](
+
+const float& LeadingJetPt,
+const float& SubleadingJetPt,
+const float& ThirdJetPt,
+const float& FourthJetPt
+
+){
+
+  std::cout << "print 79" << std::endl;
+
+  float JetPtSum = LeadingJetPt + SubleadingJetPt + ThirdJetPt + FourthJetPt;
+  return JetPtSum;
+
+}};
+
+
+auto JetEtaSum{[](
+
+const float& LeadingJetEta,
+const float& SubleadingJetEta,
+const float& ThirdJetEta,
+const float& FourthJetEta
+
+){
+
+  std::cout << "print 80" << std::endl;
+
+  float JetEtaSum = LeadingJetEta + SubleadingJetEta + ThirdJetEta + FourthJetEta;
+  return JetEtaSum;
+
+}};
+
+
+auto JetPhiSum{[](
+
+const float& LeadingJetPhi,
+const float& SubleadingJetPhi,
+const float& ThirdJetPhi,
+const float& FourthJetPhi
+
+){
+
+  std::cout << "print 81" << std::endl;
+
+  float JetPhiSum = LeadingJetPhi + SubleadingJetPhi + ThirdJetPhi + FourthJetPhi;
+  return JetPhiSum;
+
+}};
+
+
+
+auto LepPtSum{[](
+
+const float& LeadingLepPt,
+const float& SubleadingLepPt
+
+){
+
+  std::cout << "print 82" << std::endl;
+
+  float LepPtSum = LeadingLepPt + SubleadingLepPt;
+  return LepPtSum;
+
+}};
+
+
+
+auto LepEtaSum{[](
+
+const float& LeadingLepEta,
+const float& SubleadingLepEta
+
+){
+
+  std::cout << "print 83" << std::endl;
+
+  float LepEtaSum = LeadingLepEta + SubleadingLepEta;
+  return LepEtaSum;
+
+}};
+
+
+
+auto LepPhiSum{[](
+
+const float& LeadingLepPhi,
+const float& SubleadingLepPhi
+
+){
+
+  std::cout << "print 84" << std::endl;
+
+  float LepPhiSum = LeadingLepPhi + SubleadingLepPhi;
+  return LepPhiSum;
+
+}};
+
+
+
+auto HT{[](const float& Pt){
+ 
+  std::cout << "print 85" << std::endl;
+
+  float HT = abs(Pt);
+  return HT;
+
+}};
+
+
+auto HT_double{[](const doubles& Pt){
+
+  std::cout << "print 86" << std::endl;
+
+  doubles HT = abs(Pt);
+  return HT;
+
+}};
+
+
+auto HT_floats{[](const floats& Pt){
+
+  std::cout << "print 87" << std::endl;
+
+  floats HT = abs(Pt);
+  return HT;
+
+}};
+
+
+auto TotJetHT{[](
+
+const float& LeadingJetHT,
+const float& SubleadingJetHT,
+const float& ThirdJetHT,
+const float& FourthJetHT
+
+){
+  
+  std::cout << "print 88" << std::endl;
+
+  float TotJetHT = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
+  return TotJetHT;
+
+}};
+
+
+
+auto TotLepHT{[](
+
+const float& LeadingLeptonHT,
+const float& SubleadingLeptonHT
+
+){
+
+  std::cout << "print 89" << std::endl;
+
+  float TotLepHT = LeadingLeptonHT + SubleadingLeptonHT;
+  return TotLepHT;
+
+}};
+
+auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
+
+  std::cout << "print 90" << std::endl;
+
+  float TotHTOverTotpT = TotHT / TotpT;
+  return TotHTOverTotpT;
+
+
+}};
+
+auto TotHTOverTotpT_floats{[](const floats& TotHT, const floats& TotpT){
+
+  std::cout << "print 91" << std::endl;
+
+  floats TotHTOverTotpT = TotHT / TotpT;
+  return TotHTOverTotpT;
+
+
+}};
+
+auto InvMass_AllJets{[](
+
+const float& LeadingJetPt,
+const float& SubleadingJetPt,
+const float& ThirdJetPt,
+const float& FourthJetPt,
+const float& LeadingJetEta,
+const float& SubleadingJetEta,
+const float& ThirdJetEta,
+const float& FourthJetEta,
+const float& LeadingJetPhi,
+const float& SubleadingJetPhi,
+const float& ThirdJetPhi,
+const float& FourthJetPhi,
+const float& LeadingJetMass,
+const float& SubleadingJetMass,
+const float& ThirdJetMass,
+const float& FourthJetMass,
+const unsigned int& nJet 
+
+){
+
+  std::cout << "print 92" << std::endl;
+
+  TLorentzVector Jet1 = {};
+  TLorentzVector Jet2 = {};
+  TLorentzVector Jet3 = {};
+  TLorentzVector Jet4 = {};
+
+
+  Jet1.SetPtEtaPhiM(LeadingJetPt, LeadingJetEta, LeadingJetPhi, LeadingJetMass);
+  Jet2.SetPtEtaPhiM(SubleadingJetPt, SubleadingJetEta, SubleadingJetPhi, SubleadingJetMass);
+  Jet3.SetPtEtaPhiM(ThirdJetPt, ThirdJetEta, ThirdJetPhi, ThirdJetMass);
+  Jet4.SetPtEtaPhiM(FourthJetPt, FourthJetEta, FourthJetPhi, FourthJetMass);
+
+  float InvMassAllJets = (Jet1 + Jet2 + Jet3 + Jet4).M();
+
+  return InvMassAllJets;
+
+}};
+
+auto InvMass_3Jets{[](
+
+const float& LeadingJetPt,
+const float& SubleadingJetPt,
+const float& ThirdJetPt,
+const float& LeadingJetEta,
+const float& SubleadingJetEta,
+const float& ThirdJetEta,
+const float& LeadingJetPhi,
+const float& SubleadingJetPhi,
+const float& ThirdJetPhi,
+const float& LeadingJetMass,
+const float& SubleadingJetMass,
+const float& ThirdJetMass,
+const unsigned int nJet
+
+){
+  
+  std::cout << "print 93" << std::endl;
+
+  TLorentzVector Jet1 = {};
+  TLorentzVector Jet2 = {};
+  TLorentzVector Jet3 = {};
+
+  Jet1.SetPtEtaPhiM(LeadingJetPt, LeadingJetEta, LeadingJetPhi, LeadingJetMass);
+  Jet2.SetPtEtaPhiM(SubleadingJetPt, SubleadingJetEta, SubleadingJetPhi, SubleadingJetMass);
+  Jet3.SetPtEtaPhiM(ThirdJetPt, ThirdJetEta, ThirdJetPhi, ThirdJetMass);
+
+  float InvMass3Jets = (Jet1 + Jet2 + Jet3).M();
+
+  return InvMass3Jets;
+
+}};
+
+
+auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
+     
+        std::cout << "print 94" << std::endl;
+
+	return tight_jets && (btags > 0.8838f) && (etas < MaxTrackerEta);
+}};
+
+
+auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
+
+  std::cout << "print 95" << std::endl;
+
+  return tight_jets && (btags == 0) && (etas < MaxTrackerEta);
+
+
+}};
+
+
+auto bjet_cut{[](const ints& bjets) {
+
+        std::cout << "print 96" << std::endl;
+
+        const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
+        return nbjet >= 1 && nbjet <= 2;
+
+}};
+
+//Lambda functions between lines 1211 and 1242 are only for calculating b-tagging efficiency
+//For the numerators
+auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "print 97" << std::endl;
+	
+	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+	
+}};
+
+
+auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "print 98" << std::endl;
+
+       return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+        
+      std::cout << "print 99" << std::endl;
+      return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+                
+      std::cout << "print 100" << std::endl;
+      return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
+
+    std::cout << "print 101" << std::endl;
+
+    return abs(Jet_partonFlavour) != 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+//For the denominators
+auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "print 102" << std::endl;
+
+	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "print 103" << std::endl;
+
+	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+
+auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "print 104" << std::endl;
+
+	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+
+	std::cout << "print 105" << std::endl;
+
+        return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
+	
+	 std::cout << "print 106" << std::endl;
+
+	 return abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
+
+}};
+
+
+
+
+
+auto numberofbjets{[](const ints& bjets) {
+
+	std::cout << "print 107" << std::endl;
+
+        const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
+        return nbjet;
+
+}};
+
+
+
+auto bjet_variable{[](
+
+const floats& Jet_variable,
+const unsigned int& nJet,
+const ints& lead_bjet
+
+){
+
+  std::cout << "print 108" << std::endl;
+
+  floats vec{};
+
+  for(int i = 0; i < nJet; i++){
+        if(lead_bjet.at(i) == 1){ 
+		vec.push_back(Jet_variable.at(i));
+	}
+
+  }
+
+  return vec;
+
+}};
+
+
+
+auto BLorentzVector{[](
+
+const floats& bjet_pt,
+const floats& bjet_eta,
+const floats& bjet_phi,
+const floats& bjet_mass
+
+){
+
+  std::cout << "print 109" << std::endl;
+
+  auto BJets = TLorentzVector{};
+
+  for(int i = 0; i < bjet_pt.size(); i++){
+
+	auto Vec = TLorentzVector{};
+	Vec.SetPtEtaPhiM(bjet_pt.at(i), bjet_eta.at(i), bjet_phi.at(i), bjet_mass.at(i));
+	BJets += Vec;
+
+  }
+
+
+
+  return BJets;
+
+}};
+
+
+auto LeadingBJetOutputDiscriminant{[](
+
+const float& LeadingJetpT,
+const floats& Jet_btagCSVV2,
+const ints& tight_jets,
+const floats& Jet_eta_Selection
+
+){
+
+  std::cout << "print 110" << std::endl;
+
+  return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
+
+}};
+
+
+
+
+auto SubleadingBJetOutputDiscriminant{[](
+
+const float& SubleadingJetpT,
+const floats& Jet_btagCSVV2,
+const ints& tight_jets,
+const floats& Jet_eta_Selection
+
+){
+
+  std::cout << "print 111" << std::endl;
+
+  return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
+
+}};
+
+
+
+
+auto ThirdBJetOutputDiscriminant{[](
+
+const float& ThirdJetpT,
+const floats& Jet_btagCSVV2,
+const ints& tight_jets,
+const floats& Jet_eta_Selection
+
+){
+
+  std::cout << "print 112" << std::endl;
+
+  return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
+
+}};
+
+
+
+auto FourthBJetOutputDiscriminant{[](
+
+const float& FourthJetpT,
+const floats& Jet_btagCSVV2,
+const ints& tight_jets,
+const floats& Jet_eta_Selection
+
+){
+
+  std::cout << "print 113" << std::endl;
+
+  return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
+
+}};
+
+
+
+auto BJetOutputDiscriminant{[](
+
+const ints& BJetBTags,
+const floats& Jet_btagCSVV2 
+){
+
+  std::cout << "print 114" << std::endl;
+
+  floats btagoutput{};
+
+  for(int i = 0; i < BJetBTags.size(); i++){
+	if(BJetBTags.at(i) != 0){
+		btagoutput.push_back(Jet_btagCSVV2.at(i));
+	}
+  }
+
+  return btagoutput;
+
+}};
+
+
+
+// W mass cut
+
+constexpr float W_MASS = 80.385f;
+constexpr float W_MASS_CUT = 20.f;
+
+auto find_lead_mask{[](const ints& mask, const floats& vals) {
+  
+  std::cout << "print 115" << std::endl;
+
+  const auto masked_vals{mask * vals};
+  const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
+  ints lead_mask(masked_vals.size(), 0); // must be ()
+  lead_mask.at(max_idx) = 1;
+  return lead_mask;
+
+
+}};
+
+
+auto find_w_pair{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
+
+
+std::cout << "print 116" << std::endl;
+
+double w_reco_mass{std::numeric_limits<double>::infinity()};
+size_t jet_index_1{std::numeric_limits<size_t>::max()};
+size_t jet_index_2{std::numeric_limits<size_t>::max()};
+const size_t njets{pts.size()};
+
+
+for (size_t i{0}; i < njets; ++i){
+	for (size_t j{i + 1}; j < njets; ++j)
+            {
+                if (tight_jets[i] != 0 && tight_jets[j] != 0
+                    && lead_bjet[i] != 1 && lead_bjet[j] != 1)
+                {
+                    continue;
+                }
+
+                auto jet1{TLorentzVector{}};
+                auto jet2{TLorentzVector{}};
+                jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+
+                if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
+                {
+                    w_reco_mass = reco_mass;
+                    jet_index_1 = i;
+                    jet_index_2 = j;
+                }
+            }
+        }
+
+        ints w_pair(njets, 0);
+        w_pair.at(jet_index_1) = 1;
+        w_pair.at(jet_index_2) = 1;
+        return w_pair;
+}};
+
+
+
+auto w_mass_cut{[](const float& w_mass) {
+	
+  std::cout << "print 117" << std::endl;	
+  return ( abs(w_mass - W_MASS) < W_MASS_CUT );
+
+}};
+
+
+
+auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
+	
+  std::cout << "print 118" << std::endl;
+  return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50);
+
+}};
+
+
+
+auto WPairJet1{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
+
+
+std::cout << "print 119" << std::endl;
+
+double w_reco_mass{std::numeric_limits<double>::infinity()};
+size_t jet_index_1{std::numeric_limits<size_t>::max()};
+size_t jet_index_2{std::numeric_limits<size_t>::max()};
+const size_t njets{pts.size()};
+
+auto jet1{TLorentzVector{}};
+auto jet2{TLorentzVector{}};
+
+
+for (size_t i{0}; i < njets; ++i){
+        for (size_t j{i + 1}; j < njets; ++j)
+            {
+                if (tight_jets[i] != 0 && tight_jets[j] != 0
+                    && lead_bjet[i] != 1 && lead_bjet[j] != 1)
+                {
+                    continue;
+                }
+
+                jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+
+                if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
+                {
+                    w_reco_mass = reco_mass;
+                    jet_index_1 = i;
+                    jet_index_2 = j;
+                }
+            }
+        }
+
+	jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
+	jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
+        return jet1;
+    
+}};
+
+
+auto WPairJet2{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
+
+std::cout << "print 120" << std::endl;
+
+double w_reco_mass{std::numeric_limits<double>::infinity()};
+size_t jet_index_1{std::numeric_limits<size_t>::max()};
+size_t jet_index_2{std::numeric_limits<size_t>::max()};
+const size_t njets{pts.size()};
+
+auto jet1{TLorentzVector{}};
+auto jet2{TLorentzVector{}};
+
+
+for (size_t i{0}; i < njets; ++i){
+        for (size_t j{i + 1}; j < njets; ++j)
+            {
+                if (tight_jets[i] != 0 && tight_jets[j] != 0
+                    && lead_bjet[i] != 1 && lead_bjet[j] != 1)
+                {
+                    continue;
+                }
+
+                jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+
+                if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
+                {
+                    w_reco_mass = reco_mass;
+                    jet_index_1 = i;
+                    jet_index_2 = j;
+                }
+            }
+        }
+
+	jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
+        jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
+        return jet2;
+    
+}};
+
+
+
+auto TLorentzVectorMass{[](const TLorentzVector& object){
+
+  std::cout << "print 121" << std::endl;
+
+  doubles vec{};
+  vec.push_back(object.M());
+  return vec;
+
+}};
+
+
+auto TLorentzVectorMass_float{[](const TLorentzVector& object){
+  
+  std::cout << "print 122" << std::endl;
+
+  floats vec{};
+  vec.push_back(object.M());
+  return vec;
+
+}};
+
+
+auto TLorentzVectorPt{[](const TLorentzVector& object){
+
+  std::cout << "print 123" << std::endl;
+
+  doubles vec{};
+  vec.push_back(object.Pt());
+  return vec;
+
+}};
+
+
+
+auto TLorentzVectorPt_float{[](const TLorentzVector& object){
+  
+  std::cout << "print 124" << std::endl;
+
+  floats vec{};
+  vec.push_back(object.Pt());
+  return vec;
+
+}};
+
+
+auto TLorentzVectorPhi{[](const TLorentzVector& object){
+
+  std::cout << "print 125" << std::endl;
+
+  doubles vec{};
+  vec.push_back(object.Phi());
+  return vec;
+
+}};
+
+
+auto TLorentzVectorPhi_float{[](const TLorentzVector& object){
+
+  std::cout << "print 126" << std::endl;
+
+  floats vec{};
+  vec.push_back(object.Phi());
+  return vec;
+
+}};
+
+
+auto TLorentzVectorEta{[](const TLorentzVector& object){
+
+  std::cout << "print 127" << std::endl;
+
+  doubles vec{};
+  vec.push_back(object.Eta());
+  return vec;
+
+}};
+
+
+
+auto TLorentzVectorEta_float{[](const TLorentzVector& object){
+
+  std::cout << "print 128" << std::endl;
+
+  floats vec{};
+  vec.push_back(object.Eta());
+  return vec;
+
+}};
+
+
+
+
+
+
+
+constexpr float Z_MASS{91.1876f};
+constexpr float Z_MASS_CUT{20.f};
+
+auto z_mass_cut{[](const float& z_mass) {
+
+  std::cout << "print 129" << std::endl;
+
+  return abs(z_mass - Z_MASS) < Z_MASS_CUT;
+
+}};
+
+
+auto RecoZ{[](
+
+const unsigned int& nLepton,
+const float& LeadingleptonPt,
+const float& LeadingleptonEta,
+const float& LeadingleptonPhi,
+const float& LeadingleptonMass,
+const float& SubleadingleptonPt,
+const float& SubleadingleptonEta,
+const float& SubleadingleptonPhi,
+const float& SubleadingleptonMass
+
+){
+
+  std::cout << "print 130" << std::endl;
+
+  TLorentzVector ZBoson = {};
+  TLorentzVector LeadingLepton = {};
+  TLorentzVector SubleadingLepton = {};
+
+  LeadingLepton.SetPtEtaPhiM(LeadingleptonPt, LeadingleptonEta, LeadingleptonPhi, LeadingleptonMass);
+  SubleadingLepton.SetPtEtaPhiM(SubleadingleptonPt, SubleadingleptonEta, SubleadingleptonPhi, SubleadingleptonMass);
+
+  ZBoson = LeadingLepton + SubleadingLepton;
+
+  return ZBoson;
+
+}};
+
+
+auto RecoZHT{[](const doubles& RecoZPt){
+
+  std::cout << "print 131" << std::endl;
+
+  doubles RecoZHT = abs(RecoZPt);
+  return RecoZHT;
+
+}};
+
+
+auto RecoWHT{[](const floats& RecoWPt){
+
+  std::cout << "print 132" << std::endl;
+
+  floats RecoWHT = abs(RecoWPt);
+  return RecoWHT;
+
+}};
+
+auto WLorentzVector{[](
+
+const floats& w_pair_pt,
+const floats& w_pair_eta, 
+const floats& w_pair_phi, 
+const float& w_mass, 
+const ints& w_reco_jets
+
+){
+
+  std::cout << "print 133" << std::endl;
+
+  const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
+
+  auto RecoW = TLorentzVector{};
+  
+  for(int i = 0; i < nRecoWBosons; i++){
+
+	  auto Vec = TLorentzVector{};
+	  Vec.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
+	  RecoW += Vec;
+
+  }
+
+
+  return RecoW;
+
+}};
+
+constexpr float TOP_MASS = 173.3;
+
+auto top_reconstruction_function{[](
+
+const floats& bjets_pt,
+const floats& bjets_eta,
+const floats& bjets_phi,
+const floats& bjets_mass,
+const unsigned int& nJet,
+const floats& w_pair_pt,
+const floats& w_pair_eta,
+const floats& w_pair_phi,
+const float& w_mass, 
+const ints& w_reco_jets
+
+){
+
+  std::cout << "print 134" << std::endl;
+
+  auto reco_top = TLorentzVector{}; 
+  auto BJets = TLorentzVector{};
+  auto RecoW = TLorentzVector{};
+
+  double top_reco_mass = std::numeric_limits<double>::infinity();
+  size_t index_1{std::numeric_limits<size_t>::max()};
+  const size_t num{w_pair_pt.size()};
+
+  for(int i = 0; i < num; i++){
+
+
+  BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
+  RecoW.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
+		
+  const double reco_mass = (RecoW + BJets).M(); 
+
+  if(abs(TOP_MASS - reco_mass) < abs(TOP_MASS - top_reco_mass)){
+
+	  top_reco_mass = reco_mass;
+	  index_1 = i;
+
+  }
+
+
+  }
+
+
+  BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
+  RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
+  reco_top = RecoW + BJets;	
+
+
+  return reco_top;
+
+}};
+
+
+
+auto TotalHT_System{[](
+
+const doubles& RecoZHT,
+const floats& RecoWHT,
+const doubles& Top_HT,
+const float& TotLepHT,
+const float& TotJetHT
+
+){
+
+  std::cout << "print 135" << std::endl;
+
+  floats TotalHTSystem = RecoZHT + RecoWHT.at(0) + Top_HT + TotLepHT + TotJetHT;
+  return TotalHTSystem;
+
+}};
+
+auto TotalPt_System{[](
+
+const doubles& RecoZPt,
+const floats& RecoWPt,
+const doubles& Top_Pt,
+const float& TotLepPt,
+const float& TotJetPt
+
+){
+
+  std::cout << "print 136" << std::endl;
+
+  floats TotalPtSystem = RecoZPt + RecoWPt.at(0) + Top_Pt + TotLepPt + TotJetPt;
+  return TotalPtSystem;
+
+}};
+
+
+auto TotalEta_System{[](
+
+const doubles& RecoZEta,
+const floats& RecoWEta,
+const doubles& Top_Eta,
+const float& TotLepEta,
+const float& TotJetEta
+
+){
+
+  std::cout << "print 137" << std::endl;
+
+  doubles TotalEtaSystem = RecoZEta + RecoWEta.at(0) + Top_Eta + TotLepEta + TotJetEta;
+  return TotalEtaSystem;
+
+}};
+
+
+auto TotalPhi_System{[](
+
+const doubles& RecoZPhi,
+const floats& RecoWPhi,
+const doubles& Top_Phi,
+const float& TotLepPhi,
+const float& TotJetPhi
+
+){
+
+  std::cout << "print 138" << std::endl;
+
+  doubles TotalPhiSystem = RecoZPhi + RecoWPhi.at(0) + Top_Phi + TotLepPhi + TotJetPhi;
+  return TotalPhiSystem;
+
+
+}};
+
+
+//Minimum delta R between the Z boson candidate and any jet
+auto MinDeltaR{[](
+
+const unsigned int& nJet,
+const doubles& RecoZPhi,
+const doubles& RecoZEta,
+const floats& Jet_Phi_Selection,
+const floats& Jet_eta_Selection
+){
+
+    std::cout << "print 139" << std::endl;
+
+    doubles output_vec;
+  
+    for(int i; i < nJet; i++){
+
+    	double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
+    	double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
+
+    	double Output = (DeltaR2 < DeltaR) ? DeltaR2 : DeltaR;  
+    	output_vec.push_back(Output);
+
+    }
+
+    return output_vec;
+
+}};
+
+
+//Minimum delta phi between the Z boson candidate and any jet
+auto MinDeltaPhi{[](
+
+const unsigned int& nJet,
+const doubles& RecoZPhi,
+const floats& Jet_Phi_Selection
+){
+
+
+  std::cout << "print 140" << std::endl;
+
+  double output;
+  doubles output_vec{};
+
+  for(int i; i < nJet; i++){
+
+    double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
+    double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
+
+    output = (DeltaPhi2 < DeltaPhi) ? DeltaPhi2 : DeltaPhi;
+    output_vec.push_back(output);
+
+  }
+
+  return output_vec;
+
+}};
+
+
+auto dR_LeadingLepton_LeadingBJet{[](
+
+const floats& bjeteta,
+const float& LeadingLeptonEta,
+const floats& bjetphi,
+const float& LeadingLeptonPhi
+
+){
+
+  std::cout << "print 141" << std::endl;
+
+  doubles DeltaR = sqrt(pow(LeadingLeptonPhi - bjetphi, 2) + pow(LeadingLeptonEta - bjeteta, 2));
+  return DeltaR;
+
+}};
+
+
+
+auto dR_SubleadingLepton_LeadingBJet{[](
+
+const floats& bjeteta,
+const float& SubleadingLeptonEta,
+const floats& bjetphi,
+const float& SubleadingLeptonPhi
+
+){
+
+  std::cout << "print 142" << std::endl;
+
+  doubles DeltaR = sqrt(pow(SubleadingLeptonPhi - bjetphi, 2) + pow(SubleadingLeptonEta - bjeteta, 2));
+  return DeltaR;
+
+}};
+
+
+auto DeltaPhi_Lepton_BJet{[](
+
+const floats& Jet_phi_Selection,
+const float& LeptonPhi
+
+){
+
+  std::cout << "print 143" << std::endl;
+
+  doubles DeltaPhi = LeptonPhi - Jet_phi_Selection;
+  return DeltaPhi;
+
+}};
+
+
+
+auto TransverseWMass{[](
+
+const double& dPhi_j1j2,
+const doubles& WPairJet1Pt,
+const doubles& WPairJet2Pt
+
+){
+
+  std::cout << "print 144" << std::endl;
+
+  doubles mtW = sqrt(2 * WPairJet1Pt * WPairJet2Pt * (1 - cos(dPhi_j1j2)) );
+  return mtW;
+
+}};
+
+
+auto filter_function{[](
+
+const bool& Flag_goodVertices_Selection, 
+const bool& Flag_globalSuperTightHalo2016Filter_Selection, 
+const bool& Flag_HBHENoiseFilter_Selection, 
+const bool& Flag_HBHENoiseIsoFilter_Selection, 
+const bool& Flag_EcalDeadCellTriggerPrimitiveFilter_Selection, 
+const bool& Flag_BadPFMuonFilter_Selection, 
+const bool& Flag_BadChargedCandidateFilter_Selection, 
+const bool& Flag_ecalBadCalibFilter_Selection, 
+const bool& Flag_eeBadScFilter_Selection
+)-> bool{
+
+
+std::cout << "print 145" << std::endl;
+
+return  
+
+Flag_goodVertices_Selection > 0 || 
+Flag_globalSuperTightHalo2016Filter_Selection > 0 || 
+Flag_HBHENoiseFilter_Selection > 0 || 
+Flag_HBHENoiseIsoFilter_Selection > 0 || 
+Flag_EcalDeadCellTriggerPrimitiveFilter_Selection > 0 || 
+Flag_BadPFMuonFilter_Selection > 0 || 
+Flag_BadChargedCandidateFilter_Selection > 0 || 
+Flag_ecalBadCalibFilter_Selection > 0 || 
+Flag_eeBadScFilter_Selection > 0;
+
+}};
+
+
+
+//Lambda function for jet smearing simulation corrections (scaling method)
+//Twiki link: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution#Smearing_procedures
+
+//Reading the JER and SF text files
+std::string FileNameJetSmear;
+
+
+auto RowReader2{[&FileNameJetSmear, &year](
+
+const int& LineSpecified, 
+const bool& sigmaJER, 
+const bool& SF, 
+const bool& up, 
+const bool& down,
+const floats& Jet_eta,
+const floats& Jet_rho,
+const floats& Jet_pt) { 
+
+  std::cout << "print 146" << std::endl;
+
+
+  float Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11;
+  
+  if(year == "2016"){
+
+  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+  	else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+  }
+  else if(year == "2017"){
+
+	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+  }
+  else if(year == "2018"){
+
+  	if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+  	else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+  	else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+  }
+  else{std::cout << "The year can only be 2016, 2017 or 2018" << std::endl;}
+
+
+  std::ifstream file;
+  file.open(FileNameJetSmear);
+
+  if (file.good())
+  {
+    std::string str = "";
+
+    int line_number = 0;
+	
+	 while(getline(file, str) && line_number != LineSpecified){
+		++line_number;
+	}
+	if(line_number == LineSpecified){
+		if(sigmaJER == true && SF == false && up == false && down == false){
+			file >> Col1;
+                	file >> Col2;
+                	file >> Col3;
+                	file >> Col4;
+                	file >> Col5;
+                	file >> Col6;
+                	file >> Col7;
+                	file >> Col8;
+                	file >> Col9;
+                	file >> Col10;
+                	file >> Col11;
+		}
+		else if(sigmaJER == false && SF == true && up == false && down == false){
+			file >> Col1;
+                        file >> Col2;
+                        file >> Col3;
+                        file >> Col4;
+                        file >> Col5;
+                        file >> Col6;
+		}
+		else if(sigmaJER == false && SF == false && up == true && down == false){
+                        file >> Col1;
+                        file >> Col2;
+                        file >> Col3;
+                        file >> Col4;
+                        file >> Col5;
+                        file >> Col6;
+                }
+		else if(sigmaJER == false && SF == false && up == false && down == true){
+                        file >> Col1;
+                        file >> Col2;
+                        file >> Col3;
+                        file >> Col4;
+                        file >> Col5;
+                        file >> Col6;
+                }
+		else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+	}
+
+  }
+ 
+  file.close(); 
+ 
+
+  floats AnswerVec{};
+ 
+  for(int i = 0; i < Jet_pt.size(); i++){
+
+	if(  (Jet_eta.at(i) > abs(Col1) && Jet_eta.at(i) < abs(Col2)) && 
+	     (Jet_rho.at(0) > abs(Col3) && Jet_rho.at(0) < abs(Col4)) &&
+	     (Jet_pt.at(i) > abs(Col6) && Jet_pt.at(i) < abs(Col7) ) ){
+
+  		if(sigmaJER == true && SF == false && up == false && down == false){
+
+        		float answer = sqrt( Col8*abs(Col8) / (Jet_pt.at(i)*Jet_pt.at(i))+Col9*Col9*pow(Jet_pt.at(i),Col11)+Col10*Col10 );
+			AnswerVec.push_back(answer);
+
+		}
+ 	 	else if(sigmaJER == false && SF == true && up == false && down == false){
+        
+        		AnswerVec.push_back(Col4);
+
+  		}
+  		else if(sigmaJER == false && SF == false && up == true && down == false){
+
+        		float UpValue = Col6 - Col4;
+        		AnswerVec.push_back(UpValue);
+
+		}
+  		else if(sigmaJER == false && SF == false && up == false && down == true){
+	
+        		float DownValue = Col4 - Col5;
+        		AnswerVec.push_back(DownValue);
+
+  		}
+  		else{std::cout << "bools cannot be all true or all false" << std::endl; std::cout << "sigmaJER = " << sigmaJER << std::endl; std::cout << "SF = " << SF << std::endl; std::cout << "up = " << up << std::endl; std::cout << "down = " << down << std::endl;} 
+
+
+	}
+	else{float zero = 0.0; AnswerVec.push_back(zero);}
+
+  
+   } //end of for loop
+
+
+   return AnswerVec;
+
+
+}}; 
+
+
+
+
+auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
+
+   std::cout << "print 147" << std::endl;
+
+   int number_of_lines = 0;
+   std::string line;
+
+
+   if(year == "2016"){
+
+        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+  }
+  else if(year == "2017"){
+
+        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+  }
+  else if(year == "2018"){
+
+        if(sigmaJER == true && SF == false && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == true && up == false && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == true && down == false){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+        else if(sigmaJER == false && SF == false && up == false && down == true){FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";}
+        else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+  }
+  else{std::cout << "The year can only be 2016, 2017 or 2018" << std::endl;} 
+
+
+   std::ifstream myfile(FileNameJetSmear);
+
+   while (getline(myfile, line))
+        ++number_of_lines;
+    	return number_of_lines;
+
+}};
+
+
+
+
+auto RowReader3{[&RowReader2, &linecounter](
+
+const bool& SigmaJER, 
+const bool& JetSmearScaleFactor, 
+const bool& Up, 
+const bool& Down,
+const floats& Jet_eta, 
+const floats& Jet_rho, 
+const floats& Jet_pt
+){
+
+  
+  std::cout << "print 148" << std::endl;
+
+  int k;
+
+  for(int i = 0; i < linecounter(SigmaJER, JetSmearScaleFactor, Up, Down) + 1; i++){
+
+		std::string quantity; 
+
+		if(SigmaJER == true && JetSmearScaleFactor == false && Up == false && Down == false){quantity = "sigma JER";}
+   		else if(SigmaJER == false && JetSmearScaleFactor == true && Up == false && Down == false){quantity = "SF";}
+   		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == true && Down == false){quantity = "SF (up variation)";}
+   		else if(SigmaJER == false && JetSmearScaleFactor == false && Up == false && Down == true){quantity = "SF (down variation)";}
+   		else{std::cout << "Please enter an appropriate file name" << std::endl;}
+
+
+
+		bool check = any_of(RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).begin(),
+				    RowReader2(i, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).end(),
+				    [](float j){return j != 0;});
+
+
+		if(check == 1){k = i; break;}
+		else{continue;}
+
+
+  }
+
+
+  float factor;
+
+
+  for(int i = 0; i < RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).size(); i++){
+
+	if(RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i) != 0){factor = RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i);}
+	else{continue;}
+
+  }
+
+  return factor;
+
+
+}};
+
+
+
+
+
+
+
+
+
+//sigma_JER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_PtResolution_AK4PF.txt
+auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+
+  std::cout << "print 149" << std::endl;
+
+  bool SigmaJER = true;
+  bool JetSmearScaleFactor = false;
+  bool Up = false;
+  bool Down = false;
+
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+}};
+
+
+auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+
+  std::cout << "print 150" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = false;
+  bool Up = true;
+  bool Down = false;
+
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+}};
+
+
+auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+
+  std::cout << "print 151" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = false;
+  bool Up = false;
+  bool Down = true;
+  
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+}};
+
+//SJER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_SF_AK4PF.txt 
+auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+
+  std::cout << "print 152" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = true;
+  bool Up = false;
+  bool Down = false;
+ 
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+
+}};
+
+auto SJER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+
+  std::cout << "print 153" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = false;
+  bool Up = true;
+  bool Down = false;
+  
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+
+}};
+
+auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+
+  std::cout << "print 154" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = false;
+  bool Up = false;
+  bool Down = true;
+  
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+
+}};
+
+
+
+
+
+//Calculating the jet smearing correction factor using the hybrid method
+auto MaxComparison{[](const float& sJER_nominal){
+
+  std::cout << "print 155" << std::endl;
+
+ float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
+
+ if(MaximumFloats > 0){
+ 	return MaximumFloats;
+ }
+ else{
+	float zero = 0.0;
+	return zero;
+ }
+
+
+}};
+
+
+auto JetSmearingFunction_HybridMethod{[&MaxComparison](
+
+const floats& pT,
+const floats& eta,      
+const floats& phi, 
+const floats& pT_ptcl, 
+const floats& eta_ptcl, 
+const floats& phi_ptcl, 
+const float& sJER_nominal, 
+const float& sigma_JER,
+const ints& Jet_genJetIdx){
+
+  std::cout << "print 156" << std::endl;
+
+  floats cJER_vec{};
+
+  for(int i = 0; i < pT.size(); i++){
+
+	float cJER_Scaling;
+	float N = gRandom->Gaus(0, sigma_JER);
+        float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
+
+
+  	if(Jet_genJetIdx.at(i) != -1){
+
+		int j = Jet_genJetIdx.at(i);
+
+			if( j < pT_ptcl.size() ){
+
+				double dphi = phi.at(i) - phi_ptcl.at(j);
+        			double deta = eta.at(i) - eta_ptcl.at(j);
+        			double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
+        			const double RCone = 0.4;
+
+ 				if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
+
+					cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
+					cJER_vec.push_back(cJER_Scaling);
+		
+				}
+				else{cJER_vec.push_back(cJER_Stochastic);}
+
+			}
+			else{cJER_vec.push_back(cJER_Stochastic);}
+
+  	}
+  	else{cJER_vec.push_back(cJER_Stochastic);}
+
+
+  }
+
+  return cJER_vec;
+  
+
+}};
+
+
+
+
+
+
+
+
+
+auto ApplyCJER{[](
+
+const floats& JetPt, 
+const floats& JetEta,
+const floats& JetPhi,
+const floats& JetMass, 
+const floats& cJER, 
+const unsigned int& nJet
+
+){
+
+  std::cout << "print 157" << std::endl;
+
+  std::vector<TLorentzVector> OutputVec{};
+
+  for(int i = 0; i < nJet; i++){
+
+    TLorentzVector JetFourMomentum_New{};
+    float JetPt_new = JetPt.at(i) * cJER.at(0);
+    float JetEta_new = JetEta.at(i) * cJER.at(0);
+    float JetPhi_new = JetPhi.at(i) * cJER.at(0);
+    float JetMass_new = JetMass.at(i) * cJER.at(0);
+
+
+    JetFourMomentum_New.SetPtEtaPhiM(JetPt_new, JetEta_new, JetPhi_new, JetMass_new);
+
+    OutputVec.push_back(JetFourMomentum_New);
+
+  }
+
+ return OutputVec; 
+
+}};
+
+
+//To get the properties of the smeared jet
+auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
+
+ std::cout << "print 158" << std::endl;
+
+ floats NewPtVec = {};
+
+ for(int i = 0; i < JetPt.size(); i++){
+
+        float NewPt = (SmearedJet4Momentum.at(i)).Pt();
+ 	NewPtVec.push_back(NewPt);
+
+ }
+
+ return NewPtVec;
+
+}};
+
+
+auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
+
+ std::cout << "print 159" << std::endl;
+
+ floats NewPhiVec{};
+
+ for(int i = 0; i < JetPhi.size(); i++){
+
+	float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
+        NewPhiVec.push_back(NewPhi);
+
+ }
+ 
+ return NewPhiVec;
+
+}};
+
+ 
+auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
+
+ std::cout << "print 160" << std::endl;
+
+ floats NewEtaVec = {};
+
+ for(int i = 0; i < JetEta.size(); i++){
+
+        float NewEta = (SmearedJet4Momentum.at(i)).Eta();
+        NewEtaVec.push_back(NewEta);
+
+ }
+
+ return NewEtaVec;
+
+}};
+
+
+auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
+
+ std::cout << "print 161" << std::endl;
+
+ floats NewMassVec = {};
+
+ for(int i = 0; i < JetMass.size(); i++){
+
+	float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
+        float NewPt = (SmearedJet4Momentum.at(i)).Pt();
+        float NewEta = (SmearedJet4Momentum.at(i)).Eta();
+        float NewMass = (SmearedJet4Momentum.at(i)).M();
+		
+	NewMassVec.push_back(NewMass);
+
+ }
+
+ return NewMassVec;
+
+}};
+
+
+//For the Rochester corrections
+auto MuonFourMomentum{[](
+
+const floats& Muon_pt,
+const floats& Muon_eta,
+const floats& Muon_phi,
+const floats& Muon_mass
+
+){
+  
+  std::cout << "print 162" << std::endl;
+
+  TLorentzVector Muon4Mo{};
+  
+  for(int i = 0; i < Muon_pt.size(); i++){
+	
+  	TLorentzVector vec{};
+  	vec.SetPtEtaPhiM(Muon_pt.at(i), Muon_eta.at(i), Muon_phi.at(i), Muon_mass.at(i));
+  	Muon4Mo += vec;
+
+  }
+  return Muon4Mo;
+
+}};
+
+
+
+auto RochCorrVec_Function{[&process, &year](
+
+const ints& MuonCharge, 
+const floats& MuonPt, 
+const floats& MuonEta, 
+const floats& MuonPhi, 
+const ints& Muon_genPartIdx, 
+const ints& Muon_nTrackerLayers
+
+){
+
+  std::cout << "print 163" << std::endl;
+
+  floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
+  return CorrectionFactor;
+
+}};
+
+
+
+auto RochCorrVec_Function_data{[&process, &year](
+
+const ints& MuonCharge,
+const floats& MuonPt,
+const floats& MuonEta,
+const floats& MuonPhi,
+const ints& DummyColumnInts,
+const ints& Muon_nTrackerLayers
+
+){
+
+  std::cout << "print 164" << std::endl;
+
+  floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
+  return CorrectionFactor;
+
+}};
+
+
+
+
+auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec){
+
+  std::cout << "print 165" << std::endl;
+
+  TLorentzVector NewVec{};
+
+  double NewVecMass = Muon4Mo.M() * RochCorrVec.at(0);
+  double NewVecPt = Muon4Mo.Pt() * RochCorrVec.at(0);
+  double NewVecPhi = Muon4Mo.Phi() * RochCorrVec.at(0);
+  double NewVecEta = Muon4Mo.Eta() * RochCorrVec.at(0);
+
+  NewVec.SetPtEtaPhiM(NewVecPt, NewVecEta, NewVecPhi, NewVecMass);
+  return NewVec;
+
+}};
+
+
+
+//For the normalisation factors
+auto NormalisationFactorFunction{[&process, &year](){
+
+  std::cout << "print 166" << std::endl;
+
+  std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
+				    "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
+			            "ZPlusJets_PtBinned_0To50", "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250",
+				    "ZPlusJets_PtBinned_100To250_ext1", "ZPlusJets_PtBinned_100To250_ext2", "ZPlusJets_PtBinned_100To250_ext5",
+				    "ZPlusJets_PtBinned_250To400", "ZPlusJets_PtBinned_250To400_ext1", "ZPlusJets_PtBinned_250To400_ext2",
+				    "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1", 
+				    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1", 
+				    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph_NanoAODv5", "ttbar_madgraph_ext", "ttbar_TTToHadronic", 
+				    "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp", 
+				    "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_schannel", "ttbar_hdampUP", 
+				    "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", "SingleTop_tchannel_top_hdampUP", 
+				    "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext",
+				    "ttbar_fsr_UP", "ttbar_fsr_UP_ext", "ttbar_fsr_DOWN", "ttbar_fsr_DOWN_ext", 
+				    "SingleTop_tW", "SingleTop_tW_ScaleUp", "SingleTop_tW_ScaleDown", "SingleTop_tbarW", 
+				    "SingleTop_tbarW_ScaleUp", "SingleTop_tbarW_ScaleDown", "SingleTop_tHq", "SingleTop_tZq_W_lept_Z_had", 
+				    "SingleTop_tWZ_tWll", "VV_ZZTo2l2nu", "VV_ZZTo2l2nu_ext", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WW1nuqq", "VV_WZTo2L2Q", 
+				    "VV_WZTo3lNu", "VV_WZTo1l2Nu2Q", "VV_WWTo2l2Nu", "VV_WWToLNuQQ", "VV_WWToLNuQQ_ext", "VV_WGToLNuG", "VV_ZGToLLG", 
+				    "VVV_WWWTo4F", "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets", "WPlusJets_ext", "ttbarV_ttWJetsToLNu", 
+				    "ttbarV_ttWJetsToLNu_ext", "ttbarV_ttZToLLNuNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttZToLL", "ttbarV_ttZToLL_ext2", "ttbarV_ttZToLL_ext3", 
+				    "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
+
+
+
+  for(int i = 1; i < ProcessStrings.size(); i++){
+
+	if(process == ProcessStrings.at(i)){return linereader(i, year);}
+	else{continue;}
+
+  }
+
+
+}};
+
+
+
+
+
+
+
+
+
 //Electron selection and reconstruction SFs
 //2016
-EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
-EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+TFile* EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
 
 //2017
-EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
-EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
-EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
+TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+TFile* EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+TFile* EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
 
 //2018
-EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
-EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
-EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
-EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+TFile* EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); //need to double check if this is the right file
+TFile* EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
+TFile* EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
 //Histograms
 //2016
-EGammaEff2016_histo = (TH2*)(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEff2016_histo = (TH2*)(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEff2016_histo->SetDirectory(nullptr);
-EGammaEffSys2016_histo = (TH2*)(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffSys2016_histo = (TH2*)(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2016_histo->SetDirectory(nullptr);
-EGammaEffReco2016_histo = (TH2*)(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco2016_histo = (TH2*)(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffReco2016_histo->SetDirectory(nullptr);
-EGammaEffRecoSys2016_histo = (TH2*)(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys2016_histo = (TH2*)(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys2016_histo->SetDirectory(nullptr);
 
 //2017
-EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEff2017_histo->SetDirectory(nullptr);
-EGammaEffSys2017_histo = (TH2*)(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffSys2017_histo = (TH2*)(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2017_histo->SetDirectory(nullptr);
-EGammaEffReco_LowPt_2017_histo = (TH2*)(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco_LowPt_2017_histo = (TH2*)(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffReco_LowPt_2017_histo->SetDirectory(nullptr); 
-EGammaEffRecoSys_LowPt_2017_histo = (TH2*)(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys_LowPt_2017_histo = (TH2*)(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys_LowPt_2017_histo->SetDirectory(nullptr);
-EGammaEffReco_HigherPt_2017_histo = (TH2*)(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco_HigherPt_2017_histo = (TH2*)(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffReco_HigherPt_2017_histo->SetDirectory(nullptr);
-EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys_HigherPt_2017_histo->SetDirectory(nullptr);
 
 //2018
-EGammaEff2018_histo = (TH2*)(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEff2018_histo = (TH2*)(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEff2018_histo->SetDirectory(nullptr);
-EGammaEffSys2018_histo = (TH2*)(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffSys2018_histo = (TH2*)(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2018_histo->SetDirectory(nullptr);
-EGammaEffReco2018_histo = (TH2*)(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco2018_histo = (TH2*)(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffReco2018_histo->SetDirectory(nullptr);
-EGammaEffRecoSys2018_histo = (TH2*)(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys2018_histo = (TH2*)(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys2018_histo->SetDirectory(nullptr);
 
+
+
+
+//EGamma SF functions
+auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
+		     &EGammaEffReco2016_histo, 	     	     &EGammaEffRecoSys2016_histo,
+		     &EGammaEff2017_histo,                   &EGammaEffSys2017_histo, 
+		     &EGammaEffReco_LowPt_2017_histo,        &EGammaEffRecoSys_LowPt_2017_histo,
+		     &EGammaEffReco_HigherPt_2017_histo,     &EGammaEffRecoSys_HigherPt_2017_histo,
+		     &EGammaEff2018_histo,	             &EGammaEffSys2018_histo,
+		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo
+		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
+
+
+   std::cout << "print 167" << std::endl;
+
+   floats OutputVector{};
+   floats OutputVectorFinal{};
+
+   for(int i = 0; i < pt.size(); i++){
+
+  	if( abs(SuperClusterEta.at(i)) < 2.5 ){
+
+		//2016
+		int Bin_EGammaEff2016 = EGammaEff2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffReco2016 = EGammaEffReco2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffRecoSys2016 = EGammaEffSys2016_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+
+		//2017
+		int Bin_EGammaEff2017 = EGammaEff2017_histo->FindBin(SuperClusterEta.at(i), pt.at(i));
+		int Bin_EGammaEffSys2017 = EGammaEffSys2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffReco_LowPt_2017 = EGammaEffReco_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffRecoSys_LowPt_2017 = EGammaEffRecoSys_LowPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+		int Bin_EGammaEffReco_HigherPt_2017 = EGammaEffReco_HigherPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffRecoSys_HigherPt_2017 = EGammaEffRecoSys_HigherPt_2017_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+
+
+		//2018
+		int Bin_EGammaEff2018 = EGammaEff2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffReco2018 = EGammaEffReco2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+                int Bin_EGammaEffRecoSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
+
+		float EGammaSF;
+
+		if(year == "2016"){
+			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
+			else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2016_histo->GetBinError(Bin_EGammaEffRecoSys2016);}
+			else if(type == "EGammaEff"){EGammaSF = EGammaEff2016_histo->GetBinContent(Bin_EGammaEff2016);}
+			else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2016_histo->GetBinContent(Bin_EGammaEffReco2016);}
+			else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2016" << std::endl;}
+		}
+		else if(year == "2017"){
+			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2017_histo->GetBinError(Bin_EGammaEffSys2017);}
+                        else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGammaSF = EGammaEffRecoSys_LowPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_LowPt_2017);}
+			else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGammaSF = EGammaEffRecoSys_HigherPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_HigherPt_2017);}
+                        else if(type == "EGammaEff"){EGammaSF = EGammaEff2017_histo->GetBinContent(Bin_EGammaEff2017);}
+			else if(type == "EGammaEffReco" && pt.at(i) <= 20){EGammaSF = EGammaEffReco_LowPt_2017_histo->GetBinContent(Bin_EGammaEffReco_LowPt_2017);}
+                        else if(type == "EGammaEffReco" && pt.at(i) > 20){EGammaSF = EGammaEffReco_HigherPt_2017_histo->GetBinContent(Bin_EGammaEffReco_HigherPt_2017);}
+                        else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2017" << std::endl;}
+
+		}
+		else if(year == "2018"){
+			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2018_histo->GetBinError(Bin_EGammaEffSys2018);}
+                        else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2018_histo->GetBinError(Bin_EGammaEffRecoSys2018);}
+                        else if(type == "EGammaEff"){EGammaSF = EGammaEff2018_histo->GetBinContent(Bin_EGammaEff2018);}
+                        else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2018_histo->GetBinContent(Bin_EGammaEffReco2018);}
+                        else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2018" << std::endl;}
+
+		}
+	
+
+		OutputVector.push_back(EGammaSF);
+		
+  	}
+  	else{OutputVector.push_back(1.0);}
+
+
+
+  } //end of for loop
+
+
+  for(int i = 0; i < OutputVector.size(); i++){
+
+	if(OutputVector.at(i) == 0){OutputVectorFinal.push_back(1.0);}
+	else{OutputVectorFinal.push_back( OutputVector.at(i) );}
+
+  }
+
+  return OutputVectorFinal.at(0);
+
+}};
 
 
 EGammaEff_inputfile_2016->Close();
@@ -8288,6 +6245,47 @@ EGammaEffSys_inputfile_2018->Close();
 EGammaEffReco_inputfile_2018->Close();
 EGammaEffRecoSys_inputfile_2018->Close();
 
+
+
+auto EGammaSF_egammaEff{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  std::cout << "print 168" << std::endl;
+  return EGammaFunction(year, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
+
+}};
+
+
+
+
+
+auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  std::cout << "print 169" << std::endl;
+  return EGammaFunction(year, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
+
+}};
+
+
+
+
+
+auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  std::cout << "print 170" << std::endl;
+  return EGammaFunction(year, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
+
+}};
+
+
+
+
+
+auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
+
+  std::cout << "print 171" << std::endl;
+  return EGammaFunction(year, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
+
+}};
 
 
 
@@ -8388,6 +6386,173 @@ histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
 
 
+auto MuonSF{[
+
+&year,
+&histo_RunsBCDEF_ID_2016,
+&histo_RunsGH_ID_2016,
+&histo_RunsBCDEF_ISO_2016,
+&histo_RunsGH_ISO_2016,
+&histo_RunsBCDEF_ID_2017,
+&histo_RunsBCDEF_ID_Sys_2017,
+&histo_RunsBCDEF_ID_Sys_Stat_2017,
+&histo_RunsBCDEF_ID_Sys_Syst_2017,
+&histo_RunsBCDEF_ISO_2017,
+&histo_RunsBCDEF_ISO_Sys_2017,
+&histo_RunsBCDEF_ISO_Sys_Stat_2017,
+&histo_RunsBCDEF_ISO_Sys_Syst_2017,
+&histo_RunsABCD_ID_2018,
+&histo_RunsABCD_ISO_2018
+
+
+](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
+
+  std::cout << "print 172" << std::endl;
+
+  floats AbsEta = abs(eta);
+
+  float lumiRunBCDEF = 19713.888;
+  float lumiRunGH = 16146.178;
+
+  floats MuonSFOutput{};
+
+
+  for(int i = 0; i < pt.size(); i++){
+
+  	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){ 
+
+		if(year == "2016"){
+
+			float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinContent( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinContent( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinError( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinError( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinError( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinError( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+
+			float Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsBCDEF, MuonSF_RunsBCDEF, Error_RunsGH, MuonSF_RunsGH;
+
+
+			if(type == "ID" || type == "ID sys"){
+
+				MuonSF_RunsBCDEF = MuonSF_RunsBCDEF_ID_2016; MuonSF_RunsGH = MuonSF_RunsGH_ID_2016;
+				Error_RunsBCDEF = Error_RunsBCDEF_ID_2016; Error_RunsGH = Error_RunsGH_ID_2016;
+			
+			}		
+			else if(type == "Iso" || type == "Iso sys"){
+
+				MuonSF_RunsBCDEF = MuonSF_RunsBCDEF_ISO_2016; MuonSF_RunsGH = MuonSF_RunsGH_ISO_2016;
+				Error_RunsBCDEF = Error_RunsBCDEF_ISO_2016; Error_RunsGH = Error_RunsGH_ISO_2016;
+
+			}
+			else{std::cout << "For 2016, type must be ID, ID sys, Iso or Iso sys" << std::endl;}
+
+
+			MuonSF_RunsBCDEFGH = ( (MuonSF_RunsBCDEF * lumiRunBCDEF) + (MuonSF_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
+			Error_RunsBCDEFGH = ( (Error_RunsBCDEF * lumiRunBCDEF) + (Error_RunsGH * lumiRunGH) ) / (lumiRunBCDEF * lumiRunGH + 1.0e-06);
+
+
+
+
+			if(type == "ID sys"){
+
+				if(UpOrDown == "Up"){
+
+					MuonSF_RunsBCDEFGH += Error_RunsBCDEFGH + 0.01;
+					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
+
+				}
+				else if(UpOrDown == "Down"){
+
+					MuonSF_RunsBCDEFGH -= Error_RunsBCDEFGH - 0.01;
+					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
+
+				}
+				else{std::cout << "Select an up or down uncertainty" << std::endl;}
+
+			}
+			else if(type == "Iso sys"){
+
+				if(UpOrDown == "Up"){
+
+					MuonSF_RunsBCDEFGH += Error_RunsBCDEFGH + 0.005;
+					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
+
+				}
+				else if(UpOrDown == "Down"){
+
+					MuonSF_RunsBCDEFGH -= Error_RunsBCDEFGH - 0.005;
+					MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);
+
+				}
+				else{std::cout << "Select an up or down uncertainty" << std::endl;}
+
+			}
+			else{MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);}
+
+		}
+		else if(year == "2017"){
+
+			float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinContent( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinError( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinError( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinError( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+
+
+			if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ID_2017);}
+			else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ISO_2017);}
+			else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_2017);}
+			else if(type == "ID sys (stat)"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_Stat_2017);} 
+			else if(type == "ID sys (syst)"){MuonSFOutput.push_back(Error_RunsBCDEF_ID_Sys_Syst_2017);}
+			else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_2017);} 
+			else if(type == "Iso sys (stat)"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_Stat_2017);} 
+			else if(type == "Iso sys (syst)"){MuonSFOutput.push_back(Error_RunsBCDEF_ISO_Sys_Syst_2017);}
+			else{std::cout << "Incorrect type for 2017 muon SF function" << std::endl;}
+
+		}
+		else if(year == "2018"){
+
+			float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+			float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+			float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+
+			if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsABCD_ID_2018);}
+			else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
+			else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsABCD_ISO_2018);}
+			else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsABCD_ISO_2018);}
+			else{std::cout << "Error with Muon SF type (2018)" << std::endl;}
+
+		}
+		else{std::cout << "Code only for 2016, 2017 or 2018." << std::endl;}
+
+	}
+	else{std::cout << "inside else statement for pushing back muon SF output" << std::endl; float One = 1.0; MuonSFOutput.push_back(One);}
+
+
+  }
+
+  return MuonSFOutput.at(0); 
+
+
+}};
+
+
+
 
 inputfile_RunsBCDEF_ID_2016->Close(); 
 inputfile_RunsGH_ID_2016->Close();
@@ -8404,6 +6569,1298 @@ inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Close();
 inputfile_RunsABCD_ID_2018->Close();
 inputfile_RunsABCD_ISO_2018->Close();
 
+
+
+
+
+auto MuonSFTest_ID{[&MuonSF, &year](const floats& pt, const floats& eta){
+
+  std::cout << "print 173" << std::endl;
+  return MuonSF("ID", year, " ", pt, eta);
+  
+}};
+
+
+
+auto MuonSFTest_Iso{[&MuonSF, &year](const floats& pt, const floats& eta){
+
+  std::cout << "print 174" << std::endl;
+  return MuonSF("Iso", year, " ", pt, eta);
+    
+}};
+
+
+
+
+auto MuonSFTest_ID_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
+  
+  std::cout << "print 175" << std::endl;
+
+  if(year == "2016"){
+        return MuonSF("ID sys", year, "Up", pt, eta);
+  }
+  else if(year == "2017"){
+        return MuonSF("ID sys (syst)", year, " ", pt, eta);
+  }  
+  else{std::cout << "Need to add 2018" << std::endl;}
+
+}};
+
+
+
+
+auto MuonSFTest_ID_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
+
+  std::cout << "print 176" << std::endl;
+
+  if(year == "2016"){
+	return MuonSF("ID sys", year, "Down", pt, eta);
+  }
+  else if(year == "2017"){
+  	return MuonSF("ID sys (stat)", year, " ", pt, eta);
+  }
+  else{std::cout << "Need to add 2018" << std::endl;}  
+
+}};
+
+
+
+
+auto MuonSFTest_Iso_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
+
+  std::cout << "print 177" << std::endl;
+
+  if(year == "2016"){
+        return MuonSF("Iso sys", year, "Up", pt, eta);
+  }
+  else if(year == "2017"){
+        return MuonSF("Iso sys (syst)", year, " ", pt, eta);
+  }
+  else{std::cout << "Need to add 2018" << std::endl;}
+
+}};
+
+
+
+
+auto MuonSFTest_Iso_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
+
+  std::cout << "print 178" << std::endl;
+
+  if(year == "2016"){
+        return MuonSF("Iso sys", year, "Down", pt, eta);
+  }
+  else if(year == "2017"){
+        return MuonSF("Iso sys (stat)", year, " ", pt, eta);
+  }
+  else{std::cout << "Need to add 2018" << std::endl;}
+
+}};
+
+
+
+
+
+
+
+
+
+//dummy column
+auto DummyColumnFunction{[](const floats& pts){
+
+  std::cout << "print 179" << std::endl;
+  return pts;
+
+}};
+
+auto DummyColumnFunctionInts{[](const ints& charges){
+
+  std::cout << "print 180" << std::endl;
+  return charges;
+
+}};
+
+
+//PS weight lambda function
+auto PSWeight{[&year, &process](floats& PSWeight, const floats& pts){
+
+  std::cout << "print 181" << std::endl;
+
+  floats Ones(4, 1.0);
+
+  if(year == "2017" || year == "2018"){
+
+  	if(process == "tZq" ||
+	   process == "SingleTop_tbarW" ||
+	   process == "SingleTop_schannel" ||
+	   process == "SingleTop_tchannel_top" ||
+	   process == "SingleTop_tchannel_tbar" ||
+	   process == "ttbarV_ttgamma" ||
+	   process == "ttbar_TTToHadronic" ||
+	   process == "ttbar_TTToSemileptonic"){return PSWeight;}
+	else{return Ones;}
+
+ 
+ }
+ else{return Ones;}
+
+
+}};
+
+
+
+//Functions for trigger SFs
+///Lambda function for the MET triggers
+
+
+auto MET_triggers_function{[&year](
+
+const bool& HLT_MET200,
+const bool& HLT_MET250,
+const bool& HLT_PFMET120_PFMHT120_IDTight,
+const bool& HLT_PFMET170_HBHECleaned,
+const bool& HLT_PFHT300_PFMET100,
+//const bool& HLT_MET105_IsoTrk50, //(not in run B)
+//const bool& HLT_MET120_IsoTrk50, //(not in run B)
+//const bool& HLT_HT430_DisplacedDijet40_DisplacedTrack, //(not in run B)
+//const bool& HLT_HT650_DisplacedDijet60_Inclusive, //(not in run B)
+//const bool& HLT_HT750_DisplacedDijet80_Inclusive, //(not in run B)
+//const bool& HLT_PFMET120_PFMHT120_IDTight_HFCleaned, //(not in any)
+//const bool& HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF, //(not in any)
+//const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned, //(not in any)
+//const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60, //(not in run B)
+const bool& HLT_PFMET130_PFMHT130_IDTight,
+const bool& HLT_PFMET140_PFMHT140_IDTight,
+//const bool& HLT_PFMET200_HBHE_BeamHaloCleaned, //(not in run B)
+//const bool& HLT_PFMET250_HBHECleaned, //(not in run B)
+//const bool& HLT_PFMET300_HBHECleaned, //(not in run B)
+//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned, (not in any)
+//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF, (not in any)
+//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60, //(not in run B)
+const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight,
+//const bool& HLT_PFMETNoMu130_PFMHTNoMu130_IDTight, //(not in run B)
+//const bool& HLT_PFMETNoMu140_PFMHTNoMu140_IDTight, //(not in run B)
+const bool& HLT_PFHT1050,
+const bool& HLT_PFHT180,
+const bool& HLT_PFHT500_PFMET100_PFMHT100_IDTight,
+const bool& HLT_PFHT500_PFMET110_PFMHT110_IDTight,
+const bool& HLT_PFHT700_PFMET85_PFMHT85_IDTight,
+const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
+const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
+const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
+
+  std::cout << "print 182" << std::endl;
+
+  if(year == "2016"){
+	
+	return HLT_MET200 > 0 ||
+        HLT_MET250 > 0 ||
+        HLT_PFMET120_PFMHT120_IDTight > 0 ||
+        HLT_PFMET170_HBHECleaned > 0 ||
+        HLT_PFHT300_PFMET100 > 0;
+
+  }
+  else if(year == "2017" || year == "2018"){
+
+  return 
+
+  //HLT_MET105_IsoTrk50 > 0 || //(not in run B)
+  //HLT_MET120_IsoTrk50 > 0 || //(not in run B)
+  //HLT_HT430_DisplacedDijet40_DisplacedTrack > 0 || //(not in run B)
+  //HLT_HT650_DisplacedDijet60_Inclusive > 0 || //(not in run B)
+  //HLT_HT750_DisplacedDijet80_Inclusive > 0 || //(not in run B)
+  //HLT_PFMET120_PFMHT120_IDTight_HFCleaned > 0 || //(not in any)
+  //HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF > 0 || //(not in any)
+  //HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned > 0 || //(not in any)
+  //HLT_PFMET120_PFMHT120_IDTight_PFHT60 > 0 || //(not in run B)
+  HLT_PFMET120_PFMHT120_IDTight > 0 ||
+  HLT_PFMET130_PFMHT130_IDTight > 0 ||
+  HLT_PFMET140_PFMHT140_IDTight > 0 ||
+  //HLT_PFMET200_HBHE_BeamHaloCleaned > 0 || //(not in run B)
+  //HLT_PFMET250_HBHECleaned > 0 || //(not in run B)
+  //HLT_PFMET300_HBHECleaned > 0 || //(not in run B)
+  //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned > 0 || (not in any)
+  //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF > 0 || (not in any)
+  //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60 > 0 || //(not in run B)
+  HLT_PFMETNoMu120_PFMHTNoMu120_IDTight > 0 ||
+  //HLT_PFMETNoMu130_PFMHTNoMu130_IDTight > 0 || //(not in run B)
+  //HLT_PFMETNoMu140_PFMHTNoMu140_IDTight > 0 || //(not in run B)
+  HLT_PFHT1050 > 0 ||
+  HLT_PFHT180 > 0 ||
+  HLT_PFHT500_PFMET100_PFMHT100_IDTight > 0 ||
+  HLT_PFHT500_PFMET110_PFMHT110_IDTight > 0 ||
+  HLT_PFHT700_PFMET85_PFMHT85_IDTight > 0 ||
+  HLT_PFHT700_PFMET95_PFMHT95_IDTight > 0 ||
+  HLT_PFHT800_PFMET75_PFMHT75_IDTight > 0 ||
+  HLT_PFHT800_PFMET85_PFMHT85_IDTight > 0;
+
+  }
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018" << std::endl;}
+
+}};
+
+
+
+
+
+
+//Events that pass the selection criteria and the lepton triggers
+
+auto ee_selection_LL_Trig_function{[&year](
+
+const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
+const bool& HLT_Ele35_WPTight_Gsf, 
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
+const bool& HLT_IsoMu27, 
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
+const bool& HLT_Ele27_WPTight_Gsf, 
+const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
+const bool& HLT_IsoMu24,
+const bool& HLT_IsoMu24_eta2p1,
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
+)-> bool{
+
+  std::cout << "print 183" << std::endl;
+
+  if(year == "2016"){
+
+	return //single or double electron and not any of the others
+	
+	(HLT_Ele25_eta2p1_WPTight_Gsf > 0 || //single electron 
+	 HLT_Ele27_WPTight_Gsf > 0 || //single electron
+	 HLT_Ele32_eta2p1_WPTight_Gsf > 0 || //single electron
+	 HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) //double electron 
+	 && 
+	(HLT_IsoMu24 <= 0 || //single muon
+	 HLT_IsoMu24_eta2p1 <= 0 || //single muon
+	 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
+	 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
+	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+	 HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+	 HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
+	 HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
+	 HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
+
+
+  }
+  else if(year == "2017"){
+
+  return 
+
+  (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
+   HLT_Ele35_WPTight_Gsf > 0 || //single electron
+   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //double electron
+   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) && // double electron
+  (//HLT_IsoMu24 <= 0 || //single muon
+   HLT_IsoMu27 <= 0 || //single muon
+   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
+   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
+   //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0 || //double muon (not in MET run B)
+   //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET run B)
+   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+   //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET run B)
+   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+   //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET run B)
+   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
+
+  }
+  else if(year == "2018"){
+
+	return (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
+		HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //single electron
+		HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) //double electron
+
+		&&
+
+		(HLT_IsoMu24 <= 0 || //single muon
+		 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
+		 HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0 || //double muon
+		 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+		 HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+		 HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
+
+
+  }
+  else{std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl;}
+
+}};
+
+
+auto mumu_selection_LL_Trig_function{[&year](
+
+const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
+const bool& HLT_Ele35_WPTight_Gsf, 
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
+//const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8, (not in MET Run B)
+const bool& HLT_IsoMu27, 
+//const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL, (not in MET run B)
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+//const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET run B)
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+//const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET run B)
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
+const bool& HLT_Ele25_eta2p1_WPTight_Gsf,
+const bool& HLT_Ele27_WPTight_Gsf, 
+const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
+const bool& HLT_IsoMu24,
+const bool& HLT_IsoMu24_eta2p1,
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
+
+
+  std::cout << "print 184" << std::endl;
+
+  if(year == "2016"){
+
+        return //single or double muon and not any of the others
+
+	(HLT_IsoMu24 > 0 || //single muon
+         HLT_IsoMu24_eta2p1 > 0 || //single muon
+         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || //double muon
+         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //double muon
+
+	&&
+
+        (HLT_Ele25_eta2p1_WPTight_Gsf <= 0 || //single electron 
+         HLT_Ele27_WPTight_Gsf <= 0 || //single electron
+         HLT_Ele32_eta2p1_WPTight_Gsf <= 0 || //single electron
+         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron 
+         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
+         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
+         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
+
+
+  }
+  else if(year == "2017"){
+
+  return
+ 
+  (HLT_IsoMu27 > 0  || //single muon
+  HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || //double muon
+  HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //|| //double muon
+  //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0) && //double muon (not in MET Run B)
+  && (//HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET Run B)
+  HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+  //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET Run B)
+  HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+  //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon+electron (not in MET Run B)
+  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+  HLT_Ele32_WPTight_Gsf_L1DoubleEG <= 0 || //single electron
+  HLT_Ele35_WPTight_Gsf <= 0 || //single electron
+  HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //double electron
+  HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0);  //double electron
+
+  }
+  else if(year == "2018"){
+
+	return //single or double muon and not any of the others
+	
+	(HLT_IsoMu24 > 0 || //single muon
+         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 || //double muon
+         HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0) //double muon
+
+	&&
+
+	(HLT_Ele32_WPTight_Gsf_L1DoubleEG <= 0 || //single electron
+         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //single electron
+         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron
+	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon+electron
+         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //muon+electron
+
+  }
+  else{std::cout << "Choose 2016, 2017 or 2018" << std::endl;}
+  
+
+}};
+
+
+auto emu_selection_LL_Trig_function{[&year](
+
+const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
+const bool& HLT_Ele35_WPTight_Gsf, 
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
+const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
+//const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8, (not in MET Run B)
+const bool& HLT_IsoMu27, 
+//const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL, (not in MET Run B)
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+//const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET Run B) 
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+//const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, (not in MET Run B)
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
+const bool& HLT_Ele25_eta2p1_WPTight_Gsf,
+const bool& HLT_Ele27_WPTight_Gsf, 
+const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
+const bool& HLT_IsoMu24,
+const bool& HLT_IsoMu24_eta2p1,
+const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
+
+
+  std::cout << "print 185" << std::endl;
+
+  if(year == "2016"){
+
+	return //single lepton or muon+electron and not any of the others
+
+        (HLT_IsoMu24 > 0 || //single muon
+         HLT_IsoMu24_eta2p1 > 0 || //single muon
+	 HLT_Ele25_eta2p1_WPTight_Gsf > 0 || //single electron 
+         HLT_Ele27_WPTight_Gsf > 0 || //single electron
+         HLT_Ele32_eta2p1_WPTight_Gsf > 0 || //single electron
+	 HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
+         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
+         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
+         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
+         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
+         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0) //muon electron
+
+         &&
+
+         (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
+          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
+          HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron 
+
+
+
+  }
+  else if(year == "2017"){
+
+  	return 
+
+  	(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || // double electron
+  	HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron
+  	HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
+  	HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 //|| //double muon
+  	//HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0) && //double muon (not in MET Run B)
+  	) &&
+
+  	(HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
+  	HLT_Ele35_WPTight_Gsf > 0 || //single electron
+  	HLT_IsoMu27 > 0 || //single muon
+  	//HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //muon+electron (not in MET Run B)
+  	HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron
+  	//HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon+electron (not in MET Run B)
+  	HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron 
+  	//HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon+electron (not in MET Run B)
+  	HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0); //muon+electron
+
+  }
+  else if(year == "2018"){
+
+	 return //single lepton or muon+electron and not any of the others
+
+        (HLT_IsoMu24 > 0 || //single muon
+	 HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || //single electron
+         HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //single electron
+         HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron
+         HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon+electron
+         HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0) //muon+electron
+
+	 &&
+
+         (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 || //double muon
+          HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0 || //double muon
+          HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron
+	
+  }
+  else{std::cout << "Input 2016, 2017 or 2018" << std::endl;}
+
+}};
+
+
+
+
+
+
+
+
+//MET triggers
+std::vector<std::string> MET_triggers;
+
+if(year == "2016"){ 
+
+	MET_triggers = {"HLT_MET200",
+		        "HLT_MET250",
+		        "HLT_PFMET120_PFMHT120_IDTight",
+			"HLT_PFMET170_HBHECleaned",
+			"HLT_PFHT300_PFMET100",
+			"DummyBool",
+			"DummyBool",
+			"DummyBool",
+			"DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+			"DummyBool",
+                        "DummyBool",
+                        "DummyBool",
+                        "DummyBool"};
+
+
+}
+else if(year == "2017" || year == "2018"){
+
+	MET_triggers = {"DummyBool",
+			"DummyBool",
+			"DummyBool",
+                        "DummyBool",
+			"DummyBool",
+			"HLT_PFMET130_PFMHT130_IDTight",
+			"HLT_PFMET140_PFMHT140_IDTight",
+			"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+			"HLT_PFHT1050",
+			"HLT_PFHT180",
+			"HLT_PFHT500_PFMET100_PFMHT100_IDTight",
+			"HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+			"HLT_PFHT700_PFMET85_PFMHT85_IDTight",
+			"HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+			"HLT_PFHT800_PFMET75_PFMHT75_IDTight",
+			"HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+
+}
+else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;}
+
+
+//dummy lambda function
+auto DummyBool{[](const bool& dummyinput){
+
+  std::cout << "print 186" << std::endl;
+  return dummyinput > 0;
+
+}};
+
+
+
+std::vector<std::string> leptontriggers_strings;
+
+if(year == "2016"){
+
+	leptontriggers_strings = {
+
+	"DummyBool", //single electron (for 2018 only)
+	"DummyBool", //single electron (for 2017 only)
+	"DummyBool", //double electron (for 2017 and 2018)
+	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+	"DummyBool", //double muon (for 2017 and 2018)
+	"DummyBool", //single muon (for 2017 only)
+//	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+//	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+	"DummyBool",
+	"DummyBool",
+	"DummyBool",
+	"HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+	"HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
+	"HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+	"HLT_IsoMu24", //single muon (all years)
+//	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
+	"DummyBool",
+	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
+	"DummyBool",
+	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+	"DummyBool" //double muon (for 2018 only)
+
+};
+
+}
+else if(year == "2017"){
+
+	leptontriggers_strings = {
+
+        "DummyBool", //single electron (for 2018 only)
+        "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
+        "HLT_IsoMu27", //single muon (for 2017 only)
+        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "HLT_IsoMu24", //single muon (all years)
+        "DummyBool", //single muon (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool" //double muon (for 2018 only)	
+
+};
+
+}
+else if(year == "2018"){
+
+	leptontriggers_strings = {
+
+	"HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
+	"DummyBool", //single electron (for 2017 only)
+	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+	"DummyBool", //double muon (for 2016 and 2017)
+	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
+	"DummyBool", //single muon (for 2017 only)
+	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+	"DummyBool", //single electron (for 2016 only)
+	"DummyBool", //single electron (for 2016 only)
+	"DummyBool", //single electron (for 2016 only)
+	"HLT_IsoMu24", //single muon (all years)
+	"DummyBool", //single muon (for 2016 only)	
+	"DummyBool", //muon+electron (for 2016 only)
+	"DummyBool", //muon+electron (for 2016 only)
+	"DummyBool", //muon+electron (for 2016 only)
+	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
+
+};
+
+} 
+else{std::cout << "choose 2016, 2017 or 2018" << std::endl;}
+
+
+
+
+
+
+std::vector<std::string> sJER_sigmaJER_strings = {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"};
+
+std::string SJER;
+std::string SIGMAJER;
+
+if(JetSmearing_ScaleUp == true){SJER = "sJER_up";} 
+else if(JetSmearing_ScaleDown == true){SJER = "sJER_down";}
+else{SJER = "sJER_Nominal";}
+
+if(JetResolution_ScaleUp == true){SIGMAJER = "sigma_JER_up";}
+else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
+else{SIGMAJER = "sigma_JER";}
+
+
+std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
+std::vector<std::string> ApplyCJER_strings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"};
+
+
+std::vector<std::string> flags_strings = {
+"Flag_goodVertices", 
+"Flag_globalSuperTightHalo2016Filter", 
+"Flag_HBHENoiseFilter", 
+"Flag_HBHENoiseIsoFilter", 
+"Flag_EcalDeadCellTriggerPrimitiveFilter", 
+"Flag_BadPFMuonFilter", 
+"Flag_BadChargedCandidateFilter", 
+"Flag_ecalBadCalibFilter", 
+"Flag_eeBadScFilter"
+};
+
+
+std::vector<std::string> mumu_strings = {
+"nMuon", 
+"Muon_tightId_Selection", 
+"Muon_pfIsoId_Selection", 
+"Muon_eta", 
+"Muon_charge_Selection", 
+"Muon_pt_Selection", 
+"Muon_isPFcand_Selection"};
+
+
+
+std::vector<std::string> deltaR_JetE_strings = {
+JetEtaInput,
+JetPhiInput,
+"z_lep_eta",
+"z_lep_phi"
+};
+
+std::vector<std::string> deltaR_JetMu_strings = {
+JetEtaInput,
+JetPhiInput,
+"z_lep_eta",
+"z_lep_phi"
+};
+
+std::vector<std::string> deltaR_j1j2_strings = {
+"LeadingJetEta",
+"LeadingJetPhi",
+"SubleadingJetEta",
+"SubleadingJetPhi",
+};
+
+std::vector<std::string> InvMass_AllJets_strings = {
+"LeadingJetpT",
+"SubleadingJetpT",
+"ThirdJetpT",
+"FourthJetpT",
+"LeadingJetEta",
+"SubleadingJetEta",
+"ThirdJetEta",
+"FourthJetEta",
+"LeadingJetPhi",
+"SubleadingJetPhi",
+"ThirdJetPhi",
+"FourthJetPhi",
+"LeadingJetMass",
+"SubleadingJetMass",
+"ThirdJetMass",
+"FourthJetMass",
+"nJet"
+};
+
+
+std::vector<std::string> InvMass_3Jets_strings = {
+"LeadingJetpT",
+"SubleadingJetpT",
+"ThirdJetpT",
+"LeadingJetEta",
+"SubleadingJetEta",
+"ThirdJetEta",
+"LeadingJetPhi",
+"SubleadingJetPhi",
+"ThirdJetPhi",
+"LeadingJetMass",
+"SubleadingJetMass",
+"ThirdJetMass",
+"nJet"
+};
+
+std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
+std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
+
+std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
+std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
+
+
+std::vector<std::string> w_pair_strings = {
+JetPtInput,
+JetEtaInput,
+JetPhiInput,
+JetMassInput,
+"Jet_jetId",
+"lead_bjet"};
+
+
+std::vector<std::string> top_strings = {
+"bjetpt",
+"bjeteta",
+"bjetphi",
+"bjetmass",
+"nJet",
+"w_pair_pt", 
+"w_pair_eta", 
+"w_pair_phi", 
+"w_mass",
+"w_reco_jets"};
+
+std::vector<std::string> deltaR_Top_LeadingElectron_strings = {
+"Top_Phi",
+"Top_Eta",
+"LeadingElectronEta",
+"LeadingElectronPhi"
+};
+
+std::vector<std::string> deltaR_Top_LeadingMuon_strings = {
+"Top_Phi",
+"Top_Eta",
+"LeadingMuonEta",
+"LeadingMuonPhi"
+};
+
+std::vector<std::string> deltaR_Top_SubleadingElectron_strings = {
+"Top_Phi",
+"Top_Eta",
+"SubleadingElectronEta",
+"SubleadingElectronPhi"
+};
+
+std::vector<std::string> deltaR_Top_SubleadingMuon_strings = {
+"Top_Phi",
+"Top_Eta",
+"SubleadingMuonEta",
+"SubleadingMuonPhi"
+};
+
+std::vector<std::string> deltaR_Top_LeadingJet_strings = {
+"Top_Phi",
+"Top_Eta",
+"SubleadingJetEta",
+"SubleadingJetPhi"
+};
+
+std::vector<std::string> deltaR_Top_SubleadingJet_strings = {
+"Top_Phi",
+"Top_Eta",
+"SubleadingJetEta",
+"SubleadingJetPhi"
+};
+
+std::vector<std::string> deltaR_Top_ThirdJet_strings = {
+"Top_Phi",
+"Top_Eta",
+"ThirdJetEta",
+"ThirdJetPhi"
+};
+
+std::vector<std::string> deltaR_Top_FourthJet_strings = {
+"Top_Phi",
+"Top_Eta",
+"FourthJetEta",
+"FourthJetPhi"
+};
+
+
+std::vector<std::string> deltaR_WJet1_WJet2_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"WPairJet2Phi",
+"WPairJet2Eta",
+};
+
+std::vector<std::string> deltaR_Z_Top_strings = {
+"RecoZPhi",
+"RecoZEta",
+"Top_Phi",
+"Top_Eta",
+};
+
+std::vector<std::string> deltaR_WJet1_LeadingElectron_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"LeadingElectronPhi",
+"LeadingElectronEta"
+};
+
+std::vector<std::string> deltaR_WJet1_SubleadingElectron_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"SubleadingElectronPhi",
+"SubleadingElectronEta"
+};
+
+std::vector<std::string> deltaR_WJet1_LeadingMuon_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"LeadingMuonPhi",
+"LeadingMuonEta"
+};
+
+std::vector<std::string> deltaR_WJet1_SubleadingMuon_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"SubleadingMuonPhi",
+"SubleadingMuonEta"
+};
+
+
+std::vector<std::string> deltaR_WJet1_LeadingJet_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"LeadingJetPhi",
+"LeadingJetEta"
+};
+
+std::vector<std::string> deltaR_WJet1_SubleadingJet_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"SubleadingJetPhi",
+"SubleadingJetEta"
+};
+
+std::vector<std::string> deltaR_WJet1_ThirdJet_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"ThirdJetPhi",
+"ThirdJetEta"
+};
+
+std::vector<std::string> deltaR_WJet1_FourthJet_strings = {
+"WPairJet1Phi",
+"WPairJet1Eta",
+"FourthJetPhi",
+"FourthJetEta"
+};
+
+std::vector<std::string> deltaR_WJet2_LeadingElectron_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"LeadingElectronPhi",
+"LeadingElectronEta"
+};
+
+std::vector<std::string> deltaR_WJet2_SubleadingElectron_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"SubleadingElectronPhi",
+"SubleadingElectronEta"
+};
+
+
+std::vector<std::string> deltaR_WJet2_LeadingMuon_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"LeadingMuonPhi",
+"LeadingMuonEta"
+};
+
+std::vector<std::string> deltaR_WJet2_SubleadingMuon_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"SubleadingMuonPhi",
+"SubleadingMuonEta"
+};
+
+
+std::vector<std::string> deltaR_WJet2_LeadingJet_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"LeadingJetPhi",
+"LeadingJetEta"
+};
+
+std::vector<std::string> deltaR_WJet2_SubleadingJet_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"SubleadingJetPhi",
+"SubleadingJetEta"
+};
+
+std::vector<std::string> deltaR_WJet2_ThirdJet_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"ThirdJetPhi",
+"ThirdJetEta"
+};
+
+std::vector<std::string> deltaR_WJet2_FourthJet_strings = {
+"WPairJet2Phi",
+"WPairJet2Eta",
+"FourthJetPhi",
+"FourthJetEta"
+};
+
+
+std::vector<std::string> deltaR_Z_LeadingJet_strings = {
+"RecoZPhi",
+"RecoZEta",
+"LeadingJetPhi",
+"LeadingJetEta"
+};
+
+std::vector<std::string> deltaR_Z_SubleadingJet_strings = {
+"RecoZPhi",
+"RecoZEta",
+"SubleadingJetPhi",
+"SubleadingJetEta"
+};
+
+std::vector<std::string> deltaR_Z_ThirdJet_strings = {
+"RecoZPhi",
+"RecoZEta",
+"ThirdJetPhi",
+"ThirdJetEta"
+};
+
+std::vector<std::string> deltaR_Z_FourthJet_strings = {
+"RecoZPhi",
+"RecoZEta",
+"FourthJetPhi",
+"FourthJetEta"
+};
+
+std::vector<std::string> deltaR_Top_W_strings = {
+"w_pair_eta",
+"w_pair_phi",
+"Top_Eta",
+"Top_Phi"
+};
+
+std::vector<std::string> deltaR_W_Z_strings = {
+"w_pair_phi",
+"w_pair_eta",
+"RecoZEta",
+"RecoZPhi"
+};
+
+std::vector<std::string> RecoZstrings_ee{
+"nElectron",
+"LeadingElectron_pT",
+"LeadingElectronEta",
+"LeadingElectronPhi",
+"LeadingElectronMass",
+"SubleadingElectron_pT",
+"SubleadingElectronEta",
+"SubleadingElectronPhi",
+"SubleadingElectronMass"
+};
+
+std::vector<std::string> RecoZstrings_mumu = {
+"nMuon",
+"LeadingMuon_pT",
+"LeadingMuonEta",
+"LeadingMuonPhi",
+"LeadingMuonMass",
+"SubleadingMuon_pT",
+"SubleadingMuonEta",
+"SubleadingMuonPhi",
+"SubleadingMuonMass"
+};
+
+
+std::vector<std::string> TotalHT_System_strings = {
+"RecoZHT",
+"RecoWHT",
+"Top_HT",
+"TotLepHT",
+"TotJetHT"
+};
+
+std::vector<std::string> TotalPt_System_strings = {
+"RecoZPt",
+"w_pair_pt",
+"Top_Pt",
+"LepPtSum",
+"JetPtSum"
+};
+
+std::vector<std::string> TotalPt_Systemstrings_data = {
+"RecoZPt",
+"w_pair_pt",
+"Top_Pt",
+"LepPtSum",
+"JetPtSum"
+};
+
+
+std::vector<std::string> TotalEta_System_strings = {
+"RecoZEta",
+"w_pair_eta",
+"Top_Eta",
+"LepEtaSum",
+"JetEtaSum"
+};
+
+
+std::vector<std::string> TotalPhi_System_strings = {
+"RecoZEta",
+"w_pair_eta",
+"Top_Eta",
+"LepPhiSum",
+"JetPhiSum"
+};
+
+
+std::vector<std::string> dR_Z_WPairJet1_strings = {
+"RecoZPhi",
+"RecoZEta",
+"WPairJet1Eta",
+"WPairJet1Phi"
+};
+
+std::vector<std::string> dR_Z_WPairJet2_strings = {
+"RecoZPhi",
+"RecoZEta",
+"WPairJet2Eta",
+"WPairJet2Phi"
+};
+
+
+std::vector<std::string> MinDeltaR_strings = {
+"nJet",
+"RecoZPhi",
+"RecoZEta",
+JetPhiInput,
+JetEtaInput
+};
+
+
+std::vector<std::string> MinDeltaPhi_strings = {
+"nJet",
+"RecoZPhi",
+JetPhiInput
+};
+
+std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_ee = {
+"bjeteta",
+"LeadingElectronEta",
+"bjetphi",
+"LeadingElectronPhi"
+};
+
+std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_ee = {
+"bjeteta",
+"SubleadingElectronEta",
+"bjetphi",
+"SubleadingElectronPhi"
+};
+
+std::vector<std::string> dR_LeadingLepton_LeadingBJetstrings_mumu = {
+"bjeteta",
+"LeadingMuonEta",
+"bjetphi",
+"LeadingMuonPhi"
+};
+
+std::vector<std::string> dR_SubleadingLepton_LeadingBJetstrings_mumu = {
+"bjeteta",
+"SubleadingMuonEta",
+"bjetphi",
+"SubleadingMuonPhi"
+};
+
+
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
+JetPhiInput,
+"LeadingElectronPhi"
+};
+
+std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
+JetPhiInput,
+"LeadingMuonPhi"
+};
+
+
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
+JetPhiInput,
+"SubleadingElectronPhi"
+};
+
+std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
+JetPhiInput,
+"SubleadingMuonPhi"
+};
+
+
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
+"LeadingJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+}; 
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
+"SubleadingJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
+"ThirdJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
+"FourthJetpT",
+"Jet_btagCSVV2",
+"tight_jets",
+JetEtaInput
+};
+
+std::vector<std::string> lep_cut_ee_strings;
+std::vector<std::string> lep_cut_mumu_strings;
+
+if(NPL == true){
+
+	lep_cut_ee_strings = {
+	"Electron_pt_Selection", 
+	"LooseElectron_pt_Selection", 
+	"SameSign",
+	"nElectron",
+	"LeadingElectron_dz_ECALBarrel",
+	"LeadingElectron_dxy_ECALBarrel",
+	"LeadingElectron_dz_ECALEndcaps",
+	"LeadingElectron_dxy_ECALEndcaps",
+	"SubleadingElectron_dz_ECALBarrel",
+	"SubleadingElectron_dxy_ECALBarrel",
+	"SubleadingElectron_dz_ECALEndcaps",
+	"SubleadingElectron_dxy_ECALEndcaps"
+	
+	};
+
+
+	lep_cut_mumu_strings = {
+	"Muon_pt_Selection",
+	"LooseMuon_pt_Selection", 
+	"SameSign", 
+	"nMuon"
+	};
+
+}
+else{
+
+	lep_cut_ee_strings = {
+	"Electron_pt_Selection",
+	"LooseElectron_pt_Selection",
+	"OppositeSign",
+	"nElectron",
+	"LeadingElectron_dz_ECALBarrel",
+	"LeadingElectron_dxy_ECALBarrel",
+	"LeadingElectron_dz_ECALEndcaps",
+	"LeadingElectron_dxy_ECALEndcaps",
+	"SubleadingElectron_dz_ECALBarrel",
+	"SubleadingElectron_dxy_ECALBarrel",
+	"SubleadingElectron_dz_ECALEndcaps",
+	"SubleadingElectron_dxy_ECALEndcaps"
+	
+	};
+
+	lep_cut_mumu_strings = {
+	"Muon_pt_Selection",  
+	"LooseMuon_pt_Selection", 
+	"OppositeSign", 
+	"nMuon"
+	};
+
+}
+
+
+std::vector<std::string> lep_cut_emu_strings = {
+"Electron_pt_SelectionEmu",
+"LooseElectron_pt_SelectionEmu",
+"OppositeSign_emu",
+"nElectron",
+"Muon_pt_SelectionEmu", 
+"LooseMuon_pt_SelectionEmu",
+"nMuon"
+
+};
+
+
+//Event cleaning
+auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event cleaning filter");
 
 //Pile up modelling
 //2016
@@ -8585,21 +8042,103 @@ systUpFile_2018->Close();
 systDownFile_2018->Close();
 
 
+//Implementing the PU modelling
+
+
+auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year](int PV_npvs_input){
+
+  std::cout << "print 187" << std::endl;
+
+  float PU_Weight_input;
+
+  if(year == "2016"){
+        PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input));
+  }
+  else if(year == "2017"){
+  	PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input));
+  }
+  else if(year == "2018"){
+        PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
+  }
+  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
+
+
+  return PU_Weight_input;
+
+}};
 
 
 
 
 
-//Event cleaning
-auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event cleaning filter");
+
 
 
 ///MC starts here
 
+if(
 
+process != "data_EGRunB" &&
+process != "data_EGRunC" &&
+process != "data_EGRunD" &&
+process != "data_DoubleEGRunB" &&
+process != "data_DoubleEGRunC" &&
+process != "data_DoubleEGRunD" &&
+process != "data_DoubleEGRunE" &&
+process != "data_DoubleEGRunF" &&
+process != "data_DoubleEGRunG" &&
+process != "data_DoubleEGRunH" &&
+process != "data_SingleElectronRunB" &&
+process != "data_SingleElectronRunC" &&
+process != "data_SingleElectronRunD" &&
+process != "data_SingleElectronRunE" &&
+process != "data_SingleElectronRunF" &&
+process != "data_SingleElectronRunG" &&
+process != "data_SingleElectronRunH" &&
+process != "data_DoubleMuonRunB" &&
+process != "data_DoubleMuonRunC" &&
+process != "data_DoubleMuonRunD" &&
+process != "data_DoubleMuonRunE" &&
+process != "data_DoubleMuonRunF" &&
+process != "data_DoubleMuonRunG" &&
+process != "data_DoubleMuonRunH" &&
+process != "data_SingleMuonRunB" &&
+process != "data_SingleMuonRunC" &&
+process != "data_SingleMuonRunD" &&
+process != "data_SingleMuonRunE" &&
+process != "data_SingleMuonRunF" &&
+process != "data_SingleMuonRunG" &&
+process != "data_SingleMuonRunH" &&
+process != "data_DoubleEGRunB2" &&
+process != "data_DoubleEGRunC2" &&
+process != "data_DoubleEGRunD2" &&
+process != "data_DoubleEGRunE2" &&
+process != "data_DoubleEGRunF2" &&
+process != "data_DoubleEGRunG2" &&
+process != "data_DoubleEGRunH2" &&
+process != "data_SingleElectronRunB2" &&
+process != "data_SingleElectronRunC2" &&
+process != "data_SingleElectronRunD2" &&
+process != "data_SingleElectronRunE2" &&
+process != "data_SingleElectronRunF2" &&
+process != "data_SingleElectronRunG2" &&
+process != "data_SingleElectronRunH2" &&
+process != "data_DoubleMuonRunB2" &&
+process != "data_DoubleMuonRunC2" &&
+process != "data_DoubleMuonRunD2" &&
+process != "data_DoubleMuonRunE2" &&
+process != "data_DoubleMuonRunF2" &&
+process != "data_DoubleMuonRunG2" &&
+process != "data_DoubleMuonRunH2" &&
+process != "data_SingleMuonRunB2" &&
+process != "data_SingleMuonRunC2" &&
+process != "data_SingleMuonRunD2" &&
+process != "data_SingleMuonRunE2" &&
+process != "data_SingleMuonRunF2" &&
+process != "data_SingleMuonRunG2" &&
+process != "data_SingleMuonRunH2"
 
-
-if(RunType == "MC"){
+){
   
   //Filtering events that pass the ee selection criteria
   auto d_ee_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
@@ -9193,9 +8732,9 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
   float Data_Efficiency_Central_emu = ( textfilereader2_TriggerSF("Data_Central", year, blinding) ).at(2);
 
 
-  SF_ee = Data_Efficiency_Central_ee / (MC_Efficiency_Central_ee + 1.0e-06);
-  SF_mumu = Data_Efficiency_Central_mumu / (MC_Efficiency_Central_mumu + 1.0e-06);
-  SF_emu = Data_Efficiency_Central_emu / (MC_Efficiency_Central_emu + 1.0e-06);
+  float SF_ee = Data_Efficiency_Central_ee / (MC_Efficiency_Central_ee + 1.0e-06);
+  float SF_mumu = Data_Efficiency_Central_mumu / (MC_Efficiency_Central_mumu + 1.0e-06);
+  float SF_emu = Data_Efficiency_Central_emu / (MC_Efficiency_Central_emu + 1.0e-06);
 
   float MC_Efficiency_UpperUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(0);
   float MC_Efficiency_LowerUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(1);
@@ -9218,7 +8757,7 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
   double SF_LowerUncert_ee = ((Data_Efficiency_Central_ee + Data_Efficiency_LowerUncert_ee)/ (MC_Efficiency_Central_ee - MC_Efficiency_UpperUncert_ee + 1.0e-06)) - SF_ee;
 
 
-  SF_Uncert_ee = 0.0;
+  double SF_Uncert_ee = 0.0;
   if (SF_UpperUncert_ee > SF_LowerUncert_ee){SF_Uncert_ee = SF_UpperUncert_ee;}
   else{SF_Uncert_ee = SF_LowerUncert_ee;}
 
@@ -9227,7 +8766,7 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
   double SF_LowerUncert_mumu = ((Data_Efficiency_Central_mumu + Data_Efficiency_LowerUncert_mumu)/ (MC_Efficiency_Central_mumu - MC_Efficiency_UpperUncert_mumu + 1.0e-06)) - SF_mumu;
 
 
-  SF_Uncert_mumu = 0.0;
+  double SF_Uncert_mumu = 0.0;
   if (SF_UpperUncert_mumu > SF_LowerUncert_mumu){SF_Uncert_mumu = SF_UpperUncert_mumu;}
   else{SF_Uncert_mumu = SF_LowerUncert_mumu;}
 
@@ -9237,7 +8776,7 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
   double SF_LowerUncert_emu = ((Data_Efficiency_Central_emu + Data_Efficiency_LowerUncert_emu)/ (MC_Efficiency_Central_emu - MC_Efficiency_UpperUncert_emu + 1.0e-06)) - SF_emu;
 
 
-  SF_Uncert_emu = 0.0;
+  double SF_Uncert_emu = 0.0;
   if (SF_UpperUncert_emu > SF_LowerUncert_emu){SF_Uncert_emu = SF_UpperUncert_emu;}
   else{SF_Uncert_emu = SF_LowerUncert_emu;}
 
@@ -9310,11 +8849,8 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
                                                 .Filter(z_mass_cut, {"z_mass"}, "Z mass cut (mumu channel)");
 
   
-  std::cout << "before jet cut (ee)" << std::endl; 
+  std::cout << "before jet cut (ee)" << std::endl;
 
-  std::vector<std::string> deltaR_JetE_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
-  std::vector<std::string> deltaR_JetMu_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
-  std::vector<std::string> JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
 
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("sJER_Nominal", SJER_nominal, sJER_sigmaJER_strings)
                       				       .Define("sJER_up", SJER_up, sJER_sigmaJER_strings)
@@ -9627,84 +9163,6 @@ std::cout << "after the for loop for cut flow report" << std::endl;
 
 std::cout << "before top reconstruction (ee)" << std::endl;
 
-
-std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
-JetPhiInput,
-"LeadingElectronPhi"
-};
-
-std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
-JetPhiInput,
-"LeadingMuonPhi"
-};
-
-
-std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
-JetPhiInput,
-"SubleadingElectronPhi"
-};
-
-std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
-JetPhiInput,
-"SubleadingMuonPhi"
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
-"LeadingJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-}; 
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
-"SubleadingJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
-"ThirdJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
-"FourthJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-
-std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
-
-std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
-
-
-std::vector<std::string> MinDeltaR_strings = {
-"nJet",
-"RecoZPhi",
-"RecoZEta",
-JetPhiInput,
-JetEtaInput
-};
-
-
-std::vector<std::string> MinDeltaPhi_strings = {
-"nJet",
-"RecoZPhi",
-JetPhiInput
-};
-
-
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
 											.Define("bjetmass", bjet_variable, bjet_mass_strings)
@@ -9829,6 +9287,12 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 
 
 //lambda functions for top quark pT reweighting
+auto UnweightedTopPt{[](const doubles& pts){
+
+	std::cout << "print 188" << std::endl;
+        return pts;
+
+}};
 
 std::cout << "before d_TopReweighted_ee" << std::endl;
 
@@ -9840,6 +9304,51 @@ if(process == "ttbar_2l2nu" ||
     process == "ttbar_madgraph_NanoAODv5" ||
     process == "ttbar_TTToHadronic" ||
     process == "ttbar_TTToSemileptonic"){
+
+	auto TopReweighting_topquark{[](
+
+		const ints& GenPart_pdgId,
+		const ints& GenPart_statusFlags,
+		const ints& GenPart_pt
+
+	){
+
+		std::cout << "print 189" << std::endl;
+		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
+
+	}};
+
+	auto TopReweighting_antitopquark{[](
+
+		const ints& GenPart_pdgId,
+		const ints& GenPart_statusFlags,
+		const ints& GenPart_pt
+
+	){
+		std::cout << "print 190" << std::endl;
+		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
+
+	}};
+
+
+
+	auto TopReweighting_weight{[](
+
+		const ints& TopReweighting_topquark,
+		const ints& TopReweighting_antitopquark
+
+	){
+
+		std::cout << "print 191" << std::endl;
+
+		doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
+		doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
+		doubles weight = sqrt( SF_top * SF_antitop);
+		
+		return weight;
+
+	}};
+
 
 
 	std::cout << "before d_TopReweighted_ee" << std::endl;
@@ -9871,6 +9380,153 @@ else{
 
 }
 
+
+
+
+//For ME_Up and ME_Down
+ints SummedWeights(14, 0);
+
+auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+
+  std::cout << "print 192" << std::endl;
+
+  float PdfMin = 1.0;
+  float PdfMax = 1.0;
+
+  //For the min and max Pdf weights
+  for(int i = 0; i < LHEPdfWeight.size(); i++){
+
+
+        float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
+
+        if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
+        else{continue;}
+
+        if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
+        else{continue;}
+
+  }
+
+
+  if(PDF_ScaleUp == true){return PdfMax;}
+  else if(PDF_ScaleDown == true){return PdfMin;}
+  else{float One = 1.0; return One;}
+
+
+}};
+
+
+
+
+auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
+
+  std::cout << "print 193" << std::endl;
+
+  floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
+
+
+  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
+
+
+  ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
+  ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
+  (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
+  ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++; //fsr up
+  ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
+  (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
+
+
+  //SF is:  (total num of +ively-weighted events - total num of -ively-weighted events) / (total num of +ively-weighted events - total num of -ively-weighted events)
+
+  int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12]; 
+  int TotalNumNegative = SummedWeights[1] + SummedWeights[3] + SummedWeights[5] + SummedWeights[7] + SummedWeights[9] + SummedWeights[11] + SummedWeights[13]; 
+
+
+  float ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
+
+  return ME_SF;
+
+}};
+
+
+
+//Histogram for ME uncertainties
+auto ME_histo_function{[&SummedWeights](){
+
+  std::cout << "print 194" << std::endl;
+
+  ints numerators;
+
+  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
+
+  return numerators;
+
+}};
+
+
+
+
+
+//SFs for ME up and down
+auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
+
+	std::cout << "print 195" << std::endl;
+
+
+ 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
+
+
+	if(ME_Up == true){
+
+		float generatorWeight_ScaleUp = (TotalNumPositive / ME_numerator_histo.at(7)) * ( (ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) / abs(CalculatedNominalWeight) ); 
+                return generatorWeight_ScaleUp; 
+	
+	}
+	else if(ME_Down == true){	
+
+		float generatorWeight_ScaleDown =  (TotalNumPositive / ME_numerator_histo.at(1)) * ( (ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) / abs(CalculatedNominalWeight) ); 
+		return generatorWeight_ScaleDown; 
+
+	}
+	else{	
+
+		float generatorWeight = (TotalNumPositive / ME_numerator_histo.at(4)) * ( CalculatedNominalWeight / abs(CalculatedNominalWeight) );
+		return generatorWeight; 
+
+	}
+
+}};
+
+
+
+
+
+auto DummyColumnFunction{[](const floats& pts){
+ 
+        std::cout << "print 196" << std::endl;
+	return pts;
+
+}};
+
+
+std::string PSWeightString_ee;
+std::string PSWeightString_mumu;
+
+if( (year == "2017" || year == "2018") &&
+     (process == "tZq" ||
+     process == "SingleTop_tbarW" ||
+     process == "SingleTop_schannel" ||
+     process == "SingleTop_tchannel_top" ||
+     process == "SingleTop_tchannel_tbar" ||
+     process == "ttbarV_ttgamma" ||
+     process == "ttbar_TTToHadronic" ||
+     process == "ttbar_TTToSemileptonic") ){
+
+	PSWeightString_ee = "PSWeight";
+	PSWeightString_mumu = "PSWeight";
+
+}
+else{PSWeightString_ee = "Electron_pt_Selection"; PSWeightString_mumu = "Muon_pt_Selection";}
 
 
 
@@ -10109,6 +9765,8 @@ else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_"
 	BTagEffPlots->Close();
 
 
+
+
 std::cout << "before d_WeightedEvents_ee" << std::endl;
 
 auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_System, TotalHT_System_strings)
@@ -10174,6 +9832,169 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 						 .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"});
 				
 
+
+//lambda function for implementing the MET uncertainties
+auto METUncertFunction{[&MET_Up, &MET_Down](
+
+const floats& MET_MetUnclustEnUpDeltaX, 
+const floats& MET_MetUnclustEnUpDeltaY, 
+const floats& MET_phi,
+const floats& MET_sumEt,
+std::vector<TLorentzVector> SmearedJet4Momentum,
+const floats& Jet_pt, 
+const floats& Jet_eta, 
+const floats& Jet_phi, 
+const floats& Jet_mass){
+
+  std::cout << "print 197" << std::endl;
+
+  std::vector<TLorentzVector> metVecOriginal{};
+  floats metVecOriginal_px;
+  floats metVecOriginal_py;
+
+  std::vector<TLorentzVector> metVec{};
+  std::vector<TLorentzVector> UnsmearedJet{};
+  floats SmearedJetPxVec;
+  floats SmearedJetPyVec;
+  floats UnsmearedJetPx;
+  floats UnsmearedJetPy;
+
+
+  //TLorentzVector for unsmeared jets
+  for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
+
+  //Obtaining the px and py of unsmeared jets
+  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
+  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
+   
+
+  //Obtaining the px and py of smeared jets
+  for(int i = 0; i < SmearedJet4Momentum.size(); i++){
+ 
+  	float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
+	float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
+ 	SmearedJetPxVec.push_back(SmearedJetPx);
+	SmearedJetPyVec.push_back(SmearedJetPy);
+
+  }
+
+  //Original MET vector
+  for(int i = 0; i < MET_phi.size(); i++){ 
+
+	(metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i)); 
+	metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
+	metVecOriginal_py.push_back( (metVecOriginal.at(i)).Py() );
+
+  }
+
+  floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
+  floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
+  floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
+  floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;  
+
+  //For the nominal MET and MET uncertainties
+  
+  floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
+  floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
+
+  for(int i = 0; i < MET_phi.size(); i++){
+
+  	if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
+  	else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
+  	else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
+
+ }
+
+ //Propagating the jet smearing to the MET
+ 
+ for(int i = 0; i < SmearedJetPxVec.size(); i++){
+ 
+ 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
+        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
+ 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() - SmearedJetPxVec.at(i));
+        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() - SmearedJetPyVec.at(i));
+ 
+ }
+
+
+  return metVec;
+
+}};
+
+
+
+
+std::vector<std::string> MET_uncert_strings = {
+
+"MET_MetUnclustEnUpDeltaX",
+"MET_MetUnclustEnUpDeltaY",
+"MET_phi",
+"MET_sumEt",
+"SmearedJet4Momentum",
+"Jet_pt",
+"Jet_eta",
+"Jet_phi",
+"Jet_mass"
+
+};
+
+
+
+
+//Event weights
+auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                           &SF_Uncert_ee,
+                     &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+                     &PDF_ScaleUp,                 &PDF_ScaleDown,
+                     &isr_up,                      &isr_down,
+                     &fsr_up,                      &fsr_down
+                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
+
+
+			std::cout << "print 198" << std::endl;
+
+                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+
+        }};
+
+
+
+auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                           &SF_Uncert_mumu,
+                       &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+                       &PDF_ScaleUp,                 &PDF_ScaleDown,
+                       &isr_up,                      &isr_down,
+                       &fsr_up,                      &fsr_down
+                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
+
+
+			std::cout << "print 199" << std::endl;
+
+                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(2) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(0) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(3) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(1) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+
+        }};
+
+
+
+
+
+std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
+
+std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
 
 
 std::cout << "before d_WeightedEvents_withMET_ee" << std::endl;
@@ -10270,6 +10091,99 @@ if(process == "tZq"){
 
 
 
+
+
+
+
+//Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
+bool NominalRun;
+
+if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
+   BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
+   JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 && 
+   PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      && 
+   MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     && 
+   fsr_up == 0                && fsr_down == 0){NominalRun = true;}
+else{NominalRun = false;}
+
+
+
+std::vector<float> CutRanges_ee = {};
+
+auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+
+  std::cout << "print 200" << std::endl;
+	
+  float FiveSigmaW = 5*W_stddev_ee;
+
+  //calculating chi2
+  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
+
+  float LowerBound = W_MASS - FiveSigmaW;
+  float UpperBound = W_MASS + FiveSigmaW;
+
+  if(process == "tZq" && NominalRun == true && SBR == true){
+
+  	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
+  	if(w_mass > LowerBound && w_mass < UpperBound){
+		CutRanges_ee.push_back(chi2);
+		return chi2;
+	}	
+	else{
+		std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
+		float out = 999.0;
+                return out;
+	}
+
+  }
+  else{return chi2;}
+
+
+}};
+
+
+
+
+std::vector<float> CutRanges_mumu = {};
+
+auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+
+  std::cout << "print 201" << std::endl;
+
+  float FiveSigmaW = 5*W_stddev_mumu;
+
+  float LowerBound = W_MASS - FiveSigmaW;
+  float UpperBound = W_MASS + FiveSigmaW;
+
+
+  //calculating chi2
+  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
+
+
+  if(process == "tZq" && NominalRun == true && SBR == true){
+  
+	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
+        if(w_mass > LowerBound && w_mass < UpperBound){
+		CutRanges_mumu.push_back(chi2);
+		return chi2;
+	}
+        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
+	     float out = 999.0;
+	     return out;
+	}
+
+
+  }
+  else{return chi2;}
+
+ 
+}};
+
+
+
+
+
+std::string Chi2Range_string;
 
 
 //Section for experimental blinding
@@ -10381,6 +10295,19 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	std::cout << "before Chi2Cut_ee" << std::endl;
 
+	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
+
+	  std::cout << "print 202" << std::endl;
+
+	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
+	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
+	  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+
+	}};
+
+
+
+	std::cout << "before AfterChi2Cut_ee" << std::endl;
 
 	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"}).Filter(Chi2Cut_ee, {"chi2"});
 
@@ -10390,6 +10317,17 @@ if(blinding == true && (SBR == true || SR == true)){
 	
 	std::cout << "before Chi2Cut_mumu" << std::endl;
 
+        auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
+
+	  std::cout << "print 203" << std::endl;
+
+          if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
+          else if(SR == true){return Chi2 < Chi2_SR_mumu;}
+          else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+
+        }};
+
+	std::cout << "before AfterChi2Cut_mumu" << std::endl;
         auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
 	std::cout << "after AfterChi2Cut_mumu" << std::endl;
 
@@ -10536,8 +10474,13 @@ if(blinding == true && (SBR == true || SR == true)){
         output_mumu->Close();
 
 
-  }
-  else{
+
+
+
+
+
+}
+else{
 
 	std::cout << "inside the else statement for when blinding is false" << std::endl;
 
@@ -10603,6 +10546,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	output_ee->Close();
 
+
 	//Writing the unblinded histograms for the mumu channel to an output root file
         TFile * output_mumu = new TFile(OutRootFile_mumu_unblinded.c_str(), "RECREATE");
         output_mumu->cd();
@@ -10646,9 +10590,10 @@ if(blinding == true && (SBR == true || SR == true)){
 	
 
         output_mumu->Close();
+	
 
 
-  }
+}
 
 
 
@@ -10702,27 +10647,89 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 
-   //Print cut report
-  std::cout << "before print cut flow report" << std::endl;
+ //Print cut report
+std::cout << "before print cut flow report" << std::endl;
 
-  auto allCutsReport = d.Report();
-  //auto allCutsReport = d_dataframe.Report();
+auto allCutsReport = d.Report();
+//auto allCutsReport = d_dataframe.Report();
 
-  std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
-
-
-  for(auto&& cutInfo: allCutsReport){
-     CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-  }
+std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
 
 
-  std::cout << "after the for loop for cut flow report" << std::endl; 
+for(auto&& cutInfo: allCutsReport){
+   CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+}
+
+
+std::cout << "after the for loop for cut flow report" << std::endl; 
 
 
 												
 
 }
-else if(RunType == "Data" && branch == "Nominal"){
+else if(
+
+//data starts here
+(process == "data_DoubleEGRunB" ||
+process == "data_DoubleEGRunC" ||
+process == "data_DoubleEGRunD" ||
+process == "data_DoubleEGRunE" ||
+process == "data_DoubleEGRunF" ||
+process == "data_DoubleEGRunG" ||
+process == "data_DoubleEGRunH" ||
+process == "data_DoubleEGRunB2" ||
+process == "data_DoubleEGRunC2" ||
+process == "data_DoubleEGRunD2" ||
+process == "data_DoubleEGRunE2" ||
+process == "data_DoubleEGRunF2" ||
+process == "data_DoubleEGRunG2" ||
+process == "data_DoubleEGRunH2" ||
+process == "data_EGRunB" ||
+process == "data_EGRunC" ||
+process == "data_EGRunD" ||
+process == "data_SingleElectronRunB" ||
+process == "data_SingleElectronRunC" ||
+process == "data_SingleElectronRunD" ||
+process == "data_SingleElectronRunE" ||
+process == "data_SingleElectronRunF" ||
+process == "data_SingleElectronRunG" ||
+process == "data_SingleElectronRunH" ||
+process == "data_DoubleMuonRunB" ||
+process == "data_DoubleMuonRunC" ||
+process == "data_DoubleMuonRunD" ||
+process == "data_DoubleMuonRunE" ||
+process == "data_DoubleMuonRunF" ||
+process == "data_DoubleMuonRunG" ||
+process == "data_DoubleMuonRunH" ||
+process == "data_SingleMuonRunB" ||
+process == "data_SingleMuonRunC" ||
+process == "data_SingleMuonRunD" ||
+process == "data_SingleMuonRunE" ||
+process == "data_SingleMuonRunF" ||
+process == "data_SingleMuonRunG" ||
+process == "data_SingleMuonRunH" ||
+process == "data_SingleElectronRunB2" ||
+process == "data_SingleElectronRunC2" ||
+process == "data_SingleElectronRunD2" ||
+process == "data_SingleElectronRunE2" ||
+process == "data_SingleElectronRunF2" ||
+process == "data_SingleElectronRunG2" ||
+process == "data_SingleElectronRunH2" ||
+process == "data_DoubleMuonRunB2" ||
+process == "data_DoubleMuonRunC2" ||
+process == "data_DoubleMuonRunD2" ||
+process == "data_DoubleMuonRunE2" ||
+process == "data_DoubleMuonRunF2" ||
+process == "data_DoubleMuonRunG2" ||
+process == "data_DoubleMuonRunH2" ||
+process == "data_SingleMuonRunB2" ||
+process == "data_SingleMuonRunC2" ||
+process == "data_SingleMuonRunD2" ||
+process == "data_SingleMuonRunE2" ||
+process == "data_SingleMuonRunF2" ||
+process == "data_SingleMuonRunG2" ||
+process == "data_SingleMuonRunH2") && branch == "Nominal"
+){
 
 
 	if(process == "data_DoubleEGRunB" ||
@@ -11692,10 +11699,6 @@ auto d_mumu_selection_defines = d_GoldenJsonFilteredEvents_mumu.Define("PU", PU_
 
   std::cout << "before d_ee_recoZ_jets_selection" << std::endl;
 
-  std::vector<std::string> deltaR_JetE_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
-  std::vector<std::string> deltaR_JetMu_strings = {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"};
-
-
   auto d_ee_recoZ_jets_selection = d_ee_recoZ_selection.Define("LeadingJetMass", LeadingVariable, {JetMassInput})
                                          	     .Define("SubleadingJetMass", SubleadingVariable, {JetMassInput})
                                          	     .Define("ThirdJetMass", ThirdLeadingVariable, {JetMassInput})
@@ -11919,83 +11922,6 @@ else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_reco
 
 
 std::cout << "before filtering events with a reconstructed top quark" << std::endl;
-
-std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_ee = {
-JetPhiInput,
-"LeadingElectronPhi"
-};
-
-std::vector<std::string> DeltaPhi_Leadinglepton_BJet_string_mumu = {
-JetPhiInput,
-"LeadingMuonPhi"
-};
-
-
-std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_ee = {
-JetPhiInput,
-"SubleadingElectronPhi"
-};
-
-std::vector<std::string> DeltaPhi_Subleadinglepton_BJet_string_mumu = {
-JetPhiInput,
-"SubleadingMuonPhi"
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Leading = {
-"LeadingJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Subleading = {
-"SubleadingJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Third = {
-"ThirdJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-std::vector<std::string> BJetOutputDiscriminantStrings_Fourth = {
-"FourthJetpT",
-"Jet_btagCSVV2",
-"tight_jets",
-JetEtaInput
-};
-
-
-std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_eta_strings = {JetEtaInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_pt_strings = {JetPtInput, "nJet", "lead_bjet"};
-std::vector<std::string> bjet_phi_strings = {JetPhiInput, "nJet", "lead_bjet"};
-
-std::vector<std::string> nonbjet_mass_strings = {JetMassInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_eta_strings = {JetEtaInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_pt_strings = {JetPtInput, "nJet", "nonbjets"};
-std::vector<std::string> nonbjet_phi_strings = {JetPhiInput, "nJet", "nonbjets"};
-
-
-std::vector<std::string> MinDeltaR_strings = {
-"nJet",
-"RecoZPhi",
-"RecoZEta",
-JetPhiInput,
-JetEtaInput
-};
-
-
-std::vector<std::string> MinDeltaPhi_strings = {
-"nJet",
-"RecoZPhi",
-JetPhiInput
-};
-
 
 //Filtering events with a reconstructed top quark
 auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
@@ -12234,6 +12160,25 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	std::cout << "before chi2_filter_ee for data" << std::endl;
 
+	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee){
+
+		if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
+		else if(SR == true){return chi2_ee < Chi2_SR_ee;}
+		else{std::cout << "SR and SBR cannot both be false" << std::endl;}
+
+	}};
+
+	
+	std::cout << "before chi2_filter_mumu for data" << std::endl;
+
+	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumu){
+                
+                if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
+                else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
+                else{std::cout << "SR and SBR cannot both be false" << std::endl;}
+        
+        }};
+
 
 	std::cout << "before Blinding_ee_filtered for data" << std::endl; 
 
@@ -12312,7 +12257,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
 
   if(year == "2016"){
 
-        Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF",*/ "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
+        Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", 
 		     "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext", "ZPlusJets_M10To50_Madgraph",
                      "ttbar_madgraph_NanoAODv5", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_schannel",
                      "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
@@ -12333,7 +12278,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
  }
   else if(year == "2017"){
 
-  	Processes = {/*"MC_triggerSF_ttbar", "Data_triggerSF",*/ "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
+  	Processes = {"MC_triggerSF_ttbar", "Data_triggerSF", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ttbar_2l2nu",
 		     "ttbar_madgraph_NanoAODv5", "ttbar_TTToHadronic", "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "SingleTop_schannel",
 	      	     "SingleTop_tchannel_top", "SingleTop_tchannel_tbar", "SingleTop_tHq", "SingleTop_tW", "SingleTop_tbarW",
 	             "SingleTop_tZq_W_lept_Z_had", "SingleTop_tWZ_tWll", "VV_ZZTo2Q2Nu", "VV_ZZTo2L2Nu", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WZTo1L1Nu2Q", 
@@ -12751,6 +12696,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
 }
+
 
 
 
