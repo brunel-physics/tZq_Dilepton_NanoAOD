@@ -6102,37 +6102,37 @@ TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyC
 
 //Histograms
 //2016
-TH2* EGammaEff2016_histo = (TH2*)(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEff2016_histo = dynamic_cast<TH2*>(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEff2016_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2016_histo = (TH2*)(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffSys2016_histo = dynamic_cast<TH2*>(EGammaEffSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2016_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco2016_histo = (TH2*)(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco2016_histo = dynamic_cast<TH2*>(EGammaEffReco_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffReco2016_histo->SetDirectory(nullptr);
-TH2* EGammaEffRecoSys2016_histo = (TH2*)(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys2016_histo = dynamic_cast<TH2*>(EGammaEffRecoSys_inputfile_2016->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys2016_histo->SetDirectory(nullptr);
 
 //2017
-TH2* EGammaEff2017_histo = (TH2*)(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEff2017_histo = dynamic_cast<TH2*>(EGammaEff_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEff2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2017_histo = (TH2*)(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffSys2017_histo = dynamic_cast<TH2*>(EGammaEffSys_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco_LowPt_2017_histo = (TH2*)(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco_LowPt_2017_histo = dynamic_cast<TH2*>(EGammaEffReco_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffReco_LowPt_2017_histo->SetDirectory(nullptr); 
-TH2* EGammaEffRecoSys_LowPt_2017_histo = (TH2*)(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys_LowPt_2017_histo = dynamic_cast<TH2*>(EGammaEffRecoSys_LowPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys_LowPt_2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco_HigherPt_2017_histo = (TH2*)(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco_HigherPt_2017_histo = dynamic_cast<TH2*>(EGammaEffReco_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffReco_HigherPt_2017_histo->SetDirectory(nullptr);
-TH2* EGammaEffRecoSys_HigherPt_2017_histo = (TH2*)(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys_HigherPt_2017_histo = dynamic_cast<TH2*>(EGammaEffRecoSys_HigherPt_inputfile_2017->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys_HigherPt_2017_histo->SetDirectory(nullptr);
 
 //2018
-TH2* EGammaEff2018_histo = (TH2*)(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEff2018_histo = dynamic_cast<TH2*>(EGammaEff_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEff2018_histo->SetDirectory(nullptr);
-TH2* EGammaEffSys2018_histo = (TH2*)(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffSys2018_histo = dynamic_cast<TH2*>(EGammaEffSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffSys2018_histo->SetDirectory(nullptr);
-TH2* EGammaEffReco2018_histo = (TH2*)(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffReco2018_histo = dynamic_cast<TH2*>(EGammaEffReco_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffReco2018_histo->SetDirectory(nullptr);
-TH2* EGammaEffRecoSys2018_histo = (TH2*)(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
+TH2* EGammaEffRecoSys2018_histo = dynamic_cast<TH2*>(EGammaEffRecoSys_inputfile_2018->Get("EGamma_SF2D")->Clone());
 EGammaEffRecoSys2018_histo->SetDirectory(nullptr);
 
 
@@ -6297,23 +6297,23 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 //Lambda functions for lepton efficiencies
 //2016, ID efficiency
 TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
-TH2* histo_RunsBCDEF_ID_2016 = (TH2*)(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
+TH2* histo_RunsBCDEF_ID_2016 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsBCDEF_ID_2016->SetDirectory(nullptr);
 
 
 TFile* inputfile_RunsGH_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
-TH2* histo_RunsGH_ID_2016 = (TH2*)(inputfile_RunsGH_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
+TH2* histo_RunsGH_ID_2016 = dynamic_cast<TH2*>(inputfile_RunsGH_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsGH_ID_2016->SetDirectory(nullptr);
 
 
 //2016, Iso efficiency
 TFile* inputfile_RunsBCDEF_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
-TH2* histo_RunsBCDEF_ISO_2016 = (TH2*)(inputfile_RunsBCDEF_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
+TH2* histo_RunsBCDEF_ISO_2016 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsBCDEF_ISO_2016->SetDirectory(nullptr);
 
 
 TFile* inputfile_RunsGH_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
-TH2* histo_RunsGH_ISO_2016 = (TH2*)(inputfile_RunsGH_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
+TH2* histo_RunsGH_ISO_2016 = dynamic_cast<TH2*>(inputfile_RunsGH_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
 histo_RunsGH_ISO_2016->SetDirectory(nullptr);
 
 
@@ -6321,51 +6321,51 @@ histo_RunsGH_ISO_2016->SetDirectory(nullptr);
 //2017
 //Muon ID file
 TFile* inputfile_RunsBCDEF_ID_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
-TH2* histo_RunsBCDEF_ID_2017 = (TH2*)(inputfile_RunsBCDEF_ID_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
+TH2* histo_RunsBCDEF_ID_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
 histo_RunsBCDEF_ID_2017->SetDirectory(nullptr);
 
 
 //Muon ID sys file
 TFile* inputfile_RunsBCDEF_ID_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-TH2* histo_RunsBCDEF_ID_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
+TH2* histo_RunsBCDEF_ID_Sys_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_Sys_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
 histo_RunsBCDEF_ID_Sys_2017->SetDirectory(nullptr);
 
 
 //Muon ID sys (stat)
 TFile* inputfile_RunsBCDEF_ID_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-TH2* histo_RunsBCDEF_ID_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Stat_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
+TH2* histo_RunsBCDEF_ID_Sys_Stat_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_Sys_Stat_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
 histo_RunsBCDEF_ID_Sys_Stat_2017->SetDirectory(nullptr);
 
 
 //Muon ID sys (syst)
 TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
-TH2* histo_RunsBCDEF_ID_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ID_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
+TH2* histo_RunsBCDEF_ID_Sys_Syst_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
 histo_RunsBCDEF_ID_Sys_Syst_2017->SetDirectory(nullptr);
 
 
 
 //Muon Iso file
 TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
-TH2* histo_RunsBCDEF_ISO_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
+TH2* histo_RunsBCDEF_ISO_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
 histo_RunsBCDEF_ISO_2017->SetDirectory(nullptr);
 
 
 
 //Muon Iso sys file
 TFile* inputfile_RunsBCDEF_ISO_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-TH2* histo_RunsBCDEF_ISO_Sys_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
+TH2* histo_RunsBCDEF_ISO_Sys_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
 histo_RunsBCDEF_ISO_Sys_2017->SetDirectory(nullptr);
 
 
 //Muon Iso sys (stat)
 TFile* inputfile_RunsBCDEF_ISO_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
+TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
 histo_RunsBCDEF_ISO_Sys_Stat_2017->SetDirectory(nullptr);
 
 
 //Muon Iso sys (syst)
 TFile* inputfile_RunsBCDEF_ISO_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
-TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = (TH2*)(inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
+TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
 histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 
 
@@ -6373,13 +6373,13 @@ histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 //2018
 //Muon ID file (runs ABCD)
 TFile* inputfile_RunsABCD_ID_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
-TH2* histo_RunsABCD_ID_2018 = (TH2*)(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta")->Clone());
+TH2* histo_RunsABCD_ID_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta")->Clone());
 histo_RunsABCD_ID_2018->SetDirectory(nullptr);
 
 
 //Muon ISO file (runs ABCD)
 TFile* inputfile_RunsABCD_ISO_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
-TH2* histo_RunsABCD_ISO_2018 = (TH2*)(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
+TH2* histo_RunsABCD_ISO_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
 histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
 //need syst files for 2018 (check the root files, there are more histos)
@@ -7865,34 +7865,34 @@ auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event
 //Pile up modelling
 //2016
 TFile *dataPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest.root", "READ");
-TH1F *dataPU_2016 = (TH1F*)(dataPileupFile_2016->Get("pileup")->Clone());
+TH1F *dataPU_2016 = dynamic_cast<TH1F*>(dataPileupFile_2016->Get("pileup")->Clone());
 TFile *mcPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-TH1F* mcPU_2016 = (TH1F*)(mcPileupFile_2016->Get("pileup")->Clone());
+TH1F* mcPU_2016 = dynamic_cast<TH1F*>(mcPileupFile_2016->Get("pileup")->Clone());
 
 //2016 part 1
 TFile *dataPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part1.root", "READ");
-TH1F *dataPU_2016_part1 = (TH1F*)(dataPileupFile_2016_part1->Get("pileup")->Clone());
+TH1F *dataPU_2016_part1 = dynamic_cast<TH1F*>(dataPileupFile_2016_part1->Get("pileup")->Clone());
 TFile *mcPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-TH1F* mcPU_2016_part1 = (TH1F*)(mcPileupFile_2016_part1->Get("pileup")->Clone());
+TH1F* mcPU_2016_part1 = dynamic_cast<TH1F*>(mcPileupFile_2016_part1->Get("pileup")->Clone());
 
 //2016 part 2
 TFile *dataPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
-TH1F *dataPU_2016_part2 = (TH1F*)(dataPileupFile_2016_part2->Get("pileup")->Clone());
+TH1F *dataPU_2016_part2 = dynamic_cast<TH1F*>(dataPileupFile_2016_part2->Get("pileup")->Clone());
 TFile *mcPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-TH1F* mcPU_2016_part2 = (TH1F*)(mcPileupFile_2016_part2->Get("pileup")->Clone());
+TH1F* mcPU_2016_part2 = dynamic_cast<TH1F*>(mcPileupFile_2016_part2->Get("pileup")->Clone());
 
 //2017
 TFile *dataPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupTest.root", "READ");
-TH1F *dataPU_2017 = (TH1F*)(dataPileupFile_2017->Get("pileup")->Clone());
+TH1F *dataPU_2017 = dynamic_cast<TH1F*>(dataPileupFile_2017->Get("pileup")->Clone());
 TFile *mcPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/pileupMC.root", "READ");
-TH1F* mcPU_2017 = (TH1F*)(mcPileupFile_2017->Get("pileup")->Clone());
+TH1F* mcPU_2017 = dynamic_cast<TH1F*>(mcPileupFile_2017->Get("pileup")->Clone());
 
 
 //2018
 TFile *dataPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogram2018.root", "READ");
-TH1F *dataPU_2018 = (TH1F*)(dataPileupFile_2018->Get("pileup")->Clone());
+TH1F *dataPU_2018 = dynamic_cast<TH1F*>(dataPileupFile_2018->Get("pileup")->Clone());
 TFile *mcPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/pileupMC2018.root", "READ");
-TH1F* mcPU_2018 = (TH1F*)(mcPileupFile_2018->Get("pileup")->Clone());
+TH1F* mcPU_2018 = dynamic_cast<TH1F*>(mcPileupFile_2018->Get("pileup")->Clone());
 
 
 
@@ -7900,35 +7900,35 @@ TH1F* mcPU_2018 = (TH1F*)(mcPileupFile_2018->Get("pileup")->Clone());
 //Systematic files
 //2016
 TFile *systUpFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp.root", "READ");
-TH1F *pileupUpHist_2016 = (TH1F*)(systUpFile_2016->Get("pileup")->Clone());
+TH1F *pileupUpHist_2016 = dynamic_cast<TH1F*>(systUpFile_2016->Get("pileup")->Clone());
 TFile *systDownFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown.root", "READ");
-TH1F *pileupDownHist_2016 = (TH1F*)(systDownFile_2016->Get("pileup")->Clone());
+TH1F *pileupDownHist_2016 = dynamic_cast<TH1F*>(systDownFile_2016->Get("pileup")->Clone());
 //part 1
 TFile *systUpFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part1.root", "READ");
-TH1F *pileupUpHist_2016_part1 = (TH1F*)(systUpFile_2016_part1->Get("pileup")->Clone());
+TH1F *pileupUpHist_2016_part1 = dynamic_cast<TH1F*>(systUpFile_2016_part1->Get("pileup")->Clone());
 TFile *systDownFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part1.root", "READ");
-TH1F *pileupDownHist_2016_part1 = (TH1F*)(systDownFile_2016_part1->Get("pileup")->Clone());
+TH1F *pileupDownHist_2016_part1 = dynamic_cast<TH1F*>(systDownFile_2016_part1->Get("pileup")->Clone());
 
 //part 2
 TFile *systUpFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part2.root", "READ");
-TH1F *pileupUpHist_2016_part2 = (TH1F*)(systUpFile_2016_part2->Get("pileup")->Clone());
+TH1F *pileupUpHist_2016_part2 = dynamic_cast<TH1F*>(systUpFile_2016_part2->Get("pileup")->Clone());
 TFile *systDownFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part2.root", "READ");
-TH1F *pileupDownHist_2016_part2 = (TH1F*)(systDownFile_2016_part2->Get("pileup")->Clone());
+TH1F *pileupDownHist_2016_part2 = dynamic_cast<TH1F*>(systDownFile_2016_part2->Get("pileup")->Clone());
 
 
-TH1F *puReweight_2016 = (TH1F*)(dataPU_2016->Clone());
+TH1F *puReweight_2016 = dynamic_cast<TH1F*>(dataPU_2016->Clone());
 puReweight_2016->Scale(1.0 / puReweight_2016->Integral());
 mcPU_2016->Scale(1.0 / mcPU_2016->Integral());
 puReweight_2016->Divide(mcPU_2016);
 puReweight_2016->SetDirectory(nullptr);
 
-TH1F *puReweight_2016_part1 = (TH1F*)(dataPU_2016_part1->Clone());
+TH1F *puReweight_2016_part1 = dynamic_cast<TH1F*>(dataPU_2016_part1->Clone());
 puReweight_2016_part1->Scale(1.0 / puReweight_2016_part1->Integral());
 mcPU_2016_part1->Scale(1.0 / mcPU_2016_part1->Integral());
 puReweight_2016_part1->Divide(mcPU_2016_part1);
 puReweight_2016_part1->SetDirectory(nullptr);
 
-TH1F *puReweight_2016_part2 = (TH1F*)(dataPU_2016_part2->Clone());
+TH1F *puReweight_2016_part2 = dynamic_cast<TH1F*>(dataPU_2016_part2->Clone());
 puReweight_2016_part2->Scale(1.0 / puReweight_2016_part2->Integral());
 mcPU_2016_part2->Scale(1.0 / mcPU_2016_part2->Integral());
 puReweight_2016_part2->Divide(mcPU_2016_part2);
@@ -7937,12 +7937,12 @@ puReweight_2016_part2->SetDirectory(nullptr);
 
 // 2017
 TFile *systUpFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
-TH1F *pileupUpHist_2017 = (TH1F*)(systUpFile_2017->Get("pileup")->Clone());
+TH1F *pileupUpHist_2017 = dynamic_cast<TH1F*>(systUpFile_2017->Get("pileup")->Clone());
 TFile *systDownFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupDown.root", "READ");
-TH1F *pileupDownHist_2017 = (TH1F*)(systDownFile_2017->Get("pileup")->Clone());
+TH1F *pileupDownHist_2017 = dynamic_cast<TH1F*>(systDownFile_2017->Get("pileup")->Clone());
 
 
-TH1F *puReweight_2017 = (TH1F*)(dataPU_2017->Clone());
+TH1F *puReweight_2017 = dynamic_cast<TH1F*>(dataPU_2017->Clone());
 puReweight_2017->Scale(1.0 / puReweight_2017->Integral());
 mcPU_2017->Scale(1.0 / mcPU_2017->Integral());
 puReweight_2017->Divide(mcPU_2017);
@@ -7950,12 +7950,12 @@ puReweight_2017->SetDirectory(nullptr);
 
 //2018
 TFile *systUpFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
-TH1F *pileupUpHist_2018 = (TH1F*)(systUpFile_2018->Get("pileup")->Clone());
+TH1F *pileupUpHist_2018 = dynamic_cast<TH1F*>(systUpFile_2018->Get("pileup")->Clone());
 TFile *systDownFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleDown2018.root", "READ");
-TH1F *pileupDownHist_2018 = (TH1F*)(systDownFile_2018->Get("pileup")->Clone());
+TH1F *pileupDownHist_2018 = dynamic_cast<TH1F*>(systDownFile_2018->Get("pileup")->Clone());
 
 
-TH1F *puReweight_2018 = (TH1F*)(dataPU_2018->Clone());
+TH1F *puReweight_2018 = dynamic_cast<TH1F*>(dataPU_2018->Clone());
 puReweight_2018->Scale(1.0 / puReweight_2018->Integral());
 mcPU_2018->Scale(1.0 / mcPU_2018->Integral());
 puReweight_2018->Divide(mcPU_2018);
@@ -7965,51 +7965,51 @@ puReweight_2018->SetDirectory(nullptr);
 
 ///Systematic sample
 //2016
-TH1F *puSystUp_2016 = (TH1F*)(pileupUpHist_2016->Clone());
+TH1F *puSystUp_2016 = dynamic_cast<TH1F*>(pileupUpHist_2016->Clone());
 puSystUp_2016->Scale(1.0 / puSystUp_2016->Integral());
 puSystUp_2016->Divide(mcPU_2016);
 puSystUp_2016->SetDirectory(nullptr);
-TH1F *puSystDown_2016 = (TH1F*)(pileupDownHist_2016->Clone());
+TH1F *puSystDown_2016 = dynamic_cast<TH1F*>(pileupDownHist_2016->Clone());
 puSystDown_2016->Scale(1.0 / puSystDown_2016->Integral());
 puSystDown_2016->Divide(mcPU_2016);
 puSystDown_2016->SetDirectory(nullptr);
 
 //2016 part 1
-TH1F *puSystUp_2016_part1 = (TH1F*)(pileupUpHist_2016_part1->Clone());
+TH1F *puSystUp_2016_part1 = dynamic_cast<TH1F*>(pileupUpHist_2016_part1->Clone());
 puSystUp_2016_part1->Scale(1.0 / puSystUp_2016_part1->Integral());
 puSystUp_2016_part1->Divide(mcPU_2016_part1);
 puSystUp_2016_part1->SetDirectory(nullptr);
-TH1F *puSystDown_2016_part1 = (TH1F*)(pileupDownHist_2016_part1->Clone());
+TH1F *puSystDown_2016_part1 = dynamic_cast<TH1F*>(pileupDownHist_2016_part1->Clone());
 puSystDown_2016_part1->Scale(1.0 / puSystDown_2016_part1->Integral());
 puSystDown_2016_part1->Divide(mcPU_2016_part1);
 puSystDown_2016_part1->SetDirectory(nullptr);
 
 //2016 part 2
-TH1F *puSystUp_2016_part2 = (TH1F*)(pileupUpHist_2016_part2->Clone());
+TH1F *puSystUp_2016_part2 = dynamic_cast<TH1F*>(pileupUpHist_2016_part2->Clone());
 puSystUp_2016_part2->Scale(1.0 / puSystUp_2016_part2->Integral());
 puSystUp_2016_part2->Divide(mcPU_2016_part2);
 puSystUp_2016_part2->SetDirectory(nullptr);
-TH1F *puSystDown_2016_part2 = (TH1F*)(pileupDownHist_2016_part2->Clone());
+TH1F *puSystDown_2016_part2 = dynamic_cast<TH1F*>(pileupDownHist_2016_part2->Clone());
 puSystDown_2016_part2->Scale(1.0 / puSystDown_2016_part2->Integral());
 puSystDown_2016_part2->Divide(mcPU_2016_part2);
 puSystDown_2016_part2->SetDirectory(nullptr);
 
 //2017
-TH1F *puSystUp_2017 = (TH1F*)(pileupUpHist_2017->Clone());
+TH1F *puSystUp_2017 = dynamic_cast<TH1F*>(pileupUpHist_2017->Clone());
 puSystUp_2017->Scale(1.0 / puSystUp_2017->Integral());
 puSystUp_2017->Divide(mcPU_2017);
 puSystUp_2017->SetDirectory(nullptr);
-TH1F *puSystDown_2017 = (TH1F*)(pileupDownHist_2017->Clone());
+TH1F *puSystDown_2017 = dynamic_cast<TH1F*>(pileupDownHist_2017->Clone());
 puSystDown_2017->Scale(1.0 / puSystDown_2017->Integral());
 puSystDown_2017->Divide(mcPU_2017);
 puSystDown_2017->SetDirectory(nullptr);
 
 //2018
-TH1F *puSystUp_2018 = (TH1F*)(pileupUpHist_2018->Clone());
+TH1F *puSystUp_2018 = dynamic_cast<TH1F*>(pileupUpHist_2018->Clone());
 puSystUp_2018->Scale(1.0 / puSystUp_2018->Integral());
 puSystUp_2018->Divide(mcPU_2018);
 puSystUp_2018->SetDirectory(nullptr);
-TH1F *puSystDown_2018 = (TH1F*)(pileupDownHist_2018->Clone());
+TH1F *puSystDown_2018 = dynamic_cast<TH1F*>(pileupDownHist_2018->Clone());
 puSystDown_2018->Scale(1.0 / puSystDown_2018->Integral());
 puSystDown_2018->Divide(mcPU_2018);
 puSystDown_2018->SetDirectory(nullptr);
@@ -9689,25 +9689,25 @@ else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_"
 	std::cout << "after h_gluon_mumu" << std::endl;
 
 
-	h_bjet_ee = (TH2F*)h_bjet_ee_num->Clone();
+	h_bjet_ee = dynamic_cast<TH2F*>(h_bjet_ee_num->Clone());
 	h_bjet_ee->Divide(h_bjet_ee_denom.GetPtr());
-	h_bjet_mumu = (TH2F*)h_bjet_mumu_num->Clone();
+	h_bjet_mumu = dynamic_cast<TH2F*>(h_bjet_mumu_num->Clone());
 	h_bjet_mumu->Divide(h_bjet_mumu_denom.GetPtr());
-	h_charm_ee = (TH2F*)h_charm_ee_num->Clone();
+	h_charm_ee = dynamic_cast<TH2F*>(h_charm_ee_num->Clone());
 	h_charm_ee->Divide(h_charm_ee_denom.GetPtr());
-	h_charm_mumu = (TH2F*)h_charm_mumu_num->Clone();
+	h_charm_mumu = dynamic_cast<TH2F*>(h_charm_mumu_num->Clone());
 	h_charm_mumu->Divide(h_charm_mumu_denom.GetPtr());
-	h_lightjets_ee = (TH2F*)h_lightjets_ee_num->Clone();
+	h_lightjets_ee = dynamic_cast<TH2F*>(h_lightjets_ee_num->Clone());
 	h_lightjets_ee->Divide(h_lightjets_ee_denom.GetPtr());
-	h_lightjets_mumu = (TH2F*)h_lightjets_mumu_num->Clone();
+	h_lightjets_mumu = dynamic_cast<TH2F*>(h_lightjets_mumu_num->Clone());
 	h_lightjets_mumu->Divide(h_lightjets_mumu_denom.GetPtr());
-	h_gluon_ee = (TH2F*)h_gluon_ee_num->Clone();
+	h_gluon_ee = dynamic_cast<TH2F*>(h_gluon_ee_num->Clone());
 	h_gluon_ee->Divide(h_gluon_ee_denom.GetPtr());
-	h_gluon_mumu = (TH2F*)h_gluon_mumu_num->Clone();
+	h_gluon_mumu = dynamic_cast<TH2F*>(h_gluon_mumu_num->Clone());
 	h_gluon_mumu->Divide(h_gluon_mumu_denom.GetPtr());
-	h_nonbjet_ee = (TH2F*)h_nonbjet_ee_num->Clone();
+	h_nonbjet_ee = dynamic_cast<TH2F*>(h_nonbjet_ee_num->Clone());
         h_nonbjet_ee->Divide(h_nonbjet_ee_denom.GetPtr());
-        h_nonbjet_mumu = (TH2F*)h_nonbjet_mumu_num->Clone();
+        h_nonbjet_mumu = dynamic_cast<TH2F*>(h_nonbjet_mumu_num->Clone());
         h_nonbjet_mumu->Divide(h_nonbjet_mumu_denom.GetPtr());
 
 
@@ -12102,10 +12102,10 @@ std::cout << "before tZq_WAndTop_File" << std::endl;
 
 TFile* tZq_WAndTop_File = TFile::Open(tZq_WAndTop_Filename.c_str(), "READ");
 
-TH1* WHist_ee = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_WMass_ee", "TH1");
-TH1* TopHist_ee = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_InvTopMass_ee", "TH1");
-TH1* WHist_mumu = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_WMass_mumu", "TH1");
-TH1* TopHist_mumu = (TH1*)tZq_WAndTop_File->GetObjectChecked("h_InvTopMass_mumu", "TH1");
+TH1* WHist_ee = dynamic_cast<TH1*>(tZq_WAndTop_File->Get("h_WMass_ee"));
+TH1* TopHist_ee = dynamic_cast<TH1*>(tZq_WAndTop_File->Get("h_InvTopMass_ee"));
+TH1* WHist_mumu = dynamic_cast<TH1*>(tZq_WAndTop_File->Get("h_WMass_mumu"));
+TH1* TopHist_mumu = dynamic_cast<TH1*>(tZq_WAndTop_File->Get("h_InvTopMass_mumu"));
 
 W_stddev_ee  = WHist_ee->GetStdDev();
 Top_stddev_ee = TopHist_ee->GetStdDev();
@@ -12489,16 +12489,16 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
 
 
  //For the subtraction between data and MC
- TH1* h_NData_SS_ee = (TH1*)AllData_ee->GetObjectChecked("SameSign", "TH1"); 
- TH1* h_NData_SS_mumu = (TH1*)AllData_mumu->GetObjectChecked("SameSign", "TH1");
- TH1* h_NMC_SS_ee = (TH1*)AllMC_ee->GetObjectChecked("SameSign", "TH1");
- TH1* h_NMC_SS_mumu = (TH1*)AllMC_mumu->GetObjectChecked("SameSign", "TH1");
+ TH1* h_NData_SS_ee = dynamic_cast<TH1*>(AllData_ee->Get("SameSign")); 
+ TH1* h_NData_SS_mumu = dynamic_cast<TH1*>(AllData_mumu->Get("SameSign"));
+ TH1* h_NMC_SS_ee = dynamic_cast<TH1*>(AllMC_ee->Get("SameSign"));
+ TH1* h_NMC_SS_mumu = dynamic_cast<TH1*>(AllMC_mumu->Get("SameSign"));
 
  //For the ratio
- TH1* h_NMC_OS_NonPrompt_ee = (TH1*)MCRatio_ee->GetObjectChecked("OppositeSign", "TH1");
- TH1* h_NMC_OS_NonPrompt_mumu = (TH1*)MCRatio_mumu->GetObjectChecked("OppositeSign", "TH1");
- TH1* h_NMC_SS_NonPrompt_ee = (TH1*)MCRatio_ee->GetObjectChecked("SameSign", "TH1");
- TH1* h_NMC_SS_NonPrompt_mumu = (TH1*)MCRatio_mumu->GetObjectChecked("SameSign", "TH1");
+ TH1* h_NMC_OS_NonPrompt_ee = dynamic_cast<TH1*>(MCRatio_ee->Get("OppositeSign");
+ TH1* h_NMC_OS_NonPrompt_mumu = dynamic_cast<TH1*>(MCRatio_mumu->Get("OppositeSign");
+ TH1* h_NMC_SS_NonPrompt_ee = dynamic_cast<TH1*>(MCRatio_ee->Get("SameSign"));
+ TH1* h_NMC_SS_NonPrompt_mumu = dynamic_cast<TH1*>(MCRatio_mumu->Get("SameSign");
 
  int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetEntries();
  int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetEntries();
