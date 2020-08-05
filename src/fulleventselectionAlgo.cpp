@@ -2399,43 +2399,43 @@ if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && pro
 
 	if(blinding == false){
 
-		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+		if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
                 	cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_NPL.txt";
                 }
-                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
                         cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR.txt";
                 }
-                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
                         cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_ttbarCR.txt";
                 }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
                         cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
                 }
-                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
                         cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR.txt";
                 }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
                 else{cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + ".txt";}
 
 	}
 	else{
 
-		if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+		if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
                 	cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_NPL_Blinded.txt";
                 }
-                else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+                else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
                 	cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR_Blinded.txt";
                 }
-                else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+                else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
                         cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_ttbarCR_Blinded.txt";
                 }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
                        cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR_Blinded.txt";
                 }
-                else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+                else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
                        cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR_Blinded.txt";
                 }
-                else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
                 else{cutflowstring = "CutFlowReport_" + process + "_" + branch + "_" + year + "_Blinded.txt";}	
 
 	}
@@ -8606,10 +8606,10 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
 
 	if(blinding == false){
 
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+        if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL.root";
         }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+        else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR.root";
         }
         else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
@@ -12495,10 +12495,10 @@ auto NPLROOTFile_Creator2(const std::string& year, const bool& blinding){
  TH1* h_NMC_SS_mumu = dynamic_cast<TH1*>(AllMC_mumu->Get("SameSign"));
 
  //For the ratio
- TH1* h_NMC_OS_NonPrompt_ee = dynamic_cast<TH1*>(MCRatio_ee->Get("OppositeSign");
- TH1* h_NMC_OS_NonPrompt_mumu = dynamic_cast<TH1*>(MCRatio_mumu->Get("OppositeSign");
+ TH1* h_NMC_OS_NonPrompt_ee = dynamic_cast<TH1*>(MCRatio_ee->Get("OppositeSign"));
+ TH1* h_NMC_OS_NonPrompt_mumu = dynamic_cast<TH1*>(MCRatio_mumu->Get("OppositeSign"));
  TH1* h_NMC_SS_NonPrompt_ee = dynamic_cast<TH1*>(MCRatio_ee->Get("SameSign"));
- TH1* h_NMC_SS_NonPrompt_mumu = dynamic_cast<TH1*>(MCRatio_mumu->Get("SameSign");
+ TH1* h_NMC_SS_NonPrompt_mumu = dynamic_cast<TH1*>(MCRatio_mumu->Get("SameSign"));
 
  int NMC_OS_NonPrompt_ee = h_NMC_OS_NonPrompt_ee->GetEntries();
  int NMC_OS_NonPrompt_mumu = h_NMC_OS_NonPrompt_mumu->GetEntries();
