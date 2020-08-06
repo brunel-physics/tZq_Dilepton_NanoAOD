@@ -9949,20 +9949,20 @@ auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                  
                        &PDF_ScaleUp,                 &PDF_ScaleDown,
                        &isr_up,                      &isr_down,
                        &fsr_up,                      &fsr_down
-                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& MuonSFTest_ID, const float& MuonSFTest_Iso, const float& MuonSFTest_ID_sys_syst, const float& MuonSFTest_ID_sys_stat, const float& MuonSFTest_Iso_sys_syst, const float& MuonSFTest_Iso_sys_stat, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
+                        ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& MuonSFTest_IDInput, const float& MuonSFTest_IsoInput, const float& MuonSFTest_ID_sys_systInput, const float& MuonSFTest_ID_sys_statInput, const float& MuonSFTest_Iso_sys_systInput, const float& MuonSFTest_Iso_sys_statInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
 
 
 			std::cout << "print 199" << std::endl;
 
-                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_syst * MuonSFTest_Iso_sys_syst * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeight * MuonSFTest_ID_sys_stat * MuonSFTest_Iso_sys_stat * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(2) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(0) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(3) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * ReturnedPSWeight.at(1) * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_mumu * CalculatedNominalWeight * MuonSFTest_ID * MuonSFTest_Iso * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(PDF_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(PDF_ScaleDown == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(isr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(2) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumuInput * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
 
         }};
 
@@ -9986,8 +9986,6 @@ std::cout << "before d_WeightedEvents_withMET_mumu" << std::endl;
 auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METUncertFunction, MET_uncert_strings)
 							  .Define("EventWeight", EventWeight_mumu, EventWeight_mumu_strings);
 
-
-int nbins = 40;
 
 
 //Chi^2 calculation using MC samples
@@ -10031,22 +10029,22 @@ if(process == "tZq"){
 
 	std::string filenamestring_variable;
 
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+	if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
 		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_NPL.txt";
 	}
-	else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+	else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
 		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_ZPlusJetsCR.txt";
 	}
-	else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+	else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
 		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_ttbarCR.txt";
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+	else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
 		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
 	}
-	else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+	else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
 		filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL_ttbarCR.txt";	
 	}
-	else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+	else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 	else{filenamestring_variable = "Resolution_" + process + "_" + year + ".txt";}
 
 
@@ -10365,8 +10363,8 @@ if(blinding == true && (SBR == true || SR == true)){
 	auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
 	auto colNames_mumu = AfterChi2Cut_mumu.GetDefinedColumnNames();
 
-	auto N_Columns_ee = colNames_ee.size();
-	auto N_Columns_mumu = colNames_mumu.size();
+	const auto N_Columns_ee = colNames_ee.size();
+	const auto N_Columns_mumu = colNames_mumu.size();
 
 	//ee
 	TFile * output_ee = new TFile(OutRootFile_ee.c_str(), "RECREATE");
@@ -10374,7 +10372,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
         ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
-        for(int i = 0; i < N_Columns_ee; i++){
+        for(long unsigned int i = 0; i < N_Columns_ee; i++){
 
                 auto ColName = colNames_ee.at(i);
 
@@ -10414,7 +10412,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
         ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
-        for(int i = 0; i < N_Columns_mumu; i++){
+        for(long unsigned int i = 0; i < N_Columns_mumu; i++){
 
                 auto ColName = colNames_mumu.at(i);
 
@@ -10479,8 +10477,8 @@ else{
 	auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
         auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
 
-        auto N_Columns_ee = colNames_ee.size();
-        auto N_Columns_mumu = colNames_mumu.size();
+        const auto N_Columns_ee = colNames_ee.size();
+        const auto N_Columns_mumu = colNames_mumu.size();
 
 
 	//Writing the unblinded histograms for the ee channel to an output root file
@@ -10489,7 +10487,7 @@ else{
 
 	ROOT::RDF::RResultPtr<TH1D> histo_ee[N_Columns_ee] = {};
 
-        for(int i = 0; i < N_Columns_ee; i++){
+        for(long unsigned int i = 0; i < N_Columns_ee; i++){
 
                 auto ColName = colNames_ee.at(i);
 
@@ -10531,7 +10529,7 @@ else{
 
 	ROOT::RDF::RResultPtr<TH1D> histo_mumu[N_Columns_mumu] = {};
 
-        for(int i = 0; i < N_Columns_mumu; i++){
+        for(long unsigned int i = 0; i < N_Columns_mumu; i++){
 
                 auto ColName = colNames_mumu.at(i);
 
@@ -11035,10 +11033,10 @@ const bool& HLT_Ele27_WPTight_Gsf
                 floats muVec = {};
                 floats SkimmedVector_m = {};
 
-                for(int i = 0; i < h_EventNumber_mumu->GetNbinsX(); i++){float EventNum_mumu = h_EventNumber_mumu->GetXaxis()->GetBinCenter(i); mumuVec.push_back(EventNum_mumu);}
+                for(long unsigned int i = 0; i < h_EventNumber_mumu->GetNbinsX(); i++){float EventNum_mumu = h_EventNumber_mumu->GetXaxis()->GetBinCenter(i); mumuVec.push_back(EventNum_mumu);}
                 for(int i = 0; i < h_EventNumber_mu->GetNbinsX(); i++){float EventNum_mu = h_EventNumber_mu->GetXaxis()->GetBinCenter(i); muVec.push_back(EventNum_mu);}
                 
-                for(int i = 0; i < mumuVec.size(); i++){
+                for(long unsigned int i = 0; i < mumuVec.size(); i++){
                         
                         float event_number = mumuVec.at(i);
                         bool mu_EventNumbers = any_of(muVec.begin(), muVec.end(), [&event_number](int j){return j == event_number;});
@@ -11118,11 +11116,11 @@ auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
 
   std::vector<char> out{};
 
-  for(int i = 0; i < (GoldenJsonReader()).size(); i++){
+  for(long unsigned int i = 0; i < (GoldenJsonReader()).size(); i++){
 
   	std::string element = GoldenJsonReader().at(i);
 
-  	for(int j = 0; j < element.size(); j++){
+  	for(long unsigned int j = 0; j < element.size(); j++){
 
   		out.push_back(element.at(j));  	
 
@@ -11141,9 +11139,9 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 
  std::vector<char> EventsVector{}; 
 
- for(int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
+ for(long unsigned int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
 
-	int RunNumBeingRead;
+	const unsigned int RunNumBeingRead;
 
  	if(  GoldenJson_SplitChars().at(i+1) == '"' &&
 	    (GoldenJson_SplitChars().at(i+2) == '2' ||
@@ -11164,7 +11162,7 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 		if(run == InputRunNumber){
 
 
-			for(int j = 2; j < (GoldenJson_SplitChars()).size(); j++){
+			for(long unsigned int j = 2; j < (GoldenJson_SplitChars()).size(); j++){
 
 				if(GoldenJson_SplitChars().at(i+10) == '[' && 
 				   GoldenJson_SplitChars().at(i+11) == '['){	
@@ -11209,14 +11207,14 @@ std::cout << "before ReturnRunNumAndEventRanges" << std::endl;
 
 auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
- std::vector<int> RunNumAndEvents{};
+ std::vector<const unsigned int> RunNumAndEvents{};
 
  RunNumAndEvents.push_back(InputRunNumber);
 
  std::vector<char> Runs = RunNumberCheck(InputRunNumber);
 
 
- for(int i = 0; i < Runs.size(); i++){
+ for(long unsigned int i = 0; i < Runs.size(); i++){
 
 
  	if(Runs.at(i) == ']' && Runs.at(i+1) == ']'){break;}
@@ -11533,7 +11531,7 @@ auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& 
 
   if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
 
-	for(int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
+	for(long unsigned int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
 
 		int MinLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i);
 		int MaxLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i+1);
@@ -12056,22 +12054,22 @@ std::string tZq_WAndTop_Filename;
 
 
 
-if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
         tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_" + year + ".root";
 }
-else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
         tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ZPlusJetsCR_" + year + ".root";
 }
-else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
         tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_ttbarCR_" + year + ".root";
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
          tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ZPlusJetsCR_" + year + ".root";
 }
-else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
          tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_NPL_ttbarCR_" + year + ".root";
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{tZq_WAndTop_Filename = "tZq_AfterFullSelection_GaussianFit_" + year + ".root";}
 
 
