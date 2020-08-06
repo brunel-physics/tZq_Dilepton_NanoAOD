@@ -12136,10 +12136,10 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	std::cout << "before chi2_filter_ee for data" << std::endl;
 
-	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee){
+	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee_input){
 
-		if(SBR == true){return chi2_ee < Chi2_SBR_ee && chi2_ee > Chi2_SR_ee;}
-		else if(SR == true){return chi2_ee < Chi2_SR_ee;}
+		if(SBR == true){return chi2_eei_input < Chi2_SBR_ee && chi2_ee_input > Chi2_SR_ee;}
+		else if(SR == true){return chi2_ee_input < Chi2_SR_ee;}
 		else{std::cout << "SR and SBR cannot both be false" << std::endl;}
 
 	}};
@@ -12147,10 +12147,10 @@ if(blinding == true && (SBR == true || SR == true)){
 	
 	std::cout << "before chi2_filter_mumu for data" << std::endl;
 
-	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumu){
+	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumui_input){
                 
-                if(SBR == true){return chi2_mumu < Chi2_SBR_mumu && chi2_mumu > Chi2_SR_mumu;}
-                else if(SR == true){return chi2_mumu < Chi2_SR_mumu;} 
+                if(SBR == true){return chi2_mumu_input < Chi2_SBR_mumu && chi2_mumu_input > Chi2_SR_mumu;}
+                else if(SR == true){return chi2_mumu_input < Chi2_SR_mumu;} 
                 else{std::cout << "SR and SBR cannot both be false" << std::endl;}
         
         }};
@@ -12290,7 +12290,7 @@ auto fulleventselection2(const bool& blinding, const bool& NPL, const bool& SR, 
 
 
 //looping over the process names
-  for(int i = 0; i < Processes.size(); i++){
+  for(long unsigned int i = 0; i < Processes.size(); i++){
 
   	fulleventselection_calculator(Processes.at(i), blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
 
