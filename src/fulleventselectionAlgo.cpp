@@ -9925,20 +9925,20 @@ auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                      
                      &PDF_ScaleUp,                 &PDF_ScaleDown,
                      &isr_up,                      &isr_down,
                      &fsr_up,                      &fsr_down
-                        ](const float& PU, const float& BTagWeight, const floats& ReturnedPSWeight, const float& CalculatedNominalWeight, const float& EGammaSF_egammaEff, const float& EGammaSF_egammaEffReco, const float& EGammaSF_egammaEffSys, const float& EGammaSF_egammaEffRecoSys, const float& CalculatedGeneratorWeight, const float& ME_SF, const double& TopWeight){
+                        ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& EGammaSF_egammaEffInput, const float& EGammaSF_egammaEffRecoInput, const float& EGammaSF_egammaEffSysInput, const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
 
 
 			std::cout << "print 198" << std::endl;
 
-                        if(LeptonEfficiencies_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(LeptonEfficiencies_ScaleDown == true){return PU * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeight * EGammaSF_egammaEffSys * EGammaSF_egammaEffRecoSys * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleUp == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(PDF_ScaleDown == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(2) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(isr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(0) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_up == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(3) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else if(fsr_down == true){return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * ReturnedPSWeight.at(1) * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
-                        else{return PU * NormalisationFactorFunction() * BTagWeight * SF_ee * CalculatedNominalWeight * EGammaSF_egammaEff * EGammaSF_egammaEffReco * CalculatedGeneratorWeight * ME_SF * TopWeight;}
+                        if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(PDF_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(PDF_ScaleDown == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(isr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(2) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
 
         }};
 
