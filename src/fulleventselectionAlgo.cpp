@@ -4621,7 +4621,7 @@ const ints& lead_bjet
 
   floats vec{};
 
-  for(const unsigned int i = 0; i < nJet; i++){
+  for(unsigned int i = 0; i < nJet; i++){
         if(lead_bjet.at(i) == 1){ 
 		vec.push_back(Jet_variable.at(i));
 	}
@@ -5126,7 +5126,7 @@ const float& w_mass
   size_t index_1{std::numeric_limits<size_t>::max()};
   const size_t num{w_pair_pt.size()};
 
-  for(const unsigned int i = 0; i < num; i++){
+  for(unsigned int i = 0; i < num; i++){
 
 
   BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
@@ -5242,7 +5242,7 @@ const floats& Jet_eta_Selection
 
     doubles output_vec;
   
-    for(const unsigned int i; i < nJet; i++){
+    for(unsigned int i; i < nJet; i++){
 
     	double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
     	double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
@@ -5271,7 +5271,7 @@ const floats& Jet_Phi_Selection
   double output;
   doubles output_vec{};
 
-  for(const unsigned int i; i < nJet; i++){
+  for(unsigned int i; i < nJet; i++){
 
     double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
     double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
@@ -5499,7 +5499,7 @@ const floats& Jet_pt) {
 
   floats AnswerVec{};
  
-  for(const unsigned int i = 0; i < Jet_pt.size(); i++){
+  for(unsigned int i = 0; i < Jet_pt.size(); i++){
 
 	if(  (Jet_eta.at(i) > abs(Col1) && Jet_eta.at(i) < abs(Col2)) && 
 	     (Jet_rho.at(0) > abs(Col3) && Jet_rho.at(0) < abs(Col4)) &&
@@ -5845,7 +5845,7 @@ const unsigned int& nJet
 
   std::vector<TLorentzVector> OutputVec{};
 
-  for(const unsigned int i = 0; i < nJet; i++){
+  for(unsigned int i = 0; i < nJet; i++){
 
     TLorentzVector JetFourMomentum_New{};
     float JetPt_new = JetPt.at(i) * cJER.at(0);
@@ -9379,7 +9379,7 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
   float PdfMax = 1.0;
 
   //For the min and max Pdf weights
-  for(const unsigned int i = 0; i < LHEPdfWeight.size(); i++){
+  for(unsigned int i = 0; i < LHEPdfWeight.size(); i++){
 
 
         float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
@@ -9962,7 +9962,7 @@ auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                  
                         else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
                         else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
                         else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumuInput * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                        else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
 
         }};
 
@@ -11141,7 +11141,7 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 
  for(long unsigned int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
 
-	const unsigned int RunNumBeingRead;
+	unsigned int RunNumBeingRead;
 
  	if(  GoldenJson_SplitChars().at(i+1) == '"' &&
 	    (GoldenJson_SplitChars().at(i+2) == '2' ||
@@ -11207,7 +11207,7 @@ std::cout << "before ReturnRunNumAndEventRanges" << std::endl;
 
 auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
- std::vector<const unsigned int> RunNumAndEvents{};
+ std::vector<int> RunNumAndEvents{};
 
  RunNumAndEvents.push_back(InputRunNumber);
 
@@ -12138,7 +12138,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	auto chi2_filter_ee{[&SBR, &SR](const float& chi2_ee_input){
 
-		if(SBR == true){return chi2_eei_input < Chi2_SBR_ee && chi2_ee_input > Chi2_SR_ee;}
+		if(SBR == true){return chi2_ee_input < Chi2_SBR_ee && chi2_ee_input > Chi2_SR_ee;}
 		else if(SR == true){return chi2_ee_input < Chi2_SR_ee;}
 		else{std::cout << "SR and SBR cannot both be false" << std::endl;}
 
@@ -12147,7 +12147,7 @@ if(blinding == true && (SBR == true || SR == true)){
 	
 	std::cout << "before chi2_filter_mumu for data" << std::endl;
 
-	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumui_input){
+	auto chi2_filter_mumu{[&SBR, &SR](const float& chi2_mumu_input){
                 
                 if(SBR == true){return chi2_mumu_input < Chi2_SBR_mumu && chi2_mumu_input > Chi2_SR_mumu;}
                 else if(SR == true){return chi2_mumu_input < Chi2_SR_mumu;} 
