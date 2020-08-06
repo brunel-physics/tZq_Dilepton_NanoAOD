@@ -9379,7 +9379,7 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
   float PdfMax = 1.0;
 
   //For the min and max Pdf weights
-  for(int i = 0; i < LHEPdfWeight.size(); i++){
+  for(const unsigned int i = 0; i < LHEPdfWeight.size(); i++){
 
 
         float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
@@ -9410,7 +9410,7 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
 
-  for(int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
+  for(long unsigned int i = 0; i < pdf.size(); i++){pdf.at(i) >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++;} //pdf weight
 
 
   ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
@@ -9442,7 +9442,7 @@ auto ME_histo_function{[&SummedWeights](){
 
   ints numerators;
 
-  for(int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
+  for(long unsigned int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
 
   return numerators;
 
@@ -9486,12 +9486,6 @@ auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator
 
 
 
-auto DummyColumnFunction{[](const floats& pts){
- 
-        std::cout << "print 196" << std::endl;
-	return pts;
-
-}};
 
 
 std::string PSWeightString_ee;
@@ -9524,28 +9518,27 @@ if(blinding == false){EndOfName = ".root";}
 else{EndOfName = "_Blinded.root";}
 
 
-if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
 	BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL" + EndOfName;
 }
-else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
         BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR" + EndOfName;
 }
-else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
         BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_ttbarCR" + EndOfName;
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
         BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR" + EndOfName;
 }
-else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
         BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR" + EndOfName;
 }
-else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
 else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_" + EndOfName;}
 
 
 
 	TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
-	int NBins = 40;
 	double minpt = 0;
 	double maxpt = 500;
 	double mineta = -3;
@@ -9846,15 +9839,15 @@ const floats& Jet_mass){
 
 
   //TLorentzVector for unsmeared jets
-  for(int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
+  for(long unsigned int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
 
   //Obtaining the px and py of unsmeared jets
-  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
-  for(int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
+  for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
+  for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
    
 
   //Obtaining the px and py of smeared jets
-  for(int i = 0; i < SmearedJet4Momentum.size(); i++){
+  for(long unsigned int i = 0; i < SmearedJet4Momentum.size(); i++){
  
   	float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
 	float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
@@ -9864,7 +9857,7 @@ const floats& Jet_mass){
   }
 
   //Original MET vector
-  for(int i = 0; i < MET_phi.size(); i++){ 
+  for(long unsigned int i = 0; i < MET_phi.size(); i++){ 
 
 	(metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i)); 
 	metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
@@ -9882,7 +9875,7 @@ const floats& Jet_mass){
   floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
   floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
 
-  for(int i = 0; i < MET_phi.size(); i++){
+  for(long unsigned int i = 0; i < MET_phi.size(); i++){
 
   	if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
   	else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
@@ -9892,7 +9885,7 @@ const floats& Jet_mass){
 
  //Propagating the jet smearing to the MET
  
- for(int i = 0; i < SmearedJetPxVec.size(); i++){
+ for(long unsigned int i = 0; i < SmearedJetPxVec.size(); i++){
  
  	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
         ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
