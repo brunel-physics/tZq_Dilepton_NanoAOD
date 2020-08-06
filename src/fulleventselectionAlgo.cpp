@@ -44,7 +44,7 @@ std::fstream& GotoLine(std::fstream& file, unsigned int num){
 		
     file.seekg(std::ios::beg);
 
-    for(int i=0; i < num - 1; ++i){
+    for(unsigned int i=0; i < num - 1; ++i){
         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
 
@@ -56,7 +56,7 @@ std::fstream& GotoLine(std::fstream& file, unsigned int num){
 
 
 //For b tagging reweighting
-int line_number = 0;
+//int line_number = 0;
 int Index = 0;
 int output_index;
 std::vector<int> line_number_vec{};
@@ -131,7 +131,7 @@ const ints& Muon_nTrackerLayers){
 	doubles u{gRandom->Rndm(), gRandom->Rndm()}; //u is a random number distributed uniformly between 0 and 1 (gRandom->Rndm());
 
 
-	for(int i = 0; i < MuonPt.size(); i++){
+	for(unsigned int i = 0; i < MuonPt.size(); i++){
 
 		//scale factors for momentum of each muon:
 		double RochCorrSF;
@@ -226,7 +226,7 @@ const ints& Muon_nTrackerLayers){
 
 
 //Functions for reading the trigger efficiency and SF text files
-double linereader_TriggerSF(const int& LineNumber, const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
+double linereader_TriggerSF(const int& LineNumber, const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
 
    std::cout << "print 2" << std::endl;
 
@@ -256,7 +256,7 @@ double linereader_TriggerSF(const int& LineNumber, const std::string& InputTrigg
 
 
 
-int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
+int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
 
    std::cout << "print 3" << std::endl;
 
@@ -284,16 +284,16 @@ int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::str
 
 
 
-auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year, const bool& blinding){
+auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
 
    std::cout << "print 4" << std::endl;
 
-   int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year, blinding);
+   int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year/*, blinding*/);
    std::vector<double> Value;
 
 
    for(int i = 1; i < NumberOfLines+1; i++){
-        Value.push_back(linereader_TriggerSF(i, InputTriggerSF_File, year, blinding));
+        Value.push_back(linereader_TriggerSF(i, InputTriggerSF_File, year/*, blinding*/));
    }
 
    return Value;
@@ -902,13 +902,13 @@ ROOT::RDF::RResultPtr<TH2D> h_nonbjet_mumu_denom;
 
 int NBins = 40;
 
-auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& pts, const floats& etas){
 
   std::cout << "print 7" << std::endl;
 
   floats BTaggedEff{};
 
-  for(int i = 0; i < pts.size(); i++){
+  for(long unsigned int i = 0; i < pts.size(); i++){
 
 	int PtNum = h_bjet_ee_num->GetXaxis()->FindBin(pts.at(i));
 	int EtaNum = h_bjet_ee_num->GetYaxis()->FindBin(etas.at(i));
@@ -935,7 +935,7 @@ auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const 
 
 
 
-auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& pts, const floats& etas){
 
   std::cout << "print 9" << std::endl;
 
@@ -966,13 +966,13 @@ auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](
 }};
 
 
-auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& pts, const floats& etas){
 
   std::cout << "print 10" << std::endl;
 
   floats NonBTaggedEff{};
 
-  for(int i = 0; i < pts.size(); i++){
+  for(long unsigned int i = 0; i < pts.size(); i++){
 
         int PtNum = h_nonbjet_ee_num->GetXaxis()->FindBin(pts.at(i));
         int EtaNum = h_nonbjet_ee_num->GetYaxis()->FindBin(etas.at(i));
@@ -997,13 +997,13 @@ auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*
 }};
 
 
-auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& DummyColumn, const floats& pts, const floats& etas){
+auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& pts, const floats& etas){
 
   std::cout << "print 11" << std::endl;
 
   floats NonBTaggedEff{};
 
-  for(int i = 0; i < pts.size(); i++){
+  for(long unsigned int i = 0; i < pts.size(); i++){
 
         int PtNum = h_nonbjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
         int EtaNum = h_nonbjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
@@ -1035,7 +1035,7 @@ auto EffBTaggedProduct{[](const floats& EffBTagged){
 
   float initial = 1;
 
-  for(int i = 0; i < EffBTagged.size(); i++ ){
+  for(long unsigned int i = 0; i < EffBTagged.size(); i++ ){
 
     initial = EffBTagged.at(i) * initial;
 
@@ -1056,7 +1056,7 @@ auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
  
   float initial = 1;
 
-  for(int i = 0; i < EffNonBTagged.size(); i++ ){
+  for(long unsigned int i = 0; i < EffNonBTagged.size(); i++ ){
 
   	initial = (1 - EffNonBTagged.at(i)) * initial;
 
@@ -1069,11 +1069,11 @@ auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
 
 
-auto ProbBTagMCFunction{[](const float& EffBTaggedProduct, const float& EffNonBTaggedProduct){
+auto ProbBTagMCFunction{[](const float& EffBTaggedProductInput, const float& EffNonBTaggedProductInput){
 
   std::cout << "print 14" << std::endl;
 
-  float MCProb = EffBTaggedProduct * EffNonBTaggedProduct; 
+  float MCProb = EffBTaggedProductInput * EffNonBTaggedProductInput; 
   return MCProb;
 
 }};
@@ -1089,7 +1089,7 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
 
   floats ResultVector{};
 
-  for(int j = 0; j < Jet_partonFlavour.size(); j++){
+  for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
 
 
 	CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
@@ -1125,7 +1125,7 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
         std::vector<std::string> EtaTest{};
 
 
-	for(int i = 0; i < etas.size(); i++){
+	for(long unsigned int i = 0; i < etas.size(); i++){
 
 		std::stringstream ss;
 		ss << etas.at(i);
@@ -1138,7 +1138,7 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
 	std::vector<std::string> PtTest{};
 
 
-        for(int i = 0; i < pts.size(); i++){
+        for(long unsigned int i = 0; i < pts.size(); i++){
 
                 std::stringstream ss;
                 ss << pts.at(i);
@@ -1151,7 +1151,7 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
 
 	std::vector<std::string> DiscrTest{};
 
-        for(int i = 0; i < pts.size(); i++){
+        for(long unsigned int i = 0; i < pts.size(); i++){
 
 
                 std::stringstream ss;
@@ -1169,7 +1169,7 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
 
 
 
-for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
+for(long unsigned int i = 0; i < CSVv2OperatingPointTest.size(); i++){
 	
 	for(std::vector<std::string> vec : dataList)
 	{
@@ -1261,9 +1261,9 @@ for(int i = 0; i < CSVv2OperatingPointTest.size(); i++){
 
 
 	if(OutVec.size() != 0 && check == false){
-		for(int i = 0; i < OutVec.size(); i++){
+		for(long unsigned int j = 0; j < OutVec.size(); j++){
 
-			if(OutVec.at(i) != "0"){NewOutVec.push_back(OutVec.at(i));}
+			if(OutVec.at(j) != "0"){NewOutVec.push_back(OutVec.at(j));}
 	
 		}
 	
@@ -1324,34 +1324,34 @@ std::vector<char> VecForConcString13{};
 std::vector<char> VecForConcString14{};
 std::vector<char> VecForConcString15{};
 std::vector<char> VecForConcString16{};
-int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14, index15, index16;
+int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14;
 float result;
 
-for(int i = 0; i < FinalOutVec.size(); i++){
+for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 
 	std::string FirstElement = FinalOutVec.at(i);
 
 	if(FirstElement.at(0) != '('){
 
-		int LastIndex;
+		long unsigned int LastIndex;
 
 		//first
-		for(int i = 0; i < FirstElement.length(); i++){
+		for(long unsigned int k = 0; k < FirstElement.length(); k++){
 
-			if(FirstElement.at(i) != ')'&& 
-	   	   	   FirstElement.at(i) != '(' &&
-	   	   	   FirstElement.at(i) != '*' &&
-	   	   	   FirstElement.at(i) != '/' &&
-	   	   	   FirstElement.at(i) != '+' &&
-	  	   	   FirstElement.at(i) != '-'){VecForConcString.push_back(FirstElement.at(i)); LastIndex = i;}
-			else if(i == 0 && FirstElement.at(i) == '('){continue;}
-			else{index = i; break;}
+			if(FirstElement.at(k) != ')'&& 
+	   	   	   FirstElement.at(k) != '(' &&
+	   	   	   FirstElement.at(k) != '*' &&
+	   	   	   FirstElement.at(k) != '/' &&
+	   	   	   FirstElement.at(k) != '+' &&
+	  	   	   FirstElement.at(k) != '-'){VecForConcString.push_back(FirstElement.at(k)); LastIndex = k;}
+			else if(k == 0 && FirstElement.at(k) == '('){continue;}
+			else{index = k; break;}
 		}
 
 
-		for(int i = 0; i < VecForConcString.size(); i++){
-			if(i == 0){ConcatenatedString = VecForConcString.at(i);}
-			else{ConcatenatedString += VecForConcString.at(i);}
+		for(long unsigned int k = 0; k < VecForConcString.size(); k++){
+			if(k == 0){ConcatenatedString = VecForConcString.at(k);}
+			else{ConcatenatedString += VecForConcString.at(k);}
 
 		}	
 
@@ -1404,34 +1404,34 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 			else{Min1 = index+1;}
 
 			//second
-			for(int i = Min1; i < FirstElement.length(); i++){
+			for(long unsigned int k = Min1; k < FirstElement.length(); k++){
 
-        			if(FirstElement.at(i) == 'e' && FirstElement.at(i+1) == '-'){
+        			if(FirstElement.at(k) == 'e' && FirstElement.at(k+1) == '-'){
 					
-					VecForConcString2.push_back(FirstElement.at(i));
-					VecForConcString2.push_back(FirstElement.at(i+1));
-					VecForConcString2.push_back(FirstElement.at(i+2));
-					VecForConcString2.push_back(FirstElement.at(i+3));
+					VecForConcString2.push_back(FirstElement.at(k));
+					VecForConcString2.push_back(FirstElement.at(k+1));
+					VecForConcString2.push_back(FirstElement.at(k+2));
+					VecForConcString2.push_back(FirstElement.at(k+3));
 					
-					index2 = i+4;
+					index2 = k+4;
 					break;
 
 				}
-				else if(FirstElement.at(i) != ')'&&
-           	  		   	FirstElement.at(i) != '(' &&
-           	  		   	FirstElement.at(i) != '*' &&
-           	  		   	FirstElement.at(i) != '/' &&
-           	  		   	FirstElement.at(i) != '+' &&
-                  		   	FirstElement.at(i) != '-'){VecForConcString2.push_back(FirstElement.at(i));}
-               			else{index2 = i; break;}
+				else if(FirstElement.at(k) != ')'&&
+           	  		   	FirstElement.at(k) != '(' &&
+           	  		   	FirstElement.at(k) != '*' &&
+           	  		   	FirstElement.at(k) != '/' &&
+           	  		   	FirstElement.at(k) != '+' &&
+                  		   	FirstElement.at(k) != '-'){VecForConcString2.push_back(FirstElement.at(k));}
+               			else{index2 = k; break;}
 			
 			}
 
 
 
-			for(int i = 0; i < VecForConcString2.size(); i++){
-        			if(i == 0){ConcatenatedString2 = VecForConcString2.at(i);}
-        			else{ConcatenatedString2 += VecForConcString2.at(i);}
+			for(long unsigned int k = 0; k < VecForConcString2.size(); k++){
+        			if(k == 0){ConcatenatedString2 = VecForConcString2.at(k);}
+        			else{ConcatenatedString2 += VecForConcString2.at(k);}
 
 			}
 
@@ -1447,21 +1447,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
                         else{Min2 = index2+2;}
 
 			//third
-			for(int i = Min2; i < FirstElement.length(); i++){
+			for(long unsigned int k = Min2; k < FirstElement.length(); k++){
 
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString3.push_back(FirstElement.at(i));}
-        			else{index4 = i; break;}
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString3.push_back(FirstElement.at(k));}
+        			else{index4 = k; break;}
 			}
 
 
-			for(int i = 0; i < VecForConcString3.size(); i++){
-        			if(i == 0){ConcatenatedString3 = VecForConcString3.at(i);}
-        			else{ConcatenatedString3 += VecForConcString3.at(i);}
+			for(long unsigned int k = 0; k < VecForConcString3.size(); k++){
+        			if(k == 0){ConcatenatedString3 = VecForConcString3.at(k);}
+        			else{ConcatenatedString3 += VecForConcString3.at(k);}
 
 			}
 
@@ -1474,21 +1474,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 			//fourth
-			for(int i = Min3; i < FirstElement.length(); i++){
+			for(long unsigned int k = Min3; k < FirstElement.length(); k++){
 
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   	           FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString4.push_back(FirstElement.at(i));}
-        			else{index5 = i; break;}
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   	           FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString4.push_back(FirstElement.at(k));}
+        			else{index5 = k; break;}
 			}
 
 
-			for(int i = 0; i < VecForConcString4.size(); i++){
-        			if(i == 0){ConcatenatedString4 = VecForConcString4.at(i);}
-        			else{ConcatenatedString4 += VecForConcString4.at(i);}
+			for(long unsigned int k = 0; k < VecForConcString4.size(); k++){
+        			if(k == 0){ConcatenatedString4 = VecForConcString4.at(k);}
+        			else{ConcatenatedString4 += VecForConcString4.at(k);}
 
 			}
 			
@@ -1513,21 +1513,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 			//fifth
-			for(int i = Min4; i < FirstElement.length(); i++){
+			for(long unsigned int k = Min4; k < FirstElement.length(); k++){
 
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString5.push_back(FirstElement.at(i));}
-        			else{index6 = i; break;}
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString5.push_back(FirstElement.at(k));}
+        			else{index6 = k; break;}
 			}
 
 
-			for(int i = 0; i < VecForConcString5.size(); i++){
-        			if(i == 0){ConcatenatedString5 = VecForConcString5.at(i);}
-        			else{ConcatenatedString5 += VecForConcString5.at(i);}
+			for(long unsigned int k = 0; k < VecForConcString5.size(); k++){
+        			if(k == 0){ConcatenatedString5 = VecForConcString5.at(k);}
+        			else{ConcatenatedString5 += VecForConcString5.at(k);}
 
 			}
 
@@ -1542,21 +1542,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 			//sixth
-			for(int i = Min5; i < FirstElement.length(); i++){
+			for(long unsigned int k = Min5; k < FirstElement.length(); k++){
 
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString6.push_back(FirstElement.at(i));}
-        			else{index7 = i; break;}
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString6.push_back(FirstElement.at(k));}
+        			else{index7 = k; break;}
 			}
 
 
-			for(int i = 0; i < VecForConcString6.size(); i++){
-        			if(i == 0){ConcatenatedString6 = VecForConcString6.at(i);}
-        			else{ConcatenatedString6 += VecForConcString6.at(i);}
+			for(long unsigned int k = 0; k < VecForConcString6.size(); k++){
+        			if(k == 0){ConcatenatedString6 = VecForConcString6.at(k);}
+        			else{ConcatenatedString6 += VecForConcString6.at(k);}
 
 			}
 	
@@ -1573,21 +1573,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 			
 
 			//seventh
-			for(int i = Min6; i < FirstElement.length(); i++){
+			for(long unsigned int k = Min6; k < FirstElement.length(); k++){
 
-        			if(FirstElement.at(i) != ')'&&
-           	   		   FirstElement.at(i) != '(' &&
-           	   		   FirstElement.at(i) != '*' &&
-           	   		   FirstElement.at(i) != '/' &&
-           	   		   FirstElement.at(i) != '+' &&
-           	   		   FirstElement.at(i) != '-'){VecForConcString7.push_back(FirstElement.at(i));}
-        			else{index8 = i; break;}
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString7.push_back(FirstElement.at(k));}
+        			else{index8 = k; break;}
 			}
 
 
-			for(int i = 0; i < VecForConcString7.size(); i++){
-        			if(i == 0){ConcatenatedString7 = VecForConcString7.at(i);}
-        			else{ConcatenatedString7 += VecForConcString7.at(i);}
+			for(long unsigned int k = 0; k < VecForConcString7.size(); k++){
+        			if(k == 0){ConcatenatedString7 = VecForConcString7.at(k);}
+        			else{ConcatenatedString7 += VecForConcString7.at(k);}
 
 			}
 
@@ -1621,23 +1621,23 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 				//eighth
-				for(int i = Min7; i < FirstElement.length(); i++){
+				for(long unsigned int k = Min7; k < FirstElement.length(); k++){
 
-        				if(FirstElement.at(i) != ')'&&
-           	   		   	   FirstElement.at(i) != '(' &&
-           	   		   	   FirstElement.at(i) != '*' &&
-           	   		   	   FirstElement.at(i) != '/' &&
-           	   		   	   FirstElement.at(i) != '+' &&
-           	   		   	   FirstElement.at(i) != '-'){VecForConcString8.push_back(FirstElement.at(i));}
-        				else{index9 = i; break;}
+        				if(FirstElement.at(k) != ')'&&
+           	   		   	   FirstElement.at(k) != '(' &&
+           	   		   	   FirstElement.at(k) != '*' &&
+           	   		   	   FirstElement.at(k) != '/' &&
+           	   		   	   FirstElement.at(k) != '+' &&
+           	   		   	   FirstElement.at(k) != '-'){VecForConcString8.push_back(FirstElement.at(k));}
+        				else{index9 = k; break;}
 				}     
 
 
 
 
-				for(int i = 0; i < VecForConcString8.size(); i++){
-        				if(i == 0){ConcatenatedString8 = VecForConcString8.at(i);}
-        				else{ConcatenatedString8 += VecForConcString8.at(i);}
+				for(int k = 0; k < VecForConcString8.size(); k++){
+        				if(k == 0){ConcatenatedString8 = VecForConcString8.at(k);}
+        				else{ConcatenatedString8 += VecForConcString8.at(k);}
     
 				}   
 
@@ -1657,21 +1657,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 				//ninth
-				for(int i = Min8; i < FirstElement.length(); i++){
+				for(long unsigned int k = Min8; k < FirstElement.length(); k++){
 
-        				if(FirstElement.at(i) != ')'&&
-           	   		   	   FirstElement.at(i) != '(' &&
-           	   		   	   FirstElement.at(i) != '*' &&
-           	   		   	   FirstElement.at(i) != '/' &&
-           	   		  	   FirstElement.at(i) != '+' &&
-           	   		   	   FirstElement.at(i) != '-'){VecForConcString9.push_back(FirstElement.at(i));}
-        				else{index10 = i; break;}
+        				if(FirstElement.at(k) != ')'&&
+           	   		   	   FirstElement.at(k) != '(' &&
+           	   		   	   FirstElement.at(k) != '*' &&
+           	   		   	   FirstElement.at(k) != '/' &&
+           	   		  	   FirstElement.at(k) != '+' &&
+           	   		   	   FirstElement.at(k) != '-'){VecForConcString9.push_back(FirstElement.at(k));}
+        				else{index10 = k; break;}
 				}
 
 
-				for(int i = 0; i < VecForConcString9.size(); i++){
-        				if(i == 0){ConcatenatedString9 = VecForConcString9.at(i);}
-        				else{ConcatenatedString9 += VecForConcString9.at(i);}
+				for(long unsigned int k = 0; k < VecForConcString9.size(); k++){
+        				if(k == 0){ConcatenatedString9 = VecForConcString9.at(k);}
+        				else{ConcatenatedString9 += VecForConcString9.at(k);}
 
 				}
 
@@ -1686,21 +1686,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 				int LastIndex2;
 
 				//tenth
-				for(int i = Min9; i < FirstElement.length(); i++){
+				for(long unsigned int k = Min9; k < FirstElement.length(); k++){
 
-        				if(FirstElement.at(i) != ')'&&
-           	   		   	   FirstElement.at(i) != '(' &&
-           	   		   	   FirstElement.at(i) != '*' &&
-           	   		   	   FirstElement.at(i) != '/' &&
-           	   		   	   FirstElement.at(i) != '+' &&
-           	   		   	   FirstElement.at(i) != '-'){VecForConcString10.push_back(FirstElement.at(i)); LastIndex2 = i;}
-        				else{index11 = i; break;}
+        				if(FirstElement.at(k) != ')'&&
+           	   		   	   FirstElement.at(k) != '(' &&
+           	   		   	   FirstElement.at(k) != '*' &&
+           	   		   	   FirstElement.at(k) != '/' &&
+           	   		   	   FirstElement.at(k) != '+' &&
+           	   		   	   FirstElement.at(k) != '-'){VecForConcString10.push_back(FirstElement.at(k)); LastIndex2 = k;}
+        				else{index11 = k; break;}
 				}
 
 
-				for(int i = 0; i < VecForConcString10.size(); i++){
-        				if(i == 0){ConcatenatedString10 = VecForConcString10.at(i);}
-        				else{ConcatenatedString10 += VecForConcString10.at(i);}
+				for(long unsigned int k = 0; k < VecForConcString10.size(); k++){
+        				if(k == 0){ConcatenatedString10 = VecForConcString10.at(k);}
+        				else{ConcatenatedString10 += VecForConcString10.at(k);}
 
 				}
 		
@@ -1732,21 +1732,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 					int LastIndex3;
 
 					//eleventh
-					for(int i = Min10; i < FirstElement.length(); i++){
+					for(long unsigned int k = Min10; k < FirstElement.length(); k++){
 
-        					if(FirstElement.at(i) != ')'&&
-           	   		   	   	   FirstElement.at(i) != '(' &&
-           	   		  	   	   FirstElement.at(i) != '*' &&
-           	   		   	   	   FirstElement.at(i) != '/' &&
-           	   		   	   	   FirstElement.at(i) != '+' &&
-           	   		   	   	   FirstElement.at(i) != '-'){VecForConcString11.push_back(FirstElement.at(i)); LastIndex3 = i;}
-        					else{index12 = i; break;}
+        					if(FirstElement.at(k) != ')'&&
+           	   		   	   	   FirstElement.at(k) != '(' &&
+           	   		  	   	   FirstElement.at(k) != '*' &&
+           	   		   	   	   FirstElement.at(k) != '/' &&
+           	   		   	   	   FirstElement.at(k) != '+' &&
+           	   		   	   	   FirstElement.at(k) != '-'){VecForConcString11.push_back(FirstElement.at(k)); LastIndex3 = k;}
+        					else{index12 = k; break;}
 					}
 
 
-					for(int i = 0; i < VecForConcString11.size(); i++){
-        					if(i == 0){ConcatenatedString11 = VecForConcString11.at(i);}
-        					else{ConcatenatedString11 += VecForConcString11.at(i);}
+					for(long unsigned int k = 0; k < VecForConcString11.size(); k++){
+        					if(k == 0){ConcatenatedString11 = VecForConcString11.at(k);}
+        					else{ConcatenatedString11 += VecForConcString11.at(k);}
 
 					}
 
@@ -1776,42 +1776,42 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 					else{
 				
 						//twelfth
-						for(int i = index12+1; i < FirstElement.length(); i++){
+						for(long unsigned int k = index12+1; k < FirstElement.length(); k++){
 	
-        						if(FirstElement.at(i) != ')'&&
-           	   			   	   	   FirstElement.at(i) != '(' &&
-           	   			   	   	   FirstElement.at(i) != '*' &&
-           	   		   	   		   FirstElement.at(i) != '/' &&
-           	   		   		   	   FirstElement.at(i) != '+' &&
-           	   		   	   		   FirstElement.at(i) != '-'){VecForConcString12.push_back(FirstElement.at(i));}
-        						else{index13 = i; break;}
+        						if(FirstElement.at(k) != ')'&&
+           	   			   	   	   FirstElement.at(k) != '(' &&
+           	   			   	   	   FirstElement.at(k) != '*' &&
+           	   		   	   		   FirstElement.at(k) != '/' &&
+           	   		   		   	   FirstElement.at(k) != '+' &&
+           	   		   	   		   FirstElement.at(k) != '-'){VecForConcString12.push_back(FirstElement.at(k));}
+        						else{index13 = k; break;}
 						}
 
 
-						for(int i = 0; i < VecForConcString12.size(); i++){
-        						if(i == 0){ConcatenatedString12 = VecForConcString12.at(i);}
-        						else{ConcatenatedString12 += VecForConcString12.at(i);}
+						for(long unsigned  int k = 0; k < VecForConcString12.size(); k++){
+        						if(k == 0){ConcatenatedString12 = VecForConcString12.at(k);}
+        						else{ConcatenatedString12 += VecForConcString12.at(k);}
 
 						}
 
 						float ConcatenatedStringToFloat12 = stof(ConcatenatedString12);
 
 						//thirteenth
-						for(int i = index13+1; i < FirstElement.length(); i++){
+						for(long unsigned int k = index13+1; k < FirstElement.length(); k++){
 
-        						if(FirstElement.at(i) != ')'&&
-           	   		   	   	   	   FirstElement.at(i) != '(' &&
-           	   		   	   	   	   FirstElement.at(i) != '*' &&
-           	   		   	   	   	   FirstElement.at(i) != '/' &&
-           	   		   	   	  	   FirstElement.at(i) != '+' &&
-           	   		   	   	   	   FirstElement.at(i) != '-'){VecForConcString13.push_back(FirstElement.at(i));}
-        						else{index14 = i; break;}
+        						if(FirstElement.at(k) != ')'&&
+           	   		   	   	   	   FirstElement.at(k) != '(' &&
+           	   		   	   	   	   FirstElement.at(k) != '*' &&
+           	   		   	   	   	   FirstElement.at(k) != '/' &&
+           	   		   	   	  	   FirstElement.at(k) != '+' &&
+           	   		   	   	   	   FirstElement.at(k) != '-'){VecForConcString13.push_back(FirstElement.at(k));}
+        						else{index14 = k; break;}
 						}
 
 
-						for(int i = 0; i < VecForConcString13.size(); i++){
-        						if(i == 0){ConcatenatedString13 = VecForConcString13.at(i);}
-        						else{ConcatenatedString13 += VecForConcString13.at(i);}
+						for(long unsigned int k = 0; k < VecForConcString13.size(); k++){
+        						if(k == 0){ConcatenatedString13 = VecForConcString13.at(k);}
+        						else{ConcatenatedString13 += VecForConcString13.at(k);}
 
 						}
 
@@ -1898,21 +1898,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 	}
 	else{
 		//first
-        	for(int i = 1; i < FirstElement.length(); i++){
+        	for(long unsigned int k = 1; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString.push_back(FirstElement.at(i));}
-                	else{index = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString.push_back(FirstElement.at(k));}
+                	else{index = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString.size(); i++){
-                	if(i == 0){ConcatenatedString = VecForConcString.at(i);}
-                	else{ConcatenatedString += VecForConcString.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString.size(); k++){
+                	if(k == 0){ConcatenatedString = VecForConcString.at(k);}
+                	else{ConcatenatedString += VecForConcString.at(k);}
 
         	}
 
@@ -1932,21 +1932,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 		//second	
-		for(int i = Minimum; i < FirstElement.length(); i++){
+		for(long unsigned int k = Minimum; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString2.push_back(FirstElement.at(i));}
-                	else{index2 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString2.push_back(FirstElement.at(k));}
+                	else{index2 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString2.size(); i++){
-                	if(i == 0){ConcatenatedString2 = VecForConcString2.at(i);}
-                	else{ConcatenatedString2 += VecForConcString2.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString2.size(); k++){
+                	if(k == 0){ConcatenatedString2 = VecForConcString2.at(k);}
+                	else{ConcatenatedString2 += VecForConcString2.at(k);}
 
         	}
         	
@@ -1959,42 +1959,42 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 		//third
-		for(int i = Minimum2; i < FirstElement.length(); i++){
+		for(long unsigned int k = Minimum2; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString3.push_back(FirstElement.at(i));}
-                	else{index3 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString3.push_back(FirstElement.at(k));}
+                	else{index3 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString3.size(); i++){
-                	if(i == 0){ConcatenatedString3 = VecForConcString3.at(i);}
-                	else{ConcatenatedString3 += VecForConcString3.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString3.size(); k++){
+                	if(k == 0){ConcatenatedString3 = VecForConcString3.at(k);}
+                	else{ConcatenatedString3 += VecForConcString3.at(k);}
 
         	}
 
         	float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
 
 		//fourth
-		for(int i = index3+1; i < FirstElement.length(); i++){
+		for(long unsigned int k = index3+1; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString4.push_back(FirstElement.at(i));}
-                	else{index4 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString4.push_back(FirstElement.at(k));}
+                	else{index4 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString4.size(); i++){
-                	if(i == 0){ConcatenatedString4 = VecForConcString4.at(i);}
-                	else{ConcatenatedString4 += VecForConcString4.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString4.size(); k++){
+                	if(k == 0){ConcatenatedString4 = VecForConcString4.at(k);}
+                	else{ConcatenatedString4 += VecForConcString4.at(k);}
 
         	}
 
@@ -2008,21 +2008,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 
 		//fifth
-		for(int i = Minimum3; i < FirstElement.length(); i++){
+		for(long unsigned int k = Minimum3; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString5.push_back(FirstElement.at(i));}
-               	 	else{index5 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString5.push_back(FirstElement.at(k));}
+               	 	else{index5 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString5.size(); i++){
-                	if(i == 0){ConcatenatedString5 = VecForConcString5.at(i);}
-                	else{ConcatenatedString5 += VecForConcString5.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString5.size(); k++){
+                	if(k == 0){ConcatenatedString5 = VecForConcString5.at(k);}
+                	else{ConcatenatedString5 += VecForConcString5.at(k);}
 
         	}
 
@@ -2035,42 +2035,42 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 
 		
 		//sixth
-		for(int i = Minimum4; i < FirstElement.length(); i++){
+		for(long unsigned int k = Minimum4; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString6.push_back(FirstElement.at(i));}
-                	else{index6 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString6.push_back(FirstElement.at(k));}
+                	else{index6 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString6.size(); i++){
-                	if(i == 0){ConcatenatedString6 = VecForConcString6.at(i);}
-                	else{ConcatenatedString6 += VecForConcString6.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString6.size(); k++){
+                	if(k == 0){ConcatenatedString6 = VecForConcString6.at(k);}
+                	else{ConcatenatedString6 += VecForConcString6.at(k);}
 
         	}
 
         	float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
 	
 		//seventh
-		for(int i = index6+1; i < FirstElement.length(); i++){
+		for(long unsigned int k = index6+1; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                   	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString7.push_back(FirstElement.at(i));}
-                	else{index7 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString7.push_back(FirstElement.at(k));}
+                	else{index7 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString7.size(); i++){
-                	if(i == 0){ConcatenatedString7 = VecForConcString7.at(i);}
-                	else{ConcatenatedString7 += VecForConcString7.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString7.size(); k++){
+                	if(k == 0){ConcatenatedString7 = VecForConcString7.at(k);}
+                	else{ConcatenatedString7 += VecForConcString7.at(k);}
 
         	}
 
@@ -2091,21 +2091,21 @@ for(int i = 0; i < FinalOutVec.size(); i++){
 		else{MinValue = index7+5;}
 
 		//seventh
-        	for(int i = MinValue; i < FirstElement.length(); i++){
+        	for(long unsigned int k = MinValue; k < FirstElement.length(); k++){
 
-                	if(FirstElement.at(i) != ')'&&
-                   	   FirstElement.at(i) != '(' &&
-                  	   FirstElement.at(i) != '*' &&
-                   	   FirstElement.at(i) != '/' &&
-                   	   FirstElement.at(i) != '+' &&
-                   	   FirstElement.at(i) != '-'){VecForConcString8.push_back(FirstElement.at(i));}
-                	else{index8 = i; break;}
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                  	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString8.push_back(FirstElement.at(k));}
+                	else{index8 = k; break;}
         	}
 
 
-        	for(int i = 0; i < VecForConcString8.size(); i++){
-                	if(i == 0){ConcatenatedString8 = VecForConcString8.at(i);}
-                	else{ConcatenatedString8 += VecForConcString8.at(i);}
+        	for(long unsigned int k = 0; k < VecForConcString8.size(); k++){
+                	if(k == 0){ConcatenatedString8 = VecForConcString8.at(k);}
+                	else{ConcatenatedString8 += VecForConcString8.at(k);}
 
         	}
 
@@ -2270,16 +2270,16 @@ auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas
 
 
 
-auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF){
+auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSFInput){
 
   std::cout << "print 18" << std::endl;
 
   float initial = 1;
   float output;
 
-  for(int i = 0; i < EffBTagged.size(); i++){
+  for(long unsigned int i = 0; i < EffBTagged.size(); i++){
 
-        output = (CMSBTagSF.at(0)*EffBTagged.at(i)) * initial;
+        output = (CMSBTagSFInput.at(0)*EffBTagged.at(i)) * initial;
 
   }
 
@@ -2290,17 +2290,17 @@ auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSF)
 
 
 
-auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSF){
+auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSFInput){
 
   std::cout << "print 19" << std::endl;
 
   float initial = 1;
 
-  int size = (CMSNonBTagSF.size() < EffNonBTagged.size()) ? CMSNonBTagSF.size() : EffNonBTagged.size();
+  int size = (CMSNonBTagSFInput.size() < EffNonBTagged.size()) ? CMSNonBTagSFInput.size() : EffNonBTagged.size();
 
-  for(int i = 0; i < size; i++){
+  for(long unsigned int i = 0; i < size; i++){
 
-  	initial = (1 - (CMSNonBTagSF.at(i)*EffNonBTagged.at(i)) ) * initial;
+  	initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
 
   }
 
@@ -2314,11 +2314,11 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
 
 
-auto ProbBTagDataFunction{[](const float& EffBTaggedProductData, const float& EffNonBTaggedProductData){
+auto ProbBTagDataFunction{[](const float& EffBTaggedProductDataInput, const float& EffNonBTaggedProductDataInput){
 
   std::cout << "print 20" << std::endl;
 
-  float DataProb = EffBTaggedProductData * EffNonBTaggedProductData;
+  float DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
   return DataProb;
 
 }};
@@ -3130,7 +3130,7 @@ const floats& Electron_dz){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
 	if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3153,7 +3153,7 @@ const floats& Electron_dz){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3177,7 +3177,7 @@ const floats& Electron_dz){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) < 0.2){OutVec.push_back(Electron_dz.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3200,7 +3200,7 @@ const floats& Electron_dz){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) <  0.2){OutVec.push_back(Electron_dz.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3223,7 +3223,7 @@ const floats& Electron_dxy){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479  && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3246,7 +3246,7 @@ const floats& Electron_dxy){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3268,7 +3268,7 @@ const floats& Electron_dxy){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0  && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3290,7 +3290,7 @@ const floats& Electron_dxy){
 
   floats OutVec{};
 
-  for(int i = 0; i < Electron_eta_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
 
         if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
 	else{float zero = 0.0; OutVec.push_back(zero);}
@@ -3676,7 +3676,7 @@ auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
   first_largest_value_electron = variable1.at(0);
 
-        for(int i = 1; i < variable1.size(); i++){
+        for(long unsigned int i = 1; i < variable1.size(); i++){
 
                 if(variable1.at(i) > first_largest_value_electron){
                         first_largest_value_electron = variable1.at(i);
@@ -3691,7 +3691,7 @@ auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
   
   first_largest_value_muon = variable2.at(0);
         
-        for(int i = 1; i < variable2.size(); i++){
+        for(long unsigned int i = 1; i < variable2.size(); i++){
                 
                 if(variable2.at(i) > first_largest_value_muon){
                         first_largest_value_muon = variable2.at(i);
@@ -3722,7 +3722,7 @@ auto SubleadingVariable{[](const floats& variable){
 
   	float first_largest_value = variable.at(0);
 
-	  	for(int i = 1; i < variable.size(); i++){
+	  	for(long unsigned int i = 1; i < variable.size(); i++){
 
 			if(variable.at(i) > first_largest_value){
 				first_largest_value = variable.at(i);
@@ -3733,7 +3733,7 @@ auto SubleadingVariable{[](const floats& variable){
 
   	float second_largest_value = INT_MIN;
 
-	  	for(int i = 0; i < variable.size(); i++){
+	  	for(long unsigned int i = 0; i < variable.size(); i++){
 
 			if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
 				second_largest_value = variable.at(i);
@@ -3765,7 +3765,7 @@ auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
   first_largest_value_electron = variable1.at(0);
 
-        for(int i = 1; i < variable1.size(); i++){
+        for(long unsigned int i = 1; i < variable1.size(); i++){
 
                 if(variable1.at(i) > first_largest_value_electron){
                         first_largest_value_electron = variable1.at(i);
@@ -3780,7 +3780,7 @@ auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
   first_largest_value_muon = variable2.at(0);
 
-        for(int i = 1; i < variable2.size(); i++){
+        for(long unsigned int i = 1; i < variable2.size(); i++){
 
                 if(variable2.at(i) > first_largest_value_muon){
                         first_largest_value_muon = variable2.at(i);
@@ -3807,7 +3807,7 @@ auto ThirdLeadingVariable{[](const floats& variable){
 
   float first_largest_value = variable.at(0);
 
-        for(int i = 1; i < variable.size(); i++){
+        for(long unsigned int i = 1; i < variable.size(); i++){
 
                 if(variable.at(i) > first_largest_value){
                         first_largest_value = variable.at(i);
@@ -3818,7 +3818,7 @@ auto ThirdLeadingVariable{[](const floats& variable){
 
   float second_largest_value = INT_MIN;
 
-        for(int i = 0; i < variable.size(); i++){
+        for(long unsigned int i = 0; i < variable.size(); i++){
 
                 if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
                         second_largest_value = variable.at(i);
@@ -3829,7 +3829,7 @@ auto ThirdLeadingVariable{[](const floats& variable){
 
   float third_largest_value = INT_MIN;
 
-	for(int i = 0; i < variable.size(); i++){
+	for(long unsigned int i = 0; i < variable.size(); i++){
 	
 		if( (variable.at(i) > third_largest_value) && (variable.at(i) < second_largest_value) ){
 		
@@ -3857,7 +3857,7 @@ auto FourthLeadingVariable{[](const floats& variable){
 
   float first_largest_value = variable.at(0);
 
-        for(int i = 1; i < variable.size(); i++){
+        for(long unsigned int i = 1; i < variable.size(); i++){
 
                 if(variable.at(i) > first_largest_value){
                         first_largest_value = variable.at(i);
@@ -3868,7 +3868,7 @@ auto FourthLeadingVariable{[](const floats& variable){
 
   float second_largest_value = INT_MIN;
 
-        for(int i = 0; i < variable.size(); i++){
+        for(long unsigned int i = 0; i < variable.size(); i++){
 
                 if( (variable.at(i) > second_largest_value) && (variable.at(i) < first_largest_value) ){
                         second_largest_value = variable.at(i);
@@ -3879,7 +3879,7 @@ auto FourthLeadingVariable{[](const floats& variable){
 
   float third_largest_value = INT_MIN;
 
-        for(int i = 0; i < variable.size(); i++){
+        for(long unsigned int i = 0; i < variable.size(); i++){
 
                 if( (variable.at(i) > third_largest_value) && (variable.at(i) < second_largest_value) ){
 
@@ -3892,7 +3892,7 @@ auto FourthLeadingVariable{[](const floats& variable){
 
   float fourth_largest_value = INT_MIN;
 
-	for(int i = 0; i < variable.size(); i++){
+	for(long unsigned int i = 0; i < variable.size(); i++){
 
                 if( (variable.at(i) > fourth_largest_value) && (variable.at(i) < third_largest_value) ){
 
@@ -4008,7 +4008,7 @@ const doubles& Object2_phi_Selection
 
   doubles dR_vec{};
 
-  for(int i = 0; i < Object1_phi_Selection.size(); i++){
+  for(long unsigned int i = 0; i < Object1_phi_Selection.size(); i++){
 
   	double dR = sqrt(pow(Object1_eta_Selection.at(i) - Object2_eta_Selection.at(0), 2) + pow(Object1_phi_Selection.at(i) - Object2_phi_Selection.at(0), 2));
   	dR_vec.push_back(dR);
@@ -4117,7 +4117,7 @@ const doubles& Object2_phi
 
  doubles dPhi_vec{};
 
- for(int i = 0; i < Object1_phi.size(); i++){
+ for(long unsigned int i = 0; i < Object1_phi.size(); i++){
 
  	double dPhi = Object1_phi.at(i) - Object2_phi.at(0);
 	dPhi_vec.push_back(dPhi);
@@ -4224,8 +4224,8 @@ const float& FourthJetPt
 
   std::cout << "print 79" << std::endl;
 
-  float JetPtSum = LeadingJetPt + SubleadingJetPt + ThirdJetPt + FourthJetPt;
-  return JetPtSum;
+  float JetPtSumOutput = LeadingJetPt + SubleadingJetPt + ThirdJetPt + FourthJetPt;
+  return JetPtSumOutput;
 
 }};
 
@@ -4241,8 +4241,8 @@ const float& FourthJetEta
 
   std::cout << "print 80" << std::endl;
 
-  float JetEtaSum = LeadingJetEta + SubleadingJetEta + ThirdJetEta + FourthJetEta;
-  return JetEtaSum;
+  float JetEtaSumOutput = LeadingJetEta + SubleadingJetEta + ThirdJetEta + FourthJetEta;
+  return JetEtaSumOutput;
 
 }};
 
@@ -4258,8 +4258,8 @@ const float& FourthJetPhi
 
   std::cout << "print 81" << std::endl;
 
-  float JetPhiSum = LeadingJetPhi + SubleadingJetPhi + ThirdJetPhi + FourthJetPhi;
-  return JetPhiSum;
+  float JetPhiSumOutput = LeadingJetPhi + SubleadingJetPhi + ThirdJetPhi + FourthJetPhi;
+  return JetPhiSumOutput;
 
 }};
 
@@ -4274,8 +4274,8 @@ const float& SubleadingLepPt
 
   std::cout << "print 82" << std::endl;
 
-  float LepPtSum = LeadingLepPt + SubleadingLepPt;
-  return LepPtSum;
+  float LepPtSumOutput = LeadingLepPt + SubleadingLepPt;
+  return LepPtSumOutput;
 
 }};
 
@@ -4290,8 +4290,8 @@ const float& SubleadingLepEta
 
   std::cout << "print 83" << std::endl;
 
-  float LepEtaSum = LeadingLepEta + SubleadingLepEta;
-  return LepEtaSum;
+  float LepEtaSumOutput = LeadingLepEta + SubleadingLepEta;
+  return LepEtaSumOutput;
 
 }};
 
@@ -4306,8 +4306,8 @@ const float& SubleadingLepPhi
 
   std::cout << "print 84" << std::endl;
 
-  float LepPhiSum = LeadingLepPhi + SubleadingLepPhi;
-  return LepPhiSum;
+  float LepPhiSumOutput = LeadingLepPhi + SubleadingLepPhi;
+  return LepPhiSumOutput;
 
 }};
 
@@ -4317,8 +4317,8 @@ auto HT{[](const float& Pt){
  
   std::cout << "print 85" << std::endl;
 
-  float HT = abs(Pt);
-  return HT;
+  float HTOutput = abs(Pt);
+  return HTOutput;
 
 }};
 
@@ -4354,8 +4354,8 @@ const float& FourthJetHT
   
   std::cout << "print 88" << std::endl;
 
-  float TotJetHT = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
-  return TotJetHT;
+  float TotJetHTOutput = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
+  return TotJetHTOutput;
 
 }};
 
@@ -4370,8 +4370,8 @@ const float& SubleadingLeptonHT
 
   std::cout << "print 89" << std::endl;
 
-  float TotLepHT = LeadingLeptonHT + SubleadingLeptonHT;
-  return TotLepHT;
+  float TotLepHTOutput = LeadingLeptonHT + SubleadingLeptonHT;
+  return TotLepHTOutput;
 
 }};
 
@@ -4379,8 +4379,8 @@ auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
 
   std::cout << "print 90" << std::endl;
 
-  float TotHTOverTotpT = TotHT / TotpT;
-  return TotHTOverTotpT;
+  float TotHTOverTotpTOutput = TotHT / TotpT;
+  return TotHTOverTotpTOutput;
 
 
 }};
@@ -4389,8 +4389,8 @@ auto TotHTOverTotpT_floats{[](const floats& TotHT, const floats& TotpT){
 
   std::cout << "print 91" << std::endl;
 
-  floats TotHTOverTotpT = TotHT / TotpT;
-  return TotHTOverTotpT;
+  floats TotHTOverTotpTOutput = TotHT / TotpT;
+  return TotHTOverTotpTOutput;
 
 
 }};
@@ -4412,8 +4412,7 @@ const float& FourthJetPhi,
 const float& LeadingJetMass,
 const float& SubleadingJetMass,
 const float& ThirdJetMass,
-const float& FourthJetMass,
-const unsigned int& nJet 
+const float& FourthJetMass
 
 ){
 
@@ -4449,8 +4448,7 @@ const float& SubleadingJetPhi,
 const float& ThirdJetPhi,
 const float& LeadingJetMass,
 const float& SubleadingJetMass,
-const float& ThirdJetMass,
-const unsigned int nJet
+const float& ThirdJetMass
 
 ){
   
@@ -4623,7 +4621,7 @@ const ints& lead_bjet
 
   floats vec{};
 
-  for(int i = 0; i < nJet; i++){
+  for(const unsigned int i = 0; i < nJet; i++){
         if(lead_bjet.at(i) == 1){ 
 		vec.push_back(Jet_variable.at(i));
 	}
@@ -4649,7 +4647,7 @@ const floats& bjet_mass
 
   auto BJets = TLorentzVector{};
 
-  for(int i = 0; i < bjet_pt.size(); i++){
+  for(long unsigned int i = 0; i < bjet_pt.size(); i++){
 
 	auto Vec = TLorentzVector{};
 	Vec.SetPtEtaPhiM(bjet_pt.at(i), bjet_eta.at(i), bjet_phi.at(i), bjet_mass.at(i));
@@ -4744,7 +4742,7 @@ const floats& Jet_btagCSVV2
 
   floats btagoutput{};
 
-  for(int i = 0; i < BJetBTags.size(); i++){
+  for(long unsigned int i = 0; i < BJetBTags.size(); i++){
 	if(BJetBTags.at(i) != 0){
 		btagoutput.push_back(Jet_btagCSVV2.at(i));
 	}
@@ -5028,7 +5026,6 @@ auto z_mass_cut{[](const float& z_mass) {
 
 auto RecoZ{[](
 
-const unsigned int& nLepton,
 const float& LeadingleptonPt,
 const float& LeadingleptonEta,
 const float& LeadingleptonPhi,
@@ -5060,8 +5057,8 @@ auto RecoZHT{[](const doubles& RecoZPt){
 
   std::cout << "print 131" << std::endl;
 
-  doubles RecoZHT = abs(RecoZPt);
-  return RecoZHT;
+  doubles RecoZHTOutput = abs(RecoZPt);
+  return RecoZHTOutput;
 
 }};
 
@@ -5070,8 +5067,8 @@ auto RecoWHT{[](const floats& RecoWPt){
 
   std::cout << "print 132" << std::endl;
 
-  floats RecoWHT = abs(RecoWPt);
-  return RecoWHT;
+  floats RecoWHTOutput = abs(RecoWPt);
+  return RecoWHTOutput;
 
 }};
 
@@ -5112,12 +5109,10 @@ const floats& bjets_pt,
 const floats& bjets_eta,
 const floats& bjets_phi,
 const floats& bjets_mass,
-const unsigned int& nJet,
 const floats& w_pair_pt,
 const floats& w_pair_eta,
 const floats& w_pair_phi,
-const float& w_mass, 
-const ints& w_reco_jets
+const float& w_mass 
 
 ){
 
@@ -5131,7 +5126,7 @@ const ints& w_reco_jets
   size_t index_1{std::numeric_limits<size_t>::max()};
   const size_t num{w_pair_pt.size()};
 
-  for(int i = 0; i < num; i++){
+  for(const unsigned int i = 0; i < num; i++){
 
 
   BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
@@ -5173,8 +5168,8 @@ const float& TotJetHT
 
   std::cout << "print 135" << std::endl;
 
-  floats TotalHTSystem = RecoZHT + RecoWHT.at(0) + Top_HT + TotLepHT + TotJetHT;
-  return TotalHTSystem;
+  floats TotalHTSystemOutput = RecoZHT + RecoWHT.at(0) + Top_HT + TotLepHT + TotJetHT;
+  return TotalHTSystemOutput;
 
 }};
 
@@ -5190,8 +5185,8 @@ const float& TotJetPt
 
   std::cout << "print 136" << std::endl;
 
-  floats TotalPtSystem = RecoZPt + RecoWPt.at(0) + Top_Pt + TotLepPt + TotJetPt;
-  return TotalPtSystem;
+  floats TotalPtSystemOutput = RecoZPt + RecoWPt.at(0) + Top_Pt + TotLepPt + TotJetPt;
+  return TotalPtSystemOutput;
 
 }};
 
@@ -5208,8 +5203,8 @@ const float& TotJetEta
 
   std::cout << "print 137" << std::endl;
 
-  doubles TotalEtaSystem = RecoZEta + RecoWEta.at(0) + Top_Eta + TotLepEta + TotJetEta;
-  return TotalEtaSystem;
+  doubles TotalEtaSystemOutput = RecoZEta + RecoWEta.at(0) + Top_Eta + TotLepEta + TotJetEta;
+  return TotalEtaSystemOutput;
 
 }};
 
@@ -5226,8 +5221,8 @@ const float& TotJetPhi
 
   std::cout << "print 138" << std::endl;
 
-  doubles TotalPhiSystem = RecoZPhi + RecoWPhi.at(0) + Top_Phi + TotLepPhi + TotJetPhi;
-  return TotalPhiSystem;
+  doubles TotalPhiSystemOutput = RecoZPhi + RecoWPhi.at(0) + Top_Phi + TotLepPhi + TotJetPhi;
+  return TotalPhiSystemOutput;
 
 
 }};
@@ -7329,8 +7324,7 @@ std::vector<std::string> InvMass_AllJets_strings = {
 "LeadingJetMass",
 "SubleadingJetMass",
 "ThirdJetMass",
-"FourthJetMass",
-"nJet"
+"FourthJetMass"
 };
 
 
@@ -7346,8 +7340,7 @@ std::vector<std::string> InvMass_3Jets_strings = {
 "ThirdJetPhi",
 "LeadingJetMass",
 "SubleadingJetMass",
-"ThirdJetMass",
-"nJet"
+"ThirdJetMass"
 };
 
 std::vector<std::string> bjet_mass_strings = {JetMassInput, "nJet", "lead_bjet"};
@@ -7375,12 +7368,10 @@ std::vector<std::string> top_strings = {
 "bjeteta",
 "bjetphi",
 "bjetmass",
-"nJet",
 "w_pair_pt", 
 "w_pair_eta", 
 "w_pair_phi", 
-"w_mass",
-"w_reco_jets"};
+"w_mass"};
 
 std::vector<std::string> deltaR_Top_LeadingElectron_strings = {
 "Top_Phi",
@@ -7612,7 +7603,6 @@ std::vector<std::string> deltaR_W_Z_strings = {
 };
 
 std::vector<std::string> RecoZstrings_ee{
-"nElectron",
 "LeadingElectron_pT",
 "LeadingElectronEta",
 "LeadingElectronPhi",
@@ -7624,7 +7614,6 @@ std::vector<std::string> RecoZstrings_ee{
 };
 
 std::vector<std::string> RecoZstrings_mumu = {
-"nMuon",
 "LeadingMuon_pT",
 "LeadingMuonEta",
 "LeadingMuonPhi",
@@ -8722,33 +8711,33 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
 
 
   //Reading the efficiency text files to calculate the trigger SFs
-  float MC_Efficiency_Central_ee = ( textfilereader2_TriggerSF("MC_Central", year, blinding) ).at(0);
-  float MC_Efficiency_Central_mumu = ( textfilereader2_TriggerSF("MC_Central", year, blinding) ).at(1);
-  float MC_Efficiency_Central_emu = ( textfilereader2_TriggerSF("MC_Central", year, blinding) ).at(2);
+  float MC_Efficiency_Central_ee = ( textfilereader2_TriggerSF("MC_Central", year) ).at(0);
+  float MC_Efficiency_Central_mumu = ( textfilereader2_TriggerSF("MC_Central", year) ).at(1);
+  float MC_Efficiency_Central_emu = ( textfilereader2_TriggerSF("MC_Central", year) ).at(2);
 
 
-  float Data_Efficiency_Central_ee = ( textfilereader2_TriggerSF("Data_Central", year, blinding) ).at(0);
-  float Data_Efficiency_Central_mumu = ( textfilereader2_TriggerSF("Data_Central", year, blinding) ).at(1);
-  float Data_Efficiency_Central_emu = ( textfilereader2_TriggerSF("Data_Central", year, blinding) ).at(2);
+  float Data_Efficiency_Central_ee = ( textfilereader2_TriggerSF("Data_Central", year) ).at(0);
+  float Data_Efficiency_Central_mumu = ( textfilereader2_TriggerSF("Data_Central", year) ).at(1);
+  float Data_Efficiency_Central_emu = ( textfilereader2_TriggerSF("Data_Central", year) ).at(2);
 
 
   float SF_ee = Data_Efficiency_Central_ee / (MC_Efficiency_Central_ee + 1.0e-06);
   float SF_mumu = Data_Efficiency_Central_mumu / (MC_Efficiency_Central_mumu + 1.0e-06);
   float SF_emu = Data_Efficiency_Central_emu / (MC_Efficiency_Central_emu + 1.0e-06);
 
-  float MC_Efficiency_UpperUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(0);
-  float MC_Efficiency_LowerUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(1);
-  float MC_Efficiency_UpperUncert_mumu = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(2);
-  float MC_Efficiency_LowerUncert_mumu = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(3);
-  float MC_Efficiency_UpperUncert_emu = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(4);
-  float MC_Efficiency_LowerUncert_emu = ( textfilereader2_TriggerSF("MC_Uncert", year, blinding) ).at(5);
+  float MC_Efficiency_UpperUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(0);
+  float MC_Efficiency_LowerUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(1);
+  float MC_Efficiency_UpperUncert_mumu = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(2);
+  float MC_Efficiency_LowerUncert_mumu = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(3);
+  float MC_Efficiency_UpperUncert_emu = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(4);
+  float MC_Efficiency_LowerUncert_emu = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(5);
 
-  float Data_Efficiency_UpperUncert_ee = ( textfilereader2_TriggerSF("Data_Uncert", year, blinding) ).at(0);
-  float Data_Efficiency_LowerUncert_ee = ( textfilereader2_TriggerSF("Data_Uncert", year, blinding) ).at(1);
-  float Data_Efficiency_UpperUncert_mumu = ( textfilereader2_TriggerSF("Data_Uncert", year, blinding) ).at(2);
-  float Data_Efficiency_LowerUncert_mumu = ( textfilereader2_TriggerSF("Data_Uncert", year, blinding) ).at(3);
-  float Data_Efficiency_UpperUncert_emu = ( textfilereader2_TriggerSF("Data_Uncert", year, blinding) ).at(4);
-  float Data_Efficiency_LowerUncert_emu = ( textfilereader2_TriggerSF("Data_Uncert", year, blinding) ).at(5);
+  float Data_Efficiency_UpperUncert_ee = ( textfilereader2_TriggerSF("Data_Uncert", year) ).at(0);
+  float Data_Efficiency_LowerUncert_ee = ( textfilereader2_TriggerSF("Data_Uncert", year) ).at(1);
+  float Data_Efficiency_UpperUncert_mumu = ( textfilereader2_TriggerSF("Data_Uncert", year) ).at(2);
+  float Data_Efficiency_LowerUncert_mumu = ( textfilereader2_TriggerSF("Data_Uncert", year) ).at(3);
+  float Data_Efficiency_UpperUncert_emu = ( textfilereader2_TriggerSF("Data_Uncert", year) ).at(4);
+  float Data_Efficiency_LowerUncert_emu = ( textfilereader2_TriggerSF("Data_Uncert", year) ).at(5);
 
 
   //Uncertainties for SFs
@@ -9778,8 +9767,8 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
                                              .Define("notbjetpt", bjet_variable, nonbjet_pt_strings)
                                              .Define("notbjeteta", bjet_variable, nonbjet_eta_strings)
   					     .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
-					     .Define("EffBTagged", EffBTaggedFunction_ee, {"DummyColumnBJet", JetPtInput, JetEtaInput})
-			    		     .Define("EffNonBTagged", EffNonBTaggedFunction_ee, {"DummyColumnBJet", JetPtInput, JetEtaInput})
+					     .Define("EffBTagged", EffBTaggedFunction_ee, {JetPtInput, JetEtaInput})
+			    		     .Define("EffNonBTagged", EffNonBTaggedFunction_ee, {JetPtInput, JetEtaInput})
 					     .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
 					     .Define("EffNonBTaggedProduct", EffNonBTaggedProduct, {"EffNonBTagged"})
 					     .Define("EffBTaggedProductData", EffBTaggedProductData, {"EffBTagged", "CMSBTagSF"})
