@@ -6137,7 +6137,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 		     &EGammaEffReco_HigherPt_2017_histo,     &EGammaEffRecoSys_HigherPt_2017_histo,
 		     &EGammaEff2018_histo,	             &EGammaEffSys2018_histo,
 		     &EGammaEffReco2018_histo,	             &EGammaEffRecoSys2018_histo
-		     ](const std::string& year, const std::string& type, const floats& pt, const floats& SuperClusterEta){
+		     ](const std::string& YearInput, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
 
    std::cout << "print 167" << std::endl;
@@ -6145,7 +6145,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
    floats OutputVector{};
    floats OutputVectorFinal{};
 
-   for(int i = 0; i < pt.size(); i++){
+   for(long unsigned int i = 0; i < pt.size(); i++){
 
   	if( abs(SuperClusterEta.at(i)) < 2.5 ){
 
@@ -6172,14 +6172,14 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 
 		float EGammaSF;
 
-		if(year == "2016"){
+		if(YearInput == "2016"){
 			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
 			else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2016_histo->GetBinError(Bin_EGammaEffRecoSys2016);}
 			else if(type == "EGammaEff"){EGammaSF = EGammaEff2016_histo->GetBinContent(Bin_EGammaEff2016);}
 			else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2016_histo->GetBinContent(Bin_EGammaEffReco2016);}
 			else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2016" << std::endl;}
 		}
-		else if(year == "2017"){
+		else if(YearInput == "2017"){
 			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2017_histo->GetBinError(Bin_EGammaEffSys2017);}
                         else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGammaSF = EGammaEffRecoSys_LowPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_LowPt_2017);}
 			else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGammaSF = EGammaEffRecoSys_HigherPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_HigherPt_2017);}
@@ -6189,7 +6189,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
                         else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2017" << std::endl;}
 
 		}
-		else if(year == "2018"){
+		else if(YearInput == "2018"){
 			if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2018_histo->GetBinError(Bin_EGammaEffSys2018);}
                         else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2018_histo->GetBinError(Bin_EGammaEffRecoSys2018);}
                         else if(type == "EGammaEff"){EGammaSF = EGammaEff2018_histo->GetBinContent(Bin_EGammaEff2018);}
@@ -6209,7 +6209,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
   } //end of for loop
 
 
-  for(int i = 0; i < OutputVector.size(); i++){
+  for(long unsigned int i = 0; i < OutputVector.size(); i++){
 
 	if(OutputVector.at(i) == 0){OutputVectorFinal.push_back(1.0);}
 	else{OutputVectorFinal.push_back( OutputVector.at(i) );}
@@ -6396,7 +6396,7 @@ auto MuonSF{[
 &histo_RunsABCD_ISO_2018
 
 
-](const std::string& type, const std::string& year, const std::string& UpOrDown, const floats& pt, const floats& eta){
+](const std::string& type, const std::string& YearInput, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
   std::cout << "print 172" << std::endl;
 
@@ -6408,11 +6408,11 @@ auto MuonSF{[
   floats MuonSFOutput{};
 
 
-  for(int i = 0; i < pt.size(); i++){
+  for(long unsigned int i = 0; i < pt.size(); i++){
 
   	if(pt.at(i) >= 20 && pt.at(i) <= 120 && AbsEta.at(i) <= MaxTrackerEta){ 
 
-		if(year == "2016"){
+		if(YearInput == "2016"){
 
 			float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
 			float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -6484,7 +6484,7 @@ auto MuonSF{[
 			else{MuonSFOutput.push_back(MuonSF_RunsBCDEFGH);}
 
 		}
-		else if(year == "2017"){
+		else if(YearInput == "2017"){
 
 			float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
 			float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -6515,7 +6515,7 @@ auto MuonSF{[
 			else{std::cout << "Incorrect type for 2017 muon SF function" << std::endl;}
 
 		}
-		else if(year == "2018"){
+		else if(YearInput == "2018"){
 
 			float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 			float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -6673,7 +6673,7 @@ auto DummyColumnFunctionInts{[](const ints& charges){
 
 
 //PS weight lambda function
-auto PSWeight{[&year, &process](floats& PSWeight, const floats& pts){
+auto PSWeight{[&year, &process](floats& PSWeightInput){
 
   std::cout << "print 181" << std::endl;
 
@@ -6688,7 +6688,7 @@ auto PSWeight{[&year, &process](floats& PSWeight, const floats& pts){
 	   process == "SingleTop_tchannel_tbar" ||
 	   process == "ttbarV_ttgamma" ||
 	   process == "ttbar_TTToHadronic" ||
-	   process == "ttbar_TTToSemileptonic"){return PSWeight;}
+	   process == "ttbar_TTToSemileptonic"){return PSWeightInput;}
 	else{return Ones;}
 
  
@@ -8597,38 +8597,38 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
         else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR.root";
         }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+        else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ttbarCR.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ZPlusJetsCR.root";
         }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+        else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + ".root";}
 
 	}
 	else{
 
 
-        if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+        if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_Blinded.root";
         }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+        else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR_Blinded.root";
         }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+        else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ttbarCR_Blinded.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ZPlusJetsCR_Blinded.root";
         }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){
+        else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
                 TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR_Blinded.root";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_Blinded.root";}
 
 
@@ -9776,7 +9776,7 @@ auto d_WeightedEvents_ee = d_TopReweighted_ee.Define("TotalHT_System", TotalHT_S
 					     .Define("EGammaSF_egammaEffSys", EGammaSF_egammaEff_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("EGammaSF_egammaEffReco", EGammaSF_egammaEffReco, {"Electron_pt_Selection", "Electron_eta_Selection"})
 					     .Define("EGammaSF_egammaEffRecoSys", EGammaSF_egammaEffReco_Sys, {"Electron_pt_Selection", "Electron_eta_Selection"})
-					     .Define("ReturnedPSWeight", PSWeight, {PSWeightString_ee, "Electron_pt_Selection"})
+					     .Define("ReturnedPSWeight", PSWeight, {PSWeightString_ee})
 					     .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					     .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 					     .Define("ME_numerator_histo", ME_histo_function, {})
@@ -9810,7 +9810,7 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 						 .Define("MuonSFTest_ID_sys_stat", MuonSFTest_ID_sys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
 						 .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
                                                  .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"MuonPt_RochCorr", "MuonEta_RochCorr"})
-						 .Define("ReturnedPSWeight", PSWeight, {PSWeightString_mumu, "MuonPt_RochCorr"})
+						 .Define("ReturnedPSWeight", PSWeight, {PSWeightString_mumu})
 					   	 .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 						 .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 						 .Define("ME_numerator_histo", ME_histo_function, {})
