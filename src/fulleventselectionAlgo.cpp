@@ -2448,6 +2448,8 @@ if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && pro
 
 
 
+std::cout << "before input files" << std::endl;
+
 
 
 //Providing the options for the input files for each year
@@ -2738,7 +2740,7 @@ else if(year == "2018"){
 else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
-
+std::cout << "before range" << std::endl;
 
 RDataFrame d("Events", input_files);
 auto d_dataframe = d.Range(0, 1000000);
@@ -3120,6 +3122,8 @@ else{std::cout << "Please choose MC or data as the input" << std::endl;}
 //Events that only pass the lepton selection criteria
 
 
+std::cout << "before dz function" << std::endl;
+
 auto LeadingElectron_dz_ECALBarrel_function{[](
 
 const float& LeadingElectron_pT,
@@ -3305,7 +3309,7 @@ const floats& Electron_dxy){
 
 
 
-
+std::cout << "before opposite sign" << std::endl;
 
 
 auto OppositeSign{[](const ints& charges){
@@ -4752,7 +4756,7 @@ const floats& Jet_btagCSVV2
 
 }};
 
-
+std::cout << "before w mass cut" << std::endl;
 
 // W mass cut
 
@@ -6067,7 +6071,7 @@ auto NormalisationFactorFunction{[&process, &year](){
 
 
 
-
+std::cout << "before egamma" << std::endl;
 
 
 //Electron selection and reconstruction SFs
@@ -8055,7 +8059,7 @@ auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_par
 
 
 
-
+std::cout << "before MC start" << std::endl;
 
 
 
