@@ -5872,7 +5872,7 @@ auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const f
 
  floats NewPtVec = {};
 
- for(int i = 0; i < JetPt.size(); i++){
+ for(long unsigned int i = 0; i < JetPt.size(); i++){
 
         float NewPt = (SmearedJet4Momentum.at(i)).Pt();
  	NewPtVec.push_back(NewPt);
@@ -5890,7 +5890,7 @@ auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const 
 
  floats NewPhiVec{};
 
- for(int i = 0; i < JetPhi.size(); i++){
+ for(long unsigned int i = 0; i < JetPhi.size(); i++){
 
 	float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
         NewPhiVec.push_back(NewPhi);
@@ -5908,7 +5908,7 @@ auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const 
 
  floats NewEtaVec = {};
 
- for(int i = 0; i < JetEta.size(); i++){
+ for(long unsigned int i = 0; i < JetEta.size(); i++){
 
         float NewEta = (SmearedJet4Momentum.at(i)).Eta();
         NewEtaVec.push_back(NewEta);
@@ -5926,13 +5926,9 @@ auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const
 
  floats NewMassVec = {};
 
- for(int i = 0; i < JetMass.size(); i++){
+ for(long unsigned int i = 0; i < JetMass.size(); i++){
 
-	float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
-        float NewPt = (SmearedJet4Momentum.at(i)).Pt();
-        float NewEta = (SmearedJet4Momentum.at(i)).Eta();
-        float NewMass = (SmearedJet4Momentum.at(i)).M();
-		
+        float NewMass = (SmearedJet4Momentum.at(i)).M();	
 	NewMassVec.push_back(NewMass);
 
  }
@@ -5956,7 +5952,7 @@ const floats& Muon_mass
 
   TLorentzVector Muon4Mo{};
   
-  for(int i = 0; i < Muon_pt.size(); i++){
+  for(long unsigned int i = 0; i < Muon_pt.size(); i++){
 	
   	TLorentzVector vec{};
   	vec.SetPtEtaPhiM(Muon_pt.at(i), Muon_eta.at(i), Muon_phi.at(i), Muon_mass.at(i));
@@ -6056,7 +6052,7 @@ auto NormalisationFactorFunction{[&process, &year](){
 
 
 
-  for(int i = 1; i < ProcessStrings.size(); i++){
+  for(long unsigned int i = 1; i < ProcessStrings.size(); i++){
 
 	if(process == ProcessStrings.at(i)){return linereader(i, year);}
 	else{continue;}
