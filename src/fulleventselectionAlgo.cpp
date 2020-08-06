@@ -5158,34 +5158,34 @@ const float& w_mass
 
 auto TotalHT_System{[](
 
-const doubles& RecoZHT,
-const floats& RecoWHT,
-const doubles& Top_HT,
-const float& TotLepHT,
-const float& TotJetHT
+const doubles& RecoZHTInput,
+const floats& RecoWHTInput,
+const doubles& Top_HT_Input,
+const float& TotLepHTInput,
+const float& TotJetHTInput
 
 ){
 
   std::cout << "print 135" << std::endl;
 
-  floats TotalHTSystemOutput = RecoZHT + RecoWHT.at(0) + Top_HT + TotLepHT + TotJetHT;
+  floats TotalHTSystemOutput = RecoZHTInput + RecoWHTInput.at(0) + Top_HT_Input + TotLepHTInput + TotJetHTInput;
   return TotalHTSystemOutput;
 
 }};
 
 auto TotalPt_System{[](
 
-const doubles& RecoZPt,
-const floats& RecoWPt,
-const doubles& Top_Pt,
-const float& TotLepPt,
-const float& TotJetPt
+const doubles& RecoZPtInput,
+const floats& RecoWPtInput,
+const doubles& Top_Pt_Input,
+const float& TotLepPtInput,
+const float& TotJetPtInput
 
 ){
 
   std::cout << "print 136" << std::endl;
 
-  floats TotalPtSystemOutput = RecoZPt + RecoWPt.at(0) + Top_Pt + TotLepPt + TotJetPt;
+  floats TotalPtSystemOutput = RecoZPtInput + RecoWPtInput.at(0) + Top_Pt_Input + TotLepPtInput + TotJetPtInput;
   return TotalPtSystemOutput;
 
 }};
@@ -5193,17 +5193,17 @@ const float& TotJetPt
 
 auto TotalEta_System{[](
 
-const doubles& RecoZEta,
-const floats& RecoWEta,
-const doubles& Top_Eta,
-const float& TotLepEta,
-const float& TotJetEta
+const doubles& RecoZEtaInput,
+const floats& RecoWEtaInput,
+const doubles& Top_Eta_Input,
+const float& TotLepEtaInput,
+const float& TotJetEtaInput
 
 ){
 
   std::cout << "print 137" << std::endl;
 
-  doubles TotalEtaSystemOutput = RecoZEta + RecoWEta.at(0) + Top_Eta + TotLepEta + TotJetEta;
+  doubles TotalEtaSystemOutput = RecoZEtaInput + RecoWEtaInput.at(0) + Top_Eta_Input + TotLepEtaInput + TotJetEtaInput;
   return TotalEtaSystemOutput;
 
 }};
@@ -5211,17 +5211,17 @@ const float& TotJetEta
 
 auto TotalPhi_System{[](
 
-const doubles& RecoZPhi,
-const floats& RecoWPhi,
-const doubles& Top_Phi,
-const float& TotLepPhi,
-const float& TotJetPhi
+const doubles& RecoZPhiInput,
+const floats& RecoWPhiInput,
+const doubles& Top_Phi_Input,
+const float& TotLepPhiInput,
+const float& TotJetPhiInput
 
 ){
 
   std::cout << "print 138" << std::endl;
 
-  doubles TotalPhiSystemOutput = RecoZPhi + RecoWPhi.at(0) + Top_Phi + TotLepPhi + TotJetPhi;
+  doubles TotalPhiSystemOutput = RecoZPhiInput + RecoWPhiInput.at(0) + Top_Phi_Input + TotLepPhiInput + TotJetPhiInput;
   return TotalPhiSystemOutput;
 
 
@@ -5242,7 +5242,7 @@ const floats& Jet_eta_Selection
 
     doubles output_vec;
   
-    for(int i; i < nJet; i++){
+    for(const unsigned int i; i < nJet; i++){
 
     	double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
     	double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
@@ -5271,7 +5271,7 @@ const floats& Jet_Phi_Selection
   double output;
   doubles output_vec{};
 
-  for(int i; i < nJet; i++){
+  for(const unsigned int i; i < nJet; i++){
 
     double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
     double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
@@ -5445,12 +5445,12 @@ const floats& Jet_pt) {
   {
     std::string str = "";
 
-    int line_number = 0;
+    int line_num = 0;
 	
-	 while(getline(file, str) && line_number != LineSpecified){
-		++line_number;
+	 while(getline(file, str) && line_num != LineSpecified){
+		++line_num;
 	}
-	if(line_number == LineSpecified){
+	if(line_num == LineSpecified){
 		if(sigmaJER == true && SF == false && up == false && down == false){
 			file >> Col1;
                 	file >> Col2;
@@ -5499,7 +5499,7 @@ const floats& Jet_pt) {
 
   floats AnswerVec{};
  
-  for(int i = 0; i < Jet_pt.size(); i++){
+  for(const unsigned int i = 0; i < Jet_pt.size(); i++){
 
 	if(  (Jet_eta.at(i) > abs(Col1) && Jet_eta.at(i) < abs(Col2)) && 
 	     (Jet_rho.at(0) > abs(Col3) && Jet_rho.at(0) < abs(Col4)) &&
@@ -5638,7 +5638,7 @@ const floats& Jet_pt
   float factor;
 
 
-  for(int i = 0; i < RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).size(); i++){
+  for(long unsigned int i = 0; i < RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).size(); i++){
 
 	if(RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i) != 0){factor = RowReader2(k, SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt).at(i);}
 	else{continue;}
@@ -5775,23 +5775,23 @@ const floats& pT_ptcl,
 const floats& eta_ptcl, 
 const floats& phi_ptcl, 
 const float& sJER_nominal, 
-const float& sigma_JER,
+const float& sigma_JER_input,
 const ints& Jet_genJetIdx){
 
   std::cout << "print 156" << std::endl;
 
   floats cJER_vec{};
 
-  for(int i = 0; i < pT.size(); i++){
+  for(long unsigned int i = 0; i < pT.size(); i++){
 
 	float cJER_Scaling;
-	float N = gRandom->Gaus(0, sigma_JER);
+	float N = gRandom->Gaus(0, sigma_JER_input);
         float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
 
   	if(Jet_genJetIdx.at(i) != -1){
 
-		int j = Jet_genJetIdx.at(i);
+		long unsigned int j = Jet_genJetIdx.at(i);
 
 			if( j < pT_ptcl.size() ){
 
@@ -5800,7 +5800,7 @@ const ints& Jet_genJetIdx){
         			double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
         			const double RCone = 0.4;
 
- 				if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER * pT.at(i)) && (deltaR == RCone / 2) ){
+ 				if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER_input * pT.at(i)) && (deltaR == RCone / 2) ){
 
 					cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
 					cJER_vec.push_back(cJER_Scaling);
@@ -5845,7 +5845,7 @@ const unsigned int& nJet
 
   std::vector<TLorentzVector> OutputVec{};
 
-  for(int i = 0; i < nJet; i++){
+  for(const unsigned int i = 0; i < nJet; i++){
 
     TLorentzVector JetFourMomentum_New{};
     float JetPt_new = JetPt.at(i) * cJER.at(0);
