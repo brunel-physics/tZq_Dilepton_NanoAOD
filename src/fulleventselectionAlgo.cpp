@@ -9695,40 +9695,39 @@ else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_"
 	std::cout << "before h_bjet_ee" << std::endl;
 
 
-	TH2F* h_bjet_ee = new TH2F("h_bjet_ee", "h_bjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_nonbjet_ee = new TH2F("h_nonbjet_ee", "h_nonbjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_charm_ee = new TH2F("h_charm_ee", "h_charm_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_lightjets_ee = new TH2F("h_lightjets_ee", "h_lightjets_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_gluon_ee = new TH2F("h_gluon_ee", "h_gluon_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
-
-	TH2F* h_bjet_mumu = new TH2F("h_bjet_mumu", "h_bjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-	TH2F* h_nonbjet_mumu = new TH2F("h_bjet_mumu", "h_nonbjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-        TH2F* h_charm_mumu = new TH2F("h_charm_mumu", "h_charm_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-        TH2F* h_lightjets_mumu = new TH2F("h_lightjets_mumu", "h_lightjets_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
-        TH2F* h_gluon_mumu = new TH2F("h_gluon_mumu", "h_gluon_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);	
+	TH2D* h_bjet_ee = new TH2D("h_bjet_ee", "h_bjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2D* h_nonbjet_ee = new TH2D("h_nonbjet_ee", "h_nonbjet_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2D* h_charm_ee = new TH2D("h_charm_ee", "h_charm_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2D* h_lightjets_ee = new TH2D("h_lightjets_ee", "h_lightjets_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2D* h_gluon_ee = new TH2D("h_gluon_ee", "h_gluon_ee", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2D* h_bjet_mumu = new TH2D("h_bjet_mumu", "h_bjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+	TH2D* h_nonbjet_mumu = new TH2D("h_bjet_mumu", "h_nonbjet_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+        TH2D* h_charm_mumu = new TH2D("h_charm_mumu", "h_charm_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+        TH2D* h_lightjets_mumu = new TH2D("h_lightjets_mumu", "h_lightjets_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);
+        TH2D* h_gluon_mumu = new TH2D("h_gluon_mumu", "h_gluon_mumu", NBins, mineta, maxeta, NBins, minpt, maxpt);	
 
 	std::cout << "after h_gluon_mumu" << std::endl;
 
 
-	h_bjet_ee = dynamic_cast<TH2F*>(h_bjet_ee_num->Clone());
+	h_bjet_ee = dynamic_cast<TH2D*>(h_bjet_ee_num->Clone());
 	h_bjet_ee->Divide(h_bjet_ee_denom.GetPtr());
-	h_bjet_mumu = dynamic_cast<TH2F*>(h_bjet_mumu_num->Clone());
+	h_bjet_mumu = dynamic_cast<TH2D*>(h_bjet_mumu_num->Clone());
 	h_bjet_mumu->Divide(h_bjet_mumu_denom.GetPtr());
-	h_charm_ee = dynamic_cast<TH2F*>(h_charm_ee_num->Clone());
+	h_charm_ee = dynamic_cast<TH2D*>(h_charm_ee_num->Clone());
 	h_charm_ee->Divide(h_charm_ee_denom.GetPtr());
-	h_charm_mumu = dynamic_cast<TH2F*>(h_charm_mumu_num->Clone());
+	h_charm_mumu = dynamic_cast<TH2D*>(h_charm_mumu_num->Clone());
 	h_charm_mumu->Divide(h_charm_mumu_denom.GetPtr());
-	h_lightjets_ee = dynamic_cast<TH2F*>(h_lightjets_ee_num->Clone());
+	h_lightjets_ee = dynamic_cast<TH2D*>(h_lightjets_ee_num->Clone());
 	h_lightjets_ee->Divide(h_lightjets_ee_denom.GetPtr());
-	h_lightjets_mumu = dynamic_cast<TH2F*>(h_lightjets_mumu_num->Clone());
+	h_lightjets_mumu = dynamic_cast<TH2D*>(h_lightjets_mumu_num->Clone());
 	h_lightjets_mumu->Divide(h_lightjets_mumu_denom.GetPtr());
-	h_gluon_ee = dynamic_cast<TH2F*>(h_gluon_ee_num->Clone());
+	h_gluon_ee = dynamic_cast<TH2D*>(h_gluon_ee_num->Clone());
 	h_gluon_ee->Divide(h_gluon_ee_denom.GetPtr());
-	h_gluon_mumu = dynamic_cast<TH2F*>(h_gluon_mumu_num->Clone());
+	h_gluon_mumu = dynamic_cast<TH2D*>(h_gluon_mumu_num->Clone());
 	h_gluon_mumu->Divide(h_gluon_mumu_denom.GetPtr());
-	h_nonbjet_ee = dynamic_cast<TH2F*>(h_nonbjet_ee_num->Clone());
+	h_nonbjet_ee = dynamic_cast<TH2D*>(h_nonbjet_ee_num->Clone());
         h_nonbjet_ee->Divide(h_nonbjet_ee_denom.GetPtr());
-        h_nonbjet_mumu = dynamic_cast<TH2F*>(h_nonbjet_mumu_num->Clone());
+        h_nonbjet_mumu = dynamic_cast<TH2D*>(h_nonbjet_mumu_num->Clone());
         h_nonbjet_mumu->Divide(h_nonbjet_mumu_denom.GetPtr());
 
 
