@@ -5246,7 +5246,7 @@ const floats& Jet_eta_Selection
 
     doubles output_vec;
   
-    for(unsigned int = i; i < nJet; i++){
+    for(unsigned int i = 0; i < nJet; i++){
 
     	double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
     	double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
@@ -5275,7 +5275,7 @@ const floats& Jet_Phi_Selection
   double output;
   doubles output_vec{};
 
-  for(unsigned int = i; i < nJet; i++){
+  for(unsigned int i = 0; i < nJet; i++){
 
     double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
     double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
