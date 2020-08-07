@@ -7879,7 +7879,7 @@ std::cout << "before 2016 part 2" << std::endl;
 TFile *dataPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
 TH1D *dataPU_2016_part2 = dynamic_cast<TH1D*>(dataPileupFile_2016_part2->Get("pileup")->Clone());
 TFile *mcPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-THD* mcPU_2016_part2 = dynamic_cast<TH1D*>(mcPileupFile_2016_part2->Get("pileup")->Clone());
+TH1D* mcPU_2016_part2 = dynamic_cast<TH1D*>(mcPileupFile_2016_part2->Get("pileup")->Clone());
 
 std::cout << "before 2017" << std::endl;
 
@@ -7903,20 +7903,20 @@ std::cout << "before systematic files for pu" << std::endl;
 //Systematic files
 //2016
 TFile *systUpFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp.root", "READ");
-TH1F *pileupUpHist_2016 = dynamic_cast<TH1F*>(systUpFile_2016->Get("pileup")->Clone());
+TH1D *pileupUpHist_2016 = dynamic_cast<TH1D*>(systUpFile_2016->Get("pileup")->Clone());
 TFile *systDownFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown.root", "READ");
-TH1F *pileupDownHist_2016 = dynamic_cast<TH1F*>(systDownFile_2016->Get("pileup")->Clone());
+TH1D *pileupDownHist_2016 = dynamic_cast<TH1D*>(systDownFile_2016->Get("pileup")->Clone());
 //part 1
 TFile *systUpFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part1.root", "READ");
-TH1F *pileupUpHist_2016_part1 = dynamic_cast<TH1F*>(systUpFile_2016_part1->Get("pileup")->Clone());
+TH1D *pileupUpHist_2016_part1 = dynamic_cast<TH1D*>(systUpFile_2016_part1->Get("pileup")->Clone());
 TFile *systDownFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part1.root", "READ");
-TH1F *pileupDownHist_2016_part1 = dynamic_cast<TH1F*>(systDownFile_2016_part1->Get("pileup")->Clone());
+TH1D *pileupDownHist_2016_part1 = dynamic_cast<TH1D*>(systDownFile_2016_part1->Get("pileup")->Clone());
 
 //part 2
 TFile *systUpFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part2.root", "READ");
-TH1F *pileupUpHist_2016_part2 = dynamic_cast<TH1F*>(systUpFile_2016_part2->Get("pileup")->Clone());
+TH1D *pileupUpHist_2016_part2 = dynamic_cast<TH1D*>(systUpFile_2016_part2->Get("pileup")->Clone());
 TFile *systDownFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part2.root", "READ");
-TH1F *pileupDownHist_2016_part2 = dynamic_cast<TH1F*>(systDownFile_2016_part2->Get("pileup")->Clone());
+TH1D *pileupDownHist_2016_part2 = dynamic_cast<TH1D*>(systDownFile_2016_part2->Get("pileup")->Clone());
 
 
 std::cout << "before puReweight_2016" << std::endl;
@@ -7942,7 +7942,7 @@ puReweight_2016->SetDirectory(nullptr);
 std::cout << "after set directory" << std::endl;
 
 
-TH1F *puReweight_2016_part1 = dynamic_cast<TH1F*>(dataPU_2016_part1->Clone());
+TH1D *puReweight_2016_part1 = dynamic_cast<TH1D*>(dataPU_2016_part1->Clone());
 puReweight_2016_part1->Scale(1.0 / puReweight_2016_part1->Integral());
 mcPU_2016_part1->Scale(1.0 / mcPU_2016_part1->Integral());
 puReweight_2016_part1->Divide(mcPU_2016_part1);
@@ -7950,7 +7950,7 @@ puReweight_2016_part1->SetDirectory(nullptr);
 
 std::cout << "before puReweight_2016_part2 dynamic cast" << std::endl;
 
-TH1F *puReweight_2016_part2 = dynamic_cast<TH1F*>(dataPU_2016_part2->Clone());
+TH1D *puReweight_2016_part2 = dynamic_cast<TH1D*>(dataPU_2016_part2->Clone());
 puReweight_2016_part2->Scale(1.0 / puReweight_2016_part2->Integral());
 mcPU_2016_part2->Scale(1.0 / mcPU_2016_part2->Integral());
 puReweight_2016_part2->Divide(mcPU_2016_part2);
@@ -7961,12 +7961,12 @@ std::cout << "before 2017 syst up" << std::endl;
 
 // 2017
 TFile *systUpFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
-TH1F *pileupUpHist_2017 = dynamic_cast<TH1F*>(systUpFile_2017->Get("pileup")->Clone());
+TH1D *pileupUpHist_2017 = dynamic_cast<TH1D*>(systUpFile_2017->Get("pileup")->Clone());
 TFile *systDownFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupDown.root", "READ");
-TH1F *pileupDownHist_2017 = dynamic_cast<TH1F*>(systDownFile_2017->Get("pileup")->Clone());
+TH1D *pileupDownHist_2017 = dynamic_cast<TH1D*>(systDownFile_2017->Get("pileup")->Clone());
 
 
-TH1F *puReweight_2017 = dynamic_cast<TH1F*>(dataPU_2017->Clone());
+TH1D *puReweight_2017 = dynamic_cast<TH1D*>(dataPU_2017->Clone());
 puReweight_2017->Scale(1.0 / puReweight_2017->Integral());
 mcPU_2017->Scale(1.0 / mcPU_2017->Integral());
 puReweight_2017->Divide(mcPU_2017);
@@ -7976,12 +7976,12 @@ std::cout << "before 2018 syst up" << std::endl;
 
 //2018
 TFile *systUpFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
-TH1F *pileupUpHist_2018 = dynamic_cast<TH1F*>(systUpFile_2018->Get("pileup")->Clone());
+TH1D *pileupUpHist_2018 = dynamic_cast<TH1D*>(systUpFile_2018->Get("pileup")->Clone());
 TFile *systDownFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleDown2018.root", "READ");
-TH1F *pileupDownHist_2018 = dynamic_cast<TH1F*>(systDownFile_2018->Get("pileup")->Clone());
+TH1D *pileupDownHist_2018 = dynamic_cast<TH1D*>(systDownFile_2018->Get("pileup")->Clone());
 
 
-TH1F *puReweight_2018 = dynamic_cast<TH1F*>(dataPU_2018->Clone());
+TH1D *puReweight_2018 = dynamic_cast<TH1D*>(dataPU_2018->Clone());
 puReweight_2018->Scale(1.0 / puReweight_2018->Integral());
 mcPU_2018->Scale(1.0 / mcPU_2018->Integral());
 puReweight_2018->Divide(mcPU_2018);
@@ -7991,51 +7991,51 @@ std::cout << "before syst files for PU" << std::endl;
 
 ///Systematic sample
 //2016
-TH1F *puSystUp_2016 = dynamic_cast<TH1F*>(pileupUpHist_2016->Clone());
+TH1D *puSystUp_2016 = dynamic_cast<TH1D*>(pileupUpHist_2016->Clone());
 puSystUp_2016->Scale(1.0 / puSystUp_2016->Integral());
 puSystUp_2016->Divide(mcPU_2016);
 puSystUp_2016->SetDirectory(nullptr);
-TH1F *puSystDown_2016 = dynamic_cast<TH1F*>(pileupDownHist_2016->Clone());
+TH1D *puSystDown_2016 = dynamic_cast<TH1D*>(pileupDownHist_2016->Clone());
 puSystDown_2016->Scale(1.0 / puSystDown_2016->Integral());
 puSystDown_2016->Divide(mcPU_2016);
 puSystDown_2016->SetDirectory(nullptr);
 
 //2016 part 1
-TH1F *puSystUp_2016_part1 = dynamic_cast<TH1F*>(pileupUpHist_2016_part1->Clone());
+TH1D *puSystUp_2016_part1 = dynamic_cast<TH1D*>(pileupUpHist_2016_part1->Clone());
 puSystUp_2016_part1->Scale(1.0 / puSystUp_2016_part1->Integral());
 puSystUp_2016_part1->Divide(mcPU_2016_part1);
 puSystUp_2016_part1->SetDirectory(nullptr);
-TH1F *puSystDown_2016_part1 = dynamic_cast<TH1F*>(pileupDownHist_2016_part1->Clone());
+TH1D *puSystDown_2016_part1 = dynamic_cast<TH1D*>(pileupDownHist_2016_part1->Clone());
 puSystDown_2016_part1->Scale(1.0 / puSystDown_2016_part1->Integral());
 puSystDown_2016_part1->Divide(mcPU_2016_part1);
 puSystDown_2016_part1->SetDirectory(nullptr);
 
 //2016 part 2
-TH1F *puSystUp_2016_part2 = dynamic_cast<TH1F*>(pileupUpHist_2016_part2->Clone());
+TH1D *puSystUp_2016_part2 = dynamic_cast<TH1D*>(pileupUpHist_2016_part2->Clone());
 puSystUp_2016_part2->Scale(1.0 / puSystUp_2016_part2->Integral());
 puSystUp_2016_part2->Divide(mcPU_2016_part2);
 puSystUp_2016_part2->SetDirectory(nullptr);
-TH1F *puSystDown_2016_part2 = dynamic_cast<TH1F*>(pileupDownHist_2016_part2->Clone());
+TH1D *puSystDown_2016_part2 = dynamic_cast<TH1D*>(pileupDownHist_2016_part2->Clone());
 puSystDown_2016_part2->Scale(1.0 / puSystDown_2016_part2->Integral());
 puSystDown_2016_part2->Divide(mcPU_2016_part2);
 puSystDown_2016_part2->SetDirectory(nullptr);
 
 //2017
-TH1F *puSystUp_2017 = dynamic_cast<TH1F*>(pileupUpHist_2017->Clone());
+TH1D *puSystUp_2017 = dynamic_cast<TH1D*>(pileupUpHist_2017->Clone());
 puSystUp_2017->Scale(1.0 / puSystUp_2017->Integral());
 puSystUp_2017->Divide(mcPU_2017);
 puSystUp_2017->SetDirectory(nullptr);
-TH1F *puSystDown_2017 = dynamic_cast<TH1F*>(pileupDownHist_2017->Clone());
+TH1D *puSystDown_2017 = dynamic_cast<TH1D*>(pileupDownHist_2017->Clone());
 puSystDown_2017->Scale(1.0 / puSystDown_2017->Integral());
 puSystDown_2017->Divide(mcPU_2017);
 puSystDown_2017->SetDirectory(nullptr);
 
 //2018
-TH1F *puSystUp_2018 = dynamic_cast<TH1F*>(pileupUpHist_2018->Clone());
+TH1D *puSystUp_2018 = dynamic_cast<TH1D*>(pileupUpHist_2018->Clone());
 puSystUp_2018->Scale(1.0 / puSystUp_2018->Integral());
 puSystUp_2018->Divide(mcPU_2018);
 puSystUp_2018->SetDirectory(nullptr);
-TH1F *puSystDown_2018 = dynamic_cast<TH1F*>(pileupDownHist_2018->Clone());
+TH1D *puSystDown_2018 = dynamic_cast<TH1D*>(pileupDownHist_2018->Clone());
 puSystDown_2018->Scale(1.0 / puSystDown_2018->Integral());
 puSystDown_2018->Divide(mcPU_2018);
 puSystDown_2018->SetDirectory(nullptr);
