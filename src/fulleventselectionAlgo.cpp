@@ -7848,6 +7848,8 @@ std::vector<std::string> lep_cut_emu_strings = {
 };
 
 
+std::cout << "before event cleaning" << std::endl;
+
 //Event cleaning
 auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event cleaning filter");
 
@@ -7950,7 +7952,7 @@ mcPU_2018->Scale(1.0 / mcPU_2018->Integral());
 puReweight_2018->Divide(mcPU_2018);
 puReweight_2018->SetDirectory(nullptr);
 
-
+std::cout << "before syst files for PU" << std::endl;
 
 ///Systematic sample
 //2016
@@ -8030,6 +8032,8 @@ mcPileupFile_2018->Close();
 systUpFile_2018->Close();
 systDownFile_2018->Close();
 
+
+std::cout << "before pu function" << std::endl;
 
 //Implementing the PU modelling
 
@@ -9446,7 +9450,7 @@ auto ME_histo_function{[&SummedWeights](){
 
   ints numerators;
 
-  for(long unsigned int i; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
+  for(long unsigned int i = 0; i < SummedWeights.size(); i+=2){int output = SummedWeights[i] + SummedWeights[i+1]; numerators.push_back(output);}
 
   return numerators;
 
