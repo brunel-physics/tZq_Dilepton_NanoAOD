@@ -44,7 +44,7 @@ std::fstream& GotoLine(std::fstream& file, unsigned int num){
 		
     file.seekg(std::ios::beg);
 
-    for(unsigned int i=0; i < num - 1; ++i){
+    for(unsigned int i =0; i < num - 1; ++i){
         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
 
@@ -5246,7 +5246,7 @@ const floats& Jet_eta_Selection
 
     doubles output_vec;
   
-    for(unsigned int i; i < nJet; i++){
+    for(unsigned int = i; i < nJet; i++){
 
     	double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
     	double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
@@ -5275,7 +5275,7 @@ const floats& Jet_Phi_Selection
   double output;
   doubles output_vec{};
 
-  for(unsigned int i; i < nJet; i++){
+  for(unsigned int = i; i < nJet; i++){
 
     double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
     double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
@@ -6131,7 +6131,7 @@ TH2* EGammaEffRecoSys2018_histo = dynamic_cast<TH2*>(EGammaEffRecoSys_inputfile_
 EGammaEffRecoSys2018_histo->SetDirectory(nullptr);
 
 
-
+std::cout << "before egamma function" << std::endl;
 
 //EGamma SF functions
 auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_histo,
@@ -6285,7 +6285,7 @@ auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_
 
 
 
-
+std::cout << "before muon SF" << std::endl;
 
 
 
@@ -6379,7 +6379,7 @@ histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
 //need syst files for 2018 (check the root files, there are more histos)
 
-
+std::cout << "before muon SF function" << std::endl;
 
 auto MuonSF{[
 
@@ -6655,7 +6655,7 @@ auto MuonSFTest_Iso_sys_stat{[&MuonSF, &year](const floats& pt, const floats& et
 
 
 
-
+std::cout << "before dummy col function" << std::endl;
 
 
 
@@ -6702,7 +6702,7 @@ auto PSWeight{[&year, &process](floats& PSWeightInput){
 
 }};
 
-
+std::cout << "before MET trigger function" << std::endl;
 
 //Functions for trigger SFs
 ///Lambda function for the MET triggers
