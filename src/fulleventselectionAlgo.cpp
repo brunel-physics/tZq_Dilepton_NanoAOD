@@ -7853,40 +7853,52 @@ std::cout << "before event cleaning" << std::endl;
 //Event cleaning
 auto d_EventCleaning = d_dataframe.Filter(filter_function, flags_strings, "Event cleaning filter");
 
+std::cout << "before opening PU files" << std::endl;
+
 //Pile up modelling
 //2016
 TFile *dataPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest.root", "READ");
-TH1F *dataPU_2016 = dynamic_cast<TH1F*>(dataPileupFile_2016->Get("pileup")->Clone());
+TH1D *dataPU_2016 = dynamic_cast<TH1D*>(dataPileupFile_2016->Get("pileup")->Clone());
+
+std::cout << "after the first dynamic cast" << std::endl;
+
 TFile *mcPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-TH1F* mcPU_2016 = dynamic_cast<TH1F*>(mcPileupFile_2016->Get("pileup")->Clone());
+TH1D* mcPU_2016 = dynamic_cast<TH1D*>(mcPileupFile_2016->Get("pileup")->Clone());
+
+std::cout << "before 2016 part 1" << std::endl;
 
 //2016 part 1
 TFile *dataPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part1.root", "READ");
-TH1F *dataPU_2016_part1 = dynamic_cast<TH1F*>(dataPileupFile_2016_part1->Get("pileup")->Clone());
+TH1D *dataPU_2016_part1 = dynamic_cast<TH1D*>(dataPileupFile_2016_part1->Get("pileup")->Clone());
 TFile *mcPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-TH1F* mcPU_2016_part1 = dynamic_cast<TH1F*>(mcPileupFile_2016_part1->Get("pileup")->Clone());
+TH1D* mcPU_2016_part1 = dynamic_cast<TH1D*>(mcPileupFile_2016_part1->Get("pileup")->Clone());
+
+std::cout << "before 2016 part 2" << std::endl;
 
 //2016 part 2
 TFile *dataPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
-TH1F *dataPU_2016_part2 = dynamic_cast<TH1F*>(dataPileupFile_2016_part2->Get("pileup")->Clone());
+TH1D *dataPU_2016_part2 = dynamic_cast<TH1D*>(dataPileupFile_2016_part2->Get("pileup")->Clone());
 TFile *mcPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
-TH1F* mcPU_2016_part2 = dynamic_cast<TH1F*>(mcPileupFile_2016_part2->Get("pileup")->Clone());
+THD* mcPU_2016_part2 = dynamic_cast<TH1D*>(mcPileupFile_2016_part2->Get("pileup")->Clone());
+
+std::cout << "before 2017" << std::endl;
 
 //2017
 TFile *dataPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupTest.root", "READ");
-TH1F *dataPU_2017 = dynamic_cast<TH1F*>(dataPileupFile_2017->Get("pileup")->Clone());
+TH1D *dataPU_2017 = dynamic_cast<TH1D*>(dataPileupFile_2017->Get("pileup")->Clone());
 TFile *mcPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/pileupMC.root", "READ");
-TH1F* mcPU_2017 = dynamic_cast<TH1F*>(mcPileupFile_2017->Get("pileup")->Clone());
+TH1D* mcPU_2017 = dynamic_cast<TH1D*>(mcPileupFile_2017->Get("pileup")->Clone());
 
+std::cout << "before 2018" << std::endl;
 
 //2018
 TFile *dataPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogram2018.root", "READ");
-TH1F *dataPU_2018 = dynamic_cast<TH1F*>(dataPileupFile_2018->Get("pileup")->Clone());
+TH1D *dataPU_2018 = dynamic_cast<TH1D*>(dataPileupFile_2018->Get("pileup")->Clone());
 TFile *mcPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/pileupMC2018.root", "READ");
-TH1F* mcPU_2018 = dynamic_cast<TH1F*>(mcPileupFile_2018->Get("pileup")->Clone());
+TH1D* mcPU_2018 = dynamic_cast<TH1D*>(mcPileupFile_2018->Get("pileup")->Clone());
 
 
-
+std::cout << "before systematic files for pu" << std::endl;
 
 //Systematic files
 //2016
@@ -7907,11 +7919,28 @@ TFile *systDownFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileu
 TH1F *pileupDownHist_2016_part2 = dynamic_cast<TH1F*>(systDownFile_2016_part2->Get("pileup")->Clone());
 
 
-TH1F *puReweight_2016 = dynamic_cast<TH1F*>(dataPU_2016->Clone());
+std::cout << "before puReweight_2016" << std::endl;
+
+TH1D *puReweight_2016 = dynamic_cast<TH1D*>(dataPU_2016->Clone());
+
+std::cout << "after clone" << std::endl;
+
 puReweight_2016->Scale(1.0 / puReweight_2016->Integral());
+
+std::cout << "before first integral" << std::endl;
+
 mcPU_2016->Scale(1.0 / mcPU_2016->Integral());
+
+std::cout << "before second integral" << std::endl;
+
 puReweight_2016->Divide(mcPU_2016);
+
+std::cout << "after divide" << std::endl;
+
 puReweight_2016->SetDirectory(nullptr);
+
+std::cout << "after set directory" << std::endl;
+
 
 TH1F *puReweight_2016_part1 = dynamic_cast<TH1F*>(dataPU_2016_part1->Clone());
 puReweight_2016_part1->Scale(1.0 / puReweight_2016_part1->Integral());
@@ -7919,12 +7948,16 @@ mcPU_2016_part1->Scale(1.0 / mcPU_2016_part1->Integral());
 puReweight_2016_part1->Divide(mcPU_2016_part1);
 puReweight_2016_part1->SetDirectory(nullptr);
 
+std::cout << "before puReweight_2016_part2 dynamic cast" << std::endl;
+
 TH1F *puReweight_2016_part2 = dynamic_cast<TH1F*>(dataPU_2016_part2->Clone());
 puReweight_2016_part2->Scale(1.0 / puReweight_2016_part2->Integral());
 mcPU_2016_part2->Scale(1.0 / mcPU_2016_part2->Integral());
 puReweight_2016_part2->Divide(mcPU_2016_part2);
 puReweight_2016_part2->SetDirectory(nullptr);
 
+
+std::cout << "before 2017 syst up" << std::endl;
 
 // 2017
 TFile *systUpFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
@@ -7938,6 +7971,8 @@ puReweight_2017->Scale(1.0 / puReweight_2017->Integral());
 mcPU_2017->Scale(1.0 / mcPU_2017->Integral());
 puReweight_2017->Divide(mcPU_2017);
 puReweight_2017->SetDirectory(nullptr);
+
+std::cout << "before 2018 syst up" << std::endl;
 
 //2018
 TFile *systUpFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
