@@ -113,7 +113,7 @@ const ints& Muon_genPartIdx,
 const ints& Muon_nTrackerLayers){
 
 
-	//std::cout << "print 1" << std::endl;
+	std::cout << "print 1" << std::endl;
 
 	std::string RoccoTextFile;
 
@@ -228,7 +228,7 @@ const ints& Muon_nTrackerLayers){
 //Functions for reading the trigger efficiency and SF text files
 double linereader_TriggerSF(const int& LineNumber, const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
 
-   //std::cout << "print 2" << std::endl;
+   std::cout << "print 2" << std::endl;
 
    std::string TriggerSF_TextFiles;
 
@@ -258,7 +258,7 @@ double linereader_TriggerSF(const int& LineNumber, const std::string& InputTrigg
 
 int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
 
-   //std::cout << "print 3" << std::endl;
+   std::cout << "print 3" << std::endl;
 
    std::string TriggerSF_TextFiles;
 
@@ -286,7 +286,7 @@ int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::str
 
 auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
 
-   //std::cout << "print 4" << std::endl;
+   std::cout << "print 4" << std::endl;
 
    int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year/*, blinding*/);
    std::vector<double> Value;
@@ -307,7 +307,7 @@ auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std
 //Creating a directory for all results
 auto DirectoryCreator(const std::string& year, const bool& blinding, const bool& NPL){
 
-        //std::cout << "print 5" << std::endl;
+        std::cout << "print 5" << std::endl;
 
 	if(year == "2016"){
 
@@ -835,6 +835,7 @@ template<typename T, typename U, typename... Types>
     }
 	
     return boost::numeric_cast<float>(vec.M());
+
 }
 
 
@@ -859,6 +860,7 @@ template<typename T, typename U, typename... Types>
         vec += p;
     }
 
+    std::cout << "boost::numeric_cast<float>(vec.M())" << boost::numeric_cast<float>(vec.M()) << std::endl;
     return boost::numeric_cast<float>(vec.M());
 }
 
@@ -868,7 +870,7 @@ template<typename T, typename U, typename... Types>
 
 double linereader(const int& LineNumber, const std::string& year){
 
-   //std::cout << "print 6" << std::endl;
+   std::cout << "print 6" << std::endl;
    using namespace std;
 
    std::string NormFileString = "Normalisation/NormalisationFactors_" + year + ".txt"; 
@@ -904,7 +906,7 @@ int NBins = 40;
 
 auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& pts, const floats& etas){
 
-  //std::cout << "print 7" << std::endl;
+  std::cout << "print 7" << std::endl;
 
   floats BTaggedEff{};
 
@@ -937,7 +939,7 @@ auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const 
 
 auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& pts, const floats& etas){
 
-  //std::cout << "print 9" << std::endl;
+  std::cout << "print 9" << std::endl;
 
   floats BTaggedEff{};
 
@@ -968,7 +970,7 @@ auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](
 
 auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& pts, const floats& etas){
 
-  //std::cout << "print 10" << std::endl;
+  std::cout << "print 10" << std::endl;
 
   floats NonBTaggedEff{};
 
@@ -999,7 +1001,7 @@ auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*
 
 auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& pts, const floats& etas){
 
-  //std::cout << "print 11" << std::endl;
+  std::cout << "print 11" << std::endl;
 
   floats NonBTaggedEff{};
 
@@ -1031,7 +1033,7 @@ auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &
 
 auto EffBTaggedProduct{[](const floats& EffBTagged){
   
-  //std::cout << "print 12" << std::endl;
+  std::cout << "print 12" << std::endl;
 
   float initial = 1;
 
@@ -1052,7 +1054,7 @@ auto EffBTaggedProduct{[](const floats& EffBTagged){
 
 auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
-  //std::cout << "print 13" << std::endl;
+  std::cout << "print 13" << std::endl;
  
   float initial = 1;
 
@@ -1071,7 +1073,7 @@ auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
 auto ProbBTagMCFunction{[](const float& EffBTaggedProductInput, const float& EffNonBTaggedProductInput){
 
-  //std::cout << "print 14" << std::endl;
+  std::cout << "print 14" << std::endl;
 
   float MCProb = EffBTaggedProductInput * EffNonBTaggedProductInput; 
   return MCProb;
@@ -1085,7 +1087,7 @@ bool BTag_ScaleUp_bool, BTag_ScaleDown_bool;
 
 auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
-  //std::cout << "print 15" << std::endl;
+  std::cout << "print 15" << std::endl;
 
   floats ResultVector{};
 
@@ -2253,7 +2255,7 @@ return ResultVector;
 
 auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
- //std::cout << "print 16" << std::endl;
+ std::cout << "print 16" << std::endl;
 
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
 
@@ -2262,7 +2264,7 @@ auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, c
 
 auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
- //std::cout << "print 17" << std::endl;
+ std::cout << "print 17" << std::endl;
 
  return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
@@ -2272,7 +2274,7 @@ auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas
 
 auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSFInput){
 
-  //std::cout << "print 18" << std::endl;
+  std::cout << "print 18" << std::endl;
 
   float initial = 1;
   float output;
@@ -2292,7 +2294,7 @@ auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSFI
 
 auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSFInput){
 
-  //std::cout << "print 19" << std::endl;
+  std::cout << "print 19" << std::endl;
 
   float initial = 1;
 
@@ -2316,7 +2318,7 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
 auto ProbBTagDataFunction{[](const float& EffBTaggedProductDataInput, const float& EffNonBTaggedProductDataInput){
 
-  //std::cout << "print 20" << std::endl;
+  std::cout << "print 20" << std::endl;
 
   float DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
   return DataProb;
@@ -2329,7 +2331,7 @@ auto ProbBTagDataFunction{[](const float& EffBTaggedProductDataInput, const floa
 auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
 
-	//std::cout << "print 21" << std::endl;
+	std::cout << "print 21" << std::endl;
 
 	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
 	
@@ -2761,7 +2763,7 @@ const bool& HLT_Ele35_WPTight_Gsf,
 const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
 const bool& HLT_Ele27_WPTight_Gsf)-> bool{
 
-   //std::cout << "print 22" << std::endl;
+   std::cout << "print 22" << std::endl;
 
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -2803,7 +2805,7 @@ const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
   //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
 
-  //std::cout << "print 23" << std::endl;
+  std::cout << "print 23" << std::endl;
 
   if(year == "2016"){
 
@@ -2837,7 +2839,7 @@ const bool& HLT_IsoMu24_eta2p1
 
 )->bool{
 
-   //std::cout << "print 24" << std::endl;  
+   std::cout << "print 24" << std::endl;  
 
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -2872,7 +2874,7 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
-  //std::cout << "print 25" << std::endl;
+  std::cout << "print 25" << std::endl;
 
   //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
   //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -2910,7 +2912,7 @@ const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
 
-  //std::cout << "print 26" << std::endl;
+  std::cout << "print 26" << std::endl;
 
  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
@@ -3130,7 +3132,7 @@ const float& LeadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
 
-  //std::cout << "print 27" << std::endl;
+  std::cout << "print 27" << std::endl;
 
   floats OutVec{};
 
@@ -3153,7 +3155,7 @@ const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
 
-  //std::cout << "print 28" << std::endl;
+  std::cout << "print 28" << std::endl;
 
   floats OutVec{};
 
@@ -3177,7 +3179,7 @@ const float& LeadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
 
-  //std::cout << "print 29" << std::endl;
+  std::cout << "print 29" << std::endl;
 
   floats OutVec{};
 
@@ -3200,7 +3202,7 @@ const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dz){
 
-  //std::cout << "print 30" << std::endl;
+  std::cout << "print 30" << std::endl;
 
   floats OutVec{};
 
@@ -3246,7 +3248,7 @@ const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
 
-  //std::cout << "print 31" << std::endl;
+  std::cout << "print 31" << std::endl;
 
   floats OutVec{};
 
@@ -3268,7 +3270,7 @@ const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
 
 
-  //std::cout << "print 32" << std::endl;
+  std::cout << "print 32" << std::endl;
 
   floats OutVec{};
 
@@ -3290,7 +3292,7 @@ const float& SubleadingElectron_pT,
 const floats& Electron_eta_Selection,
 const floats& Electron_dxy){
 
-  //std::cout << "print 33" << std::endl;
+  std::cout << "print 33" << std::endl;
 
   floats OutVec{};
 
@@ -3314,14 +3316,14 @@ std::cout << "before opposite sign" << std::endl;
 
 auto OppositeSign{[](const ints& charges){
 
-  //std::cout << "print 34" << std::endl;
+  std::cout << "print 34" << std::endl;
   return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
 
 }};
 
 auto OppositeSign_emu{[](const ints& charges1, const ints& charges2){
 
-  //std::cout << "print 35" << std::endl;
+  std::cout << "print 35" << std::endl;
   return (charges1.size() == 1 && charges2.size() == 1) ? signbit(charges1.at(0)) != signbit(charges2.at(0)) : false;
 
 }};
@@ -3329,7 +3331,7 @@ auto OppositeSign_emu{[](const ints& charges1, const ints& charges2){
 
 auto SameSign{[](const ints& charges){
 
-  //std::cout << "print 36" << std::endl;
+  std::cout << "print 36" << std::endl;
   return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
 
 }};
@@ -3337,7 +3339,7 @@ auto SameSign{[](const ints& charges){
 
 auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
-  //std::cout << "print 37" << std::endl;
+  std::cout << "print 37" << std::endl;
   bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
 
@@ -3348,7 +3350,7 @@ auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFl
 
 auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
   
-  //std::cout << "print 38" << std::endl;
+  std::cout << "print 38" << std::endl;
 
   bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
   bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
@@ -3361,7 +3363,7 @@ auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
 auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
-  //std::cout << "print 39" << std::endl;
+  std::cout << "print 39" << std::endl;
   bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});
 
@@ -3374,7 +3376,7 @@ auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav)
 
 auto SameSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
-  //std::cout << "print 40" << std::endl;  
+  std::cout << "print 40" << std::endl;  
 
   bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
   bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});  
@@ -3396,7 +3398,7 @@ const bools& Electron_isPFcand
 
 ){
  
-  //std::cout << "print 41" << std::endl;
+  std::cout << "print 41" << std::endl;
   return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
 
 }};
@@ -3412,7 +3414,7 @@ const bools& Electron_isPFcand
 
 ){
 
-  //std::cout << "print 42" << std::endl;
+  std::cout << "print 42" << std::endl;
 
   return (Electron_pt > MinElectronPtEmu && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && Electron_cutBased >= targetID && Electron_isPFcand);
 
@@ -3430,7 +3432,7 @@ const bools& Electron_isPFcand
 
 ){
 
-  //std::cout << "print 43" << std::endl;
+  std::cout << "print 43" << std::endl;
   return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
 }};
@@ -3446,7 +3448,7 @@ const bools& Electron_isPFcand
 
 ){
 
-  //std::cout << "print 44" << std::endl;
+  std::cout << "print 44" << std::endl;
   return ElectronsFunctionEmu(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
 }};
@@ -3462,7 +3464,7 @@ const bools& Electron_isPFcand
 
 ){
 
-  //std::cout << "print 45" << std::endl;
+  std::cout << "print 45" << std::endl;
   return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
 }};
@@ -3478,7 +3480,7 @@ const bools& Electron_isPFcand
 
 ){
 
-  //std::cout << "print 46" << std::endl;
+  std::cout << "print 46" << std::endl;
   return ElectronsFunctionEmu(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
 
 }};
@@ -3495,7 +3497,7 @@ const floats& isos
 
 ){
 
-  //std::cout << "print 47" << std::endl;
+  std::cout << "print 47" << std::endl;
   return (isPFs && Muon_pt > MinMuonPt && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
 
 }};
@@ -3512,7 +3514,7 @@ const floats& isos
 
 ){
 
-  //std::cout << "print 48" << std::endl;
+  std::cout << "print 48" << std::endl;
   return (isPFs && Muon_pt > MinMuonPtEmu && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
 
 }};
@@ -3520,7 +3522,7 @@ const floats& isos
 
 auto TightMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
-  //std::cout << "print 49" << std::endl;
+  std::cout << "print 49" << std::endl;
   return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
 
 }};
@@ -3528,7 +3530,7 @@ auto TightMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, 
 
 auto TightMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
-  //std::cout << "print 50" << std::endl;
+  std::cout << "print 50" << std::endl;
   return MuonsFunctionEmu(0.25, isPFs, pts, etas, ids, isos);
 
 }};
@@ -3536,7 +3538,7 @@ auto TightMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats&
 
 auto LooseMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
-  //std::cout << "print 51" << std::endl;
+  std::cout << "print 51" << std::endl;
   return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
 
 }};
@@ -3544,7 +3546,7 @@ auto LooseMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, 
 
 auto LooseMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
  
-  //std::cout << "print 52" << std::endl;
+  std::cout << "print 52" << std::endl;
   return MuonsFunctionEmu(0.15, isPFs, pts, etas, ids, isos);
 
 }};
@@ -3566,7 +3568,7 @@ const floats& SubleadingElectron_dz_ECALEndcaps,
 const floats& SubleadingElectron_dxy_ECALEndcaps
 ){
 
-  //std::cout << "print 53" << std::endl;
+  std::cout << "print 53" << std::endl;
 
   const bool ele_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
   bool lead_pt_cut{false};
@@ -3595,7 +3597,7 @@ const floats& SubleadingElectron_dxy_ECALEndcaps
 
 auto lep_cut_mumu{[](const floats& tight_mu_pts, const floats& loose_mu_pts, const bool os, const unsigned int nMuon) {
 
-  //std::cout << "print 54" << std::endl;
+  std::cout << "print 54" << std::endl;
         
   const bool mu_cut{tight_mu_pts.size() == 2 && tight_mu_pts.size() == loose_mu_pts.size()};
   bool lead_pt_cut{false};
@@ -3627,7 +3629,7 @@ const unsigned int nMuon
 ){
 
 
-  //std::cout << "print 55" << std::endl;
+  std::cout << "print 55" << std::endl;
 
   const bool emu_cut{tight_ele_pts.size() == 1 && tight_mu_pts.size() == 1 && (tight_mu_pts.size() == loose_mu_pts.size()) && (tight_mu_pts.size() == loose_mu_pts.size())};
 
@@ -3646,7 +3648,7 @@ const unsigned int nMuon
 
 auto LeadingVariable{[](const floats& variable){
 
-  //std::cout << "print 56" << std::endl;
+  std::cout << "print 56" << std::endl;
 
   if(variable.size() > 0){
 
@@ -3673,7 +3675,7 @@ auto LeadingVariable{[](const floats& variable){
 
 auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
   
-  //std::cout << "print 57" << std::endl;
+  std::cout << "print 57" << std::endl;
   float first_largest_value_electron, first_largest_value_muon; 
 
   if(variable1.size() > 0){
@@ -3717,7 +3719,7 @@ auto LeadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
 auto SubleadingVariable{[](const floats& variable){
 
-  //std::cout << "print 58" << std::endl;
+  std::cout << "print 58" << std::endl;
 
   if(variable.size() == 0){float zero = 0.0; return zero;}
   else{
@@ -3761,7 +3763,7 @@ auto SubleadingVariable{[](const floats& variable){
 
 auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
-  //std::cout << "print 59" << std::endl;
+  std::cout << "print 59" << std::endl;
  
   float first_largest_value_electron, first_largest_value_muon;
 
@@ -3805,7 +3807,7 @@ auto SubleadingVariableEmu{[](const floats& variable1, const floats& variable2){
 
 auto ThirdLeadingVariable{[](const floats& variable){
 
-  //std::cout << "print 60" << std::endl;
+  std::cout << "print 60" << std::endl;
 
   if(variable.size() > 2){
 
@@ -3855,7 +3857,7 @@ auto ThirdLeadingVariable{[](const floats& variable){
 
 auto FourthLeadingVariable{[](const floats& variable){
 
-  //std::cout << "print 61" << std::endl;
+  std::cout << "print 61" << std::endl;
 
   if(variable.size() > 3){
 
@@ -3920,7 +3922,7 @@ auto FourthLeadingVariable{[](const floats& variable){
 
 auto MET_function{[](const floats& MET_input){
 
-  //std::cout << "print 62" << std::endl;
+  std::cout << "print 62" << std::endl;
   return MET_input;
 
 }};
@@ -3936,7 +3938,7 @@ const float& Object2_eta,
 const float& Object2_phi
 ){
 
-  //std::cout << "print 63" << std::endl;
+  std::cout << "print 63" << std::endl;
 
   float dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
   return dR;
@@ -3952,7 +3954,7 @@ const floats& Object2_phi
 
 ){
 
-  //std::cout << "print 64" << std::endl;
+  std::cout << "print 64" << std::endl;
 
   floats dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
   return dR;
@@ -3962,7 +3964,7 @@ const floats& Object2_phi
 
 auto deltaRcheck_floats{[](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
 
-  //std::cout << "print 65" << std::endl;
+  std::cout << "print 65" << std::endl;
 
   floats min_dRs{};
 
@@ -3991,7 +3993,7 @@ const float& Object2_eta_Selection,
 const float& Object2_phi_Selection
 ){
 
-  //std::cout << "print 66" << std::endl;
+  std::cout << "print 66" << std::endl;
 
   doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   return dR;
@@ -4008,7 +4010,7 @@ const doubles& Object2_eta_Selection,
 const doubles& Object2_phi_Selection
 ){
 
-  //std::cout << "print 67" << std::endl;
+  std::cout << "print 67" << std::endl;
 
   doubles dR_vec{};
 
@@ -4033,7 +4035,7 @@ const doubles& Object2_eta_Selection,
 const doubles& Object2_phi_Selection
 ){
 
-  //std::cout << "print 68" << std::endl;
+  std::cout << "print 68" << std::endl;
 
   doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   return dR;
@@ -4050,7 +4052,7 @@ const float& Object2_eta_Selection,
 const float& Object2_phi_Selection
 ){
  
-  //std::cout << "print 69" << std::endl;
+  std::cout << "print 69" << std::endl;
 
   doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   return dR;
@@ -4066,7 +4068,7 @@ const floats& Object2_phi_Selection
 
 ){
 
-  //std::cout << "print 70" << std::endl;
+  std::cout << "print 70" << std::endl;
 
   floats dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   return dPhi;
@@ -4083,7 +4085,7 @@ const doubles& Object2_phi_Selection
 
 ){
 
-  //std::cout << "print 71" << std::endl;
+  std::cout << "print 71" << std::endl;
 
   doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   return dPhi;
@@ -4100,7 +4102,7 @@ const floats& Object2_phi_Selection
 
 ){
 
-  //std::cout << "print 72" << std::endl;
+  std::cout << "print 72" << std::endl;
 
   doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   return dPhi;
@@ -4117,7 +4119,7 @@ const doubles& Object2_phi
 
 ){
 
- //std::cout << "print 73" << std::endl;
+ std::cout << "print 73" << std::endl;
 
  doubles dPhi_vec{};
 
@@ -4141,7 +4143,7 @@ const float& Object2_phi
 
 ){
 
-  //std::cout << "print 74" << std::endl;
+  std::cout << "print 74" << std::endl;
 
   doubles dPhi = abs(Object1_phi - Object2_phi);
   return dPhi;
@@ -4155,7 +4157,7 @@ const float& Object2_phi
 
 ){
 
-  //std::cout << "print 75" << std::endl;
+  std::cout << "print 75" << std::endl;
 
   double dPhi = abs(Object1_phi - Object2_phi);
   return dPhi;
@@ -4172,7 +4174,7 @@ const floats& Jet_eta_Selection,
 const ints& Jet_jetId_Selection,
 const floats& dRJet_lep){
 
-  //std::cout << "print 76" << std::endl;
+  std::cout << "print 76" << std::endl;
 
   int JetId;
 
@@ -4193,7 +4195,7 @@ const floats& dRJet_lep){
 
 auto jet_selection_function{[](const ints& tight_jets) {
 
-  //std::cout << "print 77" << std::endl;
+  std::cout << "print 77" << std::endl;
 
   auto njet{count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
   return njet >= 4 && njet <= 6;
@@ -4208,7 +4210,7 @@ const float& SubleadingJetPt
 
 ){
 
-  //std::cout << "print 78" << std::endl;
+  std::cout << "print 78" << std::endl;
 
   double SumSquaredPt = pow(LeadingJetPt + SubleadingJetPt, 2);
   return SumSquaredPt;
@@ -4226,7 +4228,7 @@ const float& FourthJetPt
 
 ){
 
-  //std::cout << "print 79" << std::endl;
+  std::cout << "print 79" << std::endl;
 
   float JetPtSumOutput = LeadingJetPt + SubleadingJetPt + ThirdJetPt + FourthJetPt;
   return JetPtSumOutput;
@@ -4243,7 +4245,7 @@ const float& FourthJetEta
 
 ){
 
-  //std::cout << "print 80" << std::endl;
+  std::cout << "print 80" << std::endl;
 
   float JetEtaSumOutput = LeadingJetEta + SubleadingJetEta + ThirdJetEta + FourthJetEta;
   return JetEtaSumOutput;
@@ -4260,7 +4262,7 @@ const float& FourthJetPhi
 
 ){
 
-  //std::cout << "print 81" << std::endl;
+  std::cout << "print 81" << std::endl;
 
   float JetPhiSumOutput = LeadingJetPhi + SubleadingJetPhi + ThirdJetPhi + FourthJetPhi;
   return JetPhiSumOutput;
@@ -4276,7 +4278,7 @@ const float& SubleadingLepPt
 
 ){
 
-  //std::cout << "print 82" << std::endl;
+  std::cout << "print 82" << std::endl;
 
   float LepPtSumOutput = LeadingLepPt + SubleadingLepPt;
   return LepPtSumOutput;
@@ -4292,7 +4294,7 @@ const float& SubleadingLepEta
 
 ){
 
-  //std::cout << "print 83" << std::endl;
+  std::cout << "print 83" << std::endl;
 
   float LepEtaSumOutput = LeadingLepEta + SubleadingLepEta;
   return LepEtaSumOutput;
@@ -4308,7 +4310,7 @@ const float& SubleadingLepPhi
 
 ){
 
-  //std::cout << "print 84" << std::endl;
+  std::cout << "print 84" << std::endl;
 
   float LepPhiSumOutput = LeadingLepPhi + SubleadingLepPhi;
   return LepPhiSumOutput;
@@ -4319,7 +4321,7 @@ const float& SubleadingLepPhi
 
 auto HT{[](const float& Pt){
  
-  //std::cout << "print 85" << std::endl;
+  std::cout << "print 85" << std::endl;
 
   float HTOutput = abs(Pt);
   return HTOutput;
@@ -4329,7 +4331,7 @@ auto HT{[](const float& Pt){
 
 auto HT_double{[](const doubles& Pt){
 
-  //std::cout << "print 86" << std::endl;
+  std::cout << "print 86" << std::endl;
 
   doubles HT = abs(Pt);
   return HT;
@@ -4339,7 +4341,7 @@ auto HT_double{[](const doubles& Pt){
 
 auto HT_floats{[](const floats& Pt){
 
-  //std::cout << "print 87" << std::endl;
+  std::cout << "print 87" << std::endl;
 
   floats HT = abs(Pt);
   return HT;
@@ -4356,7 +4358,7 @@ const float& FourthJetHT
 
 ){
   
-  //std::cout << "print 88" << std::endl;
+  std::cout << "print 88" << std::endl;
 
   float TotJetHTOutput = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
   return TotJetHTOutput;
@@ -4372,7 +4374,7 @@ const float& SubleadingLeptonHT
 
 ){
 
-  //std::cout << "print 89" << std::endl;
+  std::cout << "print 89" << std::endl;
 
   float TotLepHTOutput = LeadingLeptonHT + SubleadingLeptonHT;
   return TotLepHTOutput;
@@ -4381,7 +4383,7 @@ const float& SubleadingLeptonHT
 
 auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
 
-  //std::cout << "print 90" << std::endl;
+  std::cout << "print 90" << std::endl;
 
   float TotHTOverTotpTOutput = TotHT / TotpT;
   return TotHTOverTotpTOutput;
@@ -4391,7 +4393,7 @@ auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
 
 auto TotHTOverTotpT_floats{[](const floats& TotHT, const floats& TotpT){
 
-  //std::cout << "print 91" << std::endl;
+  std::cout << "print 91" << std::endl;
 
   floats TotHTOverTotpTOutput = TotHT / TotpT;
   return TotHTOverTotpTOutput;
@@ -4420,7 +4422,7 @@ const float& FourthJetMass
 
 ){
 
-  //std::cout << "print 92" << std::endl;
+  std::cout << "print 92" << std::endl;
 
   TLorentzVector Jet1 = {};
   TLorentzVector Jet2 = {};
@@ -4456,7 +4458,7 @@ const float& ThirdJetMass
 
 ){
   
-  //std::cout << "print 93" << std::endl;
+  std::cout << "print 93" << std::endl;
 
   TLorentzVector Jet1 = {};
   TLorentzVector Jet2 = {};
@@ -4475,7 +4477,7 @@ const float& ThirdJetMass
 
 auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
      
-        //std::cout << "print 94" << std::endl;
+        std::cout << "print 94" << std::endl;
 
 	return tight_jets && (btags > 0.8838f) && (etas < MaxTrackerEta);
 }};
@@ -4483,7 +4485,7 @@ auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas)
 
 auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
 
-  //std::cout << "print 95" << std::endl;
+  std::cout << "print 95" << std::endl;
 
   return tight_jets && (btags == 0) && (etas < MaxTrackerEta);
 
@@ -4493,7 +4495,7 @@ auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& et
 
 auto bjet_cut{[](const ints& bjets) {
 
-        //std::cout << "print 96" << std::endl;
+        std::cout << "print 96" << std::endl;
 
         const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
         return nbjet >= 1 && nbjet <= 2;
@@ -4504,7 +4506,7 @@ auto bjet_cut{[](const ints& bjets) {
 //For the numerators
 auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
-	//std::cout << "print 97" << std::endl;
+	std::cout << "print 97" << std::endl;
 	
 	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
@@ -4513,7 +4515,7 @@ auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const fl
 
 auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
-	//std::cout << "print 98" << std::endl;
+	std::cout << "print 98" << std::endl;
 
        return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
@@ -4523,7 +4525,7 @@ auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const f
 
 auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
         
-      //std::cout << "print 99" << std::endl;
+      std::cout << "print 99" << std::endl;
       return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
@@ -4532,7 +4534,7 @@ auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, con
 
 auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
                 
-      //std::cout << "print 100" << std::endl;
+      std::cout << "print 100" << std::endl;
       return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
 }};
@@ -4540,7 +4542,7 @@ auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const f
 
 auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
 
-    //std::cout << "print 101" << std::endl;
+    std::cout << "print 101" << std::endl;
 
     return abs(Jet_partonFlavour) != 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
@@ -4551,7 +4553,7 @@ auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const
 //For the denominators
 auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	//std::cout << "print 102" << std::endl;
+	std::cout << "print 102" << std::endl;
 
 	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
 
@@ -4561,7 +4563,7 @@ auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& 
 
 auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	//std::cout << "print 103" << std::endl;
+	std::cout << "print 103" << std::endl;
 
 	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
 
@@ -4572,7 +4574,7 @@ auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints&
 
 auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	//std::cout << "print 104" << std::endl;
+	std::cout << "print 104" << std::endl;
 
 	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
 
@@ -4582,7 +4584,7 @@ auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const i
 
 auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
-	//std::cout << "print 105" << std::endl;
+	std::cout << "print 105" << std::endl;
 
         return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
 
@@ -4592,7 +4594,7 @@ auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints&
 
 auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
 	
-	 //std::cout << "print 106" << std::endl;
+	 std::cout << "print 106" << std::endl;
 
 	 return abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
 
@@ -4604,7 +4606,7 @@ auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const int
 
 auto numberofbjets{[](const ints& bjets) {
 
-	//std::cout << "print 107" << std::endl;
+	std::cout << "print 107" << std::endl;
 
         const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
         return nbjet;
@@ -4621,7 +4623,7 @@ const ints& lead_bjet
 
 ){
 
-  //std::cout << "print 108" << std::endl;
+  std::cout << "print 108" << std::endl;
 
   floats vec{};
 
@@ -4647,7 +4649,7 @@ const floats& bjet_mass
 
 ){
 
-  //std::cout << "print 109" << std::endl;
+  std::cout << "print 109" << std::endl;
 
   auto BJets = TLorentzVector{};
 
@@ -4675,7 +4677,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  //std::cout << "print 110" << std::endl;
+  std::cout << "print 110" << std::endl;
 
   return LeadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
@@ -4693,7 +4695,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  //std::cout << "print 111" << std::endl;
+  std::cout << "print 111" << std::endl;
 
   return SubleadingJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
@@ -4711,7 +4713,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  //std::cout << "print 112" << std::endl;
+  std::cout << "print 112" << std::endl;
 
   return ThirdJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
@@ -4728,7 +4730,7 @@ const floats& Jet_eta_Selection
 
 ){
 
-  //std::cout << "print 113" << std::endl;
+  std::cout << "print 113" << std::endl;
 
   return FourthJetpT && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
 
@@ -4742,7 +4744,7 @@ const ints& BJetBTags,
 const floats& Jet_btagCSVV2 
 ){
 
-  //std::cout << "print 114" << std::endl;
+  std::cout << "print 114" << std::endl;
 
   floats btagoutput{};
 
@@ -4765,7 +4767,7 @@ constexpr float W_MASS_CUT = 20.f;
 
 auto find_lead_mask{[](const ints& mask, const floats& vals) {
   
-  //std::cout << "print 115" << std::endl;
+  std::cout << "print 115" << std::endl;
 
   const auto masked_vals{mask * vals};
   const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
@@ -4780,7 +4782,7 @@ auto find_lead_mask{[](const ints& mask, const floats& vals) {
 auto find_w_pair{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
 
-//std::cout << "print 116" << std::endl;
+std::cout << "print 116" << std::endl;
 
 double w_reco_mass{std::numeric_limits<double>::infinity()};
 size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -4821,7 +4823,7 @@ for (size_t i{0}; i < njets; ++i){
 
 auto w_mass_cut{[](const float& w_mass) {
 	
-  //std::cout << "print 117" << std::endl;	
+  std::cout << "print 117" << std::endl;	
   return ( abs(w_mass - W_MASS) < W_MASS_CUT );
 
 }};
@@ -4830,7 +4832,7 @@ auto w_mass_cut{[](const float& w_mass) {
 
 auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
 	
-  //std::cout << "print 118" << std::endl;
+  std::cout << "print 118" << std::endl;
   return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50);
 
 }};
@@ -4840,7 +4842,7 @@ auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
 auto WPairJet1{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
 
-//std::cout << "print 119" << std::endl;
+std::cout << "print 119" << std::endl;
 
 double w_reco_mass{std::numeric_limits<double>::infinity()};
 size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -4881,7 +4883,7 @@ for (size_t i{0}; i < njets; ++i){
 
 auto WPairJet2{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
-//std::cout << "print 120" << std::endl;
+std::cout << "print 120" << std::endl;
 
 double w_reco_mass{std::numeric_limits<double>::infinity()};
 size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -4923,7 +4925,7 @@ for (size_t i{0}; i < njets; ++i){
 
 auto TLorentzVectorMass{[](const TLorentzVector& object){
 
-  //std::cout << "print 121" << std::endl;
+  std::cout << "print 121" << std::endl;
 
   doubles vec{};
   vec.push_back(object.M());
@@ -4934,7 +4936,7 @@ auto TLorentzVectorMass{[](const TLorentzVector& object){
 
 auto TLorentzVectorMass_float{[](const TLorentzVector& object){
   
-  //std::cout << "print 122" << std::endl;
+  std::cout << "print 122" << std::endl;
 
   floats vec{};
   vec.push_back(object.M());
@@ -4945,7 +4947,7 @@ auto TLorentzVectorMass_float{[](const TLorentzVector& object){
 
 auto TLorentzVectorPt{[](const TLorentzVector& object){
 
-  //std::cout << "print 123" << std::endl;
+  std::cout << "print 123" << std::endl;
 
   doubles vec{};
   vec.push_back(object.Pt());
@@ -4957,7 +4959,7 @@ auto TLorentzVectorPt{[](const TLorentzVector& object){
 
 auto TLorentzVectorPt_float{[](const TLorentzVector& object){
   
-  //std::cout << "print 124" << std::endl;
+  std::cout << "print 124" << std::endl;
 
   floats vec{};
   vec.push_back(object.Pt());
@@ -4968,7 +4970,7 @@ auto TLorentzVectorPt_float{[](const TLorentzVector& object){
 
 auto TLorentzVectorPhi{[](const TLorentzVector& object){
 
-  //std::cout << "print 125" << std::endl;
+  std::cout << "print 125" << std::endl;
 
   doubles vec{};
   vec.push_back(object.Phi());
@@ -4979,7 +4981,7 @@ auto TLorentzVectorPhi{[](const TLorentzVector& object){
 
 auto TLorentzVectorPhi_float{[](const TLorentzVector& object){
 
-  //std::cout << "print 126" << std::endl;
+  std::cout << "print 126" << std::endl;
 
   floats vec{};
   vec.push_back(object.Phi());
@@ -4990,7 +4992,7 @@ auto TLorentzVectorPhi_float{[](const TLorentzVector& object){
 
 auto TLorentzVectorEta{[](const TLorentzVector& object){
 
-  //std::cout << "print 127" << std::endl;
+  std::cout << "print 127" << std::endl;
 
   doubles vec{};
   vec.push_back(object.Eta());
@@ -5002,7 +5004,7 @@ auto TLorentzVectorEta{[](const TLorentzVector& object){
 
 auto TLorentzVectorEta_float{[](const TLorentzVector& object){
 
-  //std::cout << "print 128" << std::endl;
+  std::cout << "print 128" << std::endl;
 
   floats vec{};
   vec.push_back(object.Eta());
@@ -5021,7 +5023,7 @@ constexpr float Z_MASS_CUT{20.f};
 
 auto z_mass_cut{[](const float& z_mass) {
 
-  //std::cout << "print 129" << std::endl;
+  std::cout << "print 129" << std::endl;
 
   return abs(z_mass - Z_MASS) < Z_MASS_CUT;
 
@@ -5041,7 +5043,7 @@ const float& SubleadingleptonMass
 
 ){
 
-  //std::cout << "print 130" << std::endl;
+  std::cout << "print 130" << std::endl;
 
   TLorentzVector ZBoson = {};
   TLorentzVector LeadingLepton = {};
@@ -5059,7 +5061,7 @@ const float& SubleadingleptonMass
 
 auto RecoZHT{[](const doubles& RecoZPt){
 
-  //std::cout << "print 131" << std::endl;
+  std::cout << "print 131" << std::endl;
 
   doubles RecoZHTOutput = abs(RecoZPt);
   return RecoZHTOutput;
@@ -5069,7 +5071,7 @@ auto RecoZHT{[](const doubles& RecoZPt){
 
 auto RecoWHT{[](const floats& RecoWPt){
 
-  //std::cout << "print 132" << std::endl;
+  std::cout << "print 132" << std::endl;
 
   floats RecoWHTOutput = abs(RecoWPt);
   return RecoWHTOutput;
@@ -5086,7 +5088,7 @@ const ints& w_reco_jets
 
 ){
 
-  //std::cout << "print 133" << std::endl;
+  std::cout << "print 133" << std::endl;
 
   const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
 
@@ -5120,7 +5122,7 @@ const float& w_mass
 
 ){
 
-  //std::cout << "print 134" << std::endl;
+  std::cout << "print 134" << std::endl;
 
   auto reco_top = TLorentzVector{}; 
   auto BJets = TLorentzVector{};
@@ -5170,7 +5172,7 @@ const float& TotJetHTInput
 
 ){
 
-  //std::cout << "print 135" << std::endl;
+  std::cout << "print 135" << std::endl;
 
   floats TotalHTSystemOutput = RecoZHTInput + RecoWHTInput.at(0) + Top_HT_Input + TotLepHTInput + TotJetHTInput;
   return TotalHTSystemOutput;
@@ -5187,7 +5189,7 @@ const float& TotJetPtInput
 
 ){
 
-  //std::cout << "print 136" << std::endl;
+  std::cout << "print 136" << std::endl;
 
   floats TotalPtSystemOutput = RecoZPtInput + RecoWPtInput.at(0) + Top_Pt_Input + TotLepPtInput + TotJetPtInput;
   return TotalPtSystemOutput;
@@ -5205,7 +5207,7 @@ const float& TotJetEtaInput
 
 ){
 
-  //std::cout << "print 137" << std::endl;
+  std::cout << "print 137" << std::endl;
 
   doubles TotalEtaSystemOutput = RecoZEtaInput + RecoWEtaInput.at(0) + Top_Eta_Input + TotLepEtaInput + TotJetEtaInput;
   return TotalEtaSystemOutput;
@@ -5223,7 +5225,7 @@ const float& TotJetPhiInput
 
 ){
 
-  //std::cout << "print 138" << std::endl;
+  std::cout << "print 138" << std::endl;
 
   doubles TotalPhiSystemOutput = RecoZPhiInput + RecoWPhiInput.at(0) + Top_Phi_Input + TotLepPhiInput + TotJetPhiInput;
   return TotalPhiSystemOutput;
@@ -5242,7 +5244,7 @@ const floats& Jet_Phi_Selection,
 const floats& Jet_eta_Selection
 ){
 
-    //std::cout << "print 139" << std::endl;
+    std::cout << "print 139" << std::endl;
 
     doubles output_vec;
   
@@ -5270,7 +5272,7 @@ const floats& Jet_Phi_Selection
 ){
 
 
-  //std::cout << "print 140" << std::endl;
+  std::cout << "print 140" << std::endl;
 
   double output;
   doubles output_vec{};
@@ -5299,7 +5301,7 @@ const float& LeadingLeptonPhi
 
 ){
 
-  //std::cout << "print 141" << std::endl;
+  std::cout << "print 141" << std::endl;
 
   doubles DeltaR = sqrt(pow(LeadingLeptonPhi - bjetphi, 2) + pow(LeadingLeptonEta - bjeteta, 2));
   return DeltaR;
@@ -5317,7 +5319,7 @@ const float& SubleadingLeptonPhi
 
 ){
 
-  //std::cout << "print 142" << std::endl;
+  std::cout << "print 142" << std::endl;
 
   doubles DeltaR = sqrt(pow(SubleadingLeptonPhi - bjetphi, 2) + pow(SubleadingLeptonEta - bjeteta, 2));
   return DeltaR;
@@ -5332,7 +5334,7 @@ const float& LeptonPhi
 
 ){
 
-  //std::cout << "print 143" << std::endl;
+  std::cout << "print 143" << std::endl;
 
   doubles DeltaPhi = LeptonPhi - Jet_phi_Selection;
   return DeltaPhi;
@@ -5349,7 +5351,7 @@ const doubles& WPairJet2Pt
 
 ){
 
-  //std::cout << "print 144" << std::endl;
+  std::cout << "print 144" << std::endl;
 
   doubles mtW = sqrt(2 * WPairJet1Pt * WPairJet2Pt * (1 - cos(dPhi_j1j2)) );
   return mtW;
@@ -5371,7 +5373,7 @@ const bool& Flag_eeBadScFilter_Selection
 )-> bool{
 
 
-//std::cout << "print 145" << std::endl;
+std::cout << "print 145" << std::endl;
 
 return  
 
@@ -5407,7 +5409,7 @@ const floats& Jet_eta,
 const floats& Jet_rho,
 const floats& Jet_pt) { 
 
-  //std::cout << "print 146" << std::endl;
+  std::cout << "print 146" << std::endl;
 
 
   float Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11;
@@ -5552,7 +5554,7 @@ const floats& Jet_pt) {
 
 auto linecounter{[&FileNameJetSmear, &year](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
 
-   //std::cout << "print 147" << std::endl;
+   std::cout << "print 147" << std::endl;
 
    int number_of_lines = 0;
    std::string line;
@@ -5611,7 +5613,7 @@ const floats& Jet_pt
 ){
 
   
-  //std::cout << "print 148" << std::endl;
+  std::cout << "print 148" << std::endl;
 
   int k;
 
@@ -5665,7 +5667,7 @@ const floats& Jet_pt
 //sigma_JER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_PtResolution_AK4PF.txt
 auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  //std::cout << "print 149" << std::endl;
+  std::cout << "print 149" << std::endl;
 
   bool SigmaJER = true;
   bool JetSmearScaleFactor = false;
@@ -5679,7 +5681,7 @@ auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const 
 
 auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  //std::cout << "print 150" << std::endl;
+  std::cout << "print 150" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5693,7 +5695,7 @@ auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,con
 
 auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  //std::cout << "print 151" << std::endl;
+  std::cout << "print 151" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5707,7 +5709,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 //SJER reads this file for 2017: https://github.com/cms-jet/JRDatabase/blob/master/textFiles/Fall17_V3_MC/Fall17_V3_MC_SF_AK4PF.txt 
 auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  //std::cout << "print 152" << std::endl;
+  std::cout << "print 152" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = true;
@@ -5721,7 +5723,7 @@ auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, co
 
 auto SJER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  //std::cout << "print 153" << std::endl;
+  std::cout << "print 153" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5735,7 +5737,7 @@ auto SJER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const f
 
 auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  //std::cout << "print 154" << std::endl;
+  std::cout << "print 154" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -5754,7 +5756,7 @@ auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const
 //Calculating the jet smearing correction factor using the hybrid method
 auto MaxComparison{[](const float& sJER_nominal){
 
-  //std::cout << "print 155" << std::endl;
+  std::cout << "print 155" << std::endl;
 
  float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
 
@@ -5782,7 +5784,7 @@ const float& sJER_nominal,
 const float& sigma_JER_input,
 const ints& Jet_genJetIdx){
 
-  //std::cout << "print 156" << std::endl;
+  std::cout << "print 156" << std::endl;
 
   floats cJER_vec{};
 
@@ -5845,7 +5847,7 @@ const unsigned int& nJet
 
 ){
 
-  //std::cout << "print 157" << std::endl;
+  std::cout << "print 157" << std::endl;
 
   std::vector<TLorentzVector> OutputVec{};
 
@@ -5872,7 +5874,7 @@ const unsigned int& nJet
 //To get the properties of the smeared jet
 auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
 
- //std::cout << "print 158" << std::endl;
+ std::cout << "print 158" << std::endl;
 
  floats NewPtVec = {};
 
@@ -5890,7 +5892,7 @@ auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const f
 
 auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
 
- //std::cout << "print 159" << std::endl;
+ std::cout << "print 159" << std::endl;
 
  floats NewPhiVec{};
 
@@ -5908,7 +5910,7 @@ auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const 
  
 auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
 
- //std::cout << "print 160" << std::endl;
+ std::cout << "print 160" << std::endl;
 
  floats NewEtaVec = {};
 
@@ -5926,7 +5928,7 @@ auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const 
 
 auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
 
- //std::cout << "print 161" << std::endl;
+ std::cout << "print 161" << std::endl;
 
  floats NewMassVec = {};
 
@@ -5952,7 +5954,7 @@ const floats& Muon_mass
 
 ){
   
-  //std::cout << "print 162" << std::endl;
+  std::cout << "print 162" << std::endl;
 
   TLorentzVector Muon4Mo{};
   
@@ -5980,7 +5982,7 @@ const ints& Muon_nTrackerLayers
 
 ){
 
-  //std::cout << "print 163" << std::endl;
+  std::cout << "print 163" << std::endl;
 
   floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
   return CorrectionFactor;
@@ -6000,7 +6002,7 @@ const ints& Muon_nTrackerLayers
 
 ){
 
-  //std::cout << "print 164" << std::endl;
+  std::cout << "print 164" << std::endl;
 
   floats CorrectionFactor = RochesterCorrections_testscript2(year, process, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
   return CorrectionFactor;
@@ -6012,7 +6014,7 @@ const ints& Muon_nTrackerLayers
 
 auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec){
 
-  //std::cout << "print 165" << std::endl;
+  std::cout << "print 165" << std::endl;
 
   TLorentzVector NewVec{};
 
@@ -6031,7 +6033,7 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
 //For the normalisation factors
 auto NormalisationFactorFunction{[&process, &year](){
 
-  //std::cout << "print 166" << std::endl;
+  std::cout << "print 166" << std::endl;
 
   std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
 				    "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
@@ -6144,7 +6146,7 @@ auto EGammaFunction{[&EGammaEff2016_histo,     	     	     &EGammaEffSys2016_his
 		     ](const std::string& YearInput, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
 
-   //std::cout << "print 167" << std::endl;
+   std::cout << "print 167" << std::endl;
 
    floats OutputVector{};
    floats OutputVectorFinal{};
@@ -6244,7 +6246,7 @@ EGammaEffRecoSys_inputfile_2018->Close();
 
 auto EGammaSF_egammaEff{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  //std::cout << "print 168" << std::endl;
+  std::cout << "print 168" << std::endl;
   return EGammaFunction(year, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
 
 }};
@@ -6255,7 +6257,7 @@ auto EGammaSF_egammaEff{[&year, &EGammaFunction](const floats& Electron_pt_Selec
 
 auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  //std::cout << "print 169" << std::endl;
+  std::cout << "print 169" << std::endl;
   return EGammaFunction(year, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
 
 }};
@@ -6266,7 +6268,7 @@ auto EGammaSF_egammaEffReco{[&year, &EGammaFunction](const floats& Electron_pt_S
 
 auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  //std::cout << "print 170" << std::endl;
+  std::cout << "print 170" << std::endl;
   return EGammaFunction(year, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
 
 }};
@@ -6277,7 +6279,7 @@ auto EGammaSF_egammaEff_Sys{[&year, &EGammaFunction](const floats& Electron_pt_S
 
 auto EGammaSF_egammaEffReco_Sys{[&year, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  //std::cout << "print 171" << std::endl;
+  std::cout << "print 171" << std::endl;
   return EGammaFunction(year, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
 
 }};
@@ -6402,7 +6404,7 @@ auto MuonSF{[
 
 ](const std::string& type, const std::string& YearInput, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
-  //std::cout << "print 172" << std::endl;
+  std::cout << "print 172" << std::endl;
 
   floats AbsEta = abs(eta);
 
@@ -6570,7 +6572,7 @@ inputfile_RunsABCD_ISO_2018->Close();
 
 auto MuonSFTest_ID{[&MuonSF, &year](const floats& pt, const floats& eta){
 
-  //std::cout << "print 173" << std::endl;
+  std::cout << "print 173" << std::endl;
   return MuonSF("ID", year, " ", pt, eta);
   
 }};
@@ -6579,7 +6581,7 @@ auto MuonSFTest_ID{[&MuonSF, &year](const floats& pt, const floats& eta){
 
 auto MuonSFTest_Iso{[&MuonSF, &year](const floats& pt, const floats& eta){
 
-  //std::cout << "print 174" << std::endl;
+  std::cout << "print 174" << std::endl;
   return MuonSF("Iso", year, " ", pt, eta);
     
 }};
@@ -6589,7 +6591,7 @@ auto MuonSFTest_Iso{[&MuonSF, &year](const floats& pt, const floats& eta){
 
 auto MuonSFTest_ID_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
   
-  //std::cout << "print 175" << std::endl;
+  std::cout << "print 175" << std::endl;
 
   if(year == "2016"){
         return MuonSF("ID sys", year, "Up", pt, eta);
@@ -6606,7 +6608,7 @@ auto MuonSFTest_ID_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta
 
 auto MuonSFTest_ID_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
 
-  //std::cout << "print 176" << std::endl;
+  std::cout << "print 176" << std::endl;
 
   if(year == "2016"){
 	return MuonSF("ID sys", year, "Down", pt, eta);
@@ -6623,7 +6625,7 @@ auto MuonSFTest_ID_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta
 
 auto MuonSFTest_Iso_sys_syst{[&MuonSF, &year](const floats& pt, const floats& eta){
 
-  //std::cout << "print 177" << std::endl;
+  std::cout << "print 177" << std::endl;
 
   if(year == "2016"){
         return MuonSF("Iso sys", year, "Up", pt, eta);
@@ -6640,7 +6642,7 @@ auto MuonSFTest_Iso_sys_syst{[&MuonSF, &year](const floats& pt, const floats& et
 
 auto MuonSFTest_Iso_sys_stat{[&MuonSF, &year](const floats& pt, const floats& eta){
 
-  //std::cout << "print 178" << std::endl;
+  std::cout << "print 178" << std::endl;
 
   if(year == "2016"){
         return MuonSF("Iso sys", year, "Down", pt, eta);
@@ -6663,14 +6665,14 @@ std::cout << "before dummy col function" << std::endl;
 //dummy column
 auto DummyColumnFunction{[](const floats& pts){
 
-  //std::cout << "print 179" << std::endl;
+  std::cout << "print 179" << std::endl;
   return pts;
 
 }};
 
 auto DummyColumnFunctionInts{[](const ints& charges){
 
-  //std::cout << "print 180" << std::endl;
+  std::cout << "print 180" << std::endl;
   return charges;
 
 }};
@@ -6679,7 +6681,7 @@ auto DummyColumnFunctionInts{[](const ints& charges){
 //PS weight lambda function
 auto PSWeight{[&year, &process](floats& PSWeightInput){
 
-  //std::cout << "print 181" << std::endl;
+  std::cout << "print 181" << std::endl;
 
   floats Ones(4, 1.0);
 
@@ -6744,7 +6746,7 @@ const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
 const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
 const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight)->bool{
 
-  //std::cout << "print 182" << std::endl;
+  std::cout << "print 182" << std::endl;
 
   if(year == "2016"){
 	
@@ -6824,7 +6826,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
 )-> bool{
 
-  //std::cout << "print 183" << std::endl;
+  std::cout << "print 183" << std::endl;
 
   if(year == "2016"){
 
@@ -6918,7 +6920,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
-  //std::cout << "print 184" << std::endl;
+  std::cout << "print 184" << std::endl;
 
   if(year == "2016"){
 
@@ -7015,7 +7017,7 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
-  //std::cout << "print 185" << std::endl;
+  std::cout << "print 185" << std::endl;
 
   if(year == "2016"){
 
@@ -7143,7 +7145,7 @@ else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;
 //dummy lambda function
 auto DummyBool{[](const bool& dummyinput){
 
-  //std::cout << "print 186" << std::endl;
+  std::cout << "print 186" << std::endl;
   return dummyinput > 0;
 
 }};
@@ -8075,7 +8077,7 @@ std::cout << "before pu function" << std::endl;
 
 auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year](int PV_npvs_input){
 
-  ////std::cout << "print 187" << std::endl;
+  //std::cout << "print 187" << std::endl;
 
   float PU_Weight_input;
 
@@ -9317,7 +9319,7 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 //lambda functions for top quark pT reweighting
 auto UnweightedTopPt{[](const doubles& pts){
 
-	//std::cout << "print 188" << std::endl;
+	std::cout << "print 188" << std::endl;
         return pts;
 
 }};
@@ -9341,7 +9343,7 @@ if(process == "ttbar_2l2nu" ||
 
 	){
 
-		//std::cout << "print 189" << std::endl;
+		std::cout << "print 189" << std::endl;
 		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
 
 	}};
@@ -9353,7 +9355,7 @@ if(process == "ttbar_2l2nu" ||
 		const ints& GenPart_pt
 
 	){
-		//std::cout << "print 190" << std::endl;
+		std::cout << "print 190" << std::endl;
 		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
 
 	}};
@@ -9367,7 +9369,7 @@ if(process == "ttbar_2l2nu" ||
 
 	){
 
-		//std::cout << "print 191" << std::endl;
+		std::cout << "print 191" << std::endl;
 
 		doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
 		doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
@@ -9416,7 +9418,7 @@ ints SummedWeights(14, 0);
 
 auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
-  //std::cout << "print 192" << std::endl;
+  std::cout << "print 192" << std::endl;
 
   float PdfMin = 1.0;
   float PdfMax = 1.0;
@@ -9448,7 +9450,7 @@ auto NominalWeight{[&PDF_ScaleUp, &PDF_ScaleDown](const floats& LHEPdfWeight, co
 
 auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP, const floats& ReturnedPSWeight){
 
-  //std::cout << "print 193" << std::endl;
+  std::cout << "print 193" << std::endl;
 
   floats pdf = LHEPdfWeight / LHEWeight_originalXWGTUP.at(0);
 
@@ -9481,7 +9483,7 @@ auto ME_uncert_function{[&SummedWeights](const floats& LHEPdfWeight, const float
 //Histogram for ME uncertainties
 auto ME_histo_function{[&SummedWeights](){
 
-  //std::cout << "print 194" << std::endl;
+  std::cout << "print 194" << std::endl;
 
   ints numerators;
 
@@ -9498,7 +9500,7 @@ auto ME_histo_function{[&SummedWeights](){
 //SFs for ME up and down
 auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
-	//std::cout << "print 195" << std::endl;
+	std::cout << "print 195" << std::endl;
 
 
  	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
@@ -9866,7 +9868,7 @@ const floats& Jet_eta,
 const floats& Jet_phi, 
 const floats& Jet_mass){
 
-  //std::cout << "print 197" << std::endl;
+  std::cout << "print 197" << std::endl;
 
   std::vector<TLorentzVector> metVecOriginal{};
   floats metVecOriginal_px;
@@ -9970,7 +9972,7 @@ auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                      
                         ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& EGammaSF_egammaEffInput, const float& EGammaSF_egammaEffRecoInput, const float& EGammaSF_egammaEffSysInput, const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
 
 
-			//std::cout << "print 198" << std::endl;
+			std::cout << "print 198" << std::endl;
 
                         if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
                         else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
@@ -9994,7 +9996,7 @@ auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                  
                         ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& MuonSFTest_IDInput, const float& MuonSFTest_IsoInput, const float& MuonSFTest_ID_sys_systInput, const float& MuonSFTest_ID_sys_statInput, const float& MuonSFTest_Iso_sys_systInput, const float& MuonSFTest_Iso_sys_statInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
 
 
-			//std::cout << "print 199" << std::endl;
+			std::cout << "print 199" << std::endl;
 
                         if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
                         else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
@@ -10036,10 +10038,10 @@ auto d_WeightedEvents_withMET_mumu = d_WeightedEvents_mumu.Define("newMET", METU
 if(process == "tZq"){
 
 
-	auto h_WMass_ee = d_WeightedEvents_withMET_ee.Filter("w_mass").Histo1D("w_mass");
-	auto h_InvTopMass_ee = d_WeightedEvents_withMET_ee.Filter("InvTopMass").Histo1D("InvTopMass");
-	auto h_WMass_mumu = d_WeightedEvents_withMET_mumu.Filter("w_mass").Histo1D("w_mass");
-        auto h_InvTopMass_mumu = d_WeightedEvents_withMET_mumu.Filter("InvTopMass").Histo1D("InvTopMass");
+	auto h_WMass_ee = d_WeightedEvents_withMET_ee.Histo1D("w_mass", "EventWeight");
+	auto h_InvTopMass_ee = d_WeightedEvents_withMET_ee.Histo1D("InvTopMass", "EventWeight");
+	auto h_WMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D("w_mass", "EventWeight");
+        auto h_InvTopMass_mumu = d_WeightedEvents_withMET_mumu.Histo1D("InvTopMass", "EventWeight");
 
 	std::cout << "after h_InvTopMass_mumu " << std::endl;
 
@@ -10130,7 +10132,7 @@ std::vector<float> CutRanges_ee = {};
 
 auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
 
-  //std::cout << "print 200" << std::endl;
+  std::cout << "print 200" << std::endl;
 	
   float FiveSigmaW = 5*W_stddev_ee;
 
@@ -10166,7 +10168,7 @@ std::vector<float> CutRanges_mumu = {};
 
 auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
 
-  //std::cout << "print 201" << std::endl;
+  std::cout << "print 201" << std::endl;
 
   float FiveSigmaW = 5*W_stddev_mumu;
 
@@ -10315,7 +10317,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
 	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
 
-	  //std::cout << "print 202" << std::endl;
+	  std::cout << "print 202" << std::endl;
 
 	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
 	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
@@ -10337,7 +10339,7 @@ if(blinding == true && (SBR == true || SR == true)){
 
         auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
 
-	  //std::cout << "print 203" << std::endl;
+	  std::cout << "print 203" << std::endl;
 
           if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
           else if(SR == true){return Chi2 < Chi2_SR_mumu;}
