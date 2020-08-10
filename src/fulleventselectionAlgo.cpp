@@ -10356,22 +10356,22 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 	//Naming the chi2 text file
-	if(NPL == true && ZPlusJetsCR == false & ttbarCR == false){
+	if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
         	Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL.txt";
         }
-        else if(NPL == false && ZPlusJetsCR == true & ttbarCR == false){
+        else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
         	Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR.txt";
         }
-        else if(NPL == false && ZPlusJetsCR == false & ttbarCR == true){
+        else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
                 Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_ttbarCR.txt";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == false){
+        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
                 Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
         }
-        else if(NPL == true && ZPlusJetsCR == false & ttbarCR == true){	
+        else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){	
                 Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR.txt";
         }
-        else if(NPL == true && ZPlusJetsCR == true & ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
         else{Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + ".txt";}
 	
 
