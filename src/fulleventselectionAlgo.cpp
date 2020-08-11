@@ -10221,8 +10221,8 @@ if(blinding == true && (SBR == true || SR == true)){
 
 		std::cout << "before NumberOfSimulatedEvents_ee" << std::endl;
 
-		NumberOfSimulatedEvents_ee = *( Blinding_ee.Filter("chi2").Count() );
-		NumberOfSimulatedEvents_mumu = *( Blinding_mumu.Filter("chi2").Count() );	
+		NumberOfSimulatedEvents_ee = *( Blinding_ee.Filter("chi2 != 999.0").Count() );
+		NumberOfSimulatedEvents_mumu = *( Blinding_mumu.Filter("chi2 != 999.0").Count() );	
 	
 		std::cout << "after NumberOfSimulatedEvents_mumu" << std::endl;
 
@@ -10626,8 +10626,8 @@ else{
 
 	//For the SF (Number of opposite-sign non prompt MC events / number of same-sign non-prompt MC events)
 	//ee
-	int Num_OppositeSignNonPrompt_MC_ee = *( d_WeightedEvents_ee.Filter("OppositeSignNonPrompt").Count() );
-	int Num_SameSignNonPrompt_MC_ee = *( d_WeightedEvents_ee.Filter("SameSignNonPrompt").Count() );
+	int Num_OppositeSignNonPrompt_MC_ee = *( d_WeightedEvents_ee.Filter("OppositeSignNonPrompt > 0").Count() );
+	int Num_SameSignNonPrompt_MC_ee = *( d_WeightedEvents_ee.Filter("SameSignNonPrompt > 0").Count() );
 
 	int NPL_SF_ee;
 
@@ -10637,8 +10637,8 @@ else{
 	else{NPL_SF_ee = 99999;}
 
 	//mumu
-	int Num_OppositeSignNonPrompt_MC_mumu = *( d_WeightedEvents_mumu.Filter("OppositeSignNonPrompt").Count() );
-        int Num_SameSignNonPrompt_MC_mumu = *( d_WeightedEvents_mumu.Filter("SameSignNonPrompt").Count() );
+	int Num_OppositeSignNonPrompt_MC_mumu = *( d_WeightedEvents_mumu.Filter("OppositeSignNonPrompt > 0").Count() );
+        int Num_SameSignNonPrompt_MC_mumu = *( d_WeightedEvents_mumu.Filter("SameSignNonPrompt > 0").Count() );
 
 	int NPL_SF_mumu; 
  
