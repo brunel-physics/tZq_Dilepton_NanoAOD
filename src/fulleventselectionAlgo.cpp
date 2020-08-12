@@ -943,7 +943,7 @@ auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](
 
   floats BTaggedEff{};
 
-  for(int i = 0; i < pts.size(); i++){
+  for(long unsigned int i = 0; i < pts.size(); i++){
 
         int PtNum = h_bjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
         int EtaNum = h_bjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
@@ -1263,9 +1263,9 @@ for(long unsigned int i = 0; i < CSVv2OperatingPointTest.size(); i++){
 
 
 	if(OutVec.size() != 0 && check == false){
-		for(long unsigned int j = 0; j < OutVec.size(); j++){
+		for(long unsigned int k = 0; k < OutVec.size(); k++){
 
-			if(OutVec.at(j) != "0"){NewOutVec.push_back(OutVec.at(j));}
+			if(OutVec.at(k) != "0"){NewOutVec.push_back(OutVec.at(k));}
 	
 		}
 	
@@ -1637,7 +1637,7 @@ for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 
 
 
-				for(int k = 0; k < VecForConcString8.size(); k++){
+				for(long unsigned int k = 0; k < VecForConcString8.size(); k++){
         				if(k == 0){ConcatenatedString8 = VecForConcString8.at(k);}
         				else{ConcatenatedString8 += VecForConcString8.at(k);}
     
@@ -2150,21 +2150,21 @@ for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 	
 
 			//eighth
-                	for(int i = index8+5; i < FirstElement.length(); i++){
+                	for(long unsigned int p = index8+5; p < FirstElement.length(); p++){
 
-                        	if(FirstElement.at(i) != ')'&&
-                           	   FirstElement.at(i) != '(' &&
-                           	   FirstElement.at(i) != '*' &&
-                           	   FirstElement.at(i) != '/' &&
-                           	   FirstElement.at(i) != '+' &&
-                           	   FirstElement.at(i) != '-'){VecForConcString9.push_back(FirstElement.at(i));}
-                        	else{index9 = i; break;}
+                        	if(FirstElement.at(p) != ')'&&
+                           	   FirstElement.at(p) != '(' &&
+                           	   FirstElement.at(p) != '*' &&
+                           	   FirstElement.at(p) != '/' &&
+                           	   FirstElement.at(p) != '+' &&
+                           	   FirstElement.at(p) != '-'){VecForConcString9.push_back(FirstElement.at(p));}
+                        	else{index9 = p; break;}
                 	}
 
 
-                	for(int i = 0; i < VecForConcString9.size(); i++){
-                        	if(i == 0){ConcatenatedString9 = VecForConcString9.at(i);}
-                        	else{ConcatenatedString9 += VecForConcString9.at(i);}
+                	for(long unsigned int p = 0; p < VecForConcString9.size(); p++){
+                        	if(p == 0){ConcatenatedString9 = VecForConcString9.at(p);}
+                        	else{ConcatenatedString9 += VecForConcString9.at(p);}
 
                 	}
                 	
@@ -2172,42 +2172,42 @@ for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 
 
 			//ninth
-                        for(int i = index9+4; i < FirstElement.length(); i++){
+                        for(long unsigned int p = index9+4; p < FirstElement.length(); p++){
 
-                                if(FirstElement.at(i) != ')'&&
-                                   FirstElement.at(i) != '(' &&
-                                   FirstElement.at(i) != '*' &&
-                                   FirstElement.at(i) != '/' &&
-                                   FirstElement.at(i) != '+' &&
-                                   FirstElement.at(i) != '-'){VecForConcString10.push_back(FirstElement.at(i));}
-                                else{index10 = i; break;}
+                                if(FirstElement.at(p) != ')'&&
+                                   FirstElement.at(p) != '(' &&
+                                   FirstElement.at(p) != '*' &&
+                                   FirstElement.at(p) != '/' &&
+                                   FirstElement.at(p) != '+' &&
+                                   FirstElement.at(p) != '-'){VecForConcString10.push_back(FirstElement.at(p));}
+                                else{index10 = p; break;}
                         }
 
 
-                        for(int i = 0; i < VecForConcString10.size(); i++){
-                                if(i == 0){ConcatenatedString10 = VecForConcString10.at(i);}
-                                else{ConcatenatedString10 += VecForConcString10.at(i);}
+                        for(long unsigned int p = 0; p < VecForConcString10.size(); p++){
+                                if(p == 0){ConcatenatedString10 = VecForConcString10.at(p);}
+                                else{ConcatenatedString10 += VecForConcString10.at(p);}
 
                         }
 
                         float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
 
 			//tenth
-                        for(int i = index10+9; i < FirstElement.length(); i++){
+                        for(long unsigned int p = index10+9; p < FirstElement.length(); p++){
           
-                                if(FirstElement.at(i) != ')'&&
-                                   FirstElement.at(i) != '(' &&
-                                   FirstElement.at(i) != '*' &&
-                                   FirstElement.at(i) != '/' &&
-                                   FirstElement.at(i) != '+' &&
-                                   FirstElement.at(i) != '-'){VecForConcString11.push_back(FirstElement.at(i));}
-                                else{index11 = i; break;}
+                                if(FirstElement.at(p) != ')'&&
+                                   FirstElement.at(p) != '(' &&
+                                   FirstElement.at(p) != '*' &&
+                                   FirstElement.at(p) != '/' &&
+                                   FirstElement.at(p) != '+' &&
+                                   FirstElement.at(p) != '-'){VecForConcString11.push_back(FirstElement.at(p));}
+                                else{index11 = p; break;}
                         } 
     
 
-                        for(int i = 0; i < VecForConcString11.size(); i++){
-                                if(i == 0){ConcatenatedString11 = VecForConcString11.at(i);}
-                                else{ConcatenatedString11 += VecForConcString11.at(i);}
+                        for(long unsigned int p = 0; p < VecForConcString11.size(); p++){
+                                if(p == 0){ConcatenatedString11 = VecForConcString11.at(p);}
+                                else{ConcatenatedString11 += VecForConcString11.at(p);}
     
                         }
 			
@@ -2300,7 +2300,7 @@ auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSN
 
   int size = (CMSNonBTagSFInput.size() < EffNonBTagged.size()) ? CMSNonBTagSFInput.size() : EffNonBTagged.size();
 
-  for(long unsigned int i = 0; i < size; i++){
+  for(int i = 0; i < size; i++){
 
   	initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
 
@@ -3654,7 +3654,7 @@ auto LeadingVariable{[](const floats& variable){
 
   float first_largest_value = variable.at(0);
 
-        for(int i = 1; i < variable.size(); i++){
+        for(long unsigned int i = 1; i < variable.size(); i++){
 
                 if(variable.at(i) > first_largest_value){
                         first_largest_value = variable.at(i);
@@ -4333,8 +4333,8 @@ auto HT_double{[](const doubles& Pt){
 
   std::cout << "print 86" << std::endl;
 
-  doubles HT = abs(Pt);
-  return HT;
+  doubles HT_Output = abs(Pt);
+  return HT_Output;
 
 }};
 
@@ -4343,8 +4343,8 @@ auto HT_floats{[](const floats& Pt){
 
   std::cout << "print 87" << std::endl;
 
-  floats HT = abs(Pt);
-  return HT;
+  floats HT_Out = abs(Pt);
+  return HT_Out;
 
 }};
 
@@ -8171,7 +8171,7 @@ process != "data_SingleMuonRunH2"
 ){
 
 
-  auto d_GoldenJson = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
+  auto d_GoldenJson = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"});
 
   if(process == "Data_triggerSF"){d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
 
@@ -9366,15 +9366,15 @@ if(process == "ttbar_2l2nu" ||
 
 	auto TopReweighting_weight{[](
 
-		const ints& TopReweighting_topquark,
-		const ints& TopReweighting_antitopquark
+		const ints& TopReweighting_topquark_input,
+		const ints& TopReweighting_antitopquark_input
 
 	){
 
 		std::cout << "print 191" << std::endl;
 
-		doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark) );
-		doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark) );
+		doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark_input) );
+		doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark_input) );
 		doubles weight = sqrt( SF_top * SF_antitop);
 		
 		return weight;
@@ -11055,7 +11055,7 @@ const bool& HLT_Ele27_WPTight_Gsf
 		for(int i = 0; i < h_EventNumber_ee->GetNbinsX(); i++){float EventNum_ee = h_EventNumber_ee->GetXaxis()->GetBinCenter(i); eeVec.push_back(EventNum_ee);}
 		for(int i = 0; i < h_EventNumber_e->GetNbinsX(); i++){float EventNum_e = h_EventNumber_e->GetXaxis()->GetBinCenter(i); eVec.push_back(EventNum_e);}
 		
-		for(int i = 0; i < eeVec.size(); i++){
+		for(long unsigned int i = 0; i < eeVec.size(); i++){
 
 			float event_number = eeVec.at(i); 
 			bool e_EventNumbers = any_of(eVec.begin(), eVec.end(), [&event_number](int j){return j == event_number;});
@@ -11080,7 +11080,7 @@ const bool& HLT_Ele27_WPTight_Gsf
                 floats muVec = {};
                 floats SkimmedVector_m = {};
 
-                for(long unsigned int i = 0; i < h_EventNumber_mumu->GetNbinsX(); i++){float EventNum_mumu = h_EventNumber_mumu->GetXaxis()->GetBinCenter(i); mumuVec.push_back(EventNum_mumu);}
+                for(int i = 0; i < h_EventNumber_mumu->GetNbinsX(); i++){float EventNum_mumu = h_EventNumber_mumu->GetXaxis()->GetBinCenter(i); mumuVec.push_back(EventNum_mumu);}
                 for(int i = 0; i < h_EventNumber_mu->GetNbinsX(); i++){float EventNum_mu = h_EventNumber_mu->GetXaxis()->GetBinCenter(i); muVec.push_back(EventNum_mu);}
                 
                 for(long unsigned int i = 0; i < mumuVec.size(); i++){
@@ -11202,7 +11202,7 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 		int digit6 = GoldenJson_SplitChars().at(i+7) - '0';
 
 
-		int run = (digit1*100000) + (digit2*10000) + (digit3*1000) + (digit4*100) + (digit5*10) + digit6;
+		const unsigned int run = (digit1*100000) + (digit2*10000) + (digit3*1000) + (digit4*100) + (digit5*10) + digit6;
 	
 		RunNumBeingRead = run;
 
@@ -11218,7 +11218,7 @@ auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRun
 					    GoldenJson_SplitChars().at( (i+10)+(j+1) ) == ']'){
 
 					
-						for(int k = (i+10); k < ((i+10)+(j+2)); k++){
+						for(long unsigned int k = (i+10); k < ((i+10)+(j+2)); k++){
 
 							EventsVector.push_back(GoldenJson_SplitChars().at(k));
 						
