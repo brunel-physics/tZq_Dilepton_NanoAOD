@@ -2357,7 +2357,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-//EnableImplicitMT();
+EnableImplicitMT();
 
 
 std::string branch;
@@ -8169,10 +8169,14 @@ process != "data_SingleMuonRunG2" &&
 process != "data_SingleMuonRunH2"
 
 ){
-  
+
+
+  auto d_GoldenJson = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
+
+  if(process == "Data_triggerSF"){d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
+
   //Filtering events that pass the ee selection criteria
-  auto d_ee_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
-					       .Define("PU", PU_function, {"PV_npvs"})
+  auto d_ee_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
                                            .Define("TightElectrons", TightElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
                                           .Define("Electron_pt_Selection", select<floats>, {"Electron_pt", "TightElectrons"})
 					  .Define("Electron_phi_Selection", select<floats>, {"Electron_phi", "TightElectrons"})
@@ -8205,8 +8209,7 @@ process != "data_SingleMuonRunH2"
 
 
 
-auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
-					       .Define("PU", PU_function, {"PV_npvs"})
+auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
                                                .Define("TightMuons", TightMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
                                                .Define("Muon_pt_Selection", select<floats>, {"Muon_pt", "TightMuons"})
                                                .Define("Muon_eta_Selection", select<floats>, {"Muon_eta", "TightMuons"})
@@ -8230,8 +8233,7 @@ auto d_mumu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {
                                                .Define("SubleadingMuonEta", SubleadingVariable, {"Muon_eta_Selection"});
         
 
-     auto d_emu_selection_defines = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"})
-						   .Define("PU", PU_function, {"PV_npvs"})
+     auto d_emu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
                                            	   .Define("TightElectronsEmu", TightElectronsFunctionEmu, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
 						   .Define("LooseMuonsEmu", LooseMuonsFunctionEmu, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
                                           	   .Define("Electron_pt_SelectionEmu", select<floats>, {"Electron_pt", "TightElectronsEmu"})
@@ -9579,7 +9581,7 @@ else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
         BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR" + EndOfName;
 }
 else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + "_" + EndOfName;}
+else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + EndOfName;}
 
 
 
