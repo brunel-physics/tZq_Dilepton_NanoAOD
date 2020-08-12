@@ -2744,10 +2744,10 @@ else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 std::cout << "before range" << std::endl;
 
-RDataFrame d("Events", input_files);
-auto d_dataframe = d.Range(0, 1000000);
+//RDataFrame d("Events", input_files);
+//auto d_dataframe = d.Range(0, 1000000);
 
-//RDataFrame d_dataframe("Events", input_files);
+RDataFrame d_dataframe("Events", input_files);
 
 
 
@@ -10294,6 +10294,7 @@ if(blinding == true && (SBR == true || SR == true)){
 		//for Chi2_SBR_ee and mumu
 		auto MaxElement_ee = std::max_element(CutRanges_ee.begin(), CutRanges_ee.end());
 		auto DistToMax_ee = std::distance(CutRanges_ee.begin(), MaxElement_ee);
+		std::cout << "DistToMax_ee = " << DistToMax_ee << std::endl;
 		Chi2_SBR_ee = CutRanges_ee.at(DistToMax_ee);
 
 
@@ -10670,8 +10671,8 @@ else{
  //Print cut report
 std::cout << "before print cut flow report" << std::endl;
 
-auto allCutsReport = d.Report();
-//auto allCutsReport = d_dataframe.Report();
+//auto allCutsReport = d.Report();
+auto allCutsReport = d_dataframe.Report();
 
 std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
 
