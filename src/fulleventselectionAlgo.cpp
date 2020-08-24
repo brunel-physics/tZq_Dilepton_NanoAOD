@@ -2350,54 +2350,70 @@ auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
 
 
-
-
 void fulleventselection_calculator(const std::string& process, const bool& blinding, const bool& NPL, const bool& SR, const bool& SBR, const bool& ZPlusJetsCR, const bool& ttbarCR, const std::string& year, const bool& PU_ScaleUp, const bool& PU_ScaleDown, const bool& BTag_ScaleUp, const bool& BTag_ScaleDown, const bool& JetSmearing_ScaleUp, const bool& JetSmearing_ScaleDown, const bool& JetResolution_ScaleUp, const bool& JetResolution_ScaleDown, const bool& LeptonEfficiencies_ScaleUp, const bool& LeptonEfficiencies_ScaleDown, const bool& PDF_ScaleUp, const bool& PDF_ScaleDown, const bool& ME_Up, const bool& ME_Down, const bool& MET_Up, const bool& MET_Down, const bool& isr_up, const bool& isr_down, const bool& fsr_up, const bool& fsr_down){
 
 
 
 
-EnableImplicitMT();
+  EnableImplicitMT();
+
+  std::string branch;
+  int RunInt = 0;
+  int ProcessInt = 0;
+  int YearInt = 0;
+
+  if(year == "2016"){YearInt = 1;}
+  else f(year == "2017"){YearInt = 2;}
+  else if(year == "2018"){YearInt = 3;}
+  else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl; return 0;}
 
 
-std::string branch;
+  if(year == "2016"){
+        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
+        else{MinElectronPt = 25; MinMuonPt = 25;}
+  }
+  else if(year == "2017" || year == "2018"){
+        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
+        else{MinElectronPt = 25; MinMuonPt = 25;}
+  }
+  else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
 
-if(PU_ScaleUp == true){branch = "PU_ScaleUp";}
-else if(PU_ScaleDown == true){branch = "PU_ScaleDown";}
-else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp";}
-else if(BTag_ScaleDown == true){branch = "BTag_ScaleDown";}
-else if(JetSmearing_ScaleUp == true){branch = "JetSmearing_ScaleUp";}
-else if(JetSmearing_ScaleDown == true){branch = "JetSmearing_ScaleDown";}
-else if(JetResolution_ScaleUp == true){branch = "JetResolution_ScaleUp";}
-else if(JetResolution_ScaleDown == true){branch = "JetResolution_ScaleDown";}
-else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp";}
-else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown";}
-else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp";}
-else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown";}
-else if(ME_Up == true){branch = "ME_Up";}
-else if(ME_Down == true){branch = "ME_Down";}
-else if(MET_Up == true){branch = "MET_Up";}
-else if(MET_Down == true){branch = "MET_Down";}
-else if(isr_up == true){branch = "isr_up";}
-else if(isr_down == true){branch = "isr_down";}
-else if(fsr_up == true){branch = "fsr_up";}
-else if(fsr_down == true){branch = "fsr_down";}
-else{branch = "Nominal";}
+  
 
-
-std::cout << "branch = " << branch << std::endl;
-
-
-BTag_ScaleUp_bool = BTag_ScaleUp;
-BTag_ScaleDown_bool = BTag_ScaleDown;
-
-
-std::vector<std::string> input_files;
-std::ofstream CutFlowReport;
-std::string cutflowstring;
+  if(PU_ScaleUp == true){branch = "PU_ScaleUp"; RunInt = 2;}
+  else if(PU_ScaleDown == true){branch = "PU_ScaleDown"; RunInt = 3;}
+  else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp"; RunInt = 4;}
+  else if(BTag_ScaleDown == true){branch = "BTag_ScaleDown"; RunInt = 5;}
+  else if(JetSmearing_ScaleUp == true){branch = "JetSmearing_ScaleUp"; RunInt = 6;}
+  else if(JetSmearing_ScaleDown == true){branch = "JetSmearing_ScaleDown"; RunInt = 7;}
+  else if(JetResolution_ScaleUp == true){branch = "JetResolution_ScaleUp"; RunInt = 8;}
+  else if(JetResolution_ScaleDown == true){branch = "JetResolution_ScaleDown"; RunInt = 9;}
+  else if(LeptonEfficiencies_ScaleUp == true){branch = "LeptonEfficiencies_ScaleUp"; RunInt = 10;}
+  else if(LeptonEfficiencies_ScaleDown == true){branch = "LeptonEfficiencies_ScaleDown"; RunInt = 11;}
+  else if(PDF_ScaleUp == true){branch = "PDF_ScaleUp"; RunInt = 12;}
+  else if(PDF_ScaleDown == true){branch = "PDF_ScaleDown"; RunInt = 13;}
+  else if(ME_Up == true){branch = "ME_Up"; RunInt = 14;}
+  else if(ME_Down == true){branch = "ME_Down"; RunInt = 15;}
+  else if(MET_Up == true){branch = "MET_Up"; RunInt = 16;}
+  else if(MET_Down == true){branch = "MET_Down"; RunInt = 17;}
+  else if(isr_up == true){branch = "isr_up"; RunInt = 18;}
+  else if(isr_down == true){branch = "isr_down"; RunInt = 19;}
+  else if(fsr_up == true){branch = "fsr_up"; RunInt = 20;}
+  else if(fsr_down == true){branch = "fsr_down"; RunInt = 21;}
+  else{branch = "Nominal"; RunInt = 1;}
 
 
-if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
+
+  BTag_ScaleUp_bool = BTag_ScaleUp;
+  BTag_ScaleDown_bool = BTag_ScaleDown;
+
+
+  std::vector<std::string> input_files;
+  std::ofstream CutFlowReport;
+  std::string cutflowstring;
+
+
+  if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
 
 	if(blinding == false){
 
@@ -2446,509 +2462,896 @@ if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && pro
 	CutFlowReport.open(cutflowstring.c_str());
 
 
-}
-
-
-
-std::cout << "before input files" << std::endl;
-
-
-
-//Providing the options for the input files for each year
-if(year == "2016"){
-
-	if(process == "tZq"){input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"};}
-	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_aMCatNLO/*"};}
-	else if(process == "ZPlusJets_M10To50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_aMCatNLO/*"};}
-	else if(process == "ZPlusJets_M10To50_aMCatNLO_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_ext_aMCatNLO/*"};}
-	else if(process == "ZPlusJets_M50_Madgraph"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_Madgraph/*"};}
-	else if(process == "ZPlusJets_M50_Madgraph_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_Madgraph_ext/*"};}
-	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph/*"};}
-	else if(process == "ZPlusJets_PtBinned_0To50"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_0To50/*"};}
-	else if(process == "ZPlusJets_PtBinned_50To100"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_50To100/*"};}
-	else if(process == "ZPlusJets_PtBinned_50To100_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_50To100_ext/*"};}
-	else if(process == "ZPlusJets_PtBinned_100To250"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250/*"};}
-	else if(process == "ZPlusJets_PtBinned_100To250_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext1/*"};}
-	else if(process == "ZPlusJets_PtBinned_100To250_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext2/*"};}
-	else if(process == "ZPlusJets_PtBinned_100To250_ext5"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext5/*"};}
-	else if(process == "ZPlusJets_PtBinned_250To400"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400/*"};}
-        else if(process == "ZPlusJets_PtBinned_250To400_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext1/*"};}
-        else if(process == "ZPlusJets_PtBinned_250To400_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext2/*"};}
-        else if(process == "ZPlusJets_PtBinned_400To650"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650/*"};}
-        else if(process == "ZPlusJets_PtBinned_400To650_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_ext1/*"};}
-        else if(process == "ZPlusJets_PtBinned_400To650_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_ext2/*"};}
-	else if(process == "ZPlusJets_PtBinned_650ToInf"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf/*"};}
-        else if(process == "ZPlusJets_PtBinned_650ToInf_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext1/*"};}
-        else if(process == "ZPlusJets_PtBinned_650ToInf_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext2/*"};}
-	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top/*"};}
-	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop/*"};}
-	else if(process == "SingleTop_schannel"){input_files = {"/data/disk2/nanoAOD_2016/ST_schannel/*"};}
-	else if(process == "SingleTop_tW"){input_files = {"/data/disk2/nanoAOD_2016/tW_top/*"};}
-	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar/*"};}
-	else if(process == "SingleTop_tHq"){input_files = {"/data/disk2/nanoAOD_2016/tHq/*"};}
-	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWLL/*"};} 
-	else if(process == "ttbar_inc"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*"};}
-	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph/*"};}
-	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_aMCatNLO/*"};}
-	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Nu/*"};}
-	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Q/*"};}
-	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo4L/*"};}
-	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk2/nanoAOD_2016/WZTo1L1Nu2Q/*"};}
-	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk2/nanoAOD_2016/WZTo2L2Q/*"};}
-	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk2/nanoAOD_2016/WWTo1L1Nu2Q/*"};}
-	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk2/nanoAOD_2016/WWTo2L2Nu/*"};}
-	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ/*"};}
-	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk2/nanoAOD_2016/WGToLNuG/*"};}
-	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk2/nanoAOD_2016/ZGToLLG/*"};}
-	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F/*"};}
-	else if(process == "VVV_WWZ"){input_files = {"/data/disk2/nanoAOD_2016/WWZ/*"};}
-	else if(process == "VVV_WZZ"){input_files = {"/data/disk2/nanoAOD_2016/WZZ/*"};}
-	else if(process == "VVV_ZZZ"){input_files = {"/data/disk2/nanoAOD_2016/ZZZ/*"};}
-	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu/*"};}
-	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/*"};}
-	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToQQ/*"};}
-	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk2/nanoAOD_2016/ttgamma/*"};}
-	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"};}
-	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk2/nanoAOD_2016/ttHTobb/*"};}
-	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb/*"};}
-	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu/*"};}
- 	else if(process == "ttbarV_ttZToLLNuNu_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext2/*"};}
-	else if(process == "ttbarV_ttZToLLNuNu_ext3"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext3/*"};}
-	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"};}
-	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ_ext/*"};}
-	else if(process == "TT_hdampUP"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP/*"};}
-	else if(process == "TT_hdampUP_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP_ext/*"};}
-	else if(process == "TT_hdampDOWN"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampDOWN/*"};}
-        else if(process == "TT_hdampDOWN_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampDOWN_ext/*"};}
-	else if(process == "ST_tchannel_top_hdampup"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampup/*"};}
-	else if(process == "ST_tchannel_top_hdampdown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampdown/*"};}
-	else if(process == "ST_tchannel_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleUp/*"};}
-	else if(process == "ST_tchannel_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleDown_NanoAODv6/*"};}
-	else if(process == "tW_tbar_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleUp/*"};}
-	else if(process == "tW_tbar_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleDown/*"};}
-	else if(process == "tW_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleUp/*"};}
-        else if(process == "tW_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleDown/*"};}
-	else if(process == "TT_isr_UP"){input_files = {"/data/disk2/nanoAOD_2016/TT_isr_UP/*"};}
-        else if(process == "TT_isr_DOWN"){input_files = {"/data/disk2/nanoAOD_2016/TT_isr_DOWN/*"};}
-        else if(process == "TT_isr_DOWN_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_isr_DOWN_ext/*"};}
-	else if(process == "TT_fsr_UP"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_UP/*"};}
-	else if(process == "TT_fsr_UP_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_UP_ext/*"};}
-	else if(process == "TT_fsr_DOWN"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_DOWN/*"};}
-        else if(process == "TT_fsr_DOWN_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_DOWN_ext/*"};}
-	else if(process == "tW_tbar_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleUp/*"};}
-	else if(process == "tW_tbar_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleDown/*"};}
-	else if(process == "tW_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleUp/*"};}
-        else if(process == "tW_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleDown/*"};}
-	else if(process == "data_DoubleEGRunB"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"};}  
-	else if(process == "data_DoubleEGRunC"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016C/*"};}
-	else if(process == "data_DoubleEGRunD"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016D/*"};}
-	else if(process == "data_DoubleEGRunE"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016E/*"};}
-	else if(process == "data_DoubleEGRunF"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016F/*"};}
-	else if(process == "data_DoubleEGRunG"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016G/*"};}
-        else if(process == "data_DoubleEGRunH"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016H/*"};}
-	else if(process == "data_DoubleMuonRunB"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016B/*"};}
-	else if(process == "data_DoubleMuonRunC"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016C/*"};}
-	else if(process == "data_DoubleMuonRunD"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016D/*"};}
-	else if(process == "data_DoubleMuonRunE"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016E/*"};}
-	else if(process == "data_DoubleMuonRunF"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"};}
-        else if(process == "data_DoubleMuonRunG"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"};}
-        else if(process == "data_DoubleMuonRunH"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"};}
-	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"};}
-        else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"};}
-        else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"};}
-        else if(process == "data_SingleMuonRunE"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunE/*"};}
-        else if(process == "data_SingleMuonRunF"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunF/*"};}
-	else if(process == "data_SingleMuonRunG"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunG/*"};}
-        else if(process == "data_SingleMuonRunH"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunH/*"};}
-        else if(process == "data_SingleElectronRunB"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunB/*"};}
-        else if(process == "data_SingleElectronRunC"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunC/*"};}
-        else if(process == "data_SingleElectronRunD"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunD/*"};}
-        else if(process == "data_SingleElectronRunE"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunE/*"};}
-        else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
-	else if(process == "data_SingleElectronRunG"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"};}
-        else if(process == "data_SingleElectronRunH"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"};}
-	else if(process == "Data_triggerSF"){input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root", "/data/disk2/nanoAOD_2016/METRun2016G/*.root", "/data/disk2/nanoAOD_2016/METRun2016H/*.root"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"};}
-	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets*/*"};}
-	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2016_Blinded.root"};}
-	else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2016_Blinded.root"};}
-	else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2016.root"};}
-        else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2016.root"};}
-	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
-
-
-}
-else if(year == "2017"){
-
-	if(process == "tZq"){input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"};}
-	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*"};}
-	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*"};}
-	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"};}
-	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top/*"};}
-	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_tbar/*"};}
-	else if(process == "SingleTop_schannel"){input_files = {"/data/disk0/nanoAOD_2017/ST_schannel/*"};}
-	else if(process == "SingleTop_tW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tW/*"};}
-	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tbarW/*"};}
-	else if(process == "SingleTop_tHq"){input_files = {"/data/disk0/nanoAOD_2017/tHq/*"};}
-	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk0/nanoAOD_2017/tZq_W_lept_Z_had/*"};} 
-	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk0/nanoAOD_2017/tWZ_tWLL_NanoAODv5/*"};} 
-	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv5/*"};}
-	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*"};}
-	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic/*"};}
-	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic/*"};}
-	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"};}
-	else if(process == "VV_ZZTo2Q2Nu"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo2Q2Nu/*"};}
-	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Nu/*"};}
-	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Q/*"};}
-	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo4L/*"};}
-	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk0/nanoAOD_2017/WZTo1L1Nu2Q/*"};}
-	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk0/nanoAOD_2017/WZTo2L2Q/*"};}
-	else if(process == "VV_WZTo3LNu"){input_files = {"/data/disk0/nanoAOD_2017/WZTo3LNu/*"};}
-	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk0/nanoAOD_2017/WWTo1L1Nu2Q/*"};}
-	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk0/nanoAOD_2017/WWTo2L2Nu/*"};}
-	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk0/nanoAOD_2017/WWToLNuQQ/*"};}
-	else if(process == "VV_WWTolnuqq"){input_files = {"/data/disk0/nanoAOD_2017/WWTolnuqq/*"};}
-	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk0/nanoAOD_2017/WGToLNuG/*"};}
-	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk0/nanoAOD_2017/ZGToLLG/*"};}
-	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk0/nanoAOD_2017/WWWTo4F/*"};}
-	else if(process == "VVV_WWZTo4F"){input_files = {"/data/disk0/nanoAOD_2017/WWZTo4F/*"};}
-	else if(process == "VVV_WZZ"){input_files = {"/data/disk0/nanoAOD_2017/WZZ/*"};}
-	else if(process == "VVV_ZZZ"){input_files = {"/data/disk0/nanoAOD_2017/ZZZ/*"};}
-	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk0/nanoAOD_2017/WJetsToLNu/*"};}
-	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToLNu/*"};}
-	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToQQ/*"};}
-	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk0/nanoAOD_2017/ttgamma/*"};}
-	else if(process == "ttbarV_ttZToLL"){input_files = {"/data/disk0/nanoAOD_2017/ttZToLL/*"};}
-	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk0/nanoAOD_2017/ttHTobb/*"};}
-	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk0/nanoAOD_2017/ttHToNonbb/*"};}
-	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk0/nanoAOD_2017/ttZToLLNuNu/*"};}
-	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ/*"};}
-	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ_ext/*"};}
-	else if(process == "data_DoubleEGRunB"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"};}
-	else if(process == "data_DoubleEGRunC"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017C/*"};}
-	else if(process == "data_DoubleEGRunD"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017D/*"};}
-	else if(process == "data_DoubleEGRunE"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017E/*"};}
-	else if(process == "data_DoubleEGRunF"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017F/*"};}
-	else if(process == "data_DoubleMuonRunB"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017B/*"};}
-	else if(process == "data_DoubleMuonRunC"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017C/*"};}
-	else if(process == "data_DoubleMuonRunD"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017D/*"};}
-	else if(process == "data_DoubleMuonRunE"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017E/*"};}
-	else if(process == "data_DoubleMuonRunF"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017F/*"};}
-	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunB/*"};}
-	else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunC/*"};}
-	else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunD/*"};}
-	else if(process == "data_SingleMuonRunE"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunE/*"};}
-	else if(process == "data_SingleMuonRunF"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunF/*"};}
-	else if(process == "data_SingleElectronRunB"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunB/*"};}
-        else if(process == "data_SingleElectronRunC"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunC/*"};}
-        else if(process == "data_SingleElectronRunD"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunD/*"};}
-        else if(process == "data_SingleElectronRunE"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"};}
-        else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
-	else if(process == "data_DoubleEGRunB2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"};}
-        else if(process == "data_DoubleEGRunC2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017C/*"};}
-        else if(process == "data_DoubleEGRunD2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017D/*"};}
-        else if(process == "data_DoubleEGRunE2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017E/*"};}
-        else if(process == "data_DoubleEGRunF2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017F/*"};}
-        else if(process == "data_DoubleMuonRunB2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017B/*"};}
-        else if(process == "data_DoubleMuonRunC2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017C/*"};}
-        else if(process == "data_DoubleMuonRunD2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017D/*"};}
-        else if(process == "data_DoubleMuonRunE2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017E/*"};}
-        else if(process == "data_DoubleMuonRunF2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017F/*"};}
-        else if(process == "data_SingleMuonRunB2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunB/*"};}
-        else if(process == "data_SingleMuonRunC2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunC/*"};}
-        else if(process == "data_SingleMuonRunD2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunD/*"};}
-        else if(process == "data_SingleMuonRunE2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunE/*"};}
-        else if(process == "data_SingleMuonRunF2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunF/*"};}
-        else if(process == "data_SingleElectronRunB2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunB/*"};}
-        else if(process == "data_SingleElectronRunC2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunC/*"};}
-        else if(process == "data_SingleElectronRunD2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunD/*"};}
-        else if(process == "data_SingleElectronRunE2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"};}
-        else if(process == "data_SingleElectronRunF2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"};}
-	else if(process == "Data_triggerSF"){input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"};}
-	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"};}
-	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2017_Blinded.root"};}
-        else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"};}
-        else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2017.root"};}
-        else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2017.root"};}
-	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
-
-}
-else if(year == "2018"){
-
-	if(process == "tZq"){input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"};}
-	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_NanoAODv5/*"};}
-	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*"};}
-	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M10to50/*"};}
-	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top/*"};}
-	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_tbar/*"};}
-	else if(process == "SingleTop_schannel"){input_files = {"/data/disk1/nanoAOD_2018/ST_schannel/*"};}
-	else if(process == "SingleTop_tW"){input_files = {"/data/disk1/nanoAOD_2018/ST_tW/*"};}
-	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk1/nanoAOD_2018/ST_tbarW/*"};}
-	else if(process == "SingleTop_tHq"){input_files = {"/data/disk1/nanoAOD_2018/tHq/*"};}
-	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk1/nanoAOD_2018/tZq_W_lept_Z_had/*"};} 
-	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk1/nanoAOD_2018/tWZ_tWLL_NanoAODv5/*"};} 
-	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu/*"};}
-	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph/*"};}
-	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic/*"};}
-	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic/*"};}
-	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO/*"};}
-	else if(process == "VV_ZZTo2Q2Nu"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo2Q2Nu/*"};}
-	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu/*"};}
-	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Q/*"};}
-	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L/*"};}
-	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk1/nanoAOD_2018/WZTo1L1Nu2Q/*"};}
-	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk1/nanoAOD_2018/WZTo2L2Q/*"};}
-	else if(process == "VV_WZTo3LNu"){input_files = {"/data/disk1/nanoAOD_2018/WZTo3LNu/*"};}
-	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk1/nanoAOD_2018/WWTo1L1Nu2Q/*"};}
-	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk1/nanoAOD_2018/WWTo2L2Nu/*"};}
-	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk1/nanoAOD_2018/WWToLNuQQ/*"};}
-	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk1/nanoAOD_2018/WGToLNuG/*"};}
-	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG/*"};}
-	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk1/nanoAOD_2018/WWWTo4F/*"};}
-	else if(process == "VVV_WWZTo4F"){input_files = {"/data/disk1/nanoAOD_2018/WWZTo4F/*"};}
-	else if(process == "VVV_WZZ"){input_files = {"/data/disk1/nanoAOD_2018/WZZ/*"};}
-	else if(process == "VVV_ZZZ"){input_files = {"/data/disk1/nanoAOD_2018/ZZZ/*"};}
-	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk1/nanoAOD_2018/WJetsToLNu/*"};}
-	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToLNu/*"};}
-	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToQQ/*"};}
-	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk1/nanoAOD_2018/ttgamma/*"};}
-	else if(process == "ttbarV_ttZToLL"){input_files = {"/data/disk1/nanoAOD_2018/ttZToLL/*"};}
-	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk1/nanoAOD_2018/ttHTobb/*"};}
-	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk1/nanoAOD_2018/ttHToNonbb/*"};}
-	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk1/nanoAOD_2018/ttZToLLNuNu/*"};}
-	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ/*"};}
-	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_ext/*"};}
-	else if(process == "data_EGRunB"){input_files = {"/data/disk3/nanoAOD_2018/EGammaRunB/*"};}
-	else if(process == "data_EGRunC"){input_files = {"/data/disk3/nanoAOD_2018/EGammaRunC/*"};}
-	else if(process == "data_EGRunD"){input_files = {"/data/disk3/nanoAOD_2018/EGammaRunD/*"};}
-	else if(process == "data_DoubleMuonRunB"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"};}
-	else if(process == "data_DoubleMuonRunC"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018C/*"};}
-	else if(process == "data_DoubleMuonRunD"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018D/*"};}
-	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"};}
-        else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"};}
-        else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"};}
-	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"};}
-	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"};}
-	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"};}
-	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2018_Blinded.root"};}
-        else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"};}
-        else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2018.root"};}
-        else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2018.root"};}
-	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
-
-
-}
-else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
-
-
-std::cout << "before range" << std::endl;
-
-//RDataFrame d("Events", input_files);
-//auto d_dataframe = d.Range(0, 1000000);
-
-RDataFrame d_dataframe("Events", input_files);
+  }
 
 
 
 
 
-//Functions for events that pass the ee, mumu, or emu triggers
-//To prevent double counting single and double lepton datasets
-auto SingleElectron{[&year](
-
-const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG,
-const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
-const bool& HLT_Ele35_WPTight_Gsf,
-const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
-const bool& HLT_Ele27_WPTight_Gsf)-> bool{
-
-   std::cout << "print 22" << std::endl;
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
+  //Providing the options for the input files for each year
   if(year == "2016"){
 
-	return  HLT_Ele25_eta2p1_WPTight_Gsf > 0 ||
-		HLT_Ele27_WPTight_Gsf > 0 ||
-		HLT_Ele32_eta2p1_WPTight_Gsf > 0;
+	if(process == "tZq"){input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"}; ProcessInt = 1;}
+	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_aMCatNLO/*"}; ProcessInt = 2;}
+	else if(process == "ZPlusJets_M10To50_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_aMCatNLO/*"}; ProcessInt = 3;}
+	else if(process == "ZPlusJets_M10To50_aMCatNLO_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_ext_aMCatNLO/*"}; ProcessInt = 4;}
+	else if(process == "ZPlusJets_M50_Madgraph"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_Madgraph/*"}; ProcessInt = 5;}
+	else if(process == "ZPlusJets_M50_Madgraph_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_Madgraph_ext/*"}; ProcessInt = 6;}
+	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph/*"}; ProcessInt = 7;}
+	else if(process == "ZPlusJets_PtBinned_0To50"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_0To50/*"}; ProcessInt = 8;}
+	else if(process == "ZPlusJets_PtBinned_50To100"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_50To100/*"}; ProcessInt = 9;}
+	else if(process == "ZPlusJets_PtBinned_50To100_ext"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_50To100_ext/*"}; ProcessInt = 10;}
+	else if(process == "ZPlusJets_PtBinned_100To250"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250/*"}; ProcessInt = 11;}
+	else if(process == "ZPlusJets_PtBinned_100To250_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext1/*"}; ProcessInt = 12;}
+	else if(process == "ZPlusJets_PtBinned_100To250_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext2/*"}; ProcessInt = 13;}
+	else if(process == "ZPlusJets_PtBinned_100To250_ext5"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext5/*"}; ProcessInt = 14;}
+	else if(process == "ZPlusJets_PtBinned_250To400"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400/*"}; ProcessInt = 15;}
+        else if(process == "ZPlusJets_PtBinned_250To400_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext1/*"}; ProcessInt = 16;}
+        else if(process == "ZPlusJets_PtBinned_250To400_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext2/*"}; ProcessInt = 17;}
+        else if(process == "ZPlusJets_PtBinned_400To650"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650/*"}; ProcessInt = 18;}
+        else if(process == "ZPlusJets_PtBinned_400To650_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_ext1/*"}; ProcessInt = 19;}
+        else if(process == "ZPlusJets_PtBinned_400To650_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_ext2/*"}; ProcessInt = 20;}
+	else if(process == "ZPlusJets_PtBinned_650ToInf"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf/*"}; ProcessInt = 21;}
+        else if(process == "ZPlusJets_PtBinned_650ToInf_ext1"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext1/*"}; ProcessInt = 22;}
+        else if(process == "ZPlusJets_PtBinned_650ToInf_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext2/*"}; ProcessInt = 23;}
+	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top/*"}; ProcessInt = 24;}
+	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop/*"}; ProcessInt = 25;}
+	else if(process == "SingleTop_schannel"){input_files = {"/data/disk2/nanoAOD_2016/ST_schannel/*"}; ProcessInt = 26;}
+	else if(process == "SingleTop_tW"){input_files = {"/data/disk2/nanoAOD_2016/tW_top/*"}; ProcessInt = 27;}
+	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar/*"}; ProcessInt = 28;}
+	else if(process == "SingleTop_tHq"){input_files = {"/data/disk2/nanoAOD_2016/tHq/*"}; ProcessInt = 29;}
+	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWLL/*"}; ProcessInt = 30;} 
+	else if(process == "ttbar_inc"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*"}; ProcessInt = 31;}
+	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph/*"}; ProcessInt = 32;}
+	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_aMCatNLO/*"}; ProcessInt = 33;}
+	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Nu/*"}; ProcessInt = 34;}
+	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Q/*"}; ProcessInt = 35;}
+	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk2/nanoAOD_2016/ZZTo4L/*"}; ProcessInt = 36;}
+	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk2/nanoAOD_2016/WZTo1L1Nu2Q/*"}; ProcessInt = 37;}
+	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk2/nanoAOD_2016/WZTo2L2Q/*"}; ProcessInt = 38;}
+	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk2/nanoAOD_2016/WWTo1L1Nu2Q/*"}; ProcessInt = 39;}
+	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk2/nanoAOD_2016/WWTo2L2Nu/*"}; ProcessInt = 40;}
+	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ/*"}; ProcessInt = 41;}
+	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk2/nanoAOD_2016/WGToLNuG/*"}; ProcessInt = 42;}
+	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk2/nanoAOD_2016/ZGToLLG/*"}; ProcessInt = 43;}
+	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F/*"}; ProcessInt = 44;}
+	else if(process == "VVV_WWZ"){input_files = {"/data/disk2/nanoAOD_2016/WWZ/*"}; ProcessInt = 45;}
+	else if(process == "VVV_WZZ"){input_files = {"/data/disk2/nanoAOD_2016/WZZ/*"}; ProcessInt = 46;}
+	else if(process == "VVV_ZZZ"){input_files = {"/data/disk2/nanoAOD_2016/ZZZ/*"}; ProcessInt = 47;}
+	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu/*"}; ProcessInt = 48;}
+	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/*"}; ProcessInt = 49;}
+	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToQQ/*"}; ProcessInt = 50;}
+	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk2/nanoAOD_2016/ttgamma/*"}; ProcessInt = 51;}
+	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"}; ProcessInt = 52;}
+	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk2/nanoAOD_2016/ttHTobb/*"}; ProcessInt = 53;}
+	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb/*"}; ProcessInt = 54;}
+	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu/*"}; ProcessInt = 55;}
+ 	else if(process == "ttbarV_ttZToLLNuNu_ext2"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext2/*"}; ProcessInt = 56;}
+	else if(process == "ttbarV_ttZToLLNuNu_ext3"){input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext3/*"}; ProcessInt = 57;}
+	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"}; ProcessInt = 58;}
+	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ_ext/*"}; ProcessInt = 59;}
+	else if(process == "TT_hdampUP"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP/*"}; ProcessInt = 60;}
+	else if(process == "TT_hdampUP_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP_ext/*"}; ProcessInt = 61;}
+	else if(process == "TT_hdampDOWN"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampDOWN/*"}; ProcessInt = 62;}
+        else if(process == "TT_hdampDOWN_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_hdampDOWN_ext/*"}; ProcessInt = 63;}
+	else if(process == "ST_tchannel_top_hdampup"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampup/*"}; ProcessInt = 64;}
+	else if(process == "ST_tchannel_top_hdampdown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampdown/*"}; ProcessInt = 65;}
+	else if(process == "ST_tchannel_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleUp/*"}; ProcessInt = 66;}
+	else if(process == "ST_tchannel_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_ScaleDown_NanoAODv6/*"}; ProcessInt = 67;}
+	else if(process == "tW_tbar_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleUp/*"}; ProcessInt = 68;}
+	else if(process == "tW_tbar_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleDown/*"}; ProcessInt = 69;}
+	else if(process == "tW_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleUp/*"}; ProcessInt = 70;}
+        else if(process == "tW_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleDown/*"}; ProcessInt = 71;}
+	else if(process == "TT_isr_UP"){input_files = {"/data/disk2/nanoAOD_2016/TT_isr_UP/*"}; ProcessInt = 72;}
+        else if(process == "TT_isr_DOWN"){input_files = {"/data/disk2/nanoAOD_2016/TT_isr_DOWN/*"}; ProcessInt = 73;}
+        else if(process == "TT_isr_DOWN_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_isr_DOWN_ext/*"}; ProcessInt = 74;}
+	else if(process == "TT_fsr_UP"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_UP/*"}; ProcessInt = 75;}
+	else if(process == "TT_fsr_UP_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_UP_ext/*"}; ProcessInt = 76;}
+	else if(process == "TT_fsr_DOWN"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_DOWN/*"}; ProcessInt = 77;}
+        else if(process == "TT_fsr_DOWN_ext"){input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_DOWN_ext/*"}; ProcessInt = 78;}
+	else if(process == "tW_tbar_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleUp/*"}; ProcessInt = 79;}
+	else if(process == "tW_tbar_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleDown/*"}; ProcessInt = 80;}
+	else if(process == "tW_top_ScaleUp"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleUp/*"}; ProcessInt = 81;}
+        else if(process == "tW_top_ScaleDown"){input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleDown/*"}; ProcessInt = 82;}
+	else if(process == "data_DoubleEGRunB"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; ProcessInt = 83;}  
+	else if(process == "data_DoubleEGRunC"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016C/*"}; ProcessInt = 84;}
+	else if(process == "data_DoubleEGRunD"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016D/*"}; ProcessInt = 85;}
+	else if(process == "data_DoubleEGRunE"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016E/*"}; ProcessInt = 86;}
+	else if(process == "data_DoubleEGRunF"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016F/*"}; ProcessInt = 87;}
+	else if(process == "data_DoubleEGRunG"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016G/*"}; ProcessInt = 88;}
+        else if(process == "data_DoubleEGRunH"){input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016H/*"}; ProcessInt = 89;}
+	else if(process == "data_DoubleMuonRunB"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016B/*"}; ProcessInt = 90;}
+	else if(process == "data_DoubleMuonRunC"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016C/*"}; ProcessInt = 91;}
+	else if(process == "data_DoubleMuonRunD"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016D/*"}; ProcessInt = 92;}
+	else if(process == "data_DoubleMuonRunE"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016E/*"}; ProcessInt = 93;}
+	else if(process == "data_DoubleMuonRunF"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"}; ProcessInt = 94;}
+        else if(process == "data_DoubleMuonRunG"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"}; ProcessInt = 95;}
+        else if(process == "data_DoubleMuonRunH"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"}; ProcessInt = 96;}
+	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 97;}
+        else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 98;}
+        else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 99;}
+        else if(process == "data_SingleMuonRunE"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunE/*"}; ProcessInt = 100;}
+        else if(process == "data_SingleMuonRunF"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunF/*"}; ProcessInt = 101;}
+	else if(process == "data_SingleMuonRunG"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunG/*"}; ProcessInt = 102;}
+        else if(process == "data_SingleMuonRunH"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunH/*"}; ProcessInt = 103;}
+        else if(process == "data_SingleElectronRunB"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 104;}
+        else if(process == "data_SingleElectronRunC"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 105;}
+        else if(process == "data_SingleElectronRunD"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 106;}
+        else if(process == "data_SingleElectronRunE"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunE/*"}; ProcessInt = 107;}
+        else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunF/*"}; ProcessInt = 108;}
+	else if(process == "data_SingleElectronRunG"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"}; ProcessInt = 109;}
+        else if(process == "data_SingleElectronRunH"){input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"}; ProcessInt = 110;}
+	else if(process == "Data_triggerSF"){input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root", "/data/disk2/nanoAOD_2016/METRun2016G/*.root", "/data/disk2/nanoAOD_2016/METRun2016H/*.root"}; ProcessInt = 111;}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"}; ProcessInt = 112;}
+	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets*/*"}; ProcessInt = 113;}
+	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2016_Blinded.root"}; ProcessInt = 114;}
+	else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2016_Blinded.root"}; ProcessInt = 115;}
+	else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2016.root"}; ProcessInt = 116;}
+        else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2016.root"}; ProcessInt = 117;}
+        else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl; return 0;}
+
 
   }
   else if(year == "2017"){
 
-  	return //HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || 
-   	       HLT_Ele35_WPTight_Gsf > 0; 
+	if(process == "tZq"){input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"}; ProcessInt = 118;}
+	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*"}; ProcessInt = 119;}
+	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*"}; ProcessInt = 120;}
+	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"}; ProcessInt = 121;}
+	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top/*"}; ProcessInt = 122;}
+	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_tbar/*"}; ProcessInt = 123;}
+	else if(process == "SingleTop_schannel"){input_files = {"/data/disk0/nanoAOD_2017/ST_schannel/*"}; ProcessInt = 124;}
+	else if(process == "SingleTop_tW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tW/*"}; ProcessInt = 125;}
+	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tbarW/*"}; ProcessInt = 126;}
+	else if(process == "SingleTop_tHq"){input_files = {"/data/disk0/nanoAOD_2017/tHq/*"}; ProcessInt = 127;}
+	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk0/nanoAOD_2017/tZq_W_lept_Z_had/*"}; ProcessInt = 128;} 
+	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk0/nanoAOD_2017/tWZ_tWLL_NanoAODv5/*"}; ProcessInt = 129;} 
+	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv5/*"}; ProcessInt = 130;}
+	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*"}; ProcessInt = 131;}
+	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic/*"}; ProcessInt = 132;}
+	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic/*"}; ProcessInt = 133;}
+	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"}; ProcessInt = 134;}
+	else if(process == "VV_ZZTo2Q2Nu"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo2Q2Nu/*"}; ProcessInt = 135;}
+	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Nu/*"}; ProcessInt = 136;}
+	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Q/*"}; ProcessInt = 137;}
+	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk0/nanoAOD_2017/ZZTo4L/*"}; ProcessInt = 138;}
+	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk0/nanoAOD_2017/WZTo1L1Nu2Q/*"}; ProcessInt = 139;}
+	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk0/nanoAOD_2017/WZTo2L2Q/*"}; ProcessInt = 140;}
+	else if(process == "VV_WZTo3LNu"){input_files = {"/data/disk0/nanoAOD_2017/WZTo3LNu/*"}; ProcessInt = 141;}
+	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk0/nanoAOD_2017/WWTo1L1Nu2Q/*"}; ProcessInt = 142;}
+	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk0/nanoAOD_2017/WWTo2L2Nu/*"}; ProcessInt = 143;}
+	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk0/nanoAOD_2017/WWToLNuQQ/*"}; ProcessInt = 144;}
+	else if(process == "VV_WWTolnuqq"){input_files = {"/data/disk0/nanoAOD_2017/WWTolnuqq/*"}; ProcessInt = 145;}
+	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk0/nanoAOD_2017/WGToLNuG/*"}; ProcessInt = 146;}
+	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk0/nanoAOD_2017/ZGToLLG/*"}; ProcessInt = 147;}
+	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk0/nanoAOD_2017/WWWTo4F/*"}; ProcessInt = 148;}
+	else if(process == "VVV_WWZTo4F"){input_files = {"/data/disk0/nanoAOD_2017/WWZTo4F/*"}; ProcessInt = 149;}
+	else if(process == "VVV_WZZ"){input_files = {"/data/disk0/nanoAOD_2017/WZZ/*"}; ProcessInt = 150;}
+	else if(process == "VVV_ZZZ"){input_files = {"/data/disk0/nanoAOD_2017/ZZZ/*"}; ProcessInt = 151;}
+	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk0/nanoAOD_2017/WJetsToLNu/*"}; ProcessInt = 152;}
+	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToLNu/*"}; ProcessInt = 153;}
+	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToQQ/*"}; ProcessInt = 154;}
+	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk0/nanoAOD_2017/ttgamma/*"}; ProcessInt = 155;}
+	else if(process == "ttbarV_ttZToLL"){input_files = {"/data/disk0/nanoAOD_2017/ttZToLL/*"}; ProcessInt = 156;}
+	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk0/nanoAOD_2017/ttHTobb/*"}; ProcessInt = 157;}
+	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk0/nanoAOD_2017/ttHToNonbb/*"}; ProcessInt = 158;}
+	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk0/nanoAOD_2017/ttZToLLNuNu/*"}; ProcessInt = 159;}
+	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ/*"}; ProcessInt = 160;}
+	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ_ext/*"}; ProcessInt = 161;}
+	else if(process == "data_DoubleEGRunB"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"}; ProcessInt = 162;}
+	else if(process == "data_DoubleEGRunC"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017C/*"}; ProcessInt = 163;}
+	else if(process == "data_DoubleEGRunD"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017D/*"}; ProcessInt = 164;}
+	else if(process == "data_DoubleEGRunE"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017E/*"}; ProcessInt = 165;}
+	else if(process == "data_DoubleEGRunF"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017F/*"}; ProcessInt = 166;}
+	else if(process == "data_DoubleMuonRunB"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017B/*"}; ProcessInt = 167;}
+	else if(process == "data_DoubleMuonRunC"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017C/*"}; ProcessInt = 168;}
+	else if(process == "data_DoubleMuonRunD"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017D/*"}; ProcessInt = 169;}
+	else if(process == "data_DoubleMuonRunE"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017E/*"}; ProcessInt = 170;}
+	else if(process == "data_DoubleMuonRunF"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017F/*"}; ProcessInt = 171;}
+	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 172;}
+	else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 173;}
+	else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 174;}
+	else if(process == "data_SingleMuonRunE"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunE/*"}; ProcessInt = 175;}
+	else if(process == "data_SingleMuonRunF"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunF/*"}; ProcessInt = 176;}
+	else if(process == "data_SingleElectronRunB"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 177;}
+        else if(process == "data_SingleElectronRunC"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 178;}
+        else if(process == "data_SingleElectronRunD"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 179;}
+        else if(process == "data_SingleElectronRunE"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"}; ProcessInt = 180;}
+        else if(process == "data_SingleElectronRunF"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"}; ProcessInt = 181;}
+	else if(process == "data_DoubleEGRunB2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"}; ProcessInt = 182;}
+        else if(process == "data_DoubleEGRunC2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017C/*"}; ProcessInt = 183;}
+        else if(process == "data_DoubleEGRunD2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017D/*"}; ProcessInt = 184;}
+        else if(process == "data_DoubleEGRunE2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017E/*"}; ProcessInt = 185;}
+        else if(process == "data_DoubleEGRunF2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017F/*"}; ProcessInt = 186;}
+        else if(process == "data_DoubleMuonRunB2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017B/*"}; ProcessInt = 187;}
+        else if(process == "data_DoubleMuonRunC2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017C/*"}; ProcessInt = 188;}
+        else if(process == "data_DoubleMuonRunD2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017D/*"}; ProcessInt = 189;}
+        else if(process == "data_DoubleMuonRunE2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017E/*"}; ProcessInt = 190;}
+        else if(process == "data_DoubleMuonRunF2"){input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017F/*"}; ProcessInt = 191;}
+        else if(process == "data_SingleMuonRunB2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 192;}
+        else if(process == "data_SingleMuonRunC2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 193;}
+        else if(process == "data_SingleMuonRunD2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 194;}
+        else if(process == "data_SingleMuonRunE2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunE/*"}; ProcessInt = 195;}
+        else if(process == "data_SingleMuonRunF2"){input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunF/*"}; ProcessInt = 196;}
+        else if(process == "data_SingleElectronRunB2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 197;}
+        else if(process == "data_SingleElectronRunC2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 198;}
+        else if(process == "data_SingleElectronRunD2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 199;}
+        else if(process == "data_SingleElectronRunE2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"}; ProcessInt = 200;}
+        else if(process == "data_SingleElectronRunF2"){input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"}; ProcessInt = 201;}
+	else if(process == "Data_triggerSF"){input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"}; ProcessInt = 202;}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"}; ProcessInt = 203;}
+	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2017/DYJetsToLL_M10to50/*"}; ProcessInt = 204;}
+	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2017_Blinded.root"}; ProcessInt = 205;}
+        else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"}; ProcessInt = 206;}
+        else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2017.root"}; ProcessInt = 207;}
+        else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2017.root"}; ProcessInt = 208;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl; return 0;}
 
   }
   else if(year == "2018"){
 
-	return HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0;
+	if(process == "tZq"){input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"}; ProcessInt = 209;}
+	else if(process == "ZPlusJets_M50_aMCatNLO"){input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_NanoAODv5/*"}; ProcessInt = 210;}
+	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*"}; ProcessInt = 211;}
+	else if(process == "ZPlusJets_M10To50_Madgraph"){input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M10to50/*"}; ProcessInt = 212;}
+	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top/*"}; ProcessInt = 213;}
+	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_tbar/*"}; ProcessInt = 214;}
+	else if(process == "SingleTop_schannel"){input_files = {"/data/disk1/nanoAOD_2018/ST_schannel/*"}; ProcessInt = 215;}
+	else if(process == "SingleTop_tW"){input_files = {"/data/disk1/nanoAOD_2018/ST_tW/*"}; ProcessInt = 216;}
+	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk1/nanoAOD_2018/ST_tbarW/*"}; ProcessInt = 217;}
+	else if(process == "SingleTop_tHq"){input_files = {"/data/disk1/nanoAOD_2018/tHq/*"}; ProcessInt = 218;}
+	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk1/nanoAOD_2018/tZq_W_lept_Z_had/*"}; ProcessInt = 219;} 
+	else if(process == "SingleTop_tWZ_tWll"){input_files = {"/data/disk1/nanoAOD_2018/tWZ_tWLL_NanoAODv5/*"}; ProcessInt = 220;} 
+	else if(process == "ttbar_2l2nu"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu/*"}; ProcessInt = 221;}
+	else if(process == "ttbar_madgraph_NanoAODv5"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph/*"}; ProcessInt = 222;}
+	else if(process == "ttbar_TTToHadronic"){input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic/*"}; ProcessInt = 223;}
+	else if(process == "ttbar_TTToSemileptonic"){input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic/*"}; ProcessInt = 224;}
+	else if(process == "ttbar_aMCatNLO"){input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO/*"}; ProcessInt = 225;}
+	else if(process == "VV_ZZTo2Q2Nu"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo2Q2Nu/*"}; ProcessInt = 226;}
+	else if(process == "VV_ZZTo2L2Nu"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu/*"}; ProcessInt = 227;}
+	else if(process == "VV_ZZTo2L2Q"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Q/*"}; ProcessInt = 228;}
+	else if(process == "VV_ZZTo4L"){input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L/*"}; ProcessInt = 229;}
+	else if(process == "VV_WZTo1L1Nu2Q"){input_files = {"/data/disk1/nanoAOD_2018/WZTo1L1Nu2Q/*"}; ProcessInt = 230;}
+	else if(process == "VV_WZTo2L2Q"){input_files = {"/data/disk1/nanoAOD_2018/WZTo2L2Q/*"}; ProcessInt = 231;}
+	else if(process == "VV_WZTo3LNu"){input_files = {"/data/disk1/nanoAOD_2018/WZTo3LNu/*"}; ProcessInt = 232;}
+	else if(process == "VV_WWTo1L1Nu2Q"){input_files = {"/data/disk1/nanoAOD_2018/WWTo1L1Nu2Q/*"}; ProcessInt = 233;}
+	else if(process == "VV_WWTo2L2Nu"){input_files = {"/data/disk1/nanoAOD_2018/WWTo2L2Nu/*"}; ProcessInt = 234;}
+	else if(process == "VV_WWToLNuQQ"){input_files = {"/data/disk1/nanoAOD_2018/WWToLNuQQ/*"}; ProcessInt = 235;}
+	else if(process == "VV_WGToLNuG"){input_files = {"/data/disk1/nanoAOD_2018/WGToLNuG/*"}; ProcessInt = 236;}
+	else if(process == "VV_ZGToLLG"){input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG/*"}; ProcessInt = 237;}
+	else if(process == "VVV_WWWTo4F"){input_files = {"/data/disk1/nanoAOD_2018/WWWTo4F/*"}; ProcessInt = 238;}
+	else if(process == "VVV_WWZTo4F"){input_files = {"/data/disk1/nanoAOD_2018/WWZTo4F/*"}; ProcessInt = 239;}
+	else if(process == "VVV_WZZ"){input_files = {"/data/disk1/nanoAOD_2018/WZZ/*"}; ProcessInt = 240;}
+	else if(process == "VVV_ZZZ"){input_files = {"/data/disk1/nanoAOD_2018/ZZZ/*"}; ProcessInt = 241;}
+	else if(process == "WPlusJets_WJetsToLNu"){input_files = {"/data/disk1/nanoAOD_2018/WJetsToLNu/*"}; ProcessInt = 242;}
+	else if(process == "ttbarV_ttWJetsToLNu"){input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToLNu/*"}; ProcessInt = 243;}
+	else if(process == "ttbarV_ttWJetsToQQ"){input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToQQ/*"}; ProcessInt = 244;}
+	else if(process == "ttbarV_ttgamma"){input_files = {"/data/disk1/nanoAOD_2018/ttgamma/*"}; ProcessInt = 245;}
+	else if(process == "ttbarV_ttZToLL"){input_files = {"/data/disk1/nanoAOD_2018/ttZToLL/*"}; ProcessInt = 246;}
+	else if(process == "ttbarV_ttHTobb"){input_files = {"/data/disk1/nanoAOD_2018/ttHTobb/*"}; ProcessInt = 247;}
+	else if(process == "ttbarV_ttHToNonbb"){input_files = {"/data/disk1/nanoAOD_2018/ttHToNonbb/*"}; ProcessInt = 248;}
+	else if(process == "ttbarV_ttZToLLNuNu"){input_files = {"/data/disk1/nanoAOD_2018/ttZToLLNuNu/*"}; ProcessInt = 249;}
+	else if(process == "ttbarV_ttZToQQ"){input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ/*"}; ProcessInt = 250;}
+	else if(process == "ttbarV_ttZToQQ_ext"){input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_ext/*"}; ProcessInt = 251;}
+	else if(process == "data_EGRunB"){input_files = {"/data/disk3/nanoAOD_2018/EGammaRunB/*"}; ProcessInt = 252;}
+	else if(process == "data_EGRunC"){input_files = {"/data/disk3/nanoAOD_2018/EGammaRunC/*"}; ProcessInt = 253;}
+	else if(process == "data_EGRunD"){input_files = {"/data/disk3/nanoAOD_2018/EGammaRunD/*"}; ProcessInt = 254;}
+	else if(process == "data_DoubleMuonRunB"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"}; ProcessInt = 255;}
+	else if(process == "data_DoubleMuonRunC"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018C/*"}; ProcessInt = 256;}
+	else if(process == "data_DoubleMuonRunD"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018D/*"}; ProcessInt = 257;}
+	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"}; ProcessInt = 258;}
+        else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"}; ProcessInt = 259;}
+        else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"}; ProcessInt = 260;}
+	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"}; ProcessInt = 261;}
+	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"}; ProcessInt = 262;}
+	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"}; ProcessInt = 263;}
+	else if(process == "NPL_File_ee_Blinded"){input_files = {"NPL_ee_output_2018_Blinded.root"}; ProcessInt = 264;}
+        else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"}; ProcessInt = 265;}
+        else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2018.root"}; ProcessInt = 266;}
+        else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2018.root"}; ProcessInt = 267;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl; return 0;}
+
 
   }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+  else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl; return 0;}
 
 
-}};
+
+  //RDataFrame d("Events", input_files);
+  //auto d_dataframe = d.Range(0, 1000000);
 
 
-auto DoubleElectron{[&year](
 
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+  //Using the golden ison file to filter events
+  auto GoldenJsonReader{[&YearInt](){
 
-)->bool{
+   std::string GoldenJsonFileName;
 
+   switch(YearInt){
 
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+	case 1: GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"; break;
+        case 2: GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"; break;
+        case 3: GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"; break;
+        default: std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl; break;
 
-  std::cout << "print 23" << std::endl;
+   }
 
-  if(year == "2016"){
-
-	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
-
-  }
-  else if(year == "2017"){
+   std::ifstream myReadFile;
+   myReadFile.open(GoldenJsonFileName);
+   static char output[100];
+   std::vector<std::string> GoldenJsonOutput{};
   
-	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
-   	       HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
 
+   if (myReadFile.is_open()) {
+   while (!myReadFile.eof()) {
+
+      myReadFile >> output;
+      GoldenJsonOutput.push_back(output);
+
+   }
   }
-  else if(year == "2018"){
+
+  myReadFile.close();
+  return GoldenJsonOutput;
+
+  }};
+
+
+
+
+  auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
+
+    std::vector<char> out{};
+
+    for(long unsigned int i = 0; i < (GoldenJsonReader()).size(); i++){
+
+  	  std::string element = GoldenJsonReader().at(i);
+
+  	  for(long unsigned int j = 0; j < element.size(); j++){out.push_back(element.at(j));}
+
+    }
+
+    return out;
+
+  }};
+
+
+
+  auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
+
+   std::vector<char> EventsVector{}; 
+
+   for(long unsigned int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
+
+	unsigned int RunNumBeingRead;
+
+ 	if(  GoldenJson_SplitChars().at(i+1) == '"' &&
+	    (GoldenJson_SplitChars().at(i+2) == '2' ||
+	     GoldenJson_SplitChars().at(i+2) == '3')  ){ 
+
+		int digit1 = GoldenJson_SplitChars().at(i+2) - '0'; 
+		int digit2 = GoldenJson_SplitChars().at(i+3) - '0'; 
+		int digit3 = GoldenJson_SplitChars().at(i+4) - '0'; 
+		int digit4 = GoldenJson_SplitChars().at(i+5) - '0'; 
+		int digit5 = GoldenJson_SplitChars().at(i+6) - '0'; 
+		int digit6 = GoldenJson_SplitChars().at(i+7) - '0';
+
+
+		int run = (digit1*100000) + (digit2*10000) + (digit3*1000) + (digit4*100) + (digit5*10) + digit6;
 	
-	return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || 
-               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+		RunNumBeingRead = run;
 
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+		if(run == InputRunNumber){
 
 
-}};
+			for(long unsigned int j = 2; j < (GoldenJson_SplitChars()).size(); j++){
+
+				if(GoldenJson_SplitChars().at(i+10) == '[' && 
+				   GoldenJson_SplitChars().at(i+11) == '['){	
+
+					if( GoldenJson_SplitChars().at( (i+10)+j ) == ']' &&
+					    GoldenJson_SplitChars().at( (i+10)+(j+1) ) == ']'){
+
+					
+						for(int k = (i+10); k < ((i+10)+(j+2)); k++){
+
+							EventsVector.push_back(GoldenJson_SplitChars().at(k));
+						
+						}
+
+						return EventsVector;	
+											
+
+					}
+					else{std::cout << "GoldenJson_SplitChars().at((i+11)+j) and at (i+11)+(j+1) are not ']' " << std::endl; continue;}
 
 
-
-auto SingleMuon{[&year](
-
-const bool& HLT_IsoMu24,
-const bool& HLT_IsoMu27,
-const bool& HLT_IsoMu24_eta2p1
-
-)->bool{
-
-   std::cout << "print 24" << std::endl;  
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-  if(year == "2016"){
-
-  	return HLT_IsoMu24  > 0 ||
-	       HLT_IsoMu24_eta2p1  > 0;
-
-  }
-  else if(year == "2017"){
-
-  	return HLT_IsoMu24 > 0 || 
-   	       HLT_IsoMu27 > 0; 
-
-  }
-  else if(year == "2018"){
-
-	return HLT_IsoMu24 > 0;
-
-  }
-  else{std::cout << "Please choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
-
-}};
+				}
+				else{std::cout << "GoldenJson_SplitChars().at(i+10) is not '[' " << std::endl; continue;}
 
 
+			}	
 
-auto DoubleMuon{[&year](
+		}
+		else{continue;}
 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
-const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
-
-  std::cout << "print 25" << std::endl;
-
-  //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
-  //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
-  //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+	}
+	else{std::cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << std::endl;}
 
 
-  if(year == "2016"){return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0;}
-  else if(year == "2017"){
-
-  	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || 
-   	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0; 
-
-  }
-  else if(year == "2018"){
-
-	return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 ||
-	       HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0;
-
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+   }
 
 
-}};
+  }};
 
 
 
+  auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
 
-auto MuonElectron{[&year](
-
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
+   std::vector<int> RunNumAndEvents{};
+   RunNumAndEvents.push_back(InputRunNumber);
+   std::vector<char> Runs = RunNumberCheck(InputRunNumber);
 
 
-  std::cout << "print 26" << std::endl;
+   for(long unsigned int i = 0; i < Runs.size(); i++){
 
- //for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
- //for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
- //for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
-
-
- if(year == "2016"){
-
-	return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
-               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
-               //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||   (branch not present in MET)
-	       HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
-               //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || (branch not present in MET)
-               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0;
+ 	if(Runs.at(i) == ']' && Runs.at(i+1) == ']'){break;}
+	else if( isdigit(Runs.at(i)) || Runs.at(i) == ',' || Runs.at(i) == ' ' || Runs.at(i) == ']'){continue;}
+ 	else if( (Runs.at(i) == '[' && Runs.at(i+1) == '[') ||
+		 (Runs.at(i) == '[' && isdigit(Runs.at(i+1))) ){
 
 
- }
- else if(year == "2017"){
-
- 	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
-   	       HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
-  	       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
-
- }
- else if(year == "2018"){
-
-	return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
-               HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
-               HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+		if(  isdigit( Runs.at(i+1) ) && //For the min value being a 4 digit number
+      	     	     isdigit( Runs.at(i+2) ) &&
+      	     	     isdigit( Runs.at(i+3) ) && 
+		     isdigit( Runs.at(i+4) ) &&
+      	     	     Runs.at(i+5) == ','){
 
 
- }
- else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+			int Min_Digit1 = Runs.at(i+1) - '0';
+			int Min_Digit2 = Runs.at(i+2) - '0';
+			int Min_Digit3 = Runs.at(i+3) - '0';
+			int Min_Digit4 = Runs.at(i+4) - '0';
+
+			int EventNumber_Min = (Min_Digit1*1000) + (Min_Digit2*100) + (Min_Digit3*10) + Min_Digit4;
+			RunNumAndEvents.push_back(EventNumber_Min);
+
+			if(isdigit( Runs.at(i+6) ) &&
+                           isdigit( Runs.at(i+7) ) &&
+                           isdigit( Runs.at(i+8) ) &&
+                           isdigit( Runs.at(i+9) ) &&
+                           Runs.at(i+10) == ']' ){ //For the min value being a 4 digit number and the max value being a 4 digit number
+                                   
+
+                                        int Max_Digit1 = Runs.at(i+6) - '0';
+                                        int Max_Digit2 = Runs.at(i+7) - '0';
+                                        int Max_Digit3 = Runs.at(i+8) - '0';
+                                        int Max_Digit4 = Runs.at(i+9) - '0';
+
+                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
 
 
-}};
+                                }
+			else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 3 digit number
+      	   	   	        isdigit( Runs.at(i+7) ) &&
+      	   	   	        isdigit( Runs.at(i+8) ) &&
+      	   	   	        Runs.at(i+9) == ']'){
+
+
+				int Max_Digit1 = Runs.at(i+6) - '0';
+        			int Max_Digit2 = Runs.at(i+7) - '0';
+        			int Max_Digit3 = Runs.at(i+8) - '0';
+	
+				int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+        			RunNumAndEvents.push_back(EventNumber_Max);
+		
+
+			}
+			else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 2 digit number 
+         			isdigit( Runs.at(i+7) ) &&
+         			Runs.at(i+8) == ']' ){
+
+					int Max_Digit1 = Runs.at(i+6) - '0';
+                			int Max_Digit2 = Runs.at(i+7) - '0';
+
+                			int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
+                			RunNumAndEvents.push_back(EventNumber_Max);
+
+
+			}
+			else if(isdigit( Runs.at(i+6) ) &&
+                                Runs.at(i+7) == ']' ){ //For the min value being a 4 digit number and the max value being a 1 digit number
+
+
+                                        int Max_Digit1 = Runs.at(i+6) - '0';
+
+                                        int EventNumber_Max = Max_Digit1;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                        }
+                       else{std::cout << "error" << std::endl;}
+
+ 		}	
+ 		else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 3 digit number
+      	     	     isdigit( Runs.at(i+2) ) &&
+      	     	     isdigit( Runs.at(i+3) ) && 
+      	     	     Runs.at(i+4) == ','){
+
+
+			int Min_Digit1 = Runs.at(i+1) - '0';
+			int Min_Digit2 = Runs.at(i+2) - '0';
+			int Min_Digit3 = Runs.at(i+3) - '0';
+
+			int EventNumber_Min = (Min_Digit1*100) + (Min_Digit2*10) + Min_Digit3;
+			RunNumAndEvents.push_back(EventNumber_Min);
+
+			if(isdigit( Runs.at(i+5) ) &&
+                           isdigit( Runs.at(i+6) ) &&
+                           isdigit( Runs.at(i+7) ) &&
+                           isdigit( Runs.at(i+8) ) &&
+                           Runs.at(i+9) == ']' ){ //For the min value being a 3 digit number and the max value being a 4 digit number
+                                   
+
+                                        int Max_Digit1 = Runs.at(i+5) - '0';
+                                        int Max_Digit2 = Runs.at(i+6) - '0';
+                                        int Max_Digit3 = Runs.at(i+7) - '0';
+                                        int Max_Digit4 = Runs.at(i+8) - '0';
+
+
+                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
+
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                                }
+			else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 3 digit number
+      	   	   	        isdigit( Runs.at(i+6) ) &&
+      	   	   	        isdigit( Runs.at(i+7) ) &&
+      	   	   	        Runs.at(i+8) == ']'){
+
+
+				int Max_Digit1 = Runs.at(i+5) - '0';
+        			int Max_Digit2 = Runs.at(i+6) - '0';
+        			int Max_Digit3 = Runs.at(i+7) - '0';
+	
+				int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+        			RunNumAndEvents.push_back(EventNumber_Max);
+		
+
+			}
+			else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 2 digit number 
+         			isdigit( Runs.at(i+6) ) &&
+         			Runs.at(i+7) == ']' ){
+
+					int Max_Digit1 = Runs.at(i+5) - '0';
+                			int Max_Digit2 = Runs.at(i+6) - '0';
+
+                			int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
+                			RunNumAndEvents.push_back(EventNumber_Max);
+
+
+			}
+			else if(isdigit( Runs.at(i+5) ) &&
+                                Runs.at(i+6) == ']' ){ //For the min value being a 3 digit number and the max value being a 1 digit number
+
+
+                                        int Max_Digit1 = Runs.at(i+5) - '0';
+
+                                        int EventNumber_Max = Max_Digit1;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                        }
+                       else{std::cout << "error" << std::endl;}
+
+ 		}
+ 		else if(isdigit( Runs.at(i+1) ) && //For the min value being a 2 digit number
+         		isdigit( Runs.at(i+2) ) &&
+         		Runs.at(i+3) == ',' ){
+
+
+				int Min_Digit1 = Runs.at(i+1) - '0';
+        			int Min_Digit2 = Runs.at(i+2) - '0';
+
+        			int EventNumber_Min = (Min_Digit1*10) + Min_Digit2;
+        			RunNumAndEvents.push_back(EventNumber_Min);
+
+				if(isdigit( Runs.at(i+4) ) &&
+                                   isdigit( Runs.at(i+5) ) &&
+				   isdigit( Runs.at(i+6) ) &&
+                                   isdigit( Runs.at(i+7) ) &&
+                                   Runs.at(i+8) == ']' ){ //For the min value being a 2 digit number and the max value being a 4 digit number
+
+
+                                        int Max_Digit1 = Runs.at(i+4) - '0';
+                                        int Max_Digit2 = Runs.at(i+5) - '0';
+					int Max_Digit3 = Runs.at(i+6) - '0';
+                                        int Max_Digit4 = Runs.at(i+7) - '0';
+
+                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                                }
+				else if(isdigit( Runs.at(i+4) ) && //For the min value being a 2 digit number and the max value being a 3 digit nummber
+           	   	   	   isdigit( Runs.at(i+5) ) &&
+           	   	   	   isdigit( Runs.at(i+6) ) &&
+           	   	   	   Runs.at(i+7) == ']'){
+
+
+                			int Max_Digit1 = Runs.at(i+4) - '0';
+                			int Max_Digit2 = Runs.at(i+5) - '0';
+                			int Max_Digit3 = Runs.at(i+6) - '0';
+
+                			int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+                			RunNumAndEvents.push_back(EventNumber_Max);
+
+
+        			}
+        			else if(isdigit( Runs.at(i+4) ) &&
+                			isdigit( Runs.at(i+5) ) &&
+                			Runs.at(i+6) == ']' ){ //For the min value being a 2 digit number and the max value being a 2 digit number
+
+
+                        		int Max_Digit1 = Runs.at(i+4) - '0';
+                        		int Max_Digit2 = Runs.at(i+5) - '0';
+
+                        		int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
+                        		RunNumAndEvents.push_back(EventNumber_Max);
+
+
+        			}
+				else if(isdigit( Runs.at(i+4) ) &&
+                                        Runs.at(i+5) == ']' ){ //For the min value being a 2 digit number and the max value being a 1 digit number
+
+
+                                        int Max_Digit1 = Runs.at(i+4) - '0';
+
+                                        int EventNumber_Max = Max_Digit1;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                                }
+				else{std::cout << "error" <<  "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
+
+   	}
+	else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 1 digit number
+      	     	  Runs.at(i+2) == ',' &&
+		  isdigit(Runs.at(i+3)) ){
+
+
+			int Min_Digit1 = Runs.at(i+1) - '0';	
+
+			int EventNumber_Min = Min_Digit1;
+
+			RunNumAndEvents.push_back(EventNumber_Min);
+
+			if(isdigit( Runs.at(i+3) ) &&
+                           isdigit( Runs.at(i+4) ) &&
+                           isdigit( Runs.at(i+5) ) &&
+                           isdigit( Runs.at(i+6) ) &&
+                           Runs.at(i+7) == ']' ){ //For the min value being a 1 digit number and the max value being a 4 digit number
+                                   
+
+                                        int Max_Digit1 = Runs.at(i+3) - '0';
+                                        int Max_Digit2 = Runs.at(i+4) - '0';
+                                        int Max_Digit3 = Runs.at(i+5) - '0';
+                                        int Max_Digit4 = Runs.at(i+6) - '0';
+
+                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                                }
+			else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 3 digit number
+      	   	   	        isdigit( Runs.at(i+4) ) &&
+      	   	   	        isdigit( Runs.at(i+5) ) &&
+      	   	   	        Runs.at(i+6) == ']'){
+
+
+				int Max_Digit1 = Runs.at(i+3) - '0';
+        			int Max_Digit2 = Runs.at(i+4) - '0';
+        			int Max_Digit3 = Runs.at(i+5) - '0';
+	
+				int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+        			RunNumAndEvents.push_back(EventNumber_Max);
+		
+
+			}
+			else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 2 digit number 
+         			isdigit( Runs.at(i+4) ) &&
+         			Runs.at(i+5) == ']' ){
+
+					int Max_Digit1 = Runs.at(i+3) - '0';
+                			int Max_Digit2 = Runs.at(i+4) - '0';
+
+                			int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
+                			RunNumAndEvents.push_back(EventNumber_Max);
+
+
+			}
+			else if(isdigit( Runs.at(i+3) ) &&
+                                Runs.at(i+4) == ']' ){ //For the min value being a 1 digit number and the max value being a 1 digit number
+
+
+                                        int Max_Digit1 = Runs.at(i+3) - '0';
+
+                                        int EventNumber_Max = Max_Digit1;
+                                        RunNumAndEvents.push_back(EventNumber_Max);
+
+
+                        }
+                       else{std::cout << "error" << std::endl;}
+
+ 		}	
+		else{std::cout << "INSIDE THE ELSE STATEMENT" << '\n' << "Runs.at(i) = " << Runs.at(i) << '\n' << "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
+
+
+	}	 
+
+
+    }
+
+
+    return RunNumAndEvents;
+
+
+  }};
+
+
+
+  auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
+
+    std::cout << "inside RunAndLumiFilterFunction" << std::endl;
+
+    if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
+
+	for(long unsigned int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
+
+		int MinLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i);
+		int MaxLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i+1);
+
+		if(luminosityBlock > MinLumi && luminosityBlock < MaxLumi){return InputRunNumber && luminosityBlock;}
+		else{continue;}
+
+	}
+
+    }
+    else{return false;}
+
+
+  }};
+
+
+  //Functions for events that pass the ee, mumu, or emu triggers
+  //To prevent double counting single and double lepton datasets
+  auto SingleElectron{[&YearInt](const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, const bool& HLT_Ele32_eta2p1_WPTight_Gsf, const bool& HLT_Ele35_WPTight_Gsf,
+				 const bool& HLT_Ele25_eta2p1_WPTight_Gsf, const bool& HLT_Ele27_WPTight_Gsf)-> bool{
+
+  	std::cout << "print 22" << std::endl;
+
+  	//for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  	//for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  	//for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+  	switch(YearInt){
+
+		case 1: return  HLT_Ele25_eta2p1_WPTight_Gsf > 0 || HLT_Ele27_WPTight_Gsf > 0 || HLT_Ele32_eta2p1_WPTight_Gsf > 0;
+		case 2: return /*HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 ||*/ HLT_Ele35_WPTight_Gsf > 0; 
+		case 3: return HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0;
+  		default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;
+
+  	}
+
+
+  }};
+
+
+  auto DoubleElectron{[&YearInt](const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)->bool{
+
+  	//for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  	//for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  	//for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+  	std::cout << "print 23" << std::endl;
+
+	switch(YearInt){
+
+		case 1: return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+		case 2: return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
+		case 3: return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+		default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;}
+
+	}
+
+  }};
+
+
+
+  auto SingleMuon{[&YearInt](const bool& HLT_IsoMu24, const bool& HLT_IsoMu27, const bool& HLT_IsoMu24_eta2p1)->bool{
+
+  	std::cout << "print 24" << std::endl;  
+
+  	//for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  	//for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  	//for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+  	switch(YearInt){
+
+		case 1: return HLT_IsoMu24  > 0 || HLT_IsoMu24_eta2p1  > 0;
+		case 2: return HLT_IsoMu24 > 0 || HLT_IsoMu27 > 0; 
+		case 3: return HLT_IsoMu24 > 0;
+		default: std::cout << "Please choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;
+	}
+
+  }};
+
+
+
+  auto DoubleMuon{[&YearInt](const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
+			  const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
+
+  	std::cout << "print 25" << std::endl;
+
+  	//for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+  	//for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+  	//for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+
+	switch(YearInt){
+
+  		case 1: return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0;
+  		case 2: return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0; 
+		case 3: return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0 | HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 > 0;
+		default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;
+
+ 	}
+
+
+  }};
+
+
+
+
+  auto MuonElectron{[&YearInt](const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+			      const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,  const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
+			      const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,    const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
+
+
+  	std::cout << "print 26" << std::endl;
+
+ 	//for 2016 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2016
+ 	//for 2017 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2017
+ 	//for 2018 see: https://twiki.cern.ch/twiki/bin/view/CMS/TopTriggerYear2018
+
+
+
+	switch(Yearint){
+
+		case 1: return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
+               		       //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||  (branch not present in MET)
+               		       //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||   (branch not present in MET)
+	       		       HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 ||
+               		       //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || (branch not present in MET)
+               		       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0;
+
+
+		case 2: return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+   	       		       HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || 
+  	       		       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0; 
+
+		case 3: return HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
+               		       HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 ||
+               		       HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0;
+
+		default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the trigger paths" << std::endl;
+
+	}
+
+
+  }};
 
 
 
@@ -2959,16 +3362,6 @@ const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL)->bool{
 
 
 
-
-if(year == "2016"){
-        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-}
-else if(year == "2017" || year == "2018"){
-	if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-}
-else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
 
 
 
@@ -8173,7 +8566,7 @@ process != "data_SingleMuonRunH2"
 
   auto d_GoldenJson = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"});
 
-  if(process == "Data_triggerSF"){d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
+  if(process == "Data_triggerSF"){auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
 
   //Filtering events that pass the ee selection criteria
   auto d_ee_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
@@ -11121,478 +11514,6 @@ const bool& HLT_Ele27_WPTight_Gsf
 
 
 
-std::cout << "before GoldenJsonReader" << std::endl;
-
-//Using the golden ison file to filter events
-auto GoldenJsonReader{[&year](){
-
- std::string GoldenJsonFileName;
-
- if(year == "2016"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt";}
- else if(year == "2017"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt";}
- else if(year == "2018"){GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt";}
- else{std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl;}
-
-
- std::ifstream myReadFile;
- myReadFile.open(GoldenJsonFileName);
- static char output[100];
- std::vector<std::string> GoldenJsonOutput{};
-  
-
- if (myReadFile.is_open()) {
- while (!myReadFile.eof()) {
-
-
-    myReadFile >> output;
-    GoldenJsonOutput.push_back(output);
-
- }
-}
-
-myReadFile.close();
-return GoldenJsonOutput;
-
-}};
-
-
-std::cout << "before GoldenJson_SplitChars" << std::endl;
-
-
-auto GoldenJson_SplitChars{[&year, &GoldenJsonReader](){
-
-  std::vector<char> out{};
-
-  for(long unsigned int i = 0; i < (GoldenJsonReader()).size(); i++){
-
-  	std::string element = GoldenJsonReader().at(i);
-
-  	for(long unsigned int j = 0; j < element.size(); j++){
-
-  		out.push_back(element.at(j));  	
-
-  	}
-
-  }
-
-  return out;
-
-}};
-
-
-std::cout << "before RunNumberCheck" << std::endl;
-
-auto RunNumberCheck{[&year, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
-
- std::vector<char> EventsVector{}; 
-
- for(long unsigned int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
-
-	unsigned int RunNumBeingRead;
-
- 	if(  GoldenJson_SplitChars().at(i+1) == '"' &&
-	    (GoldenJson_SplitChars().at(i+2) == '2' ||
-	     GoldenJson_SplitChars().at(i+2) == '3')  ){ 
-
-		int digit1 = GoldenJson_SplitChars().at(i+2) - '0'; 
-		int digit2 = GoldenJson_SplitChars().at(i+3) - '0'; 
-		int digit3 = GoldenJson_SplitChars().at(i+4) - '0'; 
-		int digit4 = GoldenJson_SplitChars().at(i+5) - '0'; 
-		int digit5 = GoldenJson_SplitChars().at(i+6) - '0'; 
-		int digit6 = GoldenJson_SplitChars().at(i+7) - '0';
-
-
-		const unsigned int run = (digit1*100000) + (digit2*10000) + (digit3*1000) + (digit4*100) + (digit5*10) + digit6;
-	
-		RunNumBeingRead = run;
-
-		if(run == InputRunNumber){
-
-
-			for(long unsigned int j = 2; j < (GoldenJson_SplitChars()).size(); j++){
-
-				if(GoldenJson_SplitChars().at(i+10) == '[' && 
-				   GoldenJson_SplitChars().at(i+11) == '['){	
-
-					if( GoldenJson_SplitChars().at( (i+10)+j ) == ']' &&
-					    GoldenJson_SplitChars().at( (i+10)+(j+1) ) == ']'){
-
-					
-						for(long unsigned int k = (i+10); k < ((i+10)+(j+2)); k++){
-
-							EventsVector.push_back(GoldenJson_SplitChars().at(k));
-						
-						}
-
-						return EventsVector;	
-											
-
-					}
-					else{std::cout << "GoldenJson_SplitChars().at((i+11)+j) and at (i+11)+(j+1) are not ']' " << std::endl; continue;}
-
-
-				}
-				else{std::cout << "GoldenJson_SplitChars().at(i+10) is not '[' " << std::endl; continue;}
-
-
-			}	
-
-		}
-		else{continue;}
-
-	}
-	else{std::cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << std::endl;}
-
-
- }
-
-
-}};
-
-
-std::cout << "before ReturnRunNumAndEventRanges" << std::endl;
-
-auto ReturnRunNumAndEventRanges{[&year, &RunNumberCheck](const unsigned int& InputRunNumber){
-
- std::vector<int> RunNumAndEvents{};
-
- RunNumAndEvents.push_back(InputRunNumber);
-
- std::vector<char> Runs = RunNumberCheck(InputRunNumber);
-
-
- for(long unsigned int i = 0; i < Runs.size(); i++){
-
-
- 	if(Runs.at(i) == ']' && Runs.at(i+1) == ']'){break;}
-	else if( isdigit(Runs.at(i)) || Runs.at(i) == ',' || Runs.at(i) == ' ' || Runs.at(i) == ']'){continue;}
- 	else if( (Runs.at(i) == '[' && Runs.at(i+1) == '[') ||
-		 (Runs.at(i) == '[' && isdigit(Runs.at(i+1))) ){
-
-
-		if(  isdigit( Runs.at(i+1) ) && //For the min value being a 4 digit number
-      	     	     isdigit( Runs.at(i+2) ) &&
-      	     	     isdigit( Runs.at(i+3) ) && 
-		     isdigit( Runs.at(i+4) ) &&
-      	     	     Runs.at(i+5) == ','){
-
-
-			int Min_Digit1 = Runs.at(i+1) - '0';
-			int Min_Digit2 = Runs.at(i+2) - '0';
-			int Min_Digit3 = Runs.at(i+3) - '0';
-			int Min_Digit4 = Runs.at(i+4) - '0';
-
-			int EventNumber_Min = (Min_Digit1*1000) + (Min_Digit2*100) + (Min_Digit3*10) + Min_Digit4;
-			RunNumAndEvents.push_back(EventNumber_Min);
-
-			if(isdigit( Runs.at(i+6) ) &&
-                           isdigit( Runs.at(i+7) ) &&
-                           isdigit( Runs.at(i+8) ) &&
-                           isdigit( Runs.at(i+9) ) &&
-                           Runs.at(i+10) == ']' ){ //For the min value being a 4 digit number and the max value being a 4 digit number
-                                   
-
-                                        int Max_Digit1 = Runs.at(i+6) - '0';
-                                        int Max_Digit2 = Runs.at(i+7) - '0';
-                                        int Max_Digit3 = Runs.at(i+8) - '0';
-                                        int Max_Digit4 = Runs.at(i+9) - '0';
-
-                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                                }
-			else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 3 digit number
-      	   	   	        isdigit( Runs.at(i+7) ) &&
-      	   	   	        isdigit( Runs.at(i+8) ) &&
-      	   	   	        Runs.at(i+9) == ']'){
-
-
-				int Max_Digit1 = Runs.at(i+6) - '0';
-        			int Max_Digit2 = Runs.at(i+7) - '0';
-        			int Max_Digit3 = Runs.at(i+8) - '0';
-	
-				int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
-        			RunNumAndEvents.push_back(EventNumber_Max);
-		
-
-			}
-			else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 2 digit number 
-         			isdigit( Runs.at(i+7) ) &&
-         			Runs.at(i+8) == ']' ){
-
-					int Max_Digit1 = Runs.at(i+6) - '0';
-                			int Max_Digit2 = Runs.at(i+7) - '0';
-
-                			int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                			RunNumAndEvents.push_back(EventNumber_Max);
-
-
-			}
-			else if(isdigit( Runs.at(i+6) ) &&
-                                Runs.at(i+7) == ']' ){ //For the min value being a 4 digit number and the max value being a 1 digit number
-
-
-                                        int Max_Digit1 = Runs.at(i+6) - '0';
-
-                                        int EventNumber_Max = Max_Digit1;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                        }
-                       else{std::cout << "error" << std::endl;}
-
- 		}	
- 		else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 3 digit number
-      	     	     isdigit( Runs.at(i+2) ) &&
-      	     	     isdigit( Runs.at(i+3) ) && 
-      	     	     Runs.at(i+4) == ','){
-
-
-			int Min_Digit1 = Runs.at(i+1) - '0';
-			int Min_Digit2 = Runs.at(i+2) - '0';
-			int Min_Digit3 = Runs.at(i+3) - '0';
-
-			int EventNumber_Min = (Min_Digit1*100) + (Min_Digit2*10) + Min_Digit3;
-			RunNumAndEvents.push_back(EventNumber_Min);
-
-			if(isdigit( Runs.at(i+5) ) &&
-                           isdigit( Runs.at(i+6) ) &&
-                           isdigit( Runs.at(i+7) ) &&
-                           isdigit( Runs.at(i+8) ) &&
-                           Runs.at(i+9) == ']' ){ //For the min value being a 3 digit number and the max value being a 4 digit number
-                                   
-
-                                        int Max_Digit1 = Runs.at(i+5) - '0';
-                                        int Max_Digit2 = Runs.at(i+6) - '0';
-                                        int Max_Digit3 = Runs.at(i+7) - '0';
-                                        int Max_Digit4 = Runs.at(i+8) - '0';
-
-
-                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
-
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                                }
-			else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 3 digit number
-      	   	   	        isdigit( Runs.at(i+6) ) &&
-      	   	   	        isdigit( Runs.at(i+7) ) &&
-      	   	   	        Runs.at(i+8) == ']'){
-
-
-				int Max_Digit1 = Runs.at(i+5) - '0';
-        			int Max_Digit2 = Runs.at(i+6) - '0';
-        			int Max_Digit3 = Runs.at(i+7) - '0';
-	
-				int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
-        			RunNumAndEvents.push_back(EventNumber_Max);
-		
-
-			}
-			else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 2 digit number 
-         			isdigit( Runs.at(i+6) ) &&
-         			Runs.at(i+7) == ']' ){
-
-					int Max_Digit1 = Runs.at(i+5) - '0';
-                			int Max_Digit2 = Runs.at(i+6) - '0';
-
-                			int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                			RunNumAndEvents.push_back(EventNumber_Max);
-
-
-			}
-			else if(isdigit( Runs.at(i+5) ) &&
-                                Runs.at(i+6) == ']' ){ //For the min value being a 3 digit number and the max value being a 1 digit number
-
-
-                                        int Max_Digit1 = Runs.at(i+5) - '0';
-
-                                        int EventNumber_Max = Max_Digit1;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                        }
-                       else{std::cout << "error" << std::endl;}
-
- 		}
- 		else if(isdigit( Runs.at(i+1) ) && //For the min value being a 2 digit number
-         		isdigit( Runs.at(i+2) ) &&
-         		Runs.at(i+3) == ',' ){
-
-
-				int Min_Digit1 = Runs.at(i+1) - '0';
-        			int Min_Digit2 = Runs.at(i+2) - '0';
-
-        			int EventNumber_Min = (Min_Digit1*10) + Min_Digit2;
-        			RunNumAndEvents.push_back(EventNumber_Min);
-
-				if(isdigit( Runs.at(i+4) ) &&
-                                   isdigit( Runs.at(i+5) ) &&
-				   isdigit( Runs.at(i+6) ) &&
-                                   isdigit( Runs.at(i+7) ) &&
-                                   Runs.at(i+8) == ']' ){ //For the min value being a 2 digit number and the max value being a 4 digit number
-
-
-                                        int Max_Digit1 = Runs.at(i+4) - '0';
-                                        int Max_Digit2 = Runs.at(i+5) - '0';
-					int Max_Digit3 = Runs.at(i+6) - '0';
-                                        int Max_Digit4 = Runs.at(i+7) - '0';
-
-                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                                }
-				else if(isdigit( Runs.at(i+4) ) && //For the min value being a 2 digit number and the max value being a 3 digit nummber
-           	   	   	   isdigit( Runs.at(i+5) ) &&
-           	   	   	   isdigit( Runs.at(i+6) ) &&
-           	   	   	   Runs.at(i+7) == ']'){
-
-
-                			int Max_Digit1 = Runs.at(i+4) - '0';
-                			int Max_Digit2 = Runs.at(i+5) - '0';
-                			int Max_Digit3 = Runs.at(i+6) - '0';
-
-                			int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
-                			RunNumAndEvents.push_back(EventNumber_Max);
-
-
-        			}
-        			else if(isdigit( Runs.at(i+4) ) &&
-                			isdigit( Runs.at(i+5) ) &&
-                			Runs.at(i+6) == ']' ){ //For the min value being a 2 digit number and the max value being a 2 digit number
-
-
-                        		int Max_Digit1 = Runs.at(i+4) - '0';
-                        		int Max_Digit2 = Runs.at(i+5) - '0';
-
-                        		int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                        		RunNumAndEvents.push_back(EventNumber_Max);
-
-
-        			}
-				else if(isdigit( Runs.at(i+4) ) &&
-                                        Runs.at(i+5) == ']' ){ //For the min value being a 2 digit number and the max value being a 1 digit number
-
-
-                                        int Max_Digit1 = Runs.at(i+4) - '0';
-
-                                        int EventNumber_Max = Max_Digit1;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                                }
-				else{std::cout << "error" <<  "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
-
-   	}
-	else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 1 digit number
-      	     	  Runs.at(i+2) == ',' &&
-		  isdigit(Runs.at(i+3)) ){
-
-
-			int Min_Digit1 = Runs.at(i+1) - '0';	
-
-			int EventNumber_Min = Min_Digit1;
-
-			RunNumAndEvents.push_back(EventNumber_Min);
-
-			if(isdigit( Runs.at(i+3) ) &&
-                           isdigit( Runs.at(i+4) ) &&
-                           isdigit( Runs.at(i+5) ) &&
-                           isdigit( Runs.at(i+6) ) &&
-                           Runs.at(i+7) == ']' ){ //For the min value being a 1 digit number and the max value being a 4 digit number
-                                   
-
-                                        int Max_Digit1 = Runs.at(i+3) - '0';
-                                        int Max_Digit2 = Runs.at(i+4) - '0';
-                                        int Max_Digit3 = Runs.at(i+5) - '0';
-                                        int Max_Digit4 = Runs.at(i+6) - '0';
-
-                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                                }
-			else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 3 digit number
-      	   	   	        isdigit( Runs.at(i+4) ) &&
-      	   	   	        isdigit( Runs.at(i+5) ) &&
-      	   	   	        Runs.at(i+6) == ']'){
-
-
-				int Max_Digit1 = Runs.at(i+3) - '0';
-        			int Max_Digit2 = Runs.at(i+4) - '0';
-        			int Max_Digit3 = Runs.at(i+5) - '0';
-	
-				int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
-        			RunNumAndEvents.push_back(EventNumber_Max);
-		
-
-			}
-			else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 2 digit number 
-         			isdigit( Runs.at(i+4) ) &&
-         			Runs.at(i+5) == ']' ){
-
-					int Max_Digit1 = Runs.at(i+3) - '0';
-                			int Max_Digit2 = Runs.at(i+4) - '0';
-
-                			int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                			RunNumAndEvents.push_back(EventNumber_Max);
-
-
-			}
-			else if(isdigit( Runs.at(i+3) ) &&
-                                Runs.at(i+4) == ']' ){ //For the min value being a 1 digit number and the max value being a 1 digit number
-
-
-                                        int Max_Digit1 = Runs.at(i+3) - '0';
-
-                                        int EventNumber_Max = Max_Digit1;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                        }
-                       else{std::cout << "error" << std::endl;}
-
- 		}	
-		else{std::cout << "INSIDE THE ELSE STATEMENT" << '\n' << "Runs.at(i) = " << Runs.at(i) << '\n' << "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
-
-
-	}	 
-
-
-  }
-
-
-  return RunNumAndEvents;
-
-
-}};
-
-
-std::cout << "before RunAndLumiFilterFunction" << std::endl;
-
-auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
-
-  std::cout << "inside RunAndLumiFilterFunction" << std::endl;
-
-  if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
-
-	for(long unsigned int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
-
-		int MinLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i);
-		int MaxLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i+1);
-
-		if(luminosityBlock > MinLumi && luminosityBlock < MaxLumi){return InputRunNumber && luminosityBlock;}
-		else{continue;}
-
-	}
-
-  }
-  else{return false;}
-
-
-}};
 
 std::cout << "before d_GoldenJsonFilteredEvents" << std::endl;
 
