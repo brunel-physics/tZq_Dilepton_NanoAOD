@@ -2761,6 +2761,2247 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   //auto d_dataframe = d.Range(0, 1000000);
 
 
+ //For the Rochester corrections
+auto RochesterCorrections_testscript2(
+
+const std::string& year, 
+const std::string& process, 
+const ints& MuonCharge, 
+const floats& MuonPt,
+const floats& MuonEta,
+const floats& MuonPhi,
+const ints& Muon_genPartIdx,
+const ints& Muon_nTrackerLayers){
+
+
+	std::cout << "print 1" << std::endl;
+
+	std::string RoccoTextFile;
+
+	if(year == "2016"){RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt";}
+	else if(year == "2017"){RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2017.txt";}
+	else if(year == "2018"){RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2018.txt";}
+	else{std::cout << "Error for rochester corrections: choose a year out of 2016, 2017 or 2018." << std::endl;}
+
+
+	RoccoR rc{RoccoTextFile};
+	doubles RochCorrVec{};
+
+	ints s(MuonPt.size(), 0); //s is error set (default is 0)
+	ints m(MuonPt.size(), 0); //m is error member (default is 0, ranges from 0 to nmembers-1)
+	doubles u{gRandom->Rndm(), gRandom->Rndm()}; //u is a random number distributed uniformly between 0 and 1 (gRandom->Rndm());
+
+
+	for(unsigned int i = 0; i < MuonPt.size(); i++){
+
+		//scale factors for momentum of each muon:
+		double RochCorrSF;
+		double mcSF;
+
+
+		if(process != "data_DoubleEGRunB" &&
+		   process != "data_DoubleEGRunC" &&
+		   process != "data_DoubleEGRunD" &&
+		   process != "data_DoubleEGRunE" &&
+		   process != "data_DoubleEGRunF" &&
+		   process != "data_DoubleEGRunG" &&
+		   process != "data_DoubleEGRunH" &&
+		   process != "data_DoubleEGRunB2" &&
+                   process != "data_DoubleEGRunC2" &&
+                   process != "data_DoubleEGRunD2" &&
+                   process != "data_DoubleEGRunE2" &&
+                   process != "data_DoubleEGRunF2" &&
+                   process != "data_DoubleEGRunG2" &&
+                   process != "data_DoubleEGRunH2" &&
+		   process != "data_EGRunB" &&
+                   process != "data_EGRunC" &&
+                   process != "data_EGRunD" &&
+		   process != "data_SingleElectronRunB" &&
+		   process != "data_SingleElectronRunC" &&
+		   process != "data_SingleElectronRunD" &&
+		   process != "data_SingleElectronRunE" &&
+		   process != "data_SingleElectronRunF" &&
+		   process != "data_SingleElectronRunG" &&
+		   process != "data_SingleElectronRunH" &&
+		   process != "data_DoubleMuonRunB" &&
+		   process != "data_DoubleMuonRunC" &&
+		   process != "data_DoubleMuonRunD" &&
+		   process != "data_DoubleMuonRunE" &&
+		   process != "data_DoubleMuonRunF" &&
+		   process != "data_DoubleMuonRunG" &&
+		   process != "data_DoubleMuonRunH" &&
+		   process != "data_SingleMuonRunB" &&
+		   process != "data_SingleMuonRunC" &&
+		   process != "data_SingleMuonRunD" &&
+		   process != "data_SingleMuonRunE" &&
+		   process != "data_SingleMuonRunF" &&
+		   process != "data_SingleMuonRunG" &&
+		   process != "data_SingleMuonRunH" &&
+		   process != "data_SingleElectronRunB2" &&
+                   process != "data_SingleElectronRunC2" &&
+                   process != "data_SingleElectronRunD2" &&
+                   process != "data_SingleElectronRunE2" &&
+                   process != "data_SingleElectronRunF2" &&
+                   process != "data_SingleElectronRunG2" &&
+                   process != "data_SingleElectronRunH2" &&
+                   process != "data_DoubleMuonRunB2" &&
+                   process != "data_DoubleMuonRunC2" &&
+                   process != "data_DoubleMuonRunD2" &&
+                   process != "data_DoubleMuonRunE2" &&
+                   process != "data_DoubleMuonRunF2" &&
+                   process != "data_DoubleMuonRunG2" &&
+                   process != "data_DoubleMuonRunH2" &&
+                   process != "data_SingleMuonRunB2" &&
+                   process != "data_SingleMuonRunC2" &&
+                   process != "data_SingleMuonRunD2" &&
+                   process != "data_SingleMuonRunE2" &&
+                   process != "data_SingleMuonRunF2" &&
+                   process != "data_SingleMuonRunG2" &&
+                   process != "data_SingleMuonRunH2"){
+
+
+
+			if(mcSF > 0){
+
+				RochCorrSF = rc.kSpreadMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_genPartIdx.at(i), s.at(i), m.at(i)); //(recommended), MC scale and resolution correction when matched gen muon is available
+			}
+			else{
+				RochCorrSF = rc.kSmearMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_nTrackerLayers.at(i), u.at(i), s.at(i), m.at(i)); //MC scale and extra smearing when matched gen muon is not available
+
+			}
+
+		}
+		else{RochCorrSF = rc.kScaleDT(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), s.at(i), m.at(i));} //data
+
+	
+		RochCorrVec.push_back(RochCorrSF);
+
+
+	}
+
+	
+	return RochCorrVec;
+
+
+}
+
+
+//Functions for reading the trigger efficiency and SF text files
+double linereader_TriggerSF(const int& LineNumber, const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
+
+   std::cout << "print 2" << std::endl;
+
+   std::string TriggerSF_TextFiles;
+
+   if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
+   else if(InputTriggerSF_File == "MC_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
+   else if(InputTriggerSF_File == "Data_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_Data_MET_" + year + ".txt";}
+   else if(InputTriggerSF_File == "MC_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_MC_ttbar_" + year + ".txt";}
+   else if(InputTriggerSF_File == "SF_Central" || InputTriggerSF_File == "SF_Uncert"){TriggerSF_TextFiles = "TriggerSF_ScaleFactors_" + year + ".txt";}
+   else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
+
+
+   using namespace std;
+
+   fstream file(TriggerSF_TextFiles.c_str());
+   GotoLine(file, LineNumber);
+
+   std::string line;
+   file >> line;
+
+   double Value = atof(line.c_str());
+   return Value;
+
+}
+
+
+
+
+int linecounter_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
+
+   std::cout << "print 3" << std::endl;
+
+   std::string TriggerSF_TextFiles;
+
+ 
+  if(InputTriggerSF_File == "Data_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_Data_MET_" + year + ".txt";}
+   else if(InputTriggerSF_File == "MC_Central"){TriggerSF_TextFiles = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
+   else if(InputTriggerSF_File == "Data_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_Data_MET_" + year + ".txt";}
+   else if(InputTriggerSF_File == "MC_Uncert"){TriggerSF_TextFiles = "TriggerSF_EfficiencyUncerts_MC_ttbar_" + year + ".txt";}
+   else if(InputTriggerSF_File == "SF_Central" || InputTriggerSF_File == "SF_Uncert"){TriggerSF_TextFiles = "TriggerSF_ScaleFactors_" + year + ".txt";}
+   else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
+
+
+
+   int number_of_lines = 0;
+   std::string line;
+   std::ifstream myfile(TriggerSF_TextFiles.c_str());
+
+   while (getline(myfile, line))
+        ++number_of_lines;
+        return number_of_lines;
+
+}
+
+
+
+auto textfilereader2_TriggerSF(const std::string& InputTriggerSF_File, const std::string& year/*, const bool& blinding*/){
+
+   std::cout << "print 4" << std::endl;
+
+   int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File, year/*, blinding*/);
+   std::vector<double> Value;
+
+
+   for(int i = 1; i < NumberOfLines+1; i++){
+        Value.push_back(linereader_TriggerSF(i, InputTriggerSF_File, year/*, blinding*/));
+   }
+
+   return Value;
+
+}
+
+
+
+
+//For creating the output directories
+//Creating a directory for all results
+auto DirectoryCreator(const std::string& year, const bool& blinding, const bool& NPL){
+
+        std::cout << "print 5" << std::endl;
+
+	if(year == "2016"){
+
+		if(blinding == true){
+
+			if(NPL == false){
+
+                        	system("mkdir BlindedResults_2016");
+                        	system("mv *2016*.root BlindedResults_2016");
+				system("mv *2016*.txt BlindedResults_2016");
+				system("mkdir BTagEffPlots");
+				system("mkdir Chi2Range");
+				system("mkdir CutFlowReport");
+				system("mkdir Resolution");
+				system("mkdir Results");
+				system("mkdir TriggerSF");
+				system("mkdir GaussianFit");
+				system("mkdir mW_versus_mTop");
+				system("mv BTagEffPlots BlindedResults_2016/");
+                                system("mv Chi2Range BlindedResults_2016/");
+                                system("mv CutFlowReport BlindedResults_2016/");
+                                system("mv Resolution BlindedResults_2016/");
+                                system("mv Results BlindedResults_2016/");
+                                system("mv TriggerSF BlindedResults_2016/");
+                                system("mv GaussianFit BlindedResults_2016/");
+                                system("mv mW_versus_mTop BlindedResults_2016/");
+				system("mv BlindedResults_2016/BTagEffPlots_*.root BlindedResults_2016/BTagEffPlots");
+				system("mv BlindedResults_2016/Chi2Range_*.txt BlindedResults_2016/Chi2Range");
+				system("mv BlindedResults_2016/CutFlowReport_*.txt BlindedResults_2016/CutFlowReport");
+				system("mv BlindedResults_2016/Resolution_*.txt BlindedResults_2016/Resolution");
+				system("mv BlindedResults_2016/Results_*.root BlindedResults_2016/Results");
+				system("mv BlindedResults_2016/TurnOnCurves_*.root BlindedResults_2016/TriggerSF");
+				system("mv BlindedResults_2016/TriggerSF_*.txt BlindedResults_2016/TriggerSF");
+				system("mv BlindedResults_2016/*_GaussianFit_*.root BlindedResults_2016/GaussianFit");
+				system("mv BlindedResults_2016/*_mW_mTop_*.root BlindedResults_2016/mW_versus_mTop");
+
+			}
+			else{
+
+				system("mkdir BlindedResults_NPL_2016");
+                        	system("mv *NPL*.root BlindedResults_NPL_2016");
+                        	system("mv *NPL*.root BlindedResults_NPL_2016");
+				system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_NPL_2016/");
+                                system("mv Chi2Range BlindedResults_NPL_2016/");
+                                system("mv CutFlowReport BlindedResults_NPL_2016/");
+                                system("mv Resolution BlindedResults_NPL_2016/");
+                                system("mv Results BlindedResults_NPL_2016/");
+                                system("mv TriggerSF BlindedResults_NPL_2016/");
+                                system("mv GaussianFit BlindedResults_NPL_2016/");
+                                system("mv mW_versus_mTop BlindedResults_NPL_2016/");
+				system("mv UnblindedResults_NPL_2016/BTagEffPlots_*.root BlindedResults_NPL_2016/BTagEffPlots");
+                                system("mv BlindedResults_NPL_2016/Chi2Range_*.txt BlindedResults_NPL_2016/Chi2Range");
+                                system("mv BlindedResults_NPL_2016/CutFlowReport_*.txt BlindedResults_NPL_2016/CutFlowReport");
+                                system("mv BlindedResults_NPL_2016/Resolution_*.txt BlindedResults_NPL_2016/Resolution");
+                                system("mv BlindedResults_NPL_2016/Results_*.root BlindedResults_NPL_2016/Results");
+                                system("mv BlindedResults_NPL_2016/TurnOnCurves_*.root BlindedResults_NPL_2016/TriggerSF");
+                                system("mv BlindedResults_NPL_2016/TriggerSF_*.txt BlindedResults_NPL_2016/TriggerSF");
+				system("mv BlindedResults_NPL_2016/*_GaussianFit_*.root BlindedResults_NPL_2016/GaussianFit");
+                                system("mv BlindedResults_NPL_2016/*_mW_mTop_*.root BlindedResults_NPL_2016/mW_versus_mTop");
+
+			}
+	
+                }
+                else{
+
+			if(NPL == false){
+
+                        	system("mkdir UnblindedResults_2016");
+                        	system("mv *2016*.root UnblindedResults_2016");
+				system("mv *2016*.txt UnblindedResults_2016");
+				system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_2016/");
+                                system("mv Chi2Range UnblindedResults_2016/");
+                                system("mv CutFlowReport UnblindedResults_2016/");
+                                system("mv Resolution UnblindedResults_2016/");
+                                system("mv Results UnblindedResults_2016/");
+                                system("mv TriggerSF UnblindedResults_2016/");
+                                system("mv GaussianFit UnblindedResults_2016/");
+                                system("mv mW_versus_mTop UnblindedResults_2016/");
+                                system("mv UnblindedResults_2016/BTagEffPlots_*.root UnblindedResults_2016/BTagEffPlots");
+                                system("mv UnblindedResults_2016/Chi2Range_*.txt UnblindedResults_2016/Chi2Range");
+                                system("mv UnblindedResults_2016/CutFlowReport_*.txt UnblindedResults_2016/CutFlowReport");
+                                system("mv UnblindedResults_2016/Resolution_*.txt UnblindedResults_2016/Resolution");
+                                system("mv UnblindedResults_2016/Results_*.root UnblindedResults_2016/Results");
+                                system("mv UnblindedResults_2016/TurnOnCurves_*.root UnblindedResults_2016/TriggerSF");
+                                system("mv UnblindedResults_2016/TriggerSF_*.txt UnblindedResults_2016/TriggerSF");
+				system("mv UnblindedResults_2016/*_GaussianFit_*.root UnblindedResults_2016/GaussianFit");
+                                system("mv UnblindedResults_2016/*_mW_mTop_*.root UnblindedResults_2016/mW_versus_mTop");
+
+
+			}
+			else{
+			
+				system("mkdir UnblindedResults_NPL_2016");
+                        	system("mv *NPL*.root UnblindedResults_NPL_2016");
+                        	system("mv *NPL*.txt UnblindedResults_NPL_2016");
+				system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_NPL_2016/");
+                                system("mv Chi2Range UnblindedResults_NPL_2016/");
+                                system("mv CutFlowReport UnblindedResults_NPL_2016/");
+                                system("mv Resolution UnblindedResults_NPL_2016/");
+                                system("mv Results UnblindedResults_NPL_2016/");
+                                system("mv TriggerSF UnblindedResults_NPL_2016/");
+                                system("mv GaussianFit UnblindedResults_NPL_2016/");
+                                system("mv mW_versus_mTop UnblindedResults_NPL_2016/");
+                                system("mv UnblindedResults_NPL_2016/BTagEffPlots_*.root UnblindedResults_NPL_2016/BTagEffPlots");
+                                system("mv UnblindedResults_NPL_2016/Chi2Range_*.txt UnblindedResults_NPL_2016/Chi2Range");
+                                system("mv UnblindedResults_NPL_2016/CutFlowReport_*.txt UnblindedResults_NPL_2016/CutFlowReport");
+                                system("mv UnblindedResults_NPL_2016/Resolution_*.txt UnblindedResults_NPL_2016/Resolution");
+                                system("mv UnblindedResults_NPL_2016/Results_*.root UnblindedResults_NPL_2016/Results");
+                                system("mv UnblindedResults_NPL_2016/TurnOnCurves_*.root UnblindedResults_NPL_2016/TriggerSF");
+                                system("mv UnblindedResults_NPL_2016/TriggerSF_*.txt UnblindedResults_NPL_2016/TriggerSF");
+				system("mv UnblindedResults_NPL_2016/*_GaussianFit_*.root UnblindedResults_NPL_2016/GaussianFit");
+                                system("mv UnblindedResults_NPL_2016/*_mW_mTop_*.root UnblindedResults_NPL_2016/mW_versus_mTop");
+				
+
+			}
+
+                }
+
+
+	
+	}
+	else if(year == "2017"){
+
+		if(blinding == true){
+
+			if(NPL == false){
+
+				system("mkdir BlindedResults_2017");
+                                system("mv *2017*.root BlindedResults_2017");
+                                system("mv *2017*.txt BlindedResults_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_2017/");
+                                system("mv Chi2Range BlindedResults_2017/");
+                                system("mv CutFlowReport BlindedResults_2017/");
+                                system("mv Resolution BlindedResults_2017/");
+                                system("mv Results BlindedResults_2017/");
+                                system("mv TriggerSF BlindedResults_2017/");
+                                system("mv GaussianFit BlindedResults_2017/");
+                                system("mv mW_versus_mTop BlindedResults_2017/");
+                                system("mv BlindedResults_2017/BTagEffPlots_*.root BlindedResults_2017/BTagEffPlots");
+                                system("mv BlindedResults_2017/Chi2Range_*.txt BlindedResults_2017/Chi2Range");
+                                system("mv BlindedResults_2017/CutFlowReport_*.txt BlindedResults_2017/CutFlowReport");
+                                system("mv BlindedResults_2017/Resolution_*.txt BlindedResults_2017/Resolution");
+                                system("mv BlindedResults_2017/Results_*.root BlindedResults_2017/Results");
+                                system("mv BlindedResults_2017/TurnOnCurves_*.root BlindedResults_2017/TriggerSF");
+                                system("mv BlindedResults_2017/TriggerSF_*.txt BlindedResults_2017/TriggerSF");
+				system("mv BlindedResults_2017/*_GaussianFit_*.root BlindedResults_2017/GaussianFit");
+                                system("mv BlindedResults_2017/*_mW_mTop_*.root BlindedResults_2017/mW_versus_mTop");
+			
+
+			}
+			else{
+			
+				system("mkdir BlindedResults_NPL_2017");
+                                system("mv *NPL*.root BlindedResults_NPL_2017");
+                                system("mv *NPL*.root BlindedResults_NPL_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_NPL_2017/");
+                                system("mv Chi2Range BlindedResults_NPL_2017/");
+                                system("mv CutFlowReport BlindedResults_NPL_2017/");
+                                system("mv Resolution BlindedResults_NPL_2017/");
+                                system("mv Results BlindedResults_NPL_2017/");
+                                system("mv TriggerSF BlindedResults_NPL_2017/");
+                                system("mv GaussianFit BlindedResults_NPL_2017/");
+                                system("mv mW_versus_mTop BlindedResults_NPL_2017/");
+                                system("mv UnblindedResults_NPL_2017/BTagEffPlots_*.root BlindedResults_NPL_2017/BTagEffPlots");
+                                system("mv BlindedResults_NPL_2017/Chi2Range_*.txt BlindedResults_NPL_2017/Chi2Range");
+                                system("mv BlindedResults_NPL_2017/CutFlowReport_*.txt BlindedResults_NPL_2017/CutFlowReport");
+                                system("mv BlindedResults_NPL_2017/Resolution_*.txt BlindedResults_NPL_2017/Resolution");
+                                system("mv BlindedResults_NPL_2017/Results_*.root BlindedResults_NPL_2017/Results");
+                                system("mv BlindedResults_NPL_2017/TurnOnCurves_*.root BlindedResults_NPL_2017/TriggerSF");
+                                system("mv BlindedResults_NPL_2017/TriggerSF_*.txt BlindedResults_NPL_2017/TriggerSF");
+				system("mv BlindedResults_NPL_2017/*_GaussianFit_*.root BlindedResults_NPL_2017/GaussianFit");
+                                system("mv BlindedResults_NPL_2017/*_mW_mTop_*.root BlindedResults_NPL_2017/mW_versus_mTop");
+			
+
+			}
+
+                }
+                else{
+
+			if(NPL == false){
+
+				system("mkdir UnblindedResults_2017");
+                                system("mv *2017*.root UnblindedResults_2017");
+                                system("mv *2017*.txt UnblindedResults_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_2017/");
+                                system("mv Chi2Range UnblindedResults_2017/");
+                                system("mv CutFlowReport UnblindedResults_2017/");
+                                system("mv Resolution UnblindedResults_2017/");
+                                system("mv Results UnblindedResults_2017/");
+                                system("mv TriggerSF UnblindedResults_2017/");
+                                system("mv GaussianFit UnblindedResults_2017/");
+                                system("mv mW_versus_mTop UnblindedResults_2017/");
+                                system("mv UnblindedResults_2017/BTagEffPlots_*.root UnblindedResults_2017/BTagEffPlots");
+                                system("mv UnblindedResults_2017/Chi2Range_*.txt UnblindedResults_2017/Chi2Range");
+                                system("mv UnblindedResults_2017/CutFlowReport_*.txt UnblindedResults_2017/CutFlowReport");
+                                system("mv UnblindedResults_2017/Resolution_*.txt UnblindedResults_2017/Resolution");
+                                system("mv UnblindedResults_2017/Results_*.root UnblindedResults_2017/Results");
+                                system("mv UnblindedResults_2017/TurnOnCurves_*.root UnblindedResults_2017/TriggerSF");
+                                system("mv UnblindedResults_2017/TriggerSF_*.txt UnblindedResults_2017/TriggerSF");
+				system("mv UnblindedResults_2017/*_GaussianFit_*.root UnblindedResults_2017/GaussianFit");
+                                system("mv UnblindedResults_2017/*_mW_mTop_*.root UnblindedResults_2017/mW_versus_mTop");
+
+
+			}
+			else{
+
+				system("mkdir UnblindedResults_NPL_2017");
+                                system("mv *NPL*.root UnblindedResults_NPL_2017");
+                                system("mv *NPL*.txt UnblindedResults_NPL_2017");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_NPL_2017/");
+                                system("mv Chi2Range UnblindedResults_NPL_2017/");
+                                system("mv CutFlowReport UnblindedResults_NPL_2017/");
+                                system("mv Resolution UnblindedResults_NPL_2017/");
+                                system("mv Results UnblindedResults_NPL_2017/");
+                                system("mv TriggerSF UnblindedResults_NPL_2017/");
+                                system("mv GaussianFit UnblindedResults_NPL_2017/");
+                                system("mv mW_versus_mTop UnblindedResults_NPL_2017/");
+                                system("mv UnblindedResults_NPL_2017/BTagEffPlots_*.root UnblindedResults_NPL_2017/BTagEffPlots");
+                                system("mv UnblindedResults_NPL_2017/Chi2Range_*.txt UnblindedResults_NPL_2017/Chi2Range");
+                                system("mv UnblindedResults_NPL_2017/CutFlowReport_*.txt UnblindedResults_NPL_2017/CutFlowReport");
+                                system("mv UnblindedResults_NPL_2017/Resolution_*.txt UnblindedResults_NPL_2017/Resolution");
+                                system("mv UnblindedResults_NPL_2017/Results_*.root UnblindedResults_NPL_2017/Results");
+			        system("mv UnblindedResults_NPL_2017/TurnOnCurves_*.root UnblindedResults_NPL_2017/TriggerSF");
+                                system("mv UnblindedResults_NPL_2017/TriggerSF_*.txt UnblindedResults_NPL_2017/TriggerSF");                        
+				system("mv UnblindedResults_NPL_2017/*_GaussianFit_*.root UnblindedResults_NPL_2017/GaussianFit");
+                                system("mv UnblindedResults_NPL_2017/*_mW_mTop_*.root UnblindedResults_NPL_2017/mW_versus_mTop");
+	
+	
+			}
+
+
+                }
+
+	
+	}
+	else if(year == "2018"){
+
+		 if(blinding == true){
+			
+			if(NPL == false){
+
+				system("mkdir BlindedResults_2018");
+                                system("mv *2018*.root BlindedResults_2018");
+                                system("mv *2018*.txt BlindedResults_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_2018/");
+                                system("mv Chi2Range BlindedResults_2018/");
+                                system("mv CutFlowReport BlindedResults_2018/");
+                                system("mv Resolution BlindedResults_2018/");
+                                system("mv Results BlindedResults_2018/");
+                                system("mv TriggerSF BlindedResults_2018/");
+                                system("mv GaussianFit BlindedResults_2018/");
+                                system("mv mW_versus_mTop BlindedResults_2018/");
+                                system("mv BlindedResults_2018/BTagEffPlots_*.root BlindedResults_2018/BTagEffPlots");
+                                system("mv BlindedResults_2018/Chi2Range_*.txt BlindedResults_2018/Chi2Range");
+                                system("mv BlindedResults_2018/CutFlowReport_*.txt BlindedResults_2018/CutFlowReport");
+                                system("mv BlindedResults_2018/Resolution_*.txt BlindedResults_2018/Resolution");
+                                system("mv BlindedResults_2018/Results_*.root BlindedResults_2018/Results");
+                                system("mv BlindedResults_2018/TurnOnCurves_*.root BlindedResults_2018/TriggerSF");
+                                system("mv BlindedResults_2018/TriggerSF_*.txt BlindedResults_2018/TriggerSF");
+				system("mv BlindedResults_2018/*_GaussianFit_*.root BlindedResults_2018/GaussianFit");
+                                system("mv BlindedResults_2018/*_mW_mTop_*.root BlindedResults_2018/mW_versus_mTop");		
+
+	
+			}
+			else{
+
+				system("mkdir BlindedResults_NPL_2018");
+                                system("mv *NPL*.root BlindedResults_NPL_2018");
+                                system("mv *NPL*.root BlindedResults_NPL_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots BlindedResults_NPL_2018/");
+                                system("mv Chi2Range BlindedResults_NPL_2018/");
+                                system("mv CutFlowReport BlindedResults_NPL_2018/");
+                                system("mv Resolution BlindedResults_NPL_2018/");
+                                system("mv Results BlindedResults_NPL_2018/");
+                                system("mv TriggerSF BlindedResults_NPL_2018/");
+                                system("mv GaussianFit BlindedResults_NPL_2018/");
+                                system("mv mW_versus_mTop BlindedResults_NPL_2018/");
+                                system("mv UnblindedResults_NPL_2018/BTagEffPlots_*.root BlindedResults_NPL_2018/BTagEffPlots");
+                                system("mv BlindedResults_NPL_2018/Chi2Range_*.txt BlindedResults_NPL_2018/Chi2Range");
+                                system("mv BlindedResults_NPL_2018/CutFlowReport_*.txt BlindedResults_NPL_2018/CutFlowReport");
+                                system("mv BlindedResults_NPL_2018/Resolution_*.txt BlindedResults_NPL_2018/Resolution");
+                                system("mv BlindedResults_NPL_2018/Results_*.root BlindedResults_NPL_2018/Results");
+                                system("mv BlindedResults_NPL_2018/TurnOnCurves_*.root BlindedResults_NPL_2018/TriggerSF");
+                                system("mv BlindedResults_NPL_2018/TriggerSF_*.txt BlindedResults_NPL_2018/TriggerSF");
+				system("mv BlindedResults_NPL_2018/*_GaussianFit_*.root BlindedResults_NPL_2018/GaussianFit");
+                                system("mv BlindedResults_NPL_2018/*_mW_mTop_*.root BlindedResults_NPL_2018/mW_versus_mTop");
+		
+
+			}
+
+
+                }
+                else{
+
+			if(NPL == false){
+
+				system("mkdir UnblindedResults_2018");
+                                system("mv *2018*.root UnblindedResults_2018");
+                                system("mv *2018*.txt UnblindedResults_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_2018/");
+                                system("mv Chi2Range UnblindedResults_2018/");
+                                system("mv CutFlowReport UnblindedResults_2018/");
+                                system("mv Resolution UnblindedResults_2018/");
+                                system("mv Results UnblindedResults_2018/");
+                                system("mv TriggerSF UnblindedResults_2018/");
+                                system("mv GaussianFit UnblindedResults_2018/");
+                                system("mv mW_versus_mTop UnblindedResults_2018/");
+                                system("mv UnblindedResults_2018/BTagEffPlots_*.root UnblindedResults_2018/BTagEffPlots");
+                                system("mv UnblindedResults_2018/Chi2Range_*.txt UnblindedResults_2018/Chi2Range");
+                                system("mv UnblindedResults_2018/CutFlowReport_*.txt UnblindedResults_2018/CutFlowReport");
+                                system("mv UnblindedResults_2018/Resolution_*.txt UnblindedResults_2018/Resolution");
+                                system("mv UnblindedResults_2018/Results_*.root UnblindedResults_2018/Results");
+                                system("mv UnblindedResults_2018/TurnOnCurves_*.root UnblindedResults_2018/TriggerSF");
+                                system("mv UnblindedResults_2018/TriggerSF_*.txt UnblindedResults_2018/TriggerSF");
+				system("mv UnblindedResults_2018/*_GaussianFit_*.root UnblindedResults_2018/GaussianFit");
+                                system("mv UnblindedResults_2018/*_mW_mTop_*.root UnblindedResults_2018/mW_versus_mTop");
+
+
+
+			}
+			else{
+
+				system("mkdir UnblindedResults_NPL_2018");
+                                system("mv *NPL*.root UnblindedResults_NPL_2018");
+                                system("mv *NPL*.txt UnblindedResults_NPL_2018");
+                                system("mkdir BTagEffPlots");
+                                system("mkdir Chi2Range");
+                                system("mkdir CutFlowReport");
+                                system("mkdir Resolution");
+                                system("mkdir Results");
+                                system("mkdir TriggerSF");
+                                system("mkdir GaussianFit");
+                                system("mkdir mW_versus_mTop");
+                                system("mv BTagEffPlots UnblindedResults_NPL_2018/");
+                                system("mv Chi2Range UnblindedResults_NPL_2018/");
+                                system("mv CutFlowReport UnblindedResults_NPL_2018/");
+                                system("mv Resolution UnblindedResults_NPL_2018/");
+                                system("mv Results UnblindedResults_NPL_2018/");
+                                system("mv TriggerSF UnblindedResults_NPL_2018/");
+                                system("mv GaussianFit UnblindedResults_NPL_2018/");
+                                system("mv mW_versus_mTop UnblindedResults_NPL_2018/");
+                                system("mv UnblindedResults_NPL_2018/BTagEffPlots_*.root UnblindedResults_NPL_2018/BTagEffPlots");
+                                system("mv UnblindedResults_NPL_2018/Chi2Range_*.txt UnblindedResults_NPL_2018/Chi2Range");
+                                system("mv UnblindedResults_NPL_2018/CutFlowReport_*.txt UnblindedResults_NPL_2018/CutFlowReport");
+                                system("mv UnblindedResults_NPL_2018/Resolution_*.txt UnblindedResults_NPL_2018/Resolution");
+                                system("mv UnblindedResults_NPL_2018/Results_*.root UnblindedResults_NPL_2018/Results");
+                                system("mv UnblindedResults_NPL_2018/TurnOnCurves_*.root UnblindedResults_NPL_2018/TriggerSF");
+                                system("mv UnblindedResults_NPL_2018/TriggerSF_*.txt UnblindedResults_NPL_2018/TriggerSF");
+				system("mv UnblindedResults_NPL_2018/*_GaussianFit_*.root UnblindedResults_NPL_2018/GaussianFit");
+                                system("mv UnblindedResults_NPL_2018/*_mW_mTop_*.root UnblindedResults_NPL_2018/mW_versus_mTop");
+
+
+			}
+
+                }
+
+	}
+	else{std::cout << "Year must be 2016, 2017 or 2018" << std::endl;}
+
+
+}
+
+
+
+namespace{
+
+constexpr double EndcapMinEta = 1.566;
+constexpr double BarrelMaxEta = 1.4442;
+double MaxTrackerEta;
+double MinElectronPt;
+double MinMuonPt;
+double MinElectronPtEmu;
+double MinMuonPtEmu;
+double MaxElectronPt;
+double MaxMuonPt;
+int NumberOfSimulatedEvents_ee;
+int NumberOfSimulatedEvents_mumu;
+
+
+float W_stddev_ee;
+float Top_stddev_ee;
+float W_stddev_mumu;
+float Top_stddev_mumu;
+
+float Chi2_SR_ee;
+float Chi2_SBR_ee;
+float Chi2_SR_mumu;
+float Chi2_SBR_mumu;
+
+
+template<typename T>
+[[gnu::const]] T select(const T& a, const ints& mask)
+{
+    return a[mask];
+}
+
+[[gnu::const]] auto delta_phi(const float phi1, const float phi2)
+{
+    return vdt::fast_atan2f(vdt::fast_sinf(phi1 - phi2), vdt::fast_cosf(phi1 - phi2));
+}
+
+[[gnu::const]] auto deltaR(const float eta1, const float phi1, const float eta2, const float phi2)
+{
+    return std::sqrt(std::pow(eta1 - eta2, 2) + std::pow(delta_phi(phi1, phi2), 2));
+}
+
+
+
+
+}
+
+template<typename T, typename U>
+[[gnu::const]] bool all_equal(const T& t, const U& u)
+{
+    return t == u;
+}
+
+template<typename T, typename U, typename... Types>
+[[gnu::const]] bool all_equal(const T& t, const U& u, Types const&... args)
+{
+    return t == u && all_equal(u, args...);
+}
+
+
+[[gnu::const]] auto inv_mass(const floats& pts, const floats& etas, const floats& phis, const floats& ms)
+{
+
+
+
+    if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
+    {
+        throw std::logic_error("Collections must be the same size");
+    }
+    else if (pts.empty())
+    {
+        throw std::logic_error("Collections must not be empty");
+    }
+
+    TLorentzVector vec{};
+    for (size_t i{0}; i < pts.size(); i++)
+    {
+        TLorentzVector p{};
+        p.SetPtEtaPhiM(pts[i], etas[i], phis[i], ms[i]);
+        vec += p;
+    }
+	
+    return boost::numeric_cast<float>(vec.M());
+
+}
+
+
+[[gnu::const]] auto inv_mass_doubles(const doubles& pts, const doubles& etas, const doubles& phis, const doubles& ms)
+{
+
+
+    if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
+    {
+        throw std::logic_error("Collections must be the same size");
+    }
+    else if (pts.empty())
+    {
+        throw std::logic_error("Collections must not be empty");
+    }
+
+    TLorentzVector vec{};
+    for (size_t i{0}; i < pts.size(); i++)
+    {
+        TLorentzVector p{};
+        p.SetPtEtaPhiM(pts[i], etas[i], phis[i], ms[i]);
+        vec += p;
+    }
+
+    std::cout << "boost::numeric_cast<float>(vec.M())" << boost::numeric_cast<float>(vec.M()) << std::endl;
+    return boost::numeric_cast<float>(vec.M());
+}
+
+
+
+//Reading values from the normalisation text file
+
+double linereader(const int& LineNumber, const std::string& year){
+
+   std::cout << "print 6" << std::endl;
+   using namespace std;
+
+   std::string NormFileString = "Normalisation/NormalisationFactors_" + year + ".txt"; 
+
+   std::fstream file(NormFileString.c_str());
+   GotoLine(file, LineNumber);
+
+   std::string line;
+   file >> line;
+
+   double Value = atof(line.c_str());
+   return Value;
+
+}
+//end of functions for normalisation
+
+
+
+
+//Functions for btagging efficiency
+
+ROOT::RDF::RResultPtr<TH2D> h_bjet_ee_num;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_ee_denom;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_mumu_num;
+ROOT::RDF::RResultPtr<TH2D> h_bjet_mumu_denom;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_ee_num;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_ee_denom;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_mumu_num;
+ROOT::RDF::RResultPtr<TH2D> h_nonbjet_mumu_denom;
+
+
+int NBins = 40;
+
+auto EffBTaggedFunction_ee{[/*&h_bjet_ee_num, &h_bjet_ee_denom, &NBins*/](const floats& pts, const floats& etas){
+
+  std::cout << "print 7" << std::endl;
+
+  floats BTaggedEff{};
+
+  for(long unsigned int i = 0; i < pts.size(); i++){
+
+	int PtNum = h_bjet_ee_num->GetXaxis()->FindBin(pts.at(i));
+	int EtaNum = h_bjet_ee_num->GetYaxis()->FindBin(etas.at(i));
+
+	int PtDenom = h_bjet_ee_denom->GetXaxis()->FindBin(pts.at(i));
+	int EtaDenom = h_bjet_ee_denom->GetYaxis()->FindBin(etas.at(i));
+
+	float Numerator = h_bjet_ee_num->GetBinContent(PtNum, EtaNum);
+	float Denominator = h_bjet_ee_denom->GetBinContent(PtDenom, EtaDenom);
+
+	float eff = Numerator / Denominator;
+	
+	if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+        else{BTaggedEff.push_back(1.);}
+
+
+  }
+
+  return BTaggedEff;
+
+
+}};
+
+
+
+
+auto EffBTaggedFunction_mumu{[/*&h_bjet_mumu_num, &h_bjet_mumu_denom, &NBins*/](const floats& pts, const floats& etas){
+
+  std::cout << "print 9" << std::endl;
+
+  floats BTaggedEff{};
+
+  for(long unsigned int i = 0; i < pts.size(); i++){
+
+        int PtNum = h_bjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
+        int EtaNum = h_bjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
+
+        int PtDenom = h_bjet_mumu_denom->GetXaxis()->FindBin(pts.at(i));
+        int EtaDenom = h_bjet_mumu_denom->GetYaxis()->FindBin(etas.at(i));
+
+        float Numerator = h_bjet_mumu_num->GetBinContent(PtNum, EtaNum);
+        float Denominator = h_bjet_mumu_denom->GetBinContent(PtDenom, EtaDenom);
+
+        float eff = Numerator / Denominator;
+
+        if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+	else{BTaggedEff.push_back(1.);}
+
+
+  }
+
+  return BTaggedEff;
+
+
+}};
+
+
+auto EffNonBTaggedFunction_ee{[/*&h_nonbjet_ee_num, &h_nonbjet_ee_denom, &NBins*/](const floats& pts, const floats& etas){
+
+  std::cout << "print 10" << std::endl;
+
+  floats NonBTaggedEff{};
+
+  for(long unsigned int i = 0; i < pts.size(); i++){
+
+        int PtNum = h_nonbjet_ee_num->GetXaxis()->FindBin(pts.at(i));
+        int EtaNum = h_nonbjet_ee_num->GetYaxis()->FindBin(etas.at(i));
+    
+        int PtDenom = h_nonbjet_ee_denom->GetXaxis()->FindBin(pts.at(i));
+        int EtaDenom = h_nonbjet_ee_denom->GetYaxis()->FindBin(etas.at(i));
+
+        float Numerator = h_nonbjet_ee_num->GetBinContent(PtNum, EtaNum);
+        float Denominator = h_nonbjet_ee_denom->GetBinContent(PtDenom, EtaDenom);
+
+        float eff = Numerator / Denominator;
+
+        if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
+        else{NonBTaggedEff.push_back(1.);}
+
+
+  }
+
+  return NonBTaggedEff;
+
+
+}};
+
+
+auto EffNonBTaggedFunction_mumu{[/*&h_nonbjet_mumu_num, &h_nonbjet_mumu_denom, &NBins*/](const floats& pts, const floats& etas){
+
+  std::cout << "print 11" << std::endl;
+
+  floats NonBTaggedEff{};
+
+  for(long unsigned int i = 0; i < pts.size(); i++){
+
+        int PtNum = h_nonbjet_mumu_num->GetXaxis()->FindBin(pts.at(i));
+        int EtaNum = h_nonbjet_mumu_num->GetYaxis()->FindBin(etas.at(i));
+
+        int PtDenom = h_nonbjet_mumu_denom->GetXaxis()->FindBin(pts.at(i));
+        int EtaDenom = h_nonbjet_mumu_denom->GetYaxis()->FindBin(etas.at(i));
+
+        float Numerator = h_nonbjet_mumu_num->GetBinContent(PtNum, EtaNum);
+        float Denominator = h_nonbjet_mumu_denom->GetBinContent(PtDenom, EtaDenom);
+
+        float eff = Numerator / Denominator;
+
+        if(!isnan(eff) && !isinf(eff) && eff > 0){NonBTaggedEff.push_back(eff);}
+        else{NonBTaggedEff.push_back(1.);}
+
+
+  }
+
+  return NonBTaggedEff;
+
+
+}};
+
+
+
+auto EffBTaggedProduct{[](const floats& EffBTagged){
+  
+  std::cout << "print 12" << std::endl;
+
+  float initial = 1;
+
+  for(long unsigned int i = 0; i < EffBTagged.size(); i++ ){
+
+    initial = EffBTagged.at(i) * initial;
+
+  }
+
+  return initial;
+
+
+}};
+
+
+
+
+
+auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
+
+  std::cout << "print 13" << std::endl;
+ 
+  float initial = 1;
+
+  for(long unsigned int i = 0; i < EffNonBTagged.size(); i++ ){
+
+  	initial = (1 - EffNonBTagged.at(i)) * initial;
+
+  }
+
+  return initial;
+
+
+}};
+
+
+
+auto ProbBTagMCFunction{[](const float& EffBTaggedProductInput, const float& EffNonBTaggedProductInput){
+
+  std::cout << "print 14" << std::endl;
+
+  float MCProb = EffBTaggedProductInput * EffNonBTaggedProductInput; 
+  return MCProb;
+
+}};
+
+
+
+//reading the csv file to obtain the b tagging scale factor for each event
+bool BTag_ScaleUp_bool, BTag_ScaleDown_bool;
+
+auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+
+  std::cout << "print 15" << std::endl;
+
+  floats ResultVector{};
+
+  for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
+
+
+	CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
+	std::vector<std::vector<std::string> > dataList = reader.getData();
+        
+	std::vector<std::string> OutputVec{}; 
+	std::vector<std::string> outputstringvec{};
+
+	std::string number;
+
+        if(BTagOrNot == true){number = "1";}
+	else{number = "0";}
+
+	std::vector<std::string> CSVv2OperatingPointTest(pts.size(), number); 
+
+	std::string MeasurementTypeString;
+
+	if(abs(Jet_partonFlavour.at(j)) == 4 || abs(Jet_partonFlavour.at(j)) == 5){MeasurementTypeString = "mujets";}
+	else if( (abs(Jet_partonFlavour.at(j)) >= 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
+	else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_partonFlavour.at(j) << std::endl;}
+
+        std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
+
+	std::string systematic_type_string;
+
+	if(BTag_ScaleUp_bool == true){systematic_type_string = "up";}
+        else if(BTag_ScaleDown_bool == true){systematic_type_string = "down";}
+ 	else{systematic_type_string = "central";}
+
+        std::vector<std::string> SysTypeTest(pts.size(), "central");
+        std::vector<std::string> JetFlavourTest(pts.size(), "0"); 
+
+        std::vector<std::string> EtaTest{};
+
+
+	for(long unsigned int i = 0; i < etas.size(); i++){
+
+		std::stringstream ss;
+		ss << etas.at(i);
+		std::string EtaString(ss.str());
+
+		EtaTest.push_back(EtaString);
+
+	}
+
+	std::vector<std::string> PtTest{};
+
+
+        for(long unsigned int i = 0; i < pts.size(); i++){
+
+                std::stringstream ss;
+                ss << pts.at(i);
+                std::string PtString(ss.str());
+
+                PtTest.push_back(PtString);
+
+        }
+
+
+	std::vector<std::string> DiscrTest{};
+
+        for(long unsigned int i = 0; i < pts.size(); i++){
+
+
+                std::stringstream ss;
+                ss << CSVv2Discr.at(i);
+                std::string CSVv2DiscrString(ss.str());
+
+                DiscrTest.push_back(CSVv2DiscrString);
+
+        }
+
+
+
+	std::vector<std::string> OutVec{};
+	std::vector<std::string> FinalOutVec{};
+
+
+
+for(long unsigned int i = 0; i < CSVv2OperatingPointTest.size(); i++){
+	
+	for(std::vector<std::string> vec : dataList)
+	{
+		for(std::string data : vec)
+		{	
+			OutputVec.push_back(data);
+
+		}
+	}
+
+
+		for(std::vector<std::string> vec : dataList)
+        	{
+                	for(std::string data : vec)
+                	{
+				
+				std::string VecAt1String = vec.at(1);
+				std::string VecAt2String = vec.at(2);
+				std::string VecAt3String = vec.at(3);
+			        std::string VecAt4String = vec.at(4);
+				std::string VecAt5String = vec.at(5);
+				std::string VecAt6String = vec.at(6);
+				std::string VecAt7String = vec.at(7);
+				std::string VecAt8String = vec.at(8);
+				std::string VecAt9String = vec.at(9);
+				
+
+				VecAt1String.erase(0, 0);
+				VecAt2String.erase(0, 0);
+                                VecAt3String.erase(0, 0);
+                                VecAt4String.erase(0, 0);
+				VecAt1String.erase(remove(VecAt1String.begin(), VecAt1String.end(), ' '), VecAt1String.end());		
+				VecAt2String.erase(remove(VecAt2String.begin(), VecAt2String.end(), ' '), VecAt2String.end());
+				VecAt3String.erase(remove(VecAt3String.begin(), VecAt3String.end(), ' '), VecAt3String.end());
+                                VecAt4String.erase(remove(VecAt4String.begin(), VecAt4String.end(), ' '), VecAt4String.end());	
+
+
+				float VecAt4Float = stof(VecAt4String);
+                        	float VecAt5Float = stof(VecAt5String);
+				float VecAt6Float = stof(VecAt6String);
+				float VecAt7Float = stof(VecAt7String);
+				float VecAt8Float = stof(VecAt8String);
+                        	float VecAt9Float = stof(VecAt9String);
+
+
+				float PtTestFloat = stof(PtTest.at(i));
+				float EtaTestFloat = stof(EtaTest.at(i));
+				float DiscrTestFloat = stof(DiscrTest.at(i));
+
+
+
+				if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
+    				&& (VecAt1String == MeasurementTypeTest.at(i))
+    				&& (VecAt2String == SysTypeTest.at(i))
+    	  			&& (VecAt3String == JetFlavourTest.at(i))
+    				&& (VecAt4Float < EtaTestFloat)
+    				&& (VecAt5Float > EtaTestFloat)
+    	  			&& (VecAt6Float < PtTestFloat)     
+    				&& (VecAt7Float > PtTestFloat)
+    				&& (VecAt8Float < DiscrTestFloat) 
+    				&& (VecAt9Float > DiscrTestFloat)
+  				){
+					OutVec.push_back(vec.at(10));					
+				}
+				else if( (vec.at(0) != CSVv2OperatingPointTest.at(i))
+                        	|| (vec.at(1) != MeasurementTypeTest.at(i))
+                        	|| (vec.at(2) != SysTypeTest.at(i))
+                        	|| (vec.at(3) != JetFlavourTest.at(i))
+                        	|| (VecAt4Float > EtaTestFloat)
+                        	|| (VecAt5Float < EtaTestFloat)
+                        	|| (VecAt6Float > PtTestFloat)     
+                        	|| (VecAt7Float < PtTestFloat)
+                        	|| (VecAt8Float > DiscrTestFloat) 
+                        	|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
+				else{std::cout << "double check criteria" << std::endl;}
+			
+                	}
+
+        	}
+
+
+
+	std::vector<std::string> NewOutVec{};
+	std::vector<std::string> Zeroes{}; 
+	Zeroes.push_back("0");
+	Zeroes.push_back("0");
+
+	bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
+
+
+	if(OutVec.size() != 0 && check == false){
+		for(long unsigned int k = 0; k < OutVec.size(); k++){
+
+			if(OutVec.at(k) != "0"){NewOutVec.push_back(OutVec.at(k));}
+	
+		}
+	
+		std::string outputString;
+
+	
+		if(NewOutVec.size() > 11){
+
+			outputString = NewOutVec.at( ((i+1)*11)-1 );
+		}
+		else{
+			outputString = NewOutVec.at(0); 
+		}
+
+		outputString.erase(outputString.begin()+1);
+                outputString.erase(outputString.begin());
+                outputString.erase(outputString.end()-2);
+                outputString.erase(outputString.end()-1);
+		
+                std::string::size_type pos = 0;
+ 
+                while ((pos = outputString.find('x', pos)) != std::string::npos)
+                {
+                        outputString.replace(pos, 1, PtTest.at(i));
+                        pos += 2;
+                }
+                
+		outputstringvec.push_back(outputString);
+		FinalOutVec.push_back(outputstringvec.at(i));
+
+	
+	}
+	else{FinalOutVec.push_back(Zeroes.at(0));}
+
+
+}//end of for loop
+
+
+
+//Evaluating the mathematical expression in the std::string
+std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
+std::string ConcatenatedString5, ConcatenatedString6, ConcatenatedString7, ConcatenatedString8;
+std::string ConcatenatedString9, ConcatenatedString10, ConcatenatedString11, ConcatenatedString12;
+std::string ConcatenatedString13, ConcatenatedString14, ConcatenatedString15, ConcatenatedString16;
+std::vector<char> VecForConcString{};
+std::vector<char> VecForConcString2{};
+std::vector<char> VecForConcString3{};
+std::vector<char> VecForConcString4{};
+std::vector<char> VecForConcString5{};
+std::vector<char> VecForConcString6{};
+std::vector<char> VecForConcString7{};
+std::vector<char> VecForConcString8{};
+std::vector<char> VecForConcString9{};
+std::vector<char> VecForConcString10{};
+std::vector<char> VecForConcString11{};
+std::vector<char> VecForConcString12{};
+std::vector<char> VecForConcString13{};
+std::vector<char> VecForConcString14{};
+std::vector<char> VecForConcString15{};
+std::vector<char> VecForConcString16{};
+int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14;
+float result;
+
+for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
+
+	std::string FirstElement = FinalOutVec.at(i);
+
+	if(FirstElement.at(0) != '('){
+
+		long unsigned int LastIndex;
+
+		//first
+		for(long unsigned int k = 0; k < FirstElement.length(); k++){
+
+			if(FirstElement.at(k) != ')'&& 
+	   	   	   FirstElement.at(k) != '(' &&
+	   	   	   FirstElement.at(k) != '*' &&
+	   	   	   FirstElement.at(k) != '/' &&
+	   	   	   FirstElement.at(k) != '+' &&
+	  	   	   FirstElement.at(k) != '-'){VecForConcString.push_back(FirstElement.at(k)); LastIndex = k;}
+			else if(k == 0 && FirstElement.at(k) == '('){continue;}
+			else{index = k; break;}
+		}
+
+
+		for(long unsigned int k = 0; k < VecForConcString.size(); k++){
+			if(k == 0){ConcatenatedString = VecForConcString.at(k);}
+			else{ConcatenatedString += VecForConcString.at(k);}
+
+		}	
+
+
+		float ConcatenatedStringToFloat = stof(ConcatenatedString);
+
+		if(LastIndex == FirstElement.length()-1){ResultVector.push_back(ConcatenatedStringToFloat);}
+		else{
+	
+			int Min1;
+
+			if(FirstElement.at(index) == '+' && 
+			   FirstElement.at(index+1) == '(' && 
+			   FirstElement.at(index+2) == '-' && 
+			   FirstElement.at(index+3) == '('){
+			
+				Min1 = index+4;
+			}
+			else if(FirstElement.at(index) == '+' &&
+                           	FirstElement.at(index+1) == '(' && 
+                          	FirstElement.at(index+2) == '(' && 
+                           	FirstElement.at(index+3) == '-' &&
+				FirstElement.at(index+2) == '('){
+                        
+                                	Min1 = index+5;
+                        }
+			else if(FirstElement.at(index) == '*' &&
+				FirstElement.at(index+1) == '(' &&
+				FirstElement.at(index+2) == '('){
+			
+					Min1 = index+3;
+
+			}
+			else if(FirstElement.at(index) == '+' &&
+				FirstElement.at(index+1) == '-'){
+			
+					Min1 = index+2;
+
+			}
+			else if(FirstElement.at(index) == '+' &&
+				FirstElement.at(index+1) == '(' &&
+				FirstElement.at(index+2) == '(' &&
+				FirstElement.at(index+3) == '-' &&
+				FirstElement.at(index+4) == '('){
+
+				Min1 = index+5;
+			
+
+			}
+			else{Min1 = index+1;}
+
+			//second
+			for(long unsigned int k = Min1; k < FirstElement.length(); k++){
+
+        			if(FirstElement.at(k) == 'e' && FirstElement.at(k+1) == '-'){
+					
+					VecForConcString2.push_back(FirstElement.at(k));
+					VecForConcString2.push_back(FirstElement.at(k+1));
+					VecForConcString2.push_back(FirstElement.at(k+2));
+					VecForConcString2.push_back(FirstElement.at(k+3));
+					
+					index2 = k+4;
+					break;
+
+				}
+				else if(FirstElement.at(k) != ')'&&
+           	  		   	FirstElement.at(k) != '(' &&
+           	  		   	FirstElement.at(k) != '*' &&
+           	  		   	FirstElement.at(k) != '/' &&
+           	  		   	FirstElement.at(k) != '+' &&
+                  		   	FirstElement.at(k) != '-'){VecForConcString2.push_back(FirstElement.at(k));}
+               			else{index2 = k; break;}
+			
+			}
+
+
+
+			for(long unsigned int k = 0; k < VecForConcString2.size(); k++){
+        			if(k == 0){ConcatenatedString2 = VecForConcString2.at(k);}
+        			else{ConcatenatedString2 += VecForConcString2.at(k);}
+
+			}
+
+			float ConcatenatedStringToFloat2 = stof(ConcatenatedString2);
+			int Min2;
+
+			if(FirstElement.at(index2) == '*' && 
+			   FirstElement.at(index2+1) == '(' && 
+			   FirstElement.at(index2+2) == 'l' && 
+			   FirstElement.at(index2+3) == 'o' &&
+			   FirstElement.at(index2+4) == 'g' &&
+			   FirstElement.at(index2+5) == '('){Min2 = index2+6;}
+                        else{Min2 = index2+2;}
+
+			//third
+			for(long unsigned int k = Min2; k < FirstElement.length(); k++){
+
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString3.push_back(FirstElement.at(k));}
+        			else{index4 = k; break;}
+			}
+
+
+			for(long unsigned int k = 0; k < VecForConcString3.size(); k++){
+        			if(k == 0){ConcatenatedString3 = VecForConcString3.at(k);}
+        			else{ConcatenatedString3 += VecForConcString3.at(k);}
+
+			}
+
+
+			float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
+			int Min3;
+
+			if(FirstElement.at(index4) == '+'){Min3 = index4+1;}
+			else{Min3 = index4+1;}
+
+
+			//fourth
+			for(long unsigned int k = Min3; k < FirstElement.length(); k++){
+
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   	           FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString4.push_back(FirstElement.at(k));}
+        			else{index5 = k; break;}
+			}
+
+
+			for(long unsigned int k = 0; k < VecForConcString4.size(); k++){
+        			if(k == 0){ConcatenatedString4 = VecForConcString4.at(k);}
+        			else{ConcatenatedString4 += VecForConcString4.at(k);}
+
+			}
+			
+
+			float ConcatenatedStringToFloat4 = stof(ConcatenatedString4);
+
+
+			int Min4;
+
+			if(FirstElement.at(index5) == ')' && 
+			   FirstElement.at(index5+1) == '*' && 
+			   FirstElement.at(index5+2) == '(' && 
+			   FirstElement.at(index5+3) == 'l' && 
+			   FirstElement.at(index5+4) == 'o' && 
+			   FirstElement.at(index5+5) == 'g' && 
+			   FirstElement.at(index5+6) == '('){Min4 = index5+7;}
+			else if(FirstElement.at(index5) == ')' &&
+				FirstElement.at(index5+1) == ')' &&
+				FirstElement.at(index5+2) == '/' &&
+				FirstElement.at(index5+3) == '('){Min4 = index5+4;}
+                        else{Min4 = index5+2;} 
+
+
+			//fifth
+			for(long unsigned int k = Min4; k < FirstElement.length(); k++){
+
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString5.push_back(FirstElement.at(k));}
+        			else{index6 = k; break;}
+			}
+
+
+			for(long unsigned int k = 0; k < VecForConcString5.size(); k++){
+        			if(k == 0){ConcatenatedString5 = VecForConcString5.at(k);}
+        			else{ConcatenatedString5 += VecForConcString5.at(k);}
+
+			}
+
+	
+			float ConcatenatedStringToFloat5 = stof(ConcatenatedString5);
+
+			int Min5;
+
+			if(FirstElement.at(index6) == '+' && FirstElement.at(index6+1) != '('){Min5 = index6+1;}
+			else if(FirstElement.at(index6) == '+' && FirstElement.at(index6+1) == '('){Min5 = index6+2;}
+			else{Min5 = index6+1;}
+
+
+			//sixth
+			for(long unsigned int k = Min5; k < FirstElement.length(); k++){
+
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString6.push_back(FirstElement.at(k));}
+        			else{index7 = k; break;}
+			}
+
+
+			for(long unsigned int k = 0; k < VecForConcString6.size(); k++){
+        			if(k == 0){ConcatenatedString6 = VecForConcString6.at(k);}
+        			else{ConcatenatedString6 += VecForConcString6.at(k);}
+
+			}
+	
+
+			float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
+
+			int Min6;
+
+                        if(FirstElement.at(index7) == ')' &&
+                           FirstElement.at(index7+1) == '*' &&
+                           FirstElement.at(index7+2) == '('){Min6 = index7+3;}
+			else if(FirstElement.at(index7) == '*'){Min6 = index7+1;}
+                        else{Min6 = index7+3;}
+			
+
+			//seventh
+			for(long unsigned int k = Min6; k < FirstElement.length(); k++){
+
+        			if(FirstElement.at(k) != ')'&&
+           	   		   FirstElement.at(k) != '(' &&
+           	   		   FirstElement.at(k) != '*' &&
+           	   		   FirstElement.at(k) != '/' &&
+           	   		   FirstElement.at(k) != '+' &&
+           	   		   FirstElement.at(k) != '-'){VecForConcString7.push_back(FirstElement.at(k));}
+        			else{index8 = k; break;}
+			}
+
+
+			for(long unsigned int k = 0; k < VecForConcString7.size(); k++){
+        			if(k == 0){ConcatenatedString7 = VecForConcString7.at(k);}
+        			else{ConcatenatedString7 += VecForConcString7.at(k);}
+
+			}
+
+
+			float ConcatenatedStringToFloat7 = stof(ConcatenatedString7);
+			int Min7;
+                        
+			if(FirstElement.at(index8) == '-' &&
+                           FirstElement.at(index8+1) == '(' &&
+                           FirstElement.at(index8+2) == '-' &&
+			   FirstElement.at(index8+3) == '('){Min7 = index8+4;}
+                        else{Min7 = index8+1;}
+	
+
+
+			//for an output containing 7 floats
+			if(FirstElement.at(index6) == '+' && 
+			   FirstElement.at(index6+1) == '(' &&
+			   FirstElement.at(index8) == ')' &&
+                           FirstElement.at(index8+1) == ')' &&
+                           FirstElement.at(index8+2) == ')'){
+
+				
+				result = ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7)));
+
+				ResultVector.push_back(result);
+
+
+			}
+			else{
+
+
+				//eighth
+				for(long unsigned int k = Min7; k < FirstElement.length(); k++){
+
+        				if(FirstElement.at(k) != ')'&&
+           	   		   	   FirstElement.at(k) != '(' &&
+           	   		   	   FirstElement.at(k) != '*' &&
+           	   		   	   FirstElement.at(k) != '/' &&
+           	   		   	   FirstElement.at(k) != '+' &&
+           	   		   	   FirstElement.at(k) != '-'){VecForConcString8.push_back(FirstElement.at(k));}
+        				else{index9 = k; break;}
+				}     
+
+
+
+
+				for(long unsigned int k = 0; k < VecForConcString8.size(); k++){
+        				if(k == 0){ConcatenatedString8 = VecForConcString8.at(k);}
+        				else{ConcatenatedString8 += VecForConcString8.at(k);}
+    
+				}   
+
+
+				float ConcatenatedStringToFloat8 = stof(ConcatenatedString8);
+				int Min8;
+
+				if(FirstElement.at(index9) == '*' &&
+			   	   FirstElement.at(index9+1) == 'l' &&
+                           	   FirstElement.at(index9+2) == 'o' &&
+                           	   FirstElement.at(index9+3) == 'g' &&
+                           	   FirstElement.at(index9+4) == '('){Min8 = index9+5;}
+				else if(FirstElement.at(index9) == ')' &&
+					FirstElement.at(index9+1) == ')'){break;}
+				else{Min8 = index9+2;}
+
+
+
+				//ninth
+				for(long unsigned int k = Min8; k < FirstElement.length(); k++){
+
+        				if(FirstElement.at(k) != ')'&&
+           	   		   	   FirstElement.at(k) != '(' &&
+           	   		   	   FirstElement.at(k) != '*' &&
+           	   		   	   FirstElement.at(k) != '/' &&
+           	   		  	   FirstElement.at(k) != '+' &&
+           	   		   	   FirstElement.at(k) != '-'){VecForConcString9.push_back(FirstElement.at(k));}
+        				else{index10 = k; break;}
+				}
+
+
+				for(long unsigned int k = 0; k < VecForConcString9.size(); k++){
+        				if(k == 0){ConcatenatedString9 = VecForConcString9.at(k);}
+        				else{ConcatenatedString9 += VecForConcString9.at(k);}
+
+				}
+
+
+				float ConcatenatedStringToFloat9 = stof(ConcatenatedString9);
+				int Min9;
+
+				if(FirstElement.at(index10) == '+'){Min9 = index10+1;}
+				else{Min9 = index10 + 1;}
+
+
+				int LastIndex2;
+
+				//tenth
+				for(long unsigned int k = Min9; k < FirstElement.length(); k++){
+
+        				if(FirstElement.at(k) != ')'&&
+           	   		   	   FirstElement.at(k) != '(' &&
+           	   		   	   FirstElement.at(k) != '*' &&
+           	   		   	   FirstElement.at(k) != '/' &&
+           	   		   	   FirstElement.at(k) != '+' &&
+           	   		   	   FirstElement.at(k) != '-'){VecForConcString10.push_back(FirstElement.at(k)); LastIndex2 = k;}
+        				else{index11 = k; break;}
+				}
+
+
+				for(long unsigned int k = 0; k < VecForConcString10.size(); k++){
+        				if(k == 0){ConcatenatedString10 = VecForConcString10.at(k);}
+        				else{ConcatenatedString10 += VecForConcString10.at(k);}
+
+				}
+		
+
+				float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
+
+				//result for an equation containing 10 floats and ending in "))))))))' 
+			 	if(LastIndex2 == FirstElement.length()-9 &&
+                            	   FirstElement.at(index) == '+' &&
+                            	   FirstElement.at(index+1) == '(' &&
+                            	   FirstElement.at(index+2) == '-' &&
+                           	   FirstElement.at(index+3) == '('){
+				
+
+			    		result = ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))));
+
+                                	ResultVector.push_back(result);
+
+				}
+                        	else{
+
+
+					int Min10;
+
+					if(FirstElement.at(index11+8) == '-'){Min10 = index11+9;}
+					else{Min10 = index11+3;}
+
+
+					int LastIndex3;
+
+					//eleventh
+					for(long unsigned int k = Min10; k < FirstElement.length(); k++){
+
+        					if(FirstElement.at(k) != ')'&&
+           	   		   	   	   FirstElement.at(k) != '(' &&
+           	   		  	   	   FirstElement.at(k) != '*' &&
+           	   		   	   	   FirstElement.at(k) != '/' &&
+           	   		   	   	   FirstElement.at(k) != '+' &&
+           	   		   	   	   FirstElement.at(k) != '-'){VecForConcString11.push_back(FirstElement.at(k)); LastIndex3 = k;}
+        					else{index12 = k; break;}
+					}
+
+
+					for(long unsigned int k = 0; k < VecForConcString11.size(); k++){
+        					if(k == 0){ConcatenatedString11 = VecForConcString11.at(k);}
+        					else{ConcatenatedString11 += VecForConcString11.at(k);}
+
+					}
+
+					float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
+
+
+					//for an equation with 11 floats
+					if(LastIndex == FirstElement.length()-1 && FirstElement.at(index11+8) == '-'){
+
+						result = ConcatenatedStringToFloat+((-(ConcatenatedStringToFloat2*exp(-5)*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))))-ConcatenatedStringToFloat11);
+
+						ResultVector.push_back(result);
+
+					}
+					else if(FirstElement.at(index) == '+' &&
+                                		FirstElement.at(index+1) == '(' &&
+                                		FirstElement.at(index+2) == '(' &&
+                                		FirstElement.at(index+3) == '-' &&
+                                		FirstElement.at(index+4) == '(' &&
+						FirstElement.at(index11+8) == '-'){
+
+                                		result = ConcatenatedStringToFloat+((-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))))))))-ConcatenatedStringToFloat11);
+
+						ResultVector.push_back(result);
+                        
+                        		}
+					else{
+				
+						//twelfth
+						for(long unsigned int k = index12+1; k < FirstElement.length(); k++){
+	
+        						if(FirstElement.at(k) != ')'&&
+           	   			   	   	   FirstElement.at(k) != '(' &&
+           	   			   	   	   FirstElement.at(k) != '*' &&
+           	   		   	   		   FirstElement.at(k) != '/' &&
+           	   		   		   	   FirstElement.at(k) != '+' &&
+           	   		   	   		   FirstElement.at(k) != '-'){VecForConcString12.push_back(FirstElement.at(k));}
+        						else{index13 = k; break;}
+						}
+
+
+						for(long unsigned  int k = 0; k < VecForConcString12.size(); k++){
+        						if(k == 0){ConcatenatedString12 = VecForConcString12.at(k);}
+        						else{ConcatenatedString12 += VecForConcString12.at(k);}
+
+						}
+
+						float ConcatenatedStringToFloat12 = stof(ConcatenatedString12);
+
+						//thirteenth
+						for(long unsigned int k = index13+1; k < FirstElement.length(); k++){
+
+        						if(FirstElement.at(k) != ')'&&
+           	   		   	   	   	   FirstElement.at(k) != '(' &&
+           	   		   	   	   	   FirstElement.at(k) != '*' &&
+           	   		   	   	   	   FirstElement.at(k) != '/' &&
+           	   		   	   	  	   FirstElement.at(k) != '+' &&
+           	   		   	   	   	   FirstElement.at(k) != '-'){VecForConcString13.push_back(FirstElement.at(k));}
+        						else{index14 = k; break;}
+						}
+
+
+						for(long unsigned int k = 0; k < VecForConcString13.size(); k++){
+        						if(k == 0){ConcatenatedString13 = VecForConcString13.at(k);}
+        						else{ConcatenatedString13 += VecForConcString13.at(k);}
+
+						}
+
+						float ConcatenatedStringToFloat13 = stof(ConcatenatedString13);
+
+						//Calculating the result for an equation containing 13 floats
+
+						if(FirstElement.at(index) == '+'){result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2;}
+						else if(FirstElement.at(index) == '-'){result = ConcatenatedStringToFloat - ConcatenatedStringToFloat2;}
+						else if(FirstElement.at(index) == '*'){result = ConcatenatedStringToFloat * ConcatenatedStringToFloat2;}
+						else{std::cout << "FirstElement.at(index) is " << FirstElement.at(index) << ". This is not a +, - or *. Output has been set to zero" << std::endl; result = 0;}
+
+
+						if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '(' && FirstElement.at(index2+2) == '-'){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3);
+						}
+						else{std::cout << "error" << std::endl;}
+
+
+						if(FirstElement.at(index4) == '+'){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4);
+						}
+						else{std::cout << "error message 2" << std::endl;}
+
+
+						if(FirstElement.at(index5) == '*' && FirstElement.at(index5+1) == '('){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5));
+						}
+						else{std::cout << "error message 3" << std::endl;}
+
+						if(FirstElement.at(index6) == '+'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6));
+						}
+						else{std::cout << "error message 4" << std::endl;}
+
+
+						if(FirstElement.at(index7) == '*'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7)));
+						}	   
+						else{std::cout << "error message 5" << std::endl;}
+
+
+						if(FirstElement.at(index8) == '+'){
+ 	       						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8)));
+						}
+						else{std::cout << "error message 5" << std::endl;}
+
+						if(FirstElement.at(index9) == '*' && FirstElement.at(index9+1) == '('){
+							result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9))));
+						}
+						else{std::cout << "error message 6" << std::endl;}
+
+						if(FirstElement.at(index10) == '+'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10))));
+						}
+						else{std::cout << "error message 7" << std::endl;}
+
+						if(FirstElement.at(index11) == '*' && FirstElement.at(index11+1) == '(' && FirstElement.at(index11+2) == '-'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11)))));
+						}
+						else{std::cout << "error message 8" << std::endl;}
+
+
+						if(FirstElement.at(index12) == '+'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12)))));
+						}	
+						else{std::cout << "error message 9" << std::endl;}
+
+						if(FirstElement.at(index13) == '*'){
+        						result = ConcatenatedStringToFloat + ConcatenatedStringToFloat2*(-ConcatenatedStringToFloat3 + ConcatenatedStringToFloat4*(ConcatenatedStringToFloat5 + ConcatenatedStringToFloat6*(-ConcatenatedStringToFloat7+ConcatenatedStringToFloat8*(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10*(-ConcatenatedStringToFloat11+ConcatenatedStringToFloat12*ConcatenatedStringToFloat13)))));
+						}
+						else{std::cout << "error message 10" << std::endl;}
+
+						ResultVector.push_back(result);
+
+						}
+
+				}
+
+			}
+
+	 	}//extra bracket added here
+
+	}
+	else{
+		//first
+        	for(long unsigned int k = 1; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString.push_back(FirstElement.at(k));}
+                	else{index = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString.size(); k++){
+                	if(k == 0){ConcatenatedString = VecForConcString.at(k);}
+                	else{ConcatenatedString += VecForConcString.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat = stof(ConcatenatedString);
+
+		int Minimum;
+
+		if(FirstElement.at(index) == '+' &&
+		   FirstElement.at(index+1) == '(' &&
+		   FirstElement.at(index+2) == '-' &&
+		   FirstElement.at(index+3) == '('){
+
+			Minimum = index+4;
+
+		}
+		else{Minimum = index+3;}
+
+
+		//second	
+		for(long unsigned int k = Minimum; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString2.push_back(FirstElement.at(k));}
+                	else{index2 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString2.size(); k++){
+                	if(k == 0){ConcatenatedString2 = VecForConcString2.at(k);}
+                	else{ConcatenatedString2 += VecForConcString2.at(k);}
+
+        	}
+        	
+		float ConcatenatedStringToFloat2 = stof(ConcatenatedString2);
+
+		int Minimum2;
+
+		if(FirstElement.at(index2) == '*' && FirstElement.at(index2+1) == '('){Minimum2 = index2+ 6;}
+		else{Minimum2 = index2+2;}
+
+
+		//third
+		for(long unsigned int k = Minimum2; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString3.push_back(FirstElement.at(k));}
+                	else{index3 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString3.size(); k++){
+                	if(k == 0){ConcatenatedString3 = VecForConcString3.at(k);}
+                	else{ConcatenatedString3 += VecForConcString3.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat3 = stof(ConcatenatedString3);
+
+		//fourth
+		for(long unsigned int k = index3+1; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString4.push_back(FirstElement.at(k));}
+                	else{index4 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString4.size(); k++){
+                	if(k == 0){ConcatenatedString4 = VecForConcString4.at(k);}
+                	else{ConcatenatedString4 += VecForConcString4.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat4 = stof(ConcatenatedString4);
+
+		int Minimum3;
+
+
+		if(FirstElement.at(index4) == ')' && FirstElement.at(index4+1) == '*' && FirstElement.at(index4+2) == '('){Minimum3 = index4+7;}
+		else{Minimum3 = index4+4;}
+
+
+		//fifth
+		for(long unsigned int k = Minimum3; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString5.push_back(FirstElement.at(k));}
+               	 	else{index5 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString5.size(); k++){
+                	if(k == 0){ConcatenatedString5 = VecForConcString5.at(k);}
+                	else{ConcatenatedString5 += VecForConcString5.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat5 = stof(ConcatenatedString5);
+
+		int Minimum4;
+		
+		if(FirstElement.at(index4) == ')' && FirstElement.at(index4+1) == '*' && FirstElement.at(index4+2) == '('){Minimum4 = index5+1;}
+		else{Minimum4 = index5+2;}	
+
+		
+		//sixth
+		for(long unsigned int k = Minimum4; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString6.push_back(FirstElement.at(k));}
+                	else{index6 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString6.size(); k++){
+                	if(k == 0){ConcatenatedString6 = VecForConcString6.at(k);}
+                	else{ConcatenatedString6 += VecForConcString6.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat6 = stof(ConcatenatedString6);
+	
+		//seventh
+		for(long unsigned int k = index6+1; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                   	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString7.push_back(FirstElement.at(k));}
+                	else{index7 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString7.size(); k++){
+                	if(k == 0){ConcatenatedString7 = VecForConcString7.at(k);}
+                	else{ConcatenatedString7 += VecForConcString7.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat7 = stof(ConcatenatedString7);
+
+
+		int MinValue;
+
+
+		if(FirstElement.at(index) == '+' &&
+		   FirstElement.at(index+1) == '(' &&
+		   FirstElement.at(index+2) == '-' &&
+		   FirstElement.at(index+3) == '('){
+		
+			MinValue = index7+7;
+
+		}
+		else{MinValue = index7+5;}
+
+		//seventh
+        	for(long unsigned int k = MinValue; k < FirstElement.length(); k++){
+
+                	if(FirstElement.at(k) != ')'&&
+                   	   FirstElement.at(k) != '(' &&
+                  	   FirstElement.at(k) != '*' &&
+                   	   FirstElement.at(k) != '/' &&
+                   	   FirstElement.at(k) != '+' &&
+                   	   FirstElement.at(k) != '-'){VecForConcString8.push_back(FirstElement.at(k));}
+                	else{index8 = k; break;}
+        	}
+
+
+        	for(long unsigned int k = 0; k < VecForConcString8.size(); k++){
+                	if(k == 0){ConcatenatedString8 = VecForConcString8.at(k);}
+                	else{ConcatenatedString8 += VecForConcString8.at(k);}
+
+        	}
+
+        	float ConcatenatedStringToFloat8 = stof(ConcatenatedString8);
+
+
+		//result
+
+		if(FirstElement.at(index) == '*' && 
+		   FirstElement.at(index+1) == '(' && 
+		   FirstElement.at(index+2) == '(' &&
+		   FirstElement.at(index2) == '+' && 
+		   FirstElement.at(index2+1) == '(' &&
+		   FirstElement.at(index3) == '*' &&
+		   FirstElement.at(index4) == ')' && 
+		   FirstElement.at(index4+1) == ')' && 
+		   FirstElement.at(index4+2) == '/' && 
+		   FirstElement.at(index4+3) == '(' &&
+		   FirstElement.at(index5) == '+' && 
+		   FirstElement.at(index5+1) == '(' &&
+		   FirstElement.at(index6) == '*' &&
+		   FirstElement.at(index7) == ')' && 
+		   FirstElement.at(index7+1) == ')' && 
+		   FirstElement.at(index7+2) == ')' && 
+		   FirstElement.at(index7+3) == ')' && 
+		   FirstElement.at(index7+4) == '-'){
+
+			result = (ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7))))-ConcatenatedStringToFloat8;
+
+        	}
+		else if(FirstElement.at(index7+4) == '+'){
+
+                        result = (ConcatenatedStringToFloat*((ConcatenatedStringToFloat2+(ConcatenatedStringToFloat3*ConcatenatedStringToFloat4))/(ConcatenatedStringToFloat5+(ConcatenatedStringToFloat6*ConcatenatedStringToFloat7))))+ConcatenatedStringToFloat8;
+
+                }
+        	else if(FirstElement.at(index) == '+' &&
+			FirstElement.at(index+1) == '(' &&
+			FirstElement.at(index+2) == '-' &&
+			FirstElement.at(index+3) == '('){
+	
+
+			//eighth
+                	for(long unsigned int p = index8+5; p < FirstElement.length(); p++){
+
+                        	if(FirstElement.at(p) != ')'&&
+                           	   FirstElement.at(p) != '(' &&
+                           	   FirstElement.at(p) != '*' &&
+                           	   FirstElement.at(p) != '/' &&
+                           	   FirstElement.at(p) != '+' &&
+                           	   FirstElement.at(p) != '-'){VecForConcString9.push_back(FirstElement.at(p));}
+                        	else{index9 = p; break;}
+                	}
+
+
+                	for(long unsigned int p = 0; p < VecForConcString9.size(); p++){
+                        	if(p == 0){ConcatenatedString9 = VecForConcString9.at(p);}
+                        	else{ConcatenatedString9 += VecForConcString9.at(p);}
+
+                	}
+                	
+			float ConcatenatedStringToFloat9 = stof(ConcatenatedString9);
+
+
+			//ninth
+                        for(long unsigned int p = index9+4; p < FirstElement.length(); p++){
+
+                                if(FirstElement.at(p) != ')'&&
+                                   FirstElement.at(p) != '(' &&
+                                   FirstElement.at(p) != '*' &&
+                                   FirstElement.at(p) != '/' &&
+                                   FirstElement.at(p) != '+' &&
+                                   FirstElement.at(p) != '-'){VecForConcString10.push_back(FirstElement.at(p));}
+                                else{index10 = p; break;}
+                        }
+
+
+                        for(long unsigned int p = 0; p < VecForConcString10.size(); p++){
+                                if(p == 0){ConcatenatedString10 = VecForConcString10.at(p);}
+                                else{ConcatenatedString10 += VecForConcString10.at(p);}
+
+                        }
+
+                        float ConcatenatedStringToFloat10 = stof(ConcatenatedString10);
+
+			//tenth
+                        for(long unsigned int p = index10+9; p < FirstElement.length(); p++){
+          
+                                if(FirstElement.at(p) != ')'&&
+                                   FirstElement.at(p) != '(' &&
+                                   FirstElement.at(p) != '*' &&
+                                   FirstElement.at(p) != '/' &&
+                                   FirstElement.at(p) != '+' &&
+                                   FirstElement.at(p) != '-'){VecForConcString11.push_back(FirstElement.at(p));}
+                                else{index11 = p; break;}
+                        } 
+    
+
+                        for(long unsigned int p = 0; p < VecForConcString11.size(); p++){
+                                if(p == 0){ConcatenatedString11 = VecForConcString11.at(p);}
+                                else{ConcatenatedString11 += VecForConcString11.at(p);}
+    
+                        }
+			
+                        float ConcatenatedStringToFloat11 = stof(ConcatenatedString11);
+
+
+		
+
+			result = (ConcatenatedStringToFloat+(-(ConcatenatedStringToFloat2*(log(ConcatenatedStringToFloat3+ConcatenatedStringToFloat4)*(log(ConcatenatedStringToFloat5+ConcatenatedStringToFloat6)*(ConcatenatedStringToFloat7-(-(ConcatenatedStringToFloat8*log(ConcatenatedStringToFloat9+ConcatenatedStringToFloat10)))))))))+ConcatenatedStringToFloat11;
+			
+
+		}
+		else{std::cout << "ERROR" << std::endl;}
+
+		ResultVector.push_back(result);
+
+	}	
+
+	VecForConcString.clear();
+	VecForConcString2.clear();
+	VecForConcString3.clear();
+	VecForConcString4.clear();
+	VecForConcString5.clear();
+	VecForConcString6.clear();
+	VecForConcString7.clear();
+	VecForConcString8.clear();
+	VecForConcString9.clear();
+	VecForConcString10.clear();
+	VecForConcString11.clear();
+	VecForConcString12.clear();
+	VecForConcString13.clear();
+
+
+}//end of for loop
+
+
+}//end of first for loop
+
+return ResultVector;
+
+}};
+
+
+
+
+auto CMSBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+
+ std::cout << "print 16" << std::endl;
+
+ return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
+
+}};
+
+
+auto CMSNonBTagSF{[/*&CMSBTagSF_Function*/](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+
+ std::cout << "print 17" << std::endl;
+
+ return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
+
+}};
+
+
+
+auto EffBTaggedProductData{[](const floats& EffBTagged, const floats& CMSBTagSFInput){
+
+  std::cout << "print 18" << std::endl;
+
+  float initial = 1;
+  float output;
+
+  for(long unsigned int i = 0; i < EffBTagged.size(); i++){
+
+        output = (CMSBTagSFInput.at(0)*EffBTagged.at(i)) * initial;
+
+  }
+
+  return output;
+
+}};
+
+
+
+
+auto EffNonBTaggedProductData{[](const floats& EffNonBTagged, const floats& CMSNonBTagSFInput){
+
+  std::cout << "print 19" << std::endl;
+
+  float initial = 1;
+
+  int size = (CMSNonBTagSFInput.size() < EffNonBTagged.size()) ? CMSNonBTagSFInput.size() : EffNonBTagged.size();
+
+  for(int i = 0; i < size; i++){
+
+  	initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
+
+  }
+
+  return initial;
+
+}};
+
+
+
+
+
+
+
+auto ProbBTagDataFunction{[](const float& EffBTaggedProductDataInput, const float& EffNonBTaggedProductDataInput){
+
+  std::cout << "print 20" << std::endl;
+
+  float DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
+  return DataProb;
+
+}};
+
+
+
+
+auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
+
+
+	std::cout << "print 21" << std::endl;
+
+	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
+	
+        if( !isnan(BTagWeight) && !isinf(BTagWeight) ){return BTagWeight;}
+	else{float One = 1.0; return One;}
+
+
+}}; 
+
 
   //Using the golden ison file to filter events
   auto GoldenJsonReader{[&YearInt](){
