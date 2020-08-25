@@ -269,7 +269,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   int ttbarCRInt = 0;
   int MCInt = 0;
   
-
+  //Setting the value of MCInt depending on if the input sample is MC or data
   if(process != "data_DoubleEGRunB"        && process != "data_DoubleEGRunC"        && process != "data_DoubleEGRunD"        && process != "data_DoubleEGRunE"        && 
      process != "data_DoubleEGRunF"        && process != "data_DoubleEGRunG"        && process != "data_DoubleEGRunH"        && process != "data_DoubleEGRunB2"       && 
      process != "data_DoubleEGRunC2"       && process != "data_DoubleEGRunD2"       && process != "data_DoubleEGRunE2"       && process != "data_DoubleEGRunF2"       && 
@@ -290,19 +290,21 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else{MCInt = 0;}
 
 
-
+  //Setting the value of YearInt depending on the year
   if(year == "2016"){YearInt = 1;}
   else if(year == "2017"){YearInt = 2;}
   else if(year == "2018"){YearInt = 3;}
   else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl; return 0;}
-    
+  
+
+  //Setting the values of ZPlusJetsCRInt and ttbarCRInt depending on if the run is for the z+jets, ttbar control regions or not.   
   if(ZPlusJetsCR == false){ZPlusJetsCRInt = 0;}
   else{ZPlusJetsCRInt = 1;}
     
   if(ttbarCR == false){ttbarCRInt = 0;}
   else{ttbarCRInt = 1;}
 
-
+  //Setting the values of MinElectronPt, MaxElectronPt, MinMuonPt, MaxMuonPt and MaxTrackerEta depending on the year
   if(year == "2016"){
         if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
         else{MinElectronPt = 25; MinMuonPt = 25;}
@@ -314,7 +316,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
 
   
-
+  //Setting the value of RunInt depending on the run
   if(PU_ScaleUp == true){branch = "PU_ScaleUp"; RunInt = 2;}
   else if(PU_ScaleDown == true){branch = "PU_ScaleDown"; RunInt = 3;}
   else if(BTag_ScaleUp == true){branch = "BTag_ScaleUp"; RunInt = 4;}
@@ -752,7 +754,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 //Lambda functions start here
 
  //For the Rochester corrections
-auto RochesterCorrections_testscript2(
+auto RochesterCorrections_testscript2{[MCInt](
 
 const std::string& year, 
 const std::string& process, 
@@ -789,67 +791,7 @@ const ints& Muon_nTrackerLayers){
 		double mcSF;
 
 
-		if(process != "data_DoubleEGRunB" &&
-		   process != "data_DoubleEGRunC" &&
-		   process != "data_DoubleEGRunD" &&
-		   process != "data_DoubleEGRunE" &&
-		   process != "data_DoubleEGRunF" &&
-		   process != "data_DoubleEGRunG" &&
-		   process != "data_DoubleEGRunH" &&
-		   process != "data_DoubleEGRunB2" &&
-                   process != "data_DoubleEGRunC2" &&
-                   process != "data_DoubleEGRunD2" &&
-                   process != "data_DoubleEGRunE2" &&
-                   process != "data_DoubleEGRunF2" &&
-                   process != "data_DoubleEGRunG2" &&
-                   process != "data_DoubleEGRunH2" &&
-		   process != "data_EGRunB" &&
-                   process != "data_EGRunC" &&
-                   process != "data_EGRunD" &&
-		   process != "data_SingleElectronRunB" &&
-		   process != "data_SingleElectronRunC" &&
-		   process != "data_SingleElectronRunD" &&
-		   process != "data_SingleElectronRunE" &&
-		   process != "data_SingleElectronRunF" &&
-		   process != "data_SingleElectronRunG" &&
-		   process != "data_SingleElectronRunH" &&
-		   process != "data_DoubleMuonRunB" &&
-		   process != "data_DoubleMuonRunC" &&
-		   process != "data_DoubleMuonRunD" &&
-		   process != "data_DoubleMuonRunE" &&
-		   process != "data_DoubleMuonRunF" &&
-		   process != "data_DoubleMuonRunG" &&
-		   process != "data_DoubleMuonRunH" &&
-		   process != "data_SingleMuonRunB" &&
-		   process != "data_SingleMuonRunC" &&
-		   process != "data_SingleMuonRunD" &&
-		   process != "data_SingleMuonRunE" &&
-		   process != "data_SingleMuonRunF" &&
-		   process != "data_SingleMuonRunG" &&
-		   process != "data_SingleMuonRunH" &&
-		   process != "data_SingleElectronRunB2" &&
-                   process != "data_SingleElectronRunC2" &&
-                   process != "data_SingleElectronRunD2" &&
-                   process != "data_SingleElectronRunE2" &&
-                   process != "data_SingleElectronRunF2" &&
-                   process != "data_SingleElectronRunG2" &&
-                   process != "data_SingleElectronRunH2" &&
-                   process != "data_DoubleMuonRunB2" &&
-                   process != "data_DoubleMuonRunC2" &&
-                   process != "data_DoubleMuonRunD2" &&
-                   process != "data_DoubleMuonRunE2" &&
-                   process != "data_DoubleMuonRunF2" &&
-                   process != "data_DoubleMuonRunG2" &&
-                   process != "data_DoubleMuonRunH2" &&
-                   process != "data_SingleMuonRunB2" &&
-                   process != "data_SingleMuonRunC2" &&
-                   process != "data_SingleMuonRunD2" &&
-                   process != "data_SingleMuonRunE2" &&
-                   process != "data_SingleMuonRunF2" &&
-                   process != "data_SingleMuonRunG2" &&
-                   process != "data_SingleMuonRunH2"){
-
-
+		if(MCInt = 1){
 
 			if(mcSF > 0){
 
@@ -873,7 +815,7 @@ const ints& Muon_nTrackerLayers){
 	return RochCorrVec;
 
 
-}
+}};
 
 
 //Functions for reading the trigger efficiency and SF text files
