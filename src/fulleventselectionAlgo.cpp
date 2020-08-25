@@ -465,13 +465,13 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 	else if(process == "data_DoubleMuonRunF"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"}; ProcessInt = 94;}
         else if(process == "data_DoubleMuonRunG"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"}; ProcessInt = 95;}
         else if(process == "data_DoubleMuonRunH"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"}; ProcessInt = 96;}
-	else if(process == "data_MuonEGRunB"){input_files = {}; ProcessInt = 111;}
-        else if(process == "data_MuonEGRunC"){input_files = {}; ProcessInt = 112;}
-        else if(process == "data_MuonEGRunD"){input_files = {}; ProcessInt = 113;}
-        else if(process == "data_MuonEGRunE"){input_files = {}; ProcessInt = 114;}
-        else if(process == "data_MuonEGRunF"){input_files = {}; ProcessInt = 115;}
-        else if(process == "data_MuonEGRunG"){input_files = {}; ProcessInt = 116;}
-        else if(process == "data_MuonEGRunH"){input_files = {}; ProcessInt = 117;}
+	else if(process == "data_MuonEGRunB"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016B/*"}; ProcessInt = 111;}
+        else if(process == "data_MuonEGRunC"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016C/*"}; ProcessInt = 112;}
+        else if(process == "data_MuonEGRunD"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016D/*"}; ProcessInt = 113;}
+        else if(process == "data_MuonEGRunE"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016E/*"}; ProcessInt = 114;}
+        else if(process == "data_MuonEGRunF"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016F/*"}; ProcessInt = 115;}
+        else if(process == "data_MuonEGRunG"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016G/*"}; ProcessInt = 116;}
+        else if(process == "data_MuonEGRunH"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016H/*"}; ProcessInt = 117;}
 	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 97;}
         else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 98;}
         else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 99;}
@@ -500,13 +500,13 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
         else if(process == "data_DoubleMuonRunF2"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"}; ProcessInt = 94;}
         else if(process == "data_DoubleMuonRunG2"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"}; ProcessInt = 95;}
         else if(process == "data_DoubleMuonRunH2"){input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"}; ProcessInt = 96;}
-        else if(process == "data_MuonEGRunB2"){input_files = {}; ProcessInt = 111;}
-        else if(process == "data_MuonEGRunC2"){input_files = {}; ProcessInt = 112;}
-        else if(process == "data_MuonEGRunD2"){input_files = {}; ProcessInt = 113;}
-        else if(process == "data_MuonEGRunE2"){input_files = {}; ProcessInt = 114;}
-        else if(process == "data_MuonEGRunF2"){input_files = {}; ProcessInt = 115;}
-        else if(process == "data_MuonEGRunG2"){input_files = {}; ProcessInt = 116;}
-        else if(process == "data_MuonEGRunH2"){input_files = {}; ProcessInt = 117;}
+        else if(process == "data_MuonEGRunB2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016B/*"}; ProcessInt = 111;}
+        else if(process == "data_MuonEGRunC2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016C/*"}; ProcessInt = 112;}
+        else if(process == "data_MuonEGRunD2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016D/*"}; ProcessInt = 113;}
+        else if(process == "data_MuonEGRunE2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016E/*"}; ProcessInt = 114;}
+        else if(process == "data_MuonEGRunF2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016F/*"}; ProcessInt = 115;}
+        else if(process == "data_MuonEGRunG2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016G/*"}; ProcessInt = 116;}
+        else if(process == "data_MuonEGRunH2"){input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016H/*"}; ProcessInt = 117;}
         else if(process == "data_SingleMuonRunB2"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"}; ProcessInt = 97;}
         else if(process == "data_SingleMuonRunC2"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"}; ProcessInt = 98;}
         else if(process == "data_SingleMuonRunD2"){input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"}; ProcessInt = 99;}
@@ -692,18 +692,18 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 	else if(process == "data_SingleMuonRunB"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"}; ProcessInt = 275;}
         else if(process == "data_SingleMuonRunC"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"}; ProcessInt = 276;}
         else if(process == "data_SingleMuonRunD"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"}; ProcessInt = 277;}
-	else if(process == "data_MuonEGRunB"){input_files = {"/data/disk3/nanoAOD_2018/MuonEG_NanoAOD25Oct_2019_RunB/*"}; ProcessInt = 278;}
-        else if(process == "data_MuonEGRunC"){input_files = {"/data/disk3/nanoAOD_2018/MuonEG_NanoAOD25Oct_2019_RunC/*"}; ProcessInt = 279;}
-        else if(process == "data_MuonEGRunD"){input_files = {"/data/disk3/nanoAOD_2018/MuonEG_NanoAOD25Oct_2019_RunD/*"}; ProcessInt = 280;}
+	else if(process == "data_MuonEGRunB"){input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018B/*"}; ProcessInt = 278;}
+        else if(process == "data_MuonEGRunC"){input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018C/*"}; ProcessInt = 279;}
+        else if(process == "data_MuonEGRunD"){input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018D/*"}; ProcessInt = 280;}
 	else if(process == "data_DoubleMuonRunB2"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"}; ProcessInt = 281;}
         else if(process == "data_DoubleMuonRunC2"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018C/*"}; ProcessInt = 282;}
         else if(process == "data_DoubleMuonRunD2"){input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018D/*"}; ProcessInt = 283;}
         else if(process == "data_SingleMuonRunB2"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"}; ProcessInt = 284;}
         else if(process == "data_SingleMuonRunC2"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"}; ProcessInt = 285;}
         else if(process == "data_SingleMuonRunD2"){input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"}; ProcessInt = 286;}
-        else if(process == "data_MuonEGRunB2"){input_files = {"/data/disk3/nanoAOD_2018/MuonEG_NanoAOD25Oct_2019_RunB/*"}; ProcessInt = 287;}
-        else if(process == "data_MuonEGRunC2"){input_files = {"/data/disk3/nanoAOD_2018/MuonEG_NanoAOD25Oct_2019_RunC/*"}; ProcessInt = 288;}
-        else if(process == "data_MuonEGRunD2"){input_files = {"/data/disk3/nanoAOD_2018/MuonEG_NanoAOD25Oct_2019_RunD/*"}; ProcessInt = 289;}
+        else if(process == "data_MuonEGRunB2"){input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018B/*"}; ProcessInt = 287;}
+        else if(process == "data_MuonEGRunC2"){input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018C/*"}; ProcessInt = 288;}
+        else if(process == "data_MuonEGRunD2"){input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018D/*"}; ProcessInt = 289;}
 	else if(process == "Data_triggerSF"){input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"}; ProcessInt = 290;}
 	else if(process == "MC_triggerSF_ttbar"){input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"}; ProcessInt = 291;}
 	else if(process == "MC_triggerSF_ZPlusJets"){input_files = {"/data/disk0/nanoAOD_2018/DYJetsToLL_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*", "/data/disk0/nanoAOD_2018/DYJetsToLL_M10to50/*"}; ProcessInt = 292;}
