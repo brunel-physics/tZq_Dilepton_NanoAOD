@@ -254,13 +254,42 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
   EnableImplicitMT();
+  //RDataFrame d("Events", input_files);
+  //auto d_dataframe = d.Range(0, 1000000);
 
   std::string branch;
+  std::vector<std::string> input_files;
+  std::ofstream CutFlowReport;
+  std::string cutflowstring;
+
   int RunInt = 0;
   int ProcessInt = 0;
   int YearInt = 0;
   int ZPlusJetsCRInt = 0;
   int ttbarCRInt = 0;
+  int MCInt = 0;
+  
+
+  if(process != "data_DoubleEGRunB"        && process != "data_DoubleEGRunC"        && process != "data_DoubleEGRunD"        && process != "data_DoubleEGRunE"        && 
+     process != "data_DoubleEGRunF"        && process != "data_DoubleEGRunG"        && process != "data_DoubleEGRunH"        && process != "data_DoubleEGRunB2"       && 
+     process != "data_DoubleEGRunC2"       && process != "data_DoubleEGRunD2"       && process != "data_DoubleEGRunE2"       && process != "data_DoubleEGRunF2"       && 
+     process != "data_DoubleEGRunG2"       && process != "data_DoubleEGRunH2"       && process != "data_EGRunB"              && process != "data_EGRunC"              &&
+     process != "data_EGRunD"              && process != "data_SingleElectronRunB"  && process != "data_SingleElectronRunC"  && process != "data_SingleElectronRunD"  &&
+     process != "data_SingleElectronRunE"  && process != "data_SingleElectronRunF"  && process != "data_SingleElectronRunG"  && process != "data_SingleElectronRunH"  &&
+     process != "data_DoubleMuonRunB"      && process != "data_DoubleMuonRunC"      && process != "data_DoubleMuonRunD"      && process != "data_DoubleMuonRunE"      &&
+     process != "data_DoubleMuonRunF"      && process != "data_DoubleMuonRunG"      && process != "data_DoubleMuonRunH"      && process != "data_SingleMuonRunB"      &&
+     process != "data_SingleMuonRunC"      && process != "data_SingleMuonRunD"      && process != "data_SingleMuonRunE"      && process != "data_SingleMuonRunF"      &&
+     process != "data_SingleMuonRunG"      && process != "data_SingleMuonRunH"      && process != "data_SingleElectronRunB2" && process != "data_SingleElectronRunC2" &&
+     process != "data_SingleElectronRunD2" && process != "data_SingleElectronRunE2" && process != "data_SingleElectronRunF2" && process != "data_SingleElectronRunG2" &&
+     process != "data_SingleElectronRunH2" && process != "data_DoubleMuonRunB2"     && process != "data_DoubleMuonRunC2"     && process != "data_DoubleMuonRunD2"     &&
+     process != "data_DoubleMuonRunE2"     && process != "data_DoubleMuonRunF2"     && process != "data_DoubleMuonRunG2"     && process != "data_DoubleMuonRunH2"     &&
+     process != "data_SingleMuonRunB2"     && process != "data_SingleMuonRunC2"     && process != "data_SingleMuonRunD2"     && process != "data_SingleMuonRunE2"     &&
+     process != "data_SingleMuonRunF2"     && process != "data_SingleMuonRunG2"     && process != "data_SingleMuonRunH2"     && process != "data_MuonEGRunB"	      && 
+     process != "data_MuonEGRunC"          && process != "data_MuonEGRunD"          && process != "data_MuonEGRunE"          && process != "data_MuonEGRunF"          &&
+     process != "data_MuonEGRunG"          && process != "data_MuonEGRunH"){MCInt = 1;}
+  else{MCInt = 0;}
+
+
 
   if(year == "2016"){YearInt = 1;}
   else if(year == "2017"){YearInt = 2;}
@@ -309,16 +338,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else{branch = "Nominal"; RunInt = 1;}
 
 
-
-  BTag_ScaleUp_bool = BTag_ScaleUp;
-  BTag_ScaleDown_bool = BTag_ScaleDown;
-
-
-  std::vector<std::string> input_files;
-  std::ofstream CutFlowReport;
-  std::string cutflowstring;
-
-
+  //Naming the cut flow report output file depending on the run
   if(process != "MC_triggerSF_ttbar" && process != "MC_triggerSF_ZPlusJets" && process != "Data_triggerSF"){
 
 	if(blinding == false){
@@ -727,9 +747,9 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-  //RDataFrame d("Events", input_files);
-  //auto d_dataframe = d.Range(0, 1000000);
 
+
+//Lambda functions start here
 
  //For the Rochester corrections
 auto RochesterCorrections_testscript2(
