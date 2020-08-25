@@ -259,11 +259,19 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   int RunInt = 0;
   int ProcessInt = 0;
   int YearInt = 0;
+  int ZPlusJetsCRInt = 0;
+  int ttbarCRInt = 0;
 
   if(year == "2016"){YearInt = 1;}
-  else f(year == "2017"){YearInt = 2;}
+  else if(year == "2017"){YearInt = 2;}
   else if(year == "2018"){YearInt = 3;}
   else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl; return 0;}
+    
+  if(ZPlusJetsCR == false){ZPlusJetsCRInt = 0;}
+  else{ZPlusJetsCRInt = 1;}
+    
+  if(ttbarCR == false){ttbarCRInt = 0;}
+  else{ttbarCRInt = 1;}
 
 
   if(year == "2016"){
@@ -5281,21 +5289,20 @@ for (size_t i{0}; i < njets; ++i){
 
 
 
-auto w_mass_cut{[](const float& w_mass) {
+auto w_mass_cut{[&ZPlusJetsCRInt](const float& w_mass, const float& MET_sumEt) {
 	
-  std::cout << "print 117" << std::endl;	
-  return ( abs(w_mass - W_MASS) < W_MASS_CUT );
+  std::cout << "print 117" << std::endl;
+      
+  switch(ZPlusJetsCRInt){
+      
+    case 0: return ( abs(w_mass - W_MASS) < W_MASS_CUT );
+    case 1: return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50);
+      
+  }
 
 }};
 
 
-
-auto w_mass_cut_ZPlusJetsCR{[](const float& w_mass, const float& MET_sumEt) {
-	
-  std::cout << "print 118" << std::endl;
-  return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50);
-
-}};
 
 
 
@@ -9057,10 +9064,7 @@ auto d_ee_recoZ_jets_bjets_recoW_selection_defines = d_ee_recoZ_jets_bjets_selec
 								.Define("RecoWHT", RecoWHT, {"w_pair_pt"})
 								.Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"});
 
-auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (ee channel)");
-
-if(ZPlusJetsCR == true){auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut_ZPlusJetsCR, {"w_mass", "MET_sumEt"}, "W mass cut (ee channel)");}
-else{auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (ee channel)");}
+auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut (ee channel)");
 
 
 
@@ -9117,11 +9121,7 @@ auto d_mumu_recoZ_jets_bjets_recoW_selection_defines = d_mumu_recoZ_jets_bjets_s
 
 
 
-auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (mumu channel)");
-
-if(ZPlusJetsCR == true){auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut_ZPlusJetsCR, {"w_mass", "MET_sumEt"}, "W mass cut (mumu channel)");}
-else{auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass"}, "W mass cut (mumu channel)");}
-
+auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut (mumu channel)");
 
 
 
@@ -11079,6 +11079,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
 }
+
 
 
 
