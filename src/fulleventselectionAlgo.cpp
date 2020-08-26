@@ -7838,23 +7838,20 @@ std::cout << "before pu function" << std::endl;
 //Implementing the PU modelling
 
 
-auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &year](int PV_npvs_input){
+auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &YearInt](int PV_npvs_input){
 
   //std::cout << "print 187" << std::endl;
 
   float PU_Weight_input;
 
-  if(year == "2016"){
-        PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else if(year == "2017"){
-  	PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else if(year == "2018"){
-        PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input));
-  }
-  else{std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl;}
+  switch(Yearint){
 
+	case 1: PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input)); break;
+  	case 2: PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input)); break;
+        case 3: PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input)); break;
+        default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl; break;
+
+  }
 
   return PU_Weight_input;
 
@@ -7863,77 +7860,8 @@ auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_par
 
 
 
-std::cout << "before MC start" << std::endl;
 
-
-
-///MC starts here
-
-if(
-
-process != "data_EGRunB" &&
-process != "data_EGRunC" &&
-process != "data_EGRunD" &&
-process != "data_DoubleEGRunB" &&
-process != "data_DoubleEGRunC" &&
-process != "data_DoubleEGRunD" &&
-process != "data_DoubleEGRunE" &&
-process != "data_DoubleEGRunF" &&
-process != "data_DoubleEGRunG" &&
-process != "data_DoubleEGRunH" &&
-process != "data_SingleElectronRunB" &&
-process != "data_SingleElectronRunC" &&
-process != "data_SingleElectronRunD" &&
-process != "data_SingleElectronRunE" &&
-process != "data_SingleElectronRunF" &&
-process != "data_SingleElectronRunG" &&
-process != "data_SingleElectronRunH" &&
-process != "data_DoubleMuonRunB" &&
-process != "data_DoubleMuonRunC" &&
-process != "data_DoubleMuonRunD" &&
-process != "data_DoubleMuonRunE" &&
-process != "data_DoubleMuonRunF" &&
-process != "data_DoubleMuonRunG" &&
-process != "data_DoubleMuonRunH" &&
-process != "data_SingleMuonRunB" &&
-process != "data_SingleMuonRunC" &&
-process != "data_SingleMuonRunD" &&
-process != "data_SingleMuonRunE" &&
-process != "data_SingleMuonRunF" &&
-process != "data_SingleMuonRunG" &&
-process != "data_SingleMuonRunH" &&
-process != "data_DoubleEGRunB2" &&
-process != "data_DoubleEGRunC2" &&
-process != "data_DoubleEGRunD2" &&
-process != "data_DoubleEGRunE2" &&
-process != "data_DoubleEGRunF2" &&
-process != "data_DoubleEGRunG2" &&
-process != "data_DoubleEGRunH2" &&
-process != "data_SingleElectronRunB2" &&
-process != "data_SingleElectronRunC2" &&
-process != "data_SingleElectronRunD2" &&
-process != "data_SingleElectronRunE2" &&
-process != "data_SingleElectronRunF2" &&
-process != "data_SingleElectronRunG2" &&
-process != "data_SingleElectronRunH2" &&
-process != "data_DoubleMuonRunB2" &&
-process != "data_DoubleMuonRunC2" &&
-process != "data_DoubleMuonRunD2" &&
-process != "data_DoubleMuonRunE2" &&
-process != "data_DoubleMuonRunF2" &&
-process != "data_DoubleMuonRunG2" &&
-process != "data_DoubleMuonRunH2" &&
-process != "data_SingleMuonRunB2" &&
-process != "data_SingleMuonRunC2" &&
-process != "data_SingleMuonRunD2" &&
-process != "data_SingleMuonRunE2" &&
-process != "data_SingleMuonRunF2" &&
-process != "data_SingleMuonRunG2" &&
-process != "data_SingleMuonRunH2"
-
-){
-
-
+  //Start of event selection
   auto d_GoldenJson = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"});
 
   if(process == "Data_triggerSF"){auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
