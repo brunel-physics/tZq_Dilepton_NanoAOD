@@ -980,13 +980,20 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
   }};
 
-  auto TopReweighting_weight{[](const ints& TopReweighting_topquark_input, const ints& TopReweighting_antitopquark_input){
+  auto TopReweighting_weight{[](const ints& TopReweighting_topquark_input, const ints& TopReweighting_antitopquark_input, const doubles& pts){
 
         std::cout << "print 191" << std::endl;
 
-        doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark_input) );
+	doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark_input) );
         doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark_input) );
-        doubles weight = sqrt( SF_top * SF_antitop);
+	doubles weight;
+
+	switch(ProcessInt){
+
+        	case : weight = sqrt( SF_top * SF_antitop); break;
+		default: weight(pts.size(), 1.0); break;
+
+	}
 
         return weight;
 
@@ -9197,49 +9204,24 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 
 std::cout << "before d_TopReweighted_ee" << std::endl;
 
-auto d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"});
+auto d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"})
+								     .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"})
+                                                                     .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                                                     .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
+
+;
 auto d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"});
-
-
-if(process == "ttbar_2l2nu" ||
-    process == "ttbar_madgraph_NanoAODv5" ||
-    process == "ttbar_TTToHadronic" ||
-    process == "ttbar_TTToSemileptonic"){
-
-
-
-	std::cout << "before d_TopReweighted_ee" << std::endl;
-
-	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"})
-									.Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
-									.Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
-
-
-
-
-	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
-                                                                            .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
-                                                                            .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
+									 .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                                                         .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                                                         .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 
 	
 
 
-}
-else{
-
-	std::cout << "in else, before d_TopReweighted_ee" << std::endl;
 
 	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("TopWeight", [](){return 1.0;}, {});
 	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("TopWeight", [](){return 1.0;}, {});
-
-	std::cout << "in else, after d_TopReweighted_ee" << std::endl;
-
-}
-
-
-
-
 
 
 
