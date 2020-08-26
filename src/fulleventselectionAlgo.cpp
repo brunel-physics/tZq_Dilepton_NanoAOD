@@ -802,8 +802,34 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 //Lambda functions start here
+  auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
 
- //For the Rochester corrections
+  	std::cout << "print 189" << std::endl;
+        return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
+
+  }};
+
+  auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
+                
+	std::cout << "print 190" << std::endl;
+        return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0;
+
+  }};
+
+  auto TopReweighting_weight{[](const ints& TopReweighting_topquark_input, const ints& TopReweighting_antitopquark_input){
+
+        std::cout << "print 191" << std::endl;
+
+        doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark_input) );
+        doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark_input) );
+        doubles weight = sqrt( SF_top * SF_antitop);
+
+        return weight;
+
+   }};
+
+
+   //For the Rochester corrections
 auto RochesterCorrections_testscript2{[MCInt](
 
 const std::string& year, 
@@ -9022,50 +9048,6 @@ if(process == "ttbar_2l2nu" ||
     process == "ttbar_madgraph_NanoAODv5" ||
     process == "ttbar_TTToHadronic" ||
     process == "ttbar_TTToSemileptonic"){
-
-	auto TopReweighting_topquark{[](
-
-		const ints& GenPart_pdgId,
-		const ints& GenPart_statusFlags,
-		const ints& GenPart_pt
-
-	){
-
-		std::cout << "print 189" << std::endl;
-		return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
-
-	}};
-
-	auto TopReweighting_antitopquark{[](
-
-		const ints& GenPart_pdgId,
-		const ints& GenPart_statusFlags,
-		const ints& GenPart_pt
-
-	){
-		std::cout << "print 190" << std::endl;
-		return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
-
-	}};
-
-
-
-	auto TopReweighting_weight{[](
-
-		const ints& TopReweighting_topquark_input,
-		const ints& TopReweighting_antitopquark_input
-
-	){
-
-		std::cout << "print 191" << std::endl;
-
-		doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark_input) );
-		doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark_input) );
-		doubles weight = sqrt( SF_top * SF_antitop);
-		
-		return weight;
-
-	}};
 
 
 
