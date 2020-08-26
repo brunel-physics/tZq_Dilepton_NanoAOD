@@ -290,6 +290,12 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else{MCInt = 0;}
 
 
+ std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
+
+  switch(MCInt){case 1: JetMassInput = "SmearedJetMass"; JetPtInput = "SmearedJetPt"; JetEtaInput = "SmearedJetEta"; JetPhiInput = "SmearedJetPhi"; break;
+		case 0: JetMassInput = "Jet_mass"; JetPtInput = "Jet_pt"; JetEtaInput = "Jet_eta"; JetPhiInput = "Jet_phi"; break;} 
+
+
   //Setting the value of YearInt depending on the year
   if(year == "2016"){YearInt = 1;}
   else if(year == "2017"){YearInt = 2;}
@@ -338,6 +344,20 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else if(fsr_up == true){branch = "fsr_up"; RunInt = 20;}
   else if(fsr_down == true){branch = "fsr_down"; RunInt = 21;}
   else{branch = "Nominal"; RunInt = 1;}
+
+
+  std::string SJER;
+  std::string SIGMAJER;
+
+  switch(RunNumInt){
+
+	case 6: SJER = "sJER_up"; break;
+	case 7: SJER = "sJER_down"; break;
+	case 8: SIGMAJER = "sigma_JER_up"; break;
+	case 9: SIGMAJER = "sigma_JER_down"; break;
+	default: SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+
+  }
 
 
   //Naming the cut flow report output file depending on the run
@@ -3404,153 +3424,6 @@ auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
 
 
-
-std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
-
-if(
-
-process != "data_DoubleEGRunB" &&
-process != "data_DoubleEGRunC" &&
-process != "data_DoubleEGRunD" &&
-process != "data_DoubleEGRunE" &&
-process != "data_DoubleEGRunF" &&
-process != "data_DoubleEGRunG" &&
-process != "data_DoubleEGRunH" &&
-process != "data_DoubleEGRunB2" &&
-process != "data_DoubleEGRunC2" &&
-process != "data_DoubleEGRunD2" &&
-process != "data_DoubleEGRunE2" &&
-process != "data_DoubleEGRunF2" &&
-process != "data_DoubleEGRunG2" &&
-process != "data_DoubleEGRunH2" &&
-process != "data_EGRunB" &&
-process != "data_EGRunC" &&
-process != "data_EGRunD" &&
-process != "data_SingleElectronRunB" &&
-process != "data_SingleElectronRunC" &&
-process != "data_SingleElectronRunD" &&
-process != "data_SingleElectronRunE" &&
-process != "data_SingleElectronRunF" &&
-process != "data_SingleElectronRunG" &&
-process != "data_SingleElectronRunH" &&
-process != "data_DoubleMuonRunB" &&
-process != "data_DoubleMuonRunC" &&
-process != "data_DoubleMuonRunD" &&
-process != "data_DoubleMuonRunE" &&
-process != "data_DoubleMuonRunF" &&
-process != "data_DoubleMuonRunG" &&
-process != "data_DoubleMuonRunH" &&
-process != "data_SingleMuonRunB" &&
-process != "data_SingleMuonRunC" &&
-process != "data_SingleMuonRunD" &&
-process != "data_SingleMuonRunE" &&
-process != "data_SingleMuonRunF" &&
-process != "data_SingleMuonRunG" &&
-process != "data_SingleMuonRunH" &&
-process != "data_SingleElectronRunB2" &&
-process != "data_SingleElectronRunC2" &&
-process != "data_SingleElectronRunD2" &&
-process != "data_SingleElectronRunE2" &&
-process != "data_SingleElectronRunF2" &&
-process != "data_SingleElectronRunG2" &&
-process != "data_SingleElectronRunH2" &&
-process != "data_DoubleMuonRunB2" &&
-process != "data_DoubleMuonRunC2" &&
-process != "data_DoubleMuonRunD2" &&
-process != "data_DoubleMuonRunE2" &&
-process != "data_DoubleMuonRunF2" &&
-process != "data_DoubleMuonRunG2" &&
-process != "data_DoubleMuonRunH2" &&
-process != "data_SingleMuonRunB2" &&
-process != "data_SingleMuonRunC2" &&
-process != "data_SingleMuonRunD2" &&
-process != "data_SingleMuonRunE2" &&
-process != "data_SingleMuonRunF2" &&
-process != "data_SingleMuonRunG2" &&
-process != "data_SingleMuonRunH2" 
-
-){
-
-
-  JetMassInput = "SmearedJetMass";
-  JetPtInput = "SmearedJetPt";
-  JetEtaInput = "SmearedJetEta";
-  JetPhiInput = "SmearedJetPhi";
-
-
-}
-else if(
-
-process == "data_DoubleEGRunB" ||
-process == "data_DoubleEGRunC" ||
-process == "data_DoubleEGRunD" ||
-process == "data_DoubleEGRunE" ||
-process == "data_DoubleEGRunF" ||
-process == "data_DoubleEGRunG" ||
-process == "data_DoubleEGRunH" ||
-process == "data_DoubleEGRunB2" ||
-process == "data_DoubleEGRunC2" ||
-process == "data_DoubleEGRunD2" ||
-process == "data_DoubleEGRunE2" ||
-process == "data_DoubleEGRunF2" ||
-process == "data_DoubleEGRunG2" ||
-process == "data_DoubleEGRunH2" ||
-process == "data_EGRunB" ||
-process == "data_EGRunC" ||
-process == "data_EGRunD" ||
-process == "data_SingleElectronRunB" ||
-process == "data_SingleElectronRunC" ||
-process == "data_SingleElectronRunD" ||
-process == "data_SingleElectronRunE" ||
-process == "data_SingleElectronRunF" ||
-process == "data_SingleElectronRunG" ||
-process == "data_SingleElectronRunH" ||
-process == "data_DoubleMuonRunB" ||
-process == "data_DoubleMuonRunC" ||
-process == "data_DoubleMuonRunD" ||
-process == "data_DoubleMuonRunE" ||
-process == "data_DoubleMuonRunF" ||
-process == "data_DoubleMuonRunG" ||
-process == "data_DoubleMuonRunH" ||
-process == "data_SingleMuonRunB" ||
-process == "data_SingleMuonRunC" ||
-process == "data_SingleMuonRunD" ||
-process == "data_SingleMuonRunE" ||
-process == "data_SingleMuonRunF" ||
-process == "data_SingleMuonRunG" ||
-process == "data_SingleMuonRunH" ||
-process == "data_SingleElectronRunB2" ||
-process == "data_SingleElectronRunC2" ||
-process == "data_SingleElectronRunD2" ||
-process == "data_SingleElectronRunE2" ||
-process == "data_SingleElectronRunF2" ||
-process == "data_SingleElectronRunG2" ||
-process == "data_SingleElectronRunH2" ||
-process == "data_DoubleMuonRunB2" ||
-process == "data_DoubleMuonRunC2" ||
-process == "data_DoubleMuonRunD2" ||
-process == "data_DoubleMuonRunE2" ||
-process == "data_DoubleMuonRunF2" ||
-process == "data_DoubleMuonRunG2" ||
-process == "data_DoubleMuonRunH2" ||
-process == "data_SingleMuonRunB2" ||
-process == "data_SingleMuonRunC2" ||
-process == "data_SingleMuonRunD2" ||
-process == "data_SingleMuonRunE2" ||
-process == "data_SingleMuonRunF2" ||
-process == "data_SingleMuonRunG2" ||
-process == "data_SingleMuonRunH2" 
-
-){
-
-
-  JetMassInput = "Jet_mass";
-  JetPtInput = "Jet_pt";
-  JetEtaInput = "Jet_eta";
-  JetPhiInput = "Jet_phi";
-
-}
-else{std::cout << "Please choose MC or data as the input" << std::endl;}
 
 
 
