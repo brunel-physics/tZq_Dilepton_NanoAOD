@@ -958,6 +958,14 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
   }}; 
 
+  //lambda functions for top quark pT reweighting
+  auto UnweightedTopPt{[](const doubles& pts){
+        
+        std::cout << "print 188" << std::endl;
+        return pts;
+
+  }}; 
+
   auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
 
   	std::cout << "print 189" << std::endl;
@@ -9186,13 +9194,6 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 
 
 
-//lambda functions for top quark pT reweighting
-auto UnweightedTopPt{[](const doubles& pts){
-
-	std::cout << "print 188" << std::endl;
-        return pts;
-
-}};
 
 std::cout << "before d_TopReweighted_ee" << std::endl;
 
