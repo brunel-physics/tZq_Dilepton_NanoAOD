@@ -8974,7 +8974,7 @@ std::cout << "before W reconstruction (ee)" << std::endl;
 
 
 //Filtering events with a reconstructed W boson
-auto d_ee_recoZ_jets_bjets_recoW_selection_defines = d_ee_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", "SmearedJetPt"})
+auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", "SmearedJetPt"})
                  						.Define("w_reco_jets", find_w_pair, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
                  						.Define("w_pair_pt", select<floats>, {"SmearedJetPt", "w_reco_jets"})
                  						.Define("w_pair_eta", select<floats>, {"SmearedJetEta", "w_reco_jets"})
@@ -9020,16 +9020,15 @@ auto d_ee_recoZ_jets_bjets_recoW_selection_defines = d_ee_recoZ_jets_bjets_selec
 								.Define("WJet1HT",  HT_double, {"WPairJet1Pt"})
                                                                 .Define("WJet2HT",  HT_double, {"WPairJet2Pt"})
 								.Define("RecoWHT", RecoWHT, {"w_pair_pt"})
-								.Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"});
-
-auto d_ee_recoZ_jets_bjets_recoW_selection = d_ee_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut (ee channel)");
+								.Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"})
+							        .Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut (ee channel)");
 
 
 
 std::cout << "before W reconstruction (mumu)" << std::endl;
 
 
-auto d_mumu_recoZ_jets_bjets_recoW_selection_defines = d_mumu_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", "SmearedJetPt"})
+auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_selection.Define("lead_bjet", find_lead_mask, {"bjets", "SmearedJetPt"})
 							            .Define("w_reco_jets", find_w_pair, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
                                                                     .Define("w_pair_pt", select<floats>, {"SmearedJetPt", "w_reco_jets"})
                                                                     .Define("w_pair_eta", select<floats>, {"SmearedJetEta", "w_reco_jets"})
@@ -9075,11 +9074,8 @@ auto d_mumu_recoZ_jets_bjets_recoW_selection_defines = d_mumu_recoZ_jets_bjets_s
 								    .Define("WJet1HT",  HT_double, {"WPairJet1Pt"})
 								    .Define("WJet2HT",  HT_double, {"WPairJet2Pt"})
 								    .Define("RecoWHT", RecoWHT, {"w_pair_pt"})
-								    .Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"});
-
-
-
-auto d_mumu_recoZ_jets_bjets_recoW_selection = d_mumu_recoZ_jets_bjets_recoW_selection_defines.Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut (mumu channel)");
+								    .Define("mtW", TransverseWMass, {"dPhi_j1j2", "WPairJet1Pt", "WPairJet2Pt"})
+								    .Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut (mumu channel)");
 
 
 
@@ -9090,7 +9086,7 @@ std::cout << "after the for loop for cut flow report" << std::endl;
 std::cout << "before top reconstruction (ee)" << std::endl;
 
 //Filtering events with a reconstructed top quark
-auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
+  auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
 											.Define("bjetmass", bjet_variable, bjet_mass_strings)
 											.Define("bjetpt", bjet_variable, bjet_pt_strings)
 											.Define("bjeteta", bjet_variable, bjet_eta_strings)
@@ -9152,7 +9148,7 @@ auto d_ee_recoZ_jets_bjets_recoW_recoT_selection = d_ee_recoZ_jets_bjets_recoW_s
 std::cout << "before top reconstruction (mumu)" << std::endl;
 
 
-auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
+  auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_recoW_selection.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
                                                                                             .Define("bjetmass", bjet_variable, bjet_mass_strings)
                                                                                             .Define("bjetpt", bjet_variable, bjet_pt_strings)
                                                                                             .Define("bjeteta", bjet_variable, bjet_eta_strings)
@@ -9215,36 +9211,27 @@ auto d_mumu_recoZ_jets_bjets_recoW_recoT_selection = d_mumu_recoZ_jets_bjets_rec
 
 std::cout << "before d_TopReweighted_ee" << std::endl;
 
-auto d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"})
-								     .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"})
-                                                                     .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
-                                                                     .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
+  auto d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"})
+								       .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"})
+                                                                       .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                                                       .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 ;
-auto d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"});
-									 .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
-                                                                         .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
-                                                                         .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
-
-	
-
-
-
-	d_TopReweighted_ee = d_ee_recoZ_jets_bjets_recoW_recoT_selection.Define("TopWeight", [](){return 1.0;}, {});
-	d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("TopWeight", [](){return 1.0;}, {});
+  auto d_TopReweighted_mumu = d_mumu_recoZ_jets_bjets_recoW_recoT_selection.Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"});
+									   .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                                                           .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                                                           .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 
 
 
 
-
-
-	TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
-	double minpt = 0;
-	double maxpt = 500;
-	double mineta = -3;
-	double maxeta = 3;
+  TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
+  double minpt = 0;
+  double maxpt = 500;
+  double mineta = -3;
+  double maxeta = 3;
 
         h_bjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
 	h_nonbjet_ee_num = d_ee_recoZ_jets_bjets_selection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
