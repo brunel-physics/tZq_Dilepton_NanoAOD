@@ -1540,9 +1540,7 @@ auto ProbBTagMCFunction{[](const float& EffBTaggedProductInput, const float& Eff
 
 
 //reading the csv file to obtain the b tagging scale factor for each event
-bool BTag_ScaleUp_bool, BTag_ScaleDown_bool;
-
-auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+auto CMSBTagSF_Function{[&RunNumInt/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
   std::cout << "print 15" << std::endl;
 
@@ -1574,9 +1572,14 @@ auto CMSBTagSF_Function{[/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const flo
 
 	std::string systematic_type_string;
 
-	if(BTag_ScaleUp_bool == true){systematic_type_string = "up";}
-        else if(BTag_ScaleDown_bool == true){systematic_type_string = "down";}
- 	else{systematic_type_string = "central";}
+	switch(RunNumInt){
+
+		case 4: systematic_type_string = "up"; break;
+		case 5: systematic_type_string = "down"; break;
+		deafult: systematic_type_string = "central"; break;
+
+	}
+
 
         std::vector<std::string> SysTypeTest(pts.size(), "central");
         std::vector<std::string> JetFlavourTest(pts.size(), "0"); 
