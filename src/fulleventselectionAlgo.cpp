@@ -990,10 +990,18 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 	switch(ProcessInt){
 
+		case 31: weight = sqrt( SF_top * SF_antitop); break;
+		case 32: weight = sqrt( SF_top * SF_antitop); break;
         	case 137: weight = sqrt( SF_top * SF_antitop); break;
 		case 138: weight = sqrt( SF_top * SF_antitop); break;
 		case 139: weight = sqrt( SF_top * SF_antitop); break;
 		case 140: weight = sqrt( SF_top * SF_antitop); break;
+		case 140: weight = sqrt( SF_top * SF_antitop); break;
+		case 238: weight = sqrt( SF_top * SF_antitop); break;
+		case 239: weight = sqrt( SF_top * SF_antitop); break;
+		case 240: weight = sqrt( SF_top * SF_antitop); break;
+		case 241: weight = sqrt( SF_top * SF_antitop); break;
+		case 242: weight = sqrt( SF_top * SF_antitop); break;
 		default: weight(pts.size(), 1.0); break;
 
 	}
