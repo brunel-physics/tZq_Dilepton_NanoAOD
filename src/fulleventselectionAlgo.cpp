@@ -980,7 +980,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
   }};
 
-  auto TopReweighting_weight{[](const ints& TopReweighting_topquark_input, const ints& TopReweighting_antitopquark_input, const doubles& pts){
+  auto TopReweighting_weight{[&ProcessInt](const ints& TopReweighting_topquark_input, const ints& TopReweighting_antitopquark_input, const doubles& pts){
 
         std::cout << "print 191" << std::endl;
 
@@ -990,7 +990,10 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 	switch(ProcessInt){
 
-        	case : weight = sqrt( SF_top * SF_antitop); break;
+        	case 137: weight = sqrt( SF_top * SF_antitop); break;
+		case 138: weight = sqrt( SF_top * SF_antitop); break;
+		case 139: weight = sqrt( SF_top * SF_antitop); break;
+		case 140: weight = sqrt( SF_top * SF_antitop); break;
 		default: weight(pts.size(), 1.0); break;
 
 	}
