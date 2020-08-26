@@ -301,7 +301,47 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else if(year == "2017"){YearInt = 2;}
   else if(year == "2018"){YearInt = 3;}
   else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl; return 0;}
-  
+
+  std::vector<std::string> MET_triggers;
+
+  //Setting the values of MinElectronPt, MaxElectronPt, MinMuonPt, MaxMuonPt and MaxTrackerEta depending on the year
+  switch(YearInt){
+	case 1: if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
+        	else{MinElectronPt = 25; MinMuonPt = 25;}
+
+		MET_triggers = {"HLT_MET200", "HLT_MET250", "HLT_PFMET120_PFMHT120_IDTight", "HLT_PFMET170_HBHECleaned", "HLT_PFHT300_PFMET100",
+                                "DummyBool",  "DummyBool",  "DummyBool",                     "DummyBool",                "DummyBool",
+                                "DummyBool",  "DummyBool",  "DummyBool",                     "DummyBool",                "DummyBool",
+                                "DummyBool"};
+
+		break;
+
+	case 2: if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
+        	else{MinElectronPt = 25; MinMuonPt = 25;}
+
+		MET_triggers = {"DummyBool",                           "DummyBool",                               "DummyBool",
+                                "DummyBool",                           "DummyBool",                               "HLT_PFMET130_PFMHT130_IDTight",
+                                "HLT_PFMET140_PFMHT140_IDTight",       "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",   "HLT_PFHT1050",
+                                "HLT_PFHT180",                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT700_PFMET95_PFMHT95_IDTight",     "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
+                                "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+
+  		break;
+
+	case 3: if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
+                else{MinElectronPt = 25; MinMuonPt = 25;}
+
+		MET_triggers = {"DummyBool",                           "DummyBool",                               "DummyBool",
+                                "DummyBool",                           "DummyBool",                               "HLT_PFMET130_PFMHT130_IDTight",
+                                "HLT_PFMET140_PFMHT140_IDTight",       "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",   "HLT_PFHT1050",
+                                "HLT_PFHT180",                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT700_PFMET95_PFMHT95_IDTight",     "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
+                                "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+
+                break;
+	
+ }
+
 
   //Setting the values of ZPlusJetsCRInt and ttbarCRInt depending on if the run is for the z+jets, ttbar control regions or not.   
   if(ZPlusJetsCR == false){ZPlusJetsCRInt = 0;}
@@ -310,16 +350,6 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   if(ttbarCR == false){ttbarCRInt = 0;}
   else{ttbarCRInt = 1;}
 
-  //Setting the values of MinElectronPt, MaxElectronPt, MinMuonPt, MaxMuonPt and MaxTrackerEta depending on the year
-  if(year == "2016"){
-        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-  }
-  else if(year == "2017" || year == "2018"){
-        if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
-        else{MinElectronPt = 25; MinMuonPt = 25;}
-  }
-  else{std::cout << "Choose the year out of 2016, 2017 or 2018, and choose ttbarCR as either true or false";}
 
   
   //Setting the value of RunInt depending on the run
@@ -7399,52 +7429,6 @@ const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8)->bool{
 
 
 
-
-//MET triggers
-std::vector<std::string> MET_triggers;
-
-if(year == "2016"){ 
-
-	MET_triggers = {"HLT_MET200",
-		        "HLT_MET250",
-		        "HLT_PFMET120_PFMHT120_IDTight",
-			"HLT_PFMET170_HBHECleaned",
-			"HLT_PFHT300_PFMET100",
-			"DummyBool",
-			"DummyBool",
-			"DummyBool",
-			"DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-			"DummyBool",
-                        "DummyBool",
-                        "DummyBool",
-                        "DummyBool"};
-
-
-}
-else if(year == "2017" || year == "2018"){
-
-	MET_triggers = {"DummyBool",
-			"DummyBool",
-			"DummyBool",
-                        "DummyBool",
-			"DummyBool",
-			"HLT_PFMET130_PFMHT130_IDTight",
-			"HLT_PFMET140_PFMHT140_IDTight",
-			"HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-			"HLT_PFHT1050",
-			"HLT_PFHT180",
-			"HLT_PFHT500_PFMET100_PFMHT100_IDTight",
-			"HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-			"HLT_PFHT700_PFMET85_PFMHT85_IDTight",
-			"HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-			"HLT_PFHT800_PFMET75_PFMHT75_IDTight",
-			"HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
-
-}
-else{std::cout << "Code is only for the years 2016, 2017 and 2018" << std::endl;}
 
 
 //dummy lambda function
