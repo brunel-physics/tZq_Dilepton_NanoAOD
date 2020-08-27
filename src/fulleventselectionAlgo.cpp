@@ -128,6 +128,50 @@ float Chi2_SBR_ee;
 float Chi2_SR_mumu;
 float Chi2_SBR_mumu;
 
+std::string branch;
+
+
+
+std::string cutflowstring;
+std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
+std::string SJER;
+std::string SIGMAJER;
+std::vector<std::string> lep_cut_ee_strings;
+std::vector<std::string> lep_cut_mumu_strings;
+std::vector<std::string> MET_triggers;
+std::vector<std::string> leptontriggers_strings;
+std::string PSWeightString_ee;
+std::string PSWeightString_mumu
+
+std::ofstream CutFlowReport;
+std::ofstream TriggerSF_Efficiency_File;
+std::ofstream Chi2Range;
+std::ofstream TriggerSF_Alpha_File;
+std::ofstream TriggerSF_EfficiencyUncerts_File;
+std::ofstream TriggerSF_ScaleFactors_File;
+std::ofstream Resolution;
+std::ofstream NPL_numbers_MC;
+
+std::vector<std::string> input_files;
+std::string Chi2Range_string;
+std::string OutRootFile_ee;
+std::string OutRootFile_mumu;
+std::string OutRootFile_ee_unblinded;
+std::string OutRootFile_mumu_unblinded;
+std::string BTagEffOutput;
+std::string EndOfName;
+std::string filenamestring_variable;
+std::string TurnOnCurvesOutput;
+
+std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
+
+std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
+
+std::vector<std::string> MET_uncert_strings = {"MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY", "MET_phi", "MET_sumEt",
+                                               "SmearedJet4Momentum",      "Jet_pt",                   "Jet_eta", "Jet_phi",
+                                               "Jet_mass"};
+
+
 
 template<typename T>
 [[gnu::const]] T select(const T& a, const ints& mask)
@@ -253,58 +297,109 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-  EnableImplicitMT();
-  //RDataFrame d("Events", input_files);
-  //auto d_dataframe = d.Range(0, 1000000);
+    EnableImplicitMT();
+    //RDataFrame d("Events", input_files);
+    //auto d_dataframe = d.Range(0, 1000000);
 
-  std::string branch;
-  std::vector<std::string> input_files;
-  std::ofstream CutFlowReport;
-  std::string cutflowstring;
+    
 
-  int RunInt = 0;
-  int ProcessInt = 0;
-  int YearInt = 0;
-  int ZPlusJetsCRInt = 0;
-  int ttbarCRInt = 0;
-  int MCInt = 0;
+    int RunInt = 0;
+    int ProcessInt = 0;
+    int YearInt = 0;
+    int ZPlusJetsCRInt = 0;
+    int ttbarCRInt = 0;
+    int MCInt = 0;
+    int NPLInt = 0;
+    int BlindingInt = 0;
+    
+    std::vector<float> CutRanges_ee = {};
+    std::vector<float> CutRanges_mumu = {};
   
-  //Setting the value of MCInt depending on if the input sample is MC or data
-  if(process != "data_DoubleEGRunB"        && process != "data_DoubleEGRunC"        && process != "data_DoubleEGRunD"        && process != "data_DoubleEGRunE"        && 
-     process != "data_DoubleEGRunF"        && process != "data_DoubleEGRunG"        && process != "data_DoubleEGRunH"        && process != "data_DoubleEGRunB2"       && 
-     process != "data_DoubleEGRunC2"       && process != "data_DoubleEGRunD2"       && process != "data_DoubleEGRunE2"       && process != "data_DoubleEGRunF2"       && 
-     process != "data_DoubleEGRunG2"       && process != "data_DoubleEGRunH2"       && process != "data_EGRunB"              && process != "data_EGRunC"              &&
-     process != "data_EGRunD"              && process != "data_SingleElectronRunB"  && process != "data_SingleElectronRunC"  && process != "data_SingleElectronRunD"  &&
-     process != "data_SingleElectronRunE"  && process != "data_SingleElectronRunF"  && process != "data_SingleElectronRunG"  && process != "data_SingleElectronRunH"  &&
-     process != "data_DoubleMuonRunB"      && process != "data_DoubleMuonRunC"      && process != "data_DoubleMuonRunD"      && process != "data_DoubleMuonRunE"      &&
-     process != "data_DoubleMuonRunF"      && process != "data_DoubleMuonRunG"      && process != "data_DoubleMuonRunH"      && process != "data_SingleMuonRunB"      &&
-     process != "data_SingleMuonRunC"      && process != "data_SingleMuonRunD"      && process != "data_SingleMuonRunE"      && process != "data_SingleMuonRunF"      &&
-     process != "data_SingleMuonRunG"      && process != "data_SingleMuonRunH"      && process != "data_SingleElectronRunB2" && process != "data_SingleElectronRunC2" &&
-     process != "data_SingleElectronRunD2" && process != "data_SingleElectronRunE2" && process != "data_SingleElectronRunF2" && process != "data_SingleElectronRunG2" &&
-     process != "data_SingleElectronRunH2" && process != "data_DoubleMuonRunB2"     && process != "data_DoubleMuonRunC2"     && process != "data_DoubleMuonRunD2"     &&
-     process != "data_DoubleMuonRunE2"     && process != "data_DoubleMuonRunF2"     && process != "data_DoubleMuonRunG2"     && process != "data_DoubleMuonRunH2"     &&
-     process != "data_SingleMuonRunB2"     && process != "data_SingleMuonRunC2"     && process != "data_SingleMuonRunD2"     && process != "data_SingleMuonRunE2"     &&
-     process != "data_SingleMuonRunF2"     && process != "data_SingleMuonRunG2"     && process != "data_SingleMuonRunH2"     && process != "data_MuonEGRunB"	      && 
-     process != "data_MuonEGRunC"          && process != "data_MuonEGRunD"          && process != "data_MuonEGRunE"          && process != "data_MuonEGRunF"          &&
-     process != "data_MuonEGRunG"          && process != "data_MuonEGRunH"){MCInt = 1;}
-  else{MCInt = 0;}
+    //Setting the value of MCInt depending on if the input sample is MC or data
+    if(process != "data_DoubleEGRunB"        && process != "data_DoubleEGRunC"        && process != "data_DoubleEGRunD"        && process != "data_DoubleEGRunE"        &&
+       process != "data_DoubleEGRunF"        && process != "data_DoubleEGRunG"        && process != "data_DoubleEGRunH"        && process != "data_DoubleEGRunB2"       &&
+       process != "data_DoubleEGRunC2"       && process != "data_DoubleEGRunD2"       && process != "data_DoubleEGRunE2"       && process != "data_DoubleEGRunF2"       &&
+       process != "data_DoubleEGRunG2"       && process != "data_DoubleEGRunH2"       && process != "data_EGRunB"              && process != "data_EGRunC"              &&
+       process != "data_EGRunD"              && process != "data_SingleElectronRunB"  && process != "data_SingleElectronRunC"  && process != "data_SingleElectronRunD"  &&
+       process != "data_SingleElectronRunE"  && process != "data_SingleElectronRunF"  && process != "data_SingleElectronRunG"  && process != "data_SingleElectronRunH"  &&
+       process != "data_DoubleMuonRunB"      && process != "data_DoubleMuonRunC"      && process != "data_DoubleMuonRunD"      && process != "data_DoubleMuonRunE"      &&
+       process != "data_DoubleMuonRunF"      && process != "data_DoubleMuonRunG"      && process != "data_DoubleMuonRunH"      && process != "data_SingleMuonRunB"      &&
+       process != "data_SingleMuonRunC"      && process != "data_SingleMuonRunD"      && process != "data_SingleMuonRunE"      && process != "data_SingleMuonRunF"      &&
+       process != "data_SingleMuonRunG"      && process != "data_SingleMuonRunH"      && process != "data_SingleElectronRunB2" && process != "data_SingleElectronRunC2" &&
+       process != "data_SingleElectronRunD2" && process != "data_SingleElectronRunE2" && process != "data_SingleElectronRunF2" && process != "data_SingleElectronRunG2" &&
+       process != "data_SingleElectronRunH2" && process != "data_DoubleMuonRunB2"     && process != "data_DoubleMuonRunC2"     && process != "data_DoubleMuonRunD2"     &&
+       process != "data_DoubleMuonRunE2"     && process != "data_DoubleMuonRunF2"     && process != "data_DoubleMuonRunG2"     && process != "data_DoubleMuonRunH2"     &&
+       process != "data_SingleMuonRunB2"     && process != "data_SingleMuonRunC2"     && process != "data_SingleMuonRunD2"     && process != "data_SingleMuonRunE2"     &&
+       process != "data_SingleMuonRunF2"     && process != "data_SingleMuonRunG2"     && process != "data_SingleMuonRunH2"     && process != "data_MuonEGRunB"	      &&
+       process != "data_MuonEGRunC"          && process != "data_MuonEGRunD"          && process != "data_MuonEGRunE"          && process != "data_MuonEGRunF"          &&
+       process != "data_MuonEGRunG"          && process != "data_MuonEGRunH"){MCInt = 1;}
+    else{MCInt = 0;}
 
 
- std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
-
+   
+  //Setting variables depending if the run is for MC or data
   switch(MCInt){case 1: JetMassInput = "SmearedJetMass"; JetPtInput = "SmearedJetPt"; JetEtaInput = "SmearedJetEta"; JetPhiInput = "SmearedJetPhi"; break;
 		case 0: JetMassInput = "Jet_mass"; JetPtInput = "Jet_pt"; JetEtaInput = "Jet_eta"; JetPhiInput = "Jet_phi"; break;} 
 
+  //Setting the value of BlindingInt depending if the run is for blinded or not
+  if(blinding == true){BlindingInt = 1;}
+  else{BlindingInt = 0;}
+    
 
+  switch(BlindingInt){
+    
+        case 0: if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ttbarCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ZPlusJetsCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + ".root";}
+            
+                break;
+
+        case 1: if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_Blinded.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR_Blinded.root";
+                }
+                else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ttbarCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ZPlusJetsCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
+                    TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR_Blinded.root";
+                }
+                else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+                else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_Blinded.root";}
+
+
+  }
+    
+    
   //Setting the value of YearInt depending on the year
   if(year == "2016"){YearInt = 1;}
   else if(year == "2017"){YearInt = 2;}
   else if(year == "2018"){YearInt = 3;}
   else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl; return 0;}
 
-  std::vector<std::string> MET_triggers;
+  
 
-  //Setting the values of MinElectronPt, MaxElectronPt, MinMuonPt, MaxMuonPt and MaxTrackerEta depending on the year
+    
+  //Setting the values of different variables depending on the year
   switch(YearInt){
 	case 1: if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 35; MinMuonPt = 20; MaxMuonPt = 26; MaxTrackerEta = 2.4;}
         	else{MinElectronPt = 25; MinMuonPt = 25;}
@@ -313,6 +408,33 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
                                 "DummyBool",  "DummyBool",  "DummyBool",                     "DummyBool",                "DummyBool",
                                 "DummyBool",  "DummyBool",  "DummyBool",                     "DummyBool",                "DummyBool",
                                 "DummyBool"};
+          
+        leptontriggers_strings = {
+
+            "DummyBool", //single electron (for 2018 only)
+            "DummyBool", //single electron (for 2017 only)
+            "DummyBool", //double electron (for 2017 and 2018)
+            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+            "DummyBool", //double muon (for 2017 and 2018)
+            "DummyBool", //single muon (for 2017 only)
+        //    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+        //    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+        //    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+            "DummyBool",
+            "DummyBool",
+            "DummyBool",
+            "HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+            "HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
+            "HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+            "HLT_IsoMu24", //single muon (all years)
+        //    "HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
+            "DummyBool",
+            "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+        //    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
+            "DummyBool",
+            "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+            "DummyBool" //double muon (for 2018 only)
 
 		break;
 
@@ -325,6 +447,26 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
                                 "HLT_PFHT180",                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
                                 "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT700_PFMET95_PFMHT95_IDTight",     "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
                                 "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+            
+        "DummyBool", //single electron (for 2018 only)
+            "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
+            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
+            "HLT_IsoMu27", //single muon (for 2017 only)
+            "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+            "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+            "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+            "DummyBool", //single electron (for 2016 only)
+            "DummyBool", //single electron (for 2016 only)
+            "DummyBool", //single electron (for 2016 only)
+            "HLT_IsoMu24", //single muon (all years)
+            "DummyBool", //single muon (for 2016 only)
+            "DummyBool", //muon+electron (for 2016 only)
+            "DummyBool", //muon+electron (for 2016 only)
+            "DummyBool", //muon+electron (for 2016 only)
+            "DummyBool" //double muon (for 2018 only)
 
   		break;
 
@@ -337,12 +479,73 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
                                 "HLT_PFHT180",                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
                                 "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT700_PFMET95_PFMHT95_IDTight",     "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
                                 "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+            
+        leptontriggers_strings = {
+
+        "HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
+        "DummyBool", //single electron (for 2017 only)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+        "DummyBool", //double muon (for 2016 and 2017)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
+        "DummyBool", //single muon (for 2017 only)
+        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "DummyBool", //single electron (for 2016 only)
+        "HLT_IsoMu24", //single muon (all years)
+        "DummyBool", //single muon (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "DummyBool", //muon+electron (for 2016 only)
+        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
 
                 break;
 	
  }
 
+  //Setting the value of NPLInt depending on if it is true or not
+  if(NPLBool == "true"){NPLInt = 1;}
+  else{NPLInt = 0;}
 
+            
+            
+  switch(NPLInt){
+      case 0: lep_cut_ee_strings = {"Electron_pt_Selection",             "LooseElectron_pt_Selection",     "OppositeSign",
+                                    "nElectron",                         "LeadingElectron_dz_ECALBarrel",  "LeadingElectron_dxy_ECALBarrel",
+                                    "LeadingElectron_dz_ECALEndcaps",    "LeadingElectron_dxy_ECALEndcaps", "SubleadingElectron_dz_ECALBarrel",
+                                    "SubleadingElectron_dxy_ECALBarrel", "SubleadingElectron_dz_ECALEndcaps",  "SubleadingElectron_dxy_ECALEndcaps"};
+
+              lep_cut_mumu_strings = {"Muon_pt_Selection", "LooseMuon_pt_Selection", "OppositeSign", "nMuon"};
+          
+              OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_ee.root";
+              OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu.root";
+              OutRootFile_ee  = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_Blinded.root";
+              OutRootFile_mumu = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_Blinded.root";
+          
+              break;
+          
+      case 1: lep_cut_ee_strings = {"Electron_pt_Selection",             "LooseElectron_pt_Selection",
+                                    "SameSign",                          "nElectron",
+                                    "LeadingElectron_dz_ECALBarrel",     "LeadingElectron_dxy_ECALBarrel",
+                                    "LeadingElectron_dz_ECALEndcaps",    "LeadingElectron_dxy_ECALEndcaps",
+                                    "SubleadingElectron_dz_ECALBarrel",  "SubleadingElectron_dxy_ECALBarrel",
+                                    "SubleadingElectron_dz_ECALEndcaps", "SubleadingElectron_dxy_ECALEndcaps"};
+
+              lep_cut_mumu_strings = {"Muon_pt_Selection", "LooseMuon_pt_Selection", "SameSign", "nMuon"};
+          
+              OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_NPL.root";
+              OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_NPL.root";
+              OutRootFile_ee  = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_NPL_Blinded.root";
+              OutRootFile_mumu = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_NPL_Blinded.root";
+          
+              break;
+          
+  }
+            
+            
   //Setting the values of ZPlusJetsCRInt and ttbarCRInt depending on if the run is for the z+jets, ttbar control regions or not.   
   if(ZPlusJetsCR == false){ZPlusJetsCRInt = 0;}
   else{ZPlusJetsCRInt = 1;}
@@ -376,9 +579,8 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else{branch = "Nominal"; RunInt = 1;}
 
 
-  std::string SJER;
-  std::string SIGMAJER;
 
+            
   switch(RunNumInt){
 
 	case 6: SJER = "sJER_up"; break;
@@ -389,8 +591,6 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
   }
 
-  std::string PSWeightString_ee;
-  std::string PSWeightString_mumu;
 
   if( (year == "2017" || year == "2018") &&
      (process == "tZq" ||
@@ -412,8 +612,24 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
  std::cout << "before btag efficiency" << std::endl;
 
-  std::string BTagEffOutput;
-  std::string EndOfName;
+ if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
+       filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_NPL.txt";
+ }
+ else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
+       filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_ZPlusJetsCR.txt";
+ }
+ else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
+       filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_ttbarCR.txt";
+ }
+ else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
+       filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
+ }
+ else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
+       filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL_ttbarCR.txt";
+ }
+ else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+  else{filenamestring_variable = "Resolution_" + process + "_" + year + ".txt";}
+            
 
   if(blinding == false){EndOfName = ".root";}
   else{EndOfName = "_Blinded.root";}
@@ -436,6 +652,25 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
   else{BTagEffOutput = "BTagEffPlots_" + process + "_" + branch + "_" + year + EndOfName;} 
 
+  //Naming the chi2 text file
+  if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
+      Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL.txt";
+  }
+  else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
+      Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR.txt";
+  }
+  else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
+      Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_ttbarCR.txt";
+  }
+  else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
+      Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
+  }
+  else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
+      Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR.txt";
+  }
+  else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
+  else{Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + ".txt";}
+            
 
 
   //Naming the cut flow report output file depending on the run
@@ -849,7 +1084,229 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-//Lambda functions start here
+  //Lambda functions start here
+  auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){
+
+    std::cout << "print 202" << std::endl;
+
+    if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
+    else if(SR == true){return Chi2 < Chi2_SR_ee;}
+    else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+
+  }};
+            
+  auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
+
+  std::cout << "print 203" << std::endl;
+
+      if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
+      else if(SR == true){return Chi2 < Chi2_SR_mumu;}
+      else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
+
+    }};
+            
+  //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
+
+  auto chi2_ee{[&process, &CutRanges_ee, &SBR, &RunNumInt](const float& w_mass, const float& Top_Mass){
+
+    std::cout << "print 200" << std::endl;
+      
+    float FiveSigmaW = 5*W_stddev_ee;
+
+    //calculating chi2
+    float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
+
+    float LowerBound = W_MASS - FiveSigmaW;
+    float UpperBound = W_MASS + FiveSigmaW;
+
+    if(process == "tZq" && RunNumInt == 1 && SBR == true){
+
+      //returning chi2 values only for when w_mass is within 5 sigma of the known W mass
+      if(w_mass > LowerBound && w_mass < UpperBound){
+          CutRanges_ee.push_back(chi2);
+          return chi2;
+      }
+      else{
+          std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
+          float out = 999.0;
+                  return out;
+      }
+
+    }
+    else{return chi2;}
+
+
+  }};
+
+
+
+
+  std::vector<float> CutRanges_mumu = {};
+
+  auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+
+    std::cout << "print 201" << std::endl;
+
+    float FiveSigmaW = 5*W_stddev_mumu;
+
+    float LowerBound = W_MASS - FiveSigmaW;
+    float UpperBound = W_MASS + FiveSigmaW;
+
+
+    //calculating chi2
+    float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
+
+
+    if(process == "tZq" && NominalRun == true && SBR == true){
+    
+      //returning chi2 values only for when w_mass is within 5 sigma of the known W mass
+          if(w_mass > LowerBound && w_mass < UpperBound){
+          CutRanges_mumu.push_back(chi2);
+          return chi2;
+      }
+          else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
+           float out = 999.0;
+           return out;
+      }
+
+
+    }
+    else{return chi2;}
+
+   
+  }};
+
+
+            
+  //Event weights
+  auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                           &SF_Uncert_ee,
+                       &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+                       &PDF_ScaleUp,                 &PDF_ScaleDown,
+                       &isr_up,                      &isr_down,
+                       &fsr_up,                      &fsr_down
+                          ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& EGammaSF_egammaEffInput, const float& EGammaSF_egammaEffRecoInput, const float& EGammaSF_egammaEffSysInput, const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
+
+
+              std::cout << "print 198" << std::endl;
+
+                          if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(PDF_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(PDF_ScaleDown == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(isr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(2) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+
+          }};
+
+
+
+  auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                           &SF_Uncert_mumu,
+                         &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+                         &PDF_ScaleUp,                 &PDF_ScaleDown,
+                         &isr_up,                      &isr_down,
+                         &fsr_up,                      &fsr_down
+                          ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& MuonSFTest_IDInput, const float& MuonSFTest_IsoInput, const float& MuonSFTest_ID_sys_systInput, const float& MuonSFTest_ID_sys_statInput, const float& MuonSFTest_Iso_sys_systInput, const float& MuonSFTest_Iso_sys_statInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
+
+
+              std::cout << "print 199" << std::endl;
+
+                          if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(PDF_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(PDF_ScaleDown == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(isr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(2) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+                          else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
+
+          }};
+
+  //lambda function for implementing the MET uncertainties
+  auto METUncertFunction{[&MET_Up, &MET_Down](const floats& MET_MetUnclustEnUpDeltaX,          const floats& MET_MetUnclustEnUpDeltaY,
+                                              const floats& MET_phi,                           const floats& MET_sumEt,
+                                              std::vector<TLorentzVector> SmearedJet4Momentum, const floats& Jet_pt,
+                                              const floats& Jet_eta,                           const floats& Jet_phi,
+                                              const floats& Jet_mass){
+
+      std::cout << "print 197" << std::endl;
+
+      std::vector<TLorentzVector> metVecOriginal{};
+      floats metVecOriginal_px;
+      floats metVecOriginal_py;
+
+      std::vector<TLorentzVector> metVec{};
+      std::vector<TLorentzVector> UnsmearedJet{};
+      floats SmearedJetPxVec;
+      floats SmearedJetPyVec;
+      floats UnsmearedJetPx;
+      floats UnsmearedJetPy;
+
+
+      //TLorentzVector for unsmeared jets
+      for(long unsigned int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
+
+      //Obtaining the px and py of unsmeared jets
+      for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
+      for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
+               
+
+     //Obtaining the px and py of smeared jets
+     for(long unsigned int i = 0; i < SmearedJet4Momentum.size(); i++){
+             
+         float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
+         float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
+         SmearedJetPxVec.push_back(SmearedJetPx);
+         SmearedJetPyVec.push_back(SmearedJetPy);
+
+     }
+
+     //Original MET vector
+     for(long unsigned int i = 0; i < MET_phi.size(); i++){
+
+         (metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));
+          metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
+          metVecOriginal_py.push_back( (metVecOriginal.at(i)).Py() );
+
+     }
+
+    floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
+    floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
+    floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
+    floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;
+
+    //For the nominal MET and MET uncertainties
+              
+    floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
+    floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
+
+    for(long unsigned int i = 0; i < MET_phi.size(); i++){
+
+        if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
+        else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
+        else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
+
+    }
+
+    //Propagating the jet smearing to the MET
+             
+    for(long unsigned int i = 0; i < SmearedJetPxVec.size(); i++){
+             
+        ( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
+        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
+        ( metVec.at(i) ).SetPx( (metVec.at(i)).Px() - SmearedJetPxVec.at(i));
+        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() - SmearedJetPyVec.at(i));
+             
+    }
+
+    return metVec;
+      
+  }};
+            
+            
  //SFs for ME up and down
   auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
@@ -3500,24 +3957,29 @@ auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
 
 
-  auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
+  auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges, &MCInt](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
 
     std::cout << "inside RunAndLumiFilterFunction" << std::endl;
 
-    if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
+      switch(MCInt){
+      
+          case 0: if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
+                    for(long unsigned int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
 
-	for(long unsigned int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
+                        int MinLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i);
+                        int MaxLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i+1);
 
-		int MinLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i);
-		int MaxLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i+1);
+                        if(luminosityBlock > MinLumi && luminosityBlock < MaxLumi){return InputRunNumber && luminosityBlock;}
+                        else{continue;}
 
-		if(luminosityBlock > MinLumi && luminosityBlock < MaxLumi){return InputRunNumber && luminosityBlock;}
-		else{continue;}
+                    }
 
-	}
-
-    }
-    else{return false;}
+                  }
+                 else{return false;}
+              
+          case 1: return  InputRunNumber && luminosityBlock;
+              
+      }
 
 
   }};
@@ -7649,184 +8111,8 @@ auto DummyBool{[](const bool& dummyinput){
 
 
 
-std::vector<std::string> leptontriggers_strings;
-
-if(year == "2016"){
-
-	leptontriggers_strings = {
-
-	"DummyBool", //single electron (for 2018 only)
-	"DummyBool", //single electron (for 2017 only)
-	"DummyBool", //double electron (for 2017 and 2018)
-	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-	"DummyBool", //double muon (for 2017 and 2018)
-	"DummyBool", //single muon (for 2017 only)
-//	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-//	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-	"DummyBool",
-	"DummyBool",
-	"DummyBool",
-	"HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-	"HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
-	"HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-	"HLT_IsoMu24", //single muon (all years)
-//	"HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
-	"DummyBool",
-	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-//	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
-	"DummyBool",
-	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-	"DummyBool" //double muon (for 2018 only)
-
-};
-
-}
-else if(year == "2017"){
-
-	leptontriggers_strings = {
-
-        "DummyBool", //single electron (for 2018 only)
-        "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
-        "HLT_IsoMu27", //single muon (for 2017 only)
-        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "HLT_IsoMu24", //single muon (all years)
-        "DummyBool", //single muon (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool" //double muon (for 2018 only)	
-
-};
-
-}
-else if(year == "2018"){
-
-	leptontriggers_strings = {
-
-	"HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
-	"DummyBool", //single electron (for 2017 only)
-	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-	"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-	"DummyBool", //double muon (for 2016 and 2017)
-	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
-	"DummyBool", //single muon (for 2017 only)
-	"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-	"DummyBool", //single electron (for 2016 only)
-	"DummyBool", //single electron (for 2016 only)
-	"DummyBool", //single electron (for 2016 only)
-	"HLT_IsoMu24", //single muon (all years)
-	"DummyBool", //single muon (for 2016 only)	
-	"DummyBool", //muon+electron (for 2016 only)
-	"DummyBool", //muon+electron (for 2016 only)
-	"DummyBool", //muon+electron (for 2016 only)
-	"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
-
-};
-
-} 
-else{std::cout << "choose 2016, 2017 or 2018" << std::endl;}
-
-
-
-
-
-
-
-std::string SJER;
-std::string SIGMAJER;
-
-if(JetSmearing_ScaleUp == true){SJER = "sJER_up";} 
-else if(JetSmearing_ScaleDown == true){SJER = "sJER_down";}
-else{SJER = "sJER_Nominal";}
-
-if(JetResolution_ScaleUp == true){SIGMAJER = "sigma_JER_up";}
-else if(JetResolution_ScaleDown == true){SIGMAJER = "sigma_JER_down";}
-else{SIGMAJER = "sigma_JER";}
-
-
-
-std::vector<std::string> lep_cut_ee_strings;
-std::vector<std::string> lep_cut_mumu_strings;
-
-if(NPL == true){
-
-	lep_cut_ee_strings = {
-	"Electron_pt_Selection", 
-	"LooseElectron_pt_Selection", 
-	"SameSign",
-	"nElectron",
-	"LeadingElectron_dz_ECALBarrel",
-	"LeadingElectron_dxy_ECALBarrel",
-	"LeadingElectron_dz_ECALEndcaps",
-	"LeadingElectron_dxy_ECALEndcaps",
-	"SubleadingElectron_dz_ECALBarrel",
-	"SubleadingElectron_dxy_ECALBarrel",
-	"SubleadingElectron_dz_ECALEndcaps",
-	"SubleadingElectron_dxy_ECALEndcaps"
-	
-	};
-
-
-	lep_cut_mumu_strings = {
-	"Muon_pt_Selection",
-	"LooseMuon_pt_Selection", 
-	"SameSign", 
-	"nMuon"
-	};
-
-}
-else{
-
-	lep_cut_ee_strings = {
-	"Electron_pt_Selection",
-	"LooseElectron_pt_Selection",
-	"OppositeSign",
-	"nElectron",
-	"LeadingElectron_dz_ECALBarrel",
-	"LeadingElectron_dxy_ECALBarrel",
-	"LeadingElectron_dz_ECALEndcaps",
-	"LeadingElectron_dxy_ECALEndcaps",
-	"SubleadingElectron_dz_ECALBarrel",
-	"SubleadingElectron_dxy_ECALBarrel",
-	"SubleadingElectron_dz_ECALEndcaps",
-	"SubleadingElectron_dxy_ECALEndcaps"
-	
-	};
-
-	lep_cut_mumu_strings = {
-	"Muon_pt_Selection",  
-	"LooseMuon_pt_Selection", 
-	"OppositeSign", 
-	"nMuon"
-	};
-
-}
-
-
-
-
 std::cout << "before event cleaning" << std::endl;
 
-//Event cleaning
-auto d_EventCleaning = d_dataframe.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
-						            "Flag_HBHENoiseIsoFilter",        "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter", 
-							    "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter",                 "Flag_eeBadScFilter"}, 
-					  "Event cleaning filter");
-
-std::cout << "before opening PU files" << std::endl;
 
 //Pile up modelling
 //2016
@@ -8041,122 +8327,123 @@ systUpFile_2018->Close();
 systDownFile_2018->Close();
 
 
-std::cout << "before pu function" << std::endl;
+  std::cout << "before pu function" << std::endl;
 
-//Implementing the PU modelling
-
-
-auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &YearInt](int PV_npvs_input){
+  //Implementing the PU modelling
+  auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &YearInt](int PV_npvs_input){
 
   //std::cout << "print 187" << std::endl;
 
-  float PU_Weight_input;
+      float PU_Weight_input;
 
-  switch(Yearint){
+      switch(Yearint){
 
-	case 1: PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input)); break;
-  	case 2: PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input)); break;
-        case 3: PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input)); break;
-        default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl; break;
+          case 1: PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input)); break;
+          case 2: PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input)); break;
+          case 3: PU_Weight_input = puReweight_2018->GetBinContent(puReweight_2018->GetXaxis()->FindBin(PV_npvs_input)); break;
+          default: std::cout << "Choose a year out of 2016, 2017 or 2018 for the PU function" << std::endl; break;
 
-  }
+      }
 
-  return PU_Weight_input;
+      return PU_Weight_input;
 
-}};
+  }};
 
 
 
 
 
   //Start of event selection
-  auto d_GoldenJson = d_EventCleaning.Define("DummyBool", DummyBool, {"HLT_PFHT250"});
-
-  if(process == "Data_triggerSF"){auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
+  //Event cleaning
+  auto d_EventCleaning = d_dataframe.Filter(filter_function, {"Flag_goodVertices",                       "Flag_globalSuperTightHalo2016Filter",                                                          "Flag_HBHENoiseFilter",                    "Flag_HBHENoiseIsoFilter",                                                                      "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter",
+                                                              "Flag_BadChargedCandidateFilter",          "Flag_ecalBadCalibFilter",        "Flag_eeBadScFilter"}, "Event cleaning filter");
+          
+  //Filtering events using the golden json file (for data not MC)
+  auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
 
   //Filtering events that pass the ee selection criteria
   auto d_ee_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
-                                           .Define("TightElectrons", TightElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
-                                          .Define("Electron_pt_Selection", select<floats>, {"Electron_pt", "TightElectrons"})
-					  .Define("Electron_phi_Selection", select<floats>, {"Electron_phi", "TightElectrons"})
-					  .Define("Electron_eta_Selection", select<floats>, {"Electron_eta", "TightElectrons"})
-                                          .Define("Electron_charge_Selection", select<ints>, {"Electron_charge", "TightElectrons"})
-                                          .Define("LooseElectrons", LooseElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
-                                          .Define("LooseElectron_pt_Selection", select<floats>, {"Electron_pt", "LooseElectrons"})
-                                          .Define("LooseElectron_charge_Selection", select<ints>, {"Electron_charge", "LooseElectrons"})
-                                          .Define("OppositeSign", OppositeSign, {"Electron_charge_Selection"})
-                                          .Define("SameSign", SameSign, {"Electron_charge_Selection"})
-                                          .Define("LeadingElectron_pT", LeadingVariable, {"Electron_pt_Selection"})
-                                          .Define("SubleadingElectron_pT", SubleadingVariable, {"Electron_pt_Selection"})
-                                          .Define("LeadingElectronPhi", LeadingVariable, {"Electron_phi_Selection"})
-                                          .Define("SubleadingElectronPhi", SubleadingVariable, {"Electron_phi_Selection"})
-					  .Define("LeadingElectronEta", LeadingVariable, {"Electron_eta_Selection"})
-                                          .Define("SubleadingElectronEta", SubleadingVariable, {"Electron_eta_Selection"})
-                                          .Define("LeadingElectronMass", LeadingVariable, {"Electron_mass"})
-                                          .Define("SubleadingElectronMass", SubleadingVariable, {"Electron_mass"})
-                                          .Define("LeadingElectron_RelIso_Selection", LeadingVariable, {"Electron_jetRelIso"})
-                                          .Define("SubleadingElectron_RelIso_Selection", SubleadingVariable, {"Electron_jetRelIso"})
-                                          .Define("LeadingElectron_dz_ECALBarrel", LeadingElectron_dz_ECALBarrel_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
-                                          .Define("LeadingElectron_dxy_ECALBarrel", LeadingElectron_dxy_ECALBarrel_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"})
-                                          .Define("LeadingElectron_dz_ECALEndcaps", LeadingElectron_dz_ECALEndcaps_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
-                                          .Define("LeadingElectron_dxy_ECALEndcaps", LeadingElectron_dxy_ECALEndcaps_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"})
-                                          .Define("SubleadingElectron_dz_ECALBarrel", SubleadingElectron_dz_ECALBarrel_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
-                                          .Define("SubleadingElectron_dxy_ECALBarrel", SubleadingElectron_dxy_ECALBarrel_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"})
-                                          .Define("SubleadingElectron_dz_ECALEndcaps", SubleadingElectron_dz_ECALEndcaps_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
-                                          .Define("SubleadingElectron_dxy_ECALEndcaps", SubleadingElectron_dxy_ECALEndcaps_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"});
+                                            .Define("TightElectrons", TightElectronsFunction, {"Electron_pt", "Electron_eta",                   "Electron_cutBased", "Electron_isPFcand"})
+                                            .Define("Electron_pt_Selection", select<floats>, {"Electron_pt", "TightElectrons"})
+                                            .Define("Electron_phi_Selection", select<floats>, {"Electron_phi", "TightElectrons"})
+                                            .Define("Electron_eta_Selection", select<floats>, {"Electron_eta", "TightElectrons"})
+                                            .Define("Electron_charge_Selection", select<ints>, {"Electron_charge", "TightElectrons"})
+                                            .Define("LooseElectrons", LooseElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
+                                            .Define("LooseElectron_pt_Selection", select<floats>, {"Electron_pt", "LooseElectrons"})
+                                            .Define("LooseElectron_charge_Selection", select<ints>, {"Electron_charge", "LooseElectrons"})
+                                            .Define("OppositeSign", OppositeSign, {"Electron_charge_Selection"})
+                                            .Define("SameSign", SameSign, {"Electron_charge_Selection"})
+                                            .Define("LeadingElectron_pT", LeadingVariable, {"Electron_pt_Selection"})
+                                            .Define("SubleadingElectron_pT", SubleadingVariable, {"Electron_pt_Selection"})
+                                            .Define("LeadingElectronPhi", LeadingVariable, {"Electron_phi_Selection"})
+                                            .Define("SubleadingElectronPhi", SubleadingVariable, {"Electron_phi_Selection"})
+                                            .Define("LeadingElectronEta", LeadingVariable, {"Electron_eta_Selection"})
+                                            .Define("SubleadingElectronEta", SubleadingVariable, {"Electron_eta_Selection"})
+                                            .Define("LeadingElectronMass", LeadingVariable, {"Electron_mass"})
+                                            .Define("SubleadingElectronMass", SubleadingVariable, {"Electron_mass"})
+                                            .Define("LeadingElectron_RelIso_Selection", LeadingVariable, {"Electron_jetRelIso"})
+                                            .Define("SubleadingElectron_RelIso_Selection", SubleadingVariable, {"Electron_jetRelIso"})
+                                            .Define("LeadingElectron_dz_ECALBarrel", LeadingElectron_dz_ECALBarrel_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
+                                            .Define("LeadingElectron_dxy_ECALBarrel", LeadingElectron_dxy_ECALBarrel_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"})
+                                            .Define("LeadingElectron_dz_ECALEndcaps", LeadingElectron_dz_ECALEndcaps_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
+                                            .Define("LeadingElectron_dxy_ECALEndcaps", LeadingElectron_dxy_ECALEndcaps_function, {"LeadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"})
+                                            .Define("SubleadingElectron_dz_ECALBarrel", SubleadingElectron_dz_ECALBarrel_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
+                                            .Define("SubleadingElectron_dxy_ECALBarrel", SubleadingElectron_dxy_ECALBarrel_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"})
+                                            .Define("SubleadingElectron_dz_ECALEndcaps", SubleadingElectron_dz_ECALEndcaps_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dz"})
+                                            .Define("SubleadingElectron_dxy_ECALEndcaps", SubleadingElectron_dxy_ECALEndcaps_function, {"SubleadingElectron_pT", "Electron_eta_Selection", "Electron_dxy"});
 
 
 
-
-auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
-                                               .Define("TightMuons", TightMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
-                                               .Define("Muon_pt_Selection", select<floats>, {"Muon_pt", "TightMuons"})
-                                               .Define("Muon_eta_Selection", select<floats>, {"Muon_eta", "TightMuons"})
-                                               .Define("Muon_phi_Selection", select<floats>, {"Muon_phi", "TightMuons"})
-                                               .Define("Muon_mass_Selection", select<floats>, {"Muon_mass", "TightMuons"})
-                                               .Define("Muon_charge_Selection", select<ints>, {"Muon_charge", "TightMuons"})
-                                               .Define("LooseMuons", LooseMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
-                                               .Define("LooseMuon_pt_Selection", select<floats>, {"Muon_pt", "LooseMuons"})
-                                               .Define("LooseMuon_charge_Selection", select<ints>, {"Muon_charge", "LooseMuons"})
-					       .Define("OppositeSign", OppositeSign, {"Muon_charge_Selection"})
-                                               .Define("SameSign", SameSign, {"Muon_charge_Selection"})
-                                               .Define("LeadingMuon_pT", LeadingVariable, {"Muon_pt_Selection"})
-                                               .Define("SubleadingMuon_pT", SubleadingVariable, {"Muon_pt_Selection"})
-                                               .Define("LeadingMuonPhi", LeadingVariable, {"Muon_phi_Selection"})
-                                               .Define("SubleadingMuonPhi", SubleadingVariable, {"Muon_phi_Selection"})
-                                               .Define("LeadingMuonMass", LeadingVariable, {"Muon_mass_Selection"})
-                                               .Define("SubleadingMuonMass", SubleadingVariable, {"Muon_mass_Selection"})
-                                               .Define("LeadingMuon_RelIso_Selection", LeadingVariable, {"Muon_jetRelIso"})
-                                               .Define("SubleadingMuon_RelIso_Selection", SubleadingVariable, {"Muon_jetRelIso"})
-                                               .Define("LeadingMuonEta", LeadingVariable, {"Muon_eta_Selection"})
-                                               .Define("SubleadingMuonEta", SubleadingVariable, {"Muon_eta_Selection"});
+  //Filtering events that pass the mumu selection criteria
+  auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
+                                              .Define("TightMuons", TightMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
+                                              .Define("Muon_pt_Selection", select<floats>, {"Muon_pt", "TightMuons"})
+                                              .Define("Muon_eta_Selection", select<floats>, {"Muon_eta", "TightMuons"})
+                                              .Define("Muon_phi_Selection", select<floats>, {"Muon_phi", "TightMuons"})
+                                              .Define("Muon_mass_Selection", select<floats>, {"Muon_mass", "TightMuons"})
+                                              .Define("Muon_charge_Selection", select<ints>, {"Muon_charge", "TightMuons"})
+                                              .Define("LooseMuons", LooseMuonsFunction, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
+                                              .Define("LooseMuon_pt_Selection", select<floats>, {"Muon_pt", "LooseMuons"})
+                                              .Define("LooseMuon_charge_Selection", select<ints>, {"Muon_charge", "LooseMuons"})
+					                          .Define("OppositeSign", OppositeSign, {"Muon_charge_Selection"})
+                                              .Define("SameSign", SameSign, {"Muon_charge_Selection"})
+                                              .Define("LeadingMuon_pT", LeadingVariable, {"Muon_pt_Selection"})
+                                              .Define("SubleadingMuon_pT", SubleadingVariable, {"Muon_pt_Selection"})
+                                              .Define("LeadingMuonPhi", LeadingVariable, {"Muon_phi_Selection"})
+                                              .Define("SubleadingMuonPhi", SubleadingVariable, {"Muon_phi_Selection"})
+                                              .Define("LeadingMuonMass", LeadingVariable, {"Muon_mass_Selection"})
+                                              .Define("SubleadingMuonMass", SubleadingVariable, {"Muon_mass_Selection"})
+                                              .Define("LeadingMuon_RelIso_Selection", LeadingVariable, {"Muon_jetRelIso"})
+                                              .Define("SubleadingMuon_RelIso_Selection", SubleadingVariable, {"Muon_jetRelIso"})
+                                              .Define("LeadingMuonEta", LeadingVariable, {"Muon_eta_Selection"})
+                                              .Define("SubleadingMuonEta", SubleadingVariable, {"Muon_eta_Selection"});
         
 
      auto d_emu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
-                                           	   .Define("TightElectronsEmu", TightElectronsFunctionEmu, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
-						   .Define("LooseMuonsEmu", LooseMuonsFunctionEmu, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
-                                          	   .Define("Electron_pt_SelectionEmu", select<floats>, {"Electron_pt", "TightElectronsEmu"})
-						   .Define("Electron_eta_SelectionEmu", select<floats>, {"Electron_eta", "TightElectronsEmu"})
-                                          	   .Define("Electron_charge_SelectionEmu", select<ints>, {"Electron_charge", "TightElectronsEmu"})
-                                                   .Define("LooseElectronsEmu", LooseElectronsFunctionEmu, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
-                                          	   .Define("LooseElectron_pt_SelectionEmu", select<floats>, {"Electron_pt", "LooseElectronsEmu"})
-                                          	   .Define("LooseElectron_charge_SelectionEmu", select<ints>, {"Electron_charge", "LooseElectronsEmu"})
-						   .Define("Electron_phi_SelectionEmu", select<floats>, {"Electron_phi", "TightElectronsEmu"})
-						   .Define("TightMuonsEmu", TightMuonsFunctionEmu, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
-                                                   .Define("Muon_pt_SelectionEmu", select<floats>, {"Muon_pt", "TightMuonsEmu"})
-                                            	   .Define("Muon_eta_SelectionEmu", select<floats>, {"Muon_eta", "TightMuonsEmu"})
-                                             	   .Define("Muon_phi_SelectionEmu", select<floats>, {"Muon_phi", "TightMuonsEmu"})
-                                                   .Define("Muon_mass_SelectionEmu", select<floats>, {"Muon_mass", "TightMuonsEmu"})
-                                             	   .Define("Muon_charge_SelectionEmu", select<ints>, {"Muon_charge", "TightMuonsEmu"})
-                                             	   .Define("LooseMuon_pt_SelectionEmu", select<floats>, {"Muon_pt", "LooseMuonsEmu"})
-                                             	   .Define("LooseMuon_charge_SelectionEmu", select<ints>, {"Muon_charge", "LooseMuonsEmu"})
-                                                   .Define("OppositeSign_emu", OppositeSign_emu, {"Electron_charge_SelectionEmu", "Muon_charge_SelectionEmu"})
-                                             	   .Define("LeadingElectronMuon_pT", LeadingVariableEmu, {"Electron_pt_SelectionEmu", "Muon_pt_SelectionEmu"})
-                                            	   .Define("SubleadingElectronMuon_pT", SubleadingVariableEmu, {"Electron_pt_SelectionEmu", "Muon_pt_SelectionEmu"})
-                                             	   .Define("LeadingElectronMuonPhi", LeadingVariableEmu, {"Electron_phi_SelectionEmu", "Muon_phi_SelectionEmu"})
-                                                   .Define("SubleadingElectronMuonPhi", SubleadingVariableEmu, {"Electron_phi_SelectionEmu", "Muon_phi_SelectionEmu"})
-                                             	   .Define("LeadingElectronMuonEta", LeadingVariableEmu, {"Electron_eta_SelectionEmu", "Muon_eta_SelectionEmu"})
-                                             	   .Define("SubleadingElectronMuonEta", SubleadingVariableEmu, {"Electron_eta_SelectionEmu", "Muon_eta_SelectionEmu"});
+                                           	    .Define("TightElectronsEmu", TightElectronsFunctionEmu, {"Electron_pt", "Electron_eta",          "Electron_cutBased", "Electron_isPFcand"})
+                                                .Define("LooseMuonsEmu", LooseMuonsFunctionEmu, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
+                                          	    .Define("Electron_pt_SelectionEmu", select<floats>, {"Electron_pt", "TightElectronsEmu"})
+						                        .Define("Electron_eta_SelectionEmu", select<floats>, {"Electron_eta", "TightElectronsEmu"})
+                                          	    .Define("Electron_charge_SelectionEmu", select<ints>, {"Electron_charge", "TightElectronsEmu"})
+                                                .Define("LooseElectronsEmu", LooseElectronsFunctionEmu, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand"})
+                                          	    .Define("LooseElectron_pt_SelectionEmu", select<floats>, {"Electron_pt", "LooseElectronsEmu"})
+                                          	    .Define("LooseElectron_charge_SelectionEmu", select<ints>, {"Electron_charge", "LooseElectronsEmu"})
+                                                .Define("Electron_phi_SelectionEmu", select<floats>, {"Electron_phi", "TightElectronsEmu"})
+                                                .Define("TightMuonsEmu", TightMuonsFunctionEmu, {"Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
+                                                .Define("Muon_pt_SelectionEmu", select<floats>, {"Muon_pt", "TightMuonsEmu"})
+                                                .Define("Muon_eta_SelectionEmu", select<floats>, {"Muon_eta", "TightMuonsEmu"})
+                                                .Define("Muon_phi_SelectionEmu", select<floats>, {"Muon_phi", "TightMuonsEmu"})
+                                                .Define("Muon_mass_SelectionEmu", select<floats>, {"Muon_mass", "TightMuonsEmu"})
+                                                .Define("Muon_charge_SelectionEmu", select<ints>, {"Muon_charge", "TightMuonsEmu"})
+                                                .Define("LooseMuon_pt_SelectionEmu", select<floats>, {"Muon_pt", "LooseMuonsEmu"})
+                                                .Define("LooseMuon_charge_SelectionEmu", select<ints>, {"Muon_charge", "LooseMuonsEmu"})
+                                                .Define("OppositeSign_emu", OppositeSign_emu, {"Electron_charge_SelectionEmu", "Muon_charge_SelectionEmu"})
+                                                .Define("LeadingElectronMuon_pT", LeadingVariableEmu, {"Electron_pt_SelectionEmu", "Muon_pt_SelectionEmu"})
+                                                .Define("SubleadingElectronMuon_pT", SubleadingVariableEmu, {"Electron_pt_SelectionEmu", "Muon_pt_SelectionEmu"})
+                                                .Define("LeadingElectronMuonPhi", LeadingVariableEmu, {"Electron_phi_SelectionEmu", "Muon_phi_SelectionEmu"})
+                                                .Define("SubleadingElectronMuonPhi", SubleadingVariableEmu, {"Electron_phi_SelectionEmu", "Muon_phi_SelectionEmu"})
+                                                .Define("LeadingElectronMuonEta", LeadingVariableEmu, {"Electron_eta_SelectionEmu", "Muon_eta_SelectionEmu"})
+                                                .Define("SubleadingElectronMuonEta", SubleadingVariableEmu, {"Electron_eta_SelectionEmu", "Muon_eta_SelectionEmu"});
 
 
 
@@ -8167,9 +8454,8 @@ auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs
 
   if( (process == "MC_triggerSF_ttbar" || process == "MC_triggerSF_ZPlusJets" || process == "Data_triggerSF") ){
 
-	auto d_emu_selection = d_emu_selection_defines.Filter(lep_cut_emu, "Electron_pt_SelectionEmu", "LooseElectron_pt_SelectionEmu", "OppositeSign_emu",
-								           "nElectron", 	       "Muon_pt_SelectionEmu",          "LooseMuon_pt_SelectionEmu",
-									    "nMuon"};, "lepton cut (emu)");
+	auto d_emu_selection = d_emu_selection_defines.Filter(lep_cut_emu, "Electron_pt_SelectionEmu", "LooseElectron_pt_SelectionEmu",                                                                             "OppositeSign_emu",         "nElectron", 	                                                                                            "Muon_pt_SelectionEmu",     "LooseMuon_pt_SelectionEmu",
+                                                                       "nMuon"};, "lepton cut (emu)");
 
   	//Filtering events that pass the MET filters and the selection criteria (for trigger SF calculation)
   	auto d_MET_And_Selection_ee = d_ee_selection.Filter(MET_triggers_function, MET_triggers);
@@ -8271,7 +8557,7 @@ auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs
 	else if(process == "MC_triggerSF_ttbar"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_MC_ZPlusJets_" + year + ".txt";}
 
-	std::ofstream TriggerSF_Efficiency_File;
+	
 	TriggerSF_Efficiency_File.open(TriggerSF_Efficiency.c_str());	
 
 	TriggerSF_Efficiency_File << Eff_ee << '\n'
@@ -8304,7 +8590,7 @@ auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_Alpha = "TriggerSF_Alpha_MC_ZPlusJets_" + year + ".txt";}
         else{std::cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar or MC_triggerSF_ZPlusJets" << std::endl;}
 
-       std::ofstream TriggerSF_Alpha_File;
+       
         TriggerSF_Alpha_File.open(TriggerSF_Alpha.c_str());
 
         TriggerSF_Alpha_File << Alpha_ee << '\n'
@@ -8332,7 +8618,7 @@ auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_EfficiencyUncerts = "TriggerSF_EfficiencyUncerts_MC_ZPlusJets_" + year + ".txt";}
         else{std::cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar, MC_triggerSF_ZPlusJets" << std::endl;}
 
-       std::ofstream TriggerSF_EfficiencyUncerts_File;
+       
         TriggerSF_EfficiencyUncerts_File.open(TriggerSF_EfficiencyUncerts.c_str());
 
         TriggerSF_EfficiencyUncerts_File << Eff_ee_UpperUncert << '\n'
@@ -8535,54 +8821,6 @@ auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs
 	}
 
 	//Saving the turn on curves to an output file
-	std::string TurnOnCurvesOutput;
-
-	if(blinding == false){
-
-        if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL.root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR.root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ttbarCR.root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ZPlusJetsCR.root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR.root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + ".root";}
-
-	}
-	else{
-
-
-        if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_Blinded.root";
-        }
-        else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ZPlusJetsCR_Blinded.root";
-        }
-        else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_ttbarCR_Blinded.root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ZPlusJetsCR_Blinded.root";
-        }
-        else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
-                TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_NPL_ttbarCR_Blinded.root";
-        }
-        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{TurnOnCurvesOutput = "TurnOnCurves_" + process + "_" + year + "_Blinded.root";}
-
-
-	}		
-
-
 	TFile* TurnOnCurvesFile = new TFile(TurnOnCurvesOutput.c_str(), "RECREATE");
 	
 	//1D histograms
@@ -8717,7 +8955,6 @@ auto d_mumu_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs
   if(PU_ScaleUp == false && PU_ScaleDown == false && BTag_ScaleUp == false && BTag_ScaleDown == false && JetSmearing_ScaleUp == false && JetSmearing_ScaleDown == false && JetResolution_ScaleUp == false && JetResolution_ScaleDown == false && LeptonEfficiencies_ScaleUp == false && LeptonEfficiencies_ScaleDown == false && PDF_ScaleUp == false && PDF_ScaleDown == false && ME_Up == false && ME_Down == false && MET_Up == false && MET_Down == false && isr_up == false && isr_down == false && fsr_up == false && fsr_down == false){
 
   	std::string TriggerSF_ScaleFactors = "TriggerSF_ScaleFactors_" + year + ".txt";
-  	std::ofstream TriggerSF_ScaleFactors_File;
   	TriggerSF_ScaleFactors_File.open(TriggerSF_ScaleFactors.c_str());
 
   	TriggerSF_ScaleFactors_File << SF_ee << '\n'
@@ -9498,173 +9735,12 @@ auto d_WeightedEvents_mumu = d_TopReweighted_mumu.Define("TotalHT_System", Total
 						 .Define("CalculatedGeneratorWeight", GeneratorWeight, {"ME_numerator_histo", "CalculatedNominalWeight", "ReturnedPSWeight"});
 				
 
-
-//lambda function for implementing the MET uncertainties
-auto METUncertFunction{[&MET_Up, &MET_Down](
-
-const floats& MET_MetUnclustEnUpDeltaX, 
-const floats& MET_MetUnclustEnUpDeltaY, 
-const floats& MET_phi,
-const floats& MET_sumEt,
-std::vector<TLorentzVector> SmearedJet4Momentum,
-const floats& Jet_pt, 
-const floats& Jet_eta, 
-const floats& Jet_phi, 
-const floats& Jet_mass){
-
-  std::cout << "print 197" << std::endl;
-
-  std::vector<TLorentzVector> metVecOriginal{};
-  floats metVecOriginal_px;
-  floats metVecOriginal_py;
-
-  std::vector<TLorentzVector> metVec{};
-  std::vector<TLorentzVector> UnsmearedJet{};
-  floats SmearedJetPxVec;
-  floats SmearedJetPyVec;
-  floats UnsmearedJetPx;
-  floats UnsmearedJetPy;
-
-
-  //TLorentzVector for unsmeared jets
-  for(long unsigned int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
-
-  //Obtaining the px and py of unsmeared jets
-  for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
-  for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
-   
-
-  //Obtaining the px and py of smeared jets
-  for(long unsigned int i = 0; i < SmearedJet4Momentum.size(); i++){
- 
-  	float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
-	float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
- 	SmearedJetPxVec.push_back(SmearedJetPx);
-	SmearedJetPyVec.push_back(SmearedJetPy);
-
-  }
-
-  //Original MET vector
-  for(long unsigned int i = 0; i < MET_phi.size(); i++){ 
-
-	(metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i)); 
-	metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
-	metVecOriginal_py.push_back( (metVecOriginal.at(i)).Py() );
-
-  }
-
-  floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
-  floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
-  floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
-  floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;  
-
-  //For the nominal MET and MET uncertainties
-  
-  floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
-  floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
-
-  for(long unsigned int i = 0; i < MET_phi.size(); i++){
-
-  	if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
-  	else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
-  	else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
-
- }
-
- //Propagating the jet smearing to the MET
- 
- for(long unsigned int i = 0; i < SmearedJetPxVec.size(); i++){
- 
- 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
-        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
- 	( metVec.at(i) ).SetPx( (metVec.at(i)).Px() - SmearedJetPxVec.at(i));
-        ( metVec.at(i) ).SetPy( (metVec.at(i)).Py() - SmearedJetPyVec.at(i));
- 
- }
-
-
-  return metVec;
-
-}};
-
-
-
-
-std::vector<std::string> MET_uncert_strings = {
-
-"MET_MetUnclustEnUpDeltaX",
-"MET_MetUnclustEnUpDeltaY",
-"MET_phi",
-"MET_sumEt",
-"SmearedJet4Momentum",
-"Jet_pt",
-"Jet_eta",
-"Jet_phi",
-"Jet_mass"
-
-};
-
-
-
-
-//Event weights
-auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                           &SF_Uncert_ee,
-                     &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
-                     &PDF_ScaleUp,                 &PDF_ScaleDown,
-                     &isr_up,                      &isr_down,
-                     &fsr_up,                      &fsr_down
-                        ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& EGammaSF_egammaEffInput, const float& EGammaSF_egammaEffRecoInput, const float& EGammaSF_egammaEffSysInput, const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
-
-
-			std::cout << "print 198" << std::endl;
-
-                        if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_ee += SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_ee -= SF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(PDF_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(PDF_ScaleDown == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(isr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(2) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_ee * CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-
-        }};
-
-
-
-auto EventWeight_mumu{[&NormalisationFactorFunction, &SF_mumu,                           &SF_Uncert_mumu,
-                       &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
-                       &PDF_ScaleUp,                 &PDF_ScaleDown,
-                       &isr_up,                      &isr_down,
-                       &fsr_up,                      &fsr_down
-                        ](const float& PUInput, const float& BTagWeightInput, const floats& ReturnedPSWeightInput, const float& CalculatedNominalWeightInput, const float& MuonSFTest_IDInput, const float& MuonSFTest_IsoInput, const float& MuonSFTest_ID_sys_systInput, const float& MuonSFTest_ID_sys_statInput, const float& MuonSFTest_Iso_sys_systInput, const float& MuonSFTest_Iso_sys_statInput, const float& CalculatedGeneratorWeightInput, const float& ME_SFInput, const double& TopWeightInput){
-
-
-			std::cout << "print 199" << std::endl;
-
-                        if(LeptonEfficiencies_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * (SF_mumu += SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(LeptonEfficiencies_ScaleDown == true){return PUInput * NormalisationFactorFunction() * (SF_mumu -= SF_Uncert_mumu) * CalculatedNominalWeightInput * MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(PDF_ScaleUp == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(PDF_ScaleDown == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(isr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(2) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(isr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(0) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(fsr_up == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(3) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else if(fsr_down == true){return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * ReturnedPSWeightInput.at(1) * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-                        else{return PUInput * NormalisationFactorFunction() * BTagWeightInput * SF_mumu * CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * ME_SFInput * TopWeightInput;}
-
-        }};
-
-
-
-
-
-std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
-
-std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
-
+          
 
 std::cout << "before d_WeightedEvents_withMET_ee" << std::endl;
 
+          
+          
 //Defining the new MET columns and the event weight columns
 auto d_WeightedEvents_withMET_ee = d_WeightedEvents_ee.Define("newMET", METUncertFunction, MET_uncert_strings)
 						      .Define("EventWeight", EventWeight_ee, EventWeight_ee_strings);
@@ -9714,30 +9790,6 @@ if(process == "tZq"){
 
 
 	//Write the nominal mass and resolution values to a text file
-
-	std::string filenamestring_variable;
-
-	if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
-		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_NPL.txt";
-	}
-	else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
-		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_ZPlusJetsCR.txt";
-	}
-	else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
-		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_ttbarCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
-		filenamestring_variable = "Resolution_" + process + "_" +  branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
-	}
-	else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){
-		filenamestring_variable = "Resolution_" + process + "_" + year + "_NPL_ttbarCR.txt";	
-	}
-	else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-	else{filenamestring_variable = "Resolution_" + process + "_" + year + ".txt";}
-
-
-
-	std::ofstream Resolution;
 	Resolution.open(filenamestring_variable.c_str());
 
 	Resolution << "W_stddev_ee: " << W_stddev_ee << '\n'
@@ -9752,106 +9804,8 @@ if(process == "tZq"){
 
 
 
-
-
-
-
-
-
-
-//Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
-bool NominalRun;
-
-if(ZPlusJetsCR == 0           && ttbarCR == 0                 && PU_ScaleUp == 0                 && PU_ScaleDown == 0                 &&
-   BTag_ScaleUp == 0          && BTag_ScaleDown == 0          && JetSmearing_ScaleUp == 0        && JetSmearing_ScaleDown == 0        &&
-   JetResolution_ScaleUp == 0 && JetResolution_ScaleDown == 0 && LeptonEfficiencies_ScaleUp == 0 && LeptonEfficiencies_ScaleDown == 0 && 
-   PDF_ScaleUp == 0           && PDF_ScaleDown == 0           && ME_Up == 0                      && ME_Down == 0                      && 
-   MET_Up == 0                && MET_Down == 0                && isr_up == 0                     && isr_down == 0                     && 
-   fsr_up == 0                && fsr_down == 0){NominalRun = true;}
-else{NominalRun = false;}
-
-
-
-std::vector<float> CutRanges_ee = {};
-
-auto chi2_ee{[&process, &CutRanges_ee, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
-
-  std::cout << "print 200" << std::endl;
-	
-  float FiveSigmaW = 5*W_stddev_ee;
-
-  //calculating chi2
-  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
-
-  float LowerBound = W_MASS - FiveSigmaW;
-  float UpperBound = W_MASS + FiveSigmaW;
-
-  if(process == "tZq" && NominalRun == true && SBR == true){
-
-  	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-  	if(w_mass > LowerBound && w_mass < UpperBound){
-		CutRanges_ee.push_back(chi2);
-		return chi2;
-	}	
-	else{
-		std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
-		float out = 999.0;
-                return out;
-	}
-
-  }
-  else{return chi2;}
-
-
-}};
-
-
-
-
-std::vector<float> CutRanges_mumu = {};
-
-auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
-
-  std::cout << "print 201" << std::endl;
-
-  float FiveSigmaW = 5*W_stddev_mumu;
-
-  float LowerBound = W_MASS - FiveSigmaW;
-  float UpperBound = W_MASS + FiveSigmaW;
-
-
-  //calculating chi2
-  float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
-
-
-  if(process == "tZq" && NominalRun == true && SBR == true){
-  
-	//returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-        if(w_mass > LowerBound && w_mass < UpperBound){
-		CutRanges_mumu.push_back(chi2);
-		return chi2;
-	}
-        else{std::cout << "w_mass is not within 5 sigma of the mean W mass value (mumu)" << std::endl;
-	     float out = 999.0;
-	     return out;
-	}
-
-
-  }
-  else{return chi2;}
-
- 
-}};
-
-
-
-
-
-std::string Chi2Range_string;
-
-
-//Section for experimental blinding
-if(blinding == true && (SBR == true || SR == true)){
+  //Section for experimental blinding
+  if(blinding == true && (SBR == true || SR == true)){
 
 	std::cout << "before Blinding_ee" << std::endl;
 
@@ -9948,105 +9902,20 @@ if(blinding == true && (SBR == true || SR == true)){
 		auto DistToMax_mumu = std::distance(CutRanges_mumu.begin(), MaxElement_mumu);
                 Chi2_SBR_mumu = CutRanges_mumu.at(DistToMax_mumu);
 
+        
+        Chi2Range.open(Chi2Range_string.c_str());
+
+        Chi2Range << "Chi2_SR_ee: " << Chi2_SR_ee << '\n'
+              << "Chi2_SBR_ee: " << Chi2_SBR_ee << '\n'
+              << "Chi2_SR_mumu: " << Chi2_SR_mumu << '\n'
+              << "Chi2_SBR_mumu: " << Chi2_SBR_mumu << std::endl;
 
 	}//end of if for tZq
 
 
 
-
-
-
-	//chi2 range for ee
-
-	std::cout << "before Chi2Cut_ee" << std::endl;
-
-	auto Chi2Cut_ee{[&SBR, &SR](const float& Chi2){	
-
-	  std::cout << "print 202" << std::endl;
-
-	  if(SBR == true){return Chi2_SR_ee < Chi2 && Chi2 < Chi2_SBR_ee;}
-	  else if(SR == true){return Chi2 < Chi2_SR_ee;}
-	  else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
-
-	}};
-
-
-
-	std::cout << "before AfterChi2Cut_ee" << std::endl;
-
 	auto AfterChi2Cut_ee = Blinding_ee.Define("AfterChi2Cut_ee", Chi2Cut_ee, {"chi2"}).Filter(Chi2Cut_ee, {"chi2"});
-
-	std::cout << "after AfterChi2Cut_ee" << std::endl;
-
-	//chi2 range for mumu
-	
-	std::cout << "before Chi2Cut_mumu" << std::endl;
-
-        auto Chi2Cut_mumu{[&SBR, &SR](const float& Chi2){
-
-	  std::cout << "print 203" << std::endl;
-
-          if(SBR == true){return Chi2_SR_mumu < Chi2 && Chi2 < Chi2_SBR_mumu;}
-          else if(SR == true){return Chi2 < Chi2_SR_mumu;}
-          else{std::cout << "SB and SR cannot both be false or both be true" << std::endl;}
-
-        }};
-
-	std::cout << "before AfterChi2Cut_mumu" << std::endl;
-        auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});	
-	std::cout << "after AfterChi2Cut_mumu" << std::endl;
-
-	
-
-
-
-	//Naming the chi2 text file
-	if(NPL == true && ZPlusJetsCR == false && ttbarCR == false){
-        	Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL.txt";
-        }
-        else if(NPL == false && ZPlusJetsCR == true && ttbarCR == false){
-        	Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_ZPlusJetsCR.txt";
-        }
-        else if(NPL == false && ZPlusJetsCR == false && ttbarCR == true){
-                Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_ttbarCR.txt";
-        }
-        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == false){
-                Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL_ZPlusJetsCR.txt";
-        }
-        else if(NPL == true && ZPlusJetsCR == false && ttbarCR == true){	
-                Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + "_NPL_ttbarCR.txt";
-        }
-        else if(NPL == true && ZPlusJetsCR == true && ttbarCR == true){std::cout << "Error: NPL, ZPlusJetsCR and ttbarCR cannot all be true." << std::endl;}
-        else{Chi2Range_string = "Chi2Range_" + process + "_" + branch + "_" + year + ".txt";}
-	
-
-	std::ofstream Chi2Range;
-	Chi2Range.open(Chi2Range_string.c_str());
-
-	Chi2Range << "Chi2_SR_ee: " << Chi2_SR_ee << '\n'
-		  << "Chi2_SBR_ee: " << Chi2_SBR_ee << '\n'
-		  << "Chi2_SR_mumu: " << Chi2_SR_mumu << '\n'
-                  << "Chi2_SBR_mumu: " << Chi2_SBR_mumu << std::endl;
-
-
-
-	//Saving the histograms to output root files
-	std::string OutRootFile_ee;
-	std::string OutRootFile_mumu;  
-
-
-        if(NPL == false){
-  
-      		OutRootFile_ee  = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_Blinded.root";
-        	OutRootFile_mumu = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_Blinded.root";
-	
-	}
- 	else{
-
-		OutRootFile_ee  = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_NPL_Blinded.root";
-                OutRootFile_mumu = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_NPL_Blinded.root";
-
-	}
+    auto AfterChi2Cut_mumu = Blinding_mumu.Define("AfterChi2Cut_mumu", Chi2Cut_mumu, {"chi2"}).Filter(Chi2Cut_mumu, {"chi2"});
 
 
 	auto colNames_ee = AfterChi2Cut_ee.GetDefinedColumnNames();
@@ -10144,26 +10013,15 @@ if(blinding == true && (SBR == true || SR == true)){
 
 
 
-}
-else{
+  }
+  else{
 
 	std::cout << "inside the else statement for when blinding is false" << std::endl;
 
-	std::string OutRootFile_ee_unblinded;
-	std::string OutRootFile_mumu_unblinded;
+	
 
 
-	if(NPL == false){
-		OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_ee.root";
-		OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu.root";
-	}
-	else{
-		OutRootFile_ee_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_ee_NPL.root";
-        	OutRootFile_mumu_unblinded = "Results_MC_" + process + "_" + branch + "_" + year + "_mumu_NPL.root";
-	}
-
-
-	auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
+	 auto colNames_ee = d_WeightedEvents_withMET_ee.GetDefinedColumnNames();
         auto colNames_mumu = d_WeightedEvents_withMET_mumu.GetDefinedColumnNames();
 
         const auto N_Columns_ee = colNames_ee.size();
@@ -10251,21 +10109,21 @@ else{
                 }
                 else{std::cout << "Check ColName for mumu channel" << std::endl; continue;}
 	
-	}
+	  }
 	
 
         output_mumu->Close();
 	
 
 
-}
+  }
 
 
 
   std::cout << "before NPL estimation" << std::endl;
 
   //NPL estimation
-  if(NPL == true && branch == "Nominal"){
+  if(NPLInt == 1 && RunInt == 1){
 
   std::cout << "inside NPL = true" << std::endl;
 
@@ -10292,7 +10150,7 @@ else{
         }
         else{NPL_SF_mumu = 99999;}
 
-	std::ofstream NPL_numbers_MC;
+	
 	std::string NPLNumbersStringMC = "NPL_SF_MC_" + process + "_" + year + ".txt";
 	NPL_numbers_MC.open(NPLNumbersStringMC.c_str()); 
 
@@ -10313,20 +10171,20 @@ else{
 
 
  //Print cut report
-std::cout << "before print cut flow report" << std::endl;
+ std::cout << "before print cut flow report" << std::endl;
 
-//auto allCutsReport = d.Report();
-auto allCutsReport = d_dataframe.Report();
+ //auto allCutsReport = d.Report();
+ auto allCutsReport = d_dataframe.Report();
 
-std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
+ std::cout << "after allCutsReport. Need to change dataframe input when not running on a range." << std::endl;
 
 
-for(auto&& cutInfo: allCutsReport){
+ for(auto&& cutInfo: allCutsReport){
    CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-}
+ }
 
 
-std::cout << "after the for loop for cut flow report" << std::endl; 
+ std::cout << "after the for loop for cut flow report" << std::endl;
 
 
 												
@@ -10650,20 +10508,14 @@ void fulleventselectionAlgo::fulleventselection(){
   tm* localtm = localtime(&now);
   std::cout << "The script started running:" << " " << asctime(localtm) << std::endl;
 
-
-//  fulleventselection2(blinding, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, year, PU_ScaleUp, PU_ScaleDown, BTag_ScaleUp, BTag_ScaleDown, JetSmearing_ScaleUp, JetSmearing_ScaleDown, JetResolution_ScaleUp, JetResolution_ScaleDown, LeptonEfficiencies_ScaleUp, LeptonEfficiencies_ScaleDown, PDF_ScaleUp, PDF_ScaleDown, ME_Up, ME_Down, MET_Up, MET_Down, isr_up, isr_down, fsr_up, fsr_down);
-
-
   bool blinding = true;
 // std::vector<bool> NPL = {false/*, true*/};
 //  std::vector<bool> ZPlusJetsCR = {false, true}; 
 //  std::vector<bool> ttbarCR = {false, true};
-
   bool SR = false;
   bool SBR = true;
   bool ZPlusJetsCR = false;
   bool ttbarCR = false;
-
   bool NPL = false;
   std::string year = "2017"; 
 
@@ -10738,8 +10590,6 @@ void fulleventselectionAlgo::fulleventselection(){
 
 		}
 
-
-
   	}
   	else{
 
@@ -10764,13 +10614,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 		}
 
-
-
 	}
-
-
-
-
 
 
   //Saving the outputs to a directory
@@ -10785,6 +10629,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
 }
+
 
 
 
