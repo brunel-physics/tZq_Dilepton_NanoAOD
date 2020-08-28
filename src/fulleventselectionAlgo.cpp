@@ -128,10 +128,11 @@ float Chi2_SBR_ee;
 float Chi2_SR_mumu;
 float Chi2_SBR_mumu;
 
+constexpr float W_MASS = 80.385f;
+constexpr float W_MASS_CUT = 20.f;
+constexpr float TOP_MASS = 173.3;
+
 std::string branch;
-
-
-
 std::string cutflowstring;
 std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
 std::string SJER;
@@ -141,7 +142,7 @@ std::vector<std::string> lep_cut_mumu_strings;
 std::vector<std::string> MET_triggers;
 std::vector<std::string> leptontriggers_strings;
 std::string PSWeightString_ee;
-std::string PSWeightString_mumu
+std::string PSWeightString_mumu;
 
 std::ofstream CutFlowReport;
 std::ofstream TriggerSF_Efficiency_File;
@@ -296,13 +297,6 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-
-    EnableImplicitMT();
-    //RDataFrame d("Events", input_files);
-    //auto d_dataframe = d.Range(0, 1000000);
-
-    
-
     int RunInt = 0;
     int ProcessInt = 0;
     int YearInt = 0;
@@ -394,7 +388,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
   if(year == "2016"){YearInt = 1;}
   else if(year == "2017"){YearInt = 2;}
   else if(year == "2018"){YearInt = 3;}
-  else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl; return 0;}
+  else{std::cout << "The year must be 2016, 2017 or 2018" << std::endl;}
 
   
 
@@ -409,34 +403,35 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
                                 "DummyBool",  "DummyBool",  "DummyBool",                     "DummyBool",                "DummyBool",
                                 "DummyBool"};
           
-        leptontriggers_strings = {
+               leptontriggers_strings = {
 
-            "DummyBool", //single electron (for 2018 only)
-            "DummyBool", //single electron (for 2017 only)
-            "DummyBool", //double electron (for 2017 and 2018)
-            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-            "DummyBool", //double muon (for 2017 and 2018)
-            "DummyBool", //single muon (for 2017 only)
-        //    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-        //    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-        //    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
-            "DummyBool",
-            "DummyBool",
-            "DummyBool",
-            "HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-            "HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
-            "HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
-            "HLT_IsoMu24", //single muon (all years)
-        //    "HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
-            "DummyBool",
-            "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-        //    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
-            "DummyBool",
-            "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
-            "DummyBool" //double muon (for 2018 only)
+      			"DummyBool", //single electron (for 2018 only)
+            		"DummyBool", //single electron (for 2017 only)
+            		"DummyBool", //double electron (for 2017 and 2018)
+            		"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+            		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+            		"DummyBool", //double muon (for 2017 and 2018)
+            		"DummyBool", //single muon (for 2017 only)
+        		//    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+        		//    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+        		//    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years) (branch not present in MET 2016)
+            		"DummyBool",
+            		"DummyBool",
+            		"DummyBool",
+            		"HLT_Ele25_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+            		"HLT_Ele27_WPTight_Gsf", //single electron (for 2016 only)
+            		"HLT_Ele32_eta2p1_WPTight_Gsf", //single electron (for 2016 only)
+           		"HLT_IsoMu24", //single muon (all years)
+        		//    "HLT_IsoMu24_eta2p1", //single muon (for 2016 only) (branch not present in MET 2016)
+            		"DummyBool",
+            		"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+        		//    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only) (branch not present in MET 2016)
+            		"DummyBool",
+            		"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", //muon+electron (for 2016 only)
+            		"DummyBool" //double muon (for 2018 only)
+			};
 
-		break;
+			break;
 
 	case 2: if(ttbarCR == false){MinElectronPt = 15; MaxElectronPt = 38; MinMuonPt = 20; MaxMuonPt = 29; MaxTrackerEta = 2.5;}
         	else{MinElectronPt = 25; MinMuonPt = 25;}
@@ -448,25 +443,26 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
                                 "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT700_PFMET95_PFMHT95_IDTight",     "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
                                 "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
             
-        "DummyBool", //single electron (for 2018 only)
-            "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
-            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
-            "HLT_IsoMu27", //single muon (for 2017 only)
-            "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-            "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-            "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-            "DummyBool", //single electron (for 2016 only)
-            "DummyBool", //single electron (for 2016 only)
-            "DummyBool", //single electron (for 2016 only)
-            "HLT_IsoMu24", //single muon (all years)
-            "DummyBool", //single muon (for 2016 only)
-            "DummyBool", //muon+electron (for 2016 only)
-            "DummyBool", //muon+electron (for 2016 only)
-            "DummyBool", //muon+electron (for 2016 only)
-            "DummyBool" //double muon (for 2018 only)
+        	leptontriggers_strings = {"DummyBool", //single electron (for 2018 only)
+            				  "HLT_Ele35_WPTight_Gsf", //single electron (for 2017 only)
+            				  "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+            				  "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+            				  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", //double muon (for 2016 and 2017)
+            				  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", //double muon (for 2017 and 2018)
+            				  "HLT_IsoMu27", //single muon (for 2017 only)
+            				  "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+            			          "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+            				  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+            				  "DummyBool", //single electron (for 2016 only)
+            				  "DummyBool", //single electron (for 2016 only)
+            				  "DummyBool", //single electron (for 2016 only)
+            				  "HLT_IsoMu24", //single muon (all years)
+            				  "DummyBool", //single muon (for 2016 only)
+            				  "DummyBool", //muon+electron (for 2016 only)
+            				  "DummyBool", //muon+electron (for 2016 only)
+            				  "DummyBool", //muon+electron (for 2016 only)
+            				  "DummyBool" //double muon (for 2018 only)
+					};
 
   		break;
 
@@ -480,34 +476,35 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
                                 "HLT_PFHT700_PFMET85_PFMHT85_IDTight", "HLT_PFHT700_PFMET95_PFMHT95_IDTight",     "HLT_PFHT800_PFMET75_PFMHT75_IDTight",
                                 "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
             
-        leptontriggers_strings = {
+        	leptontriggers_strings = {
 
-        "HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
-        "DummyBool", //single electron (for 2017 only)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
-        "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
-        "DummyBool", //double muon (for 2016 and 2017)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
-        "DummyBool", //single muon (for 2017 only)
-        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "DummyBool", //single electron (for 2016 only)
-        "HLT_IsoMu24", //single muon (all years)
-        "DummyBool", //single muon (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "DummyBool", //muon+electron (for 2016 only)
-        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
+        		"HLT_Ele32_WPTight_Gsf_L1DoubleEG", //single electron (for 2018 only)
+        		"DummyBool", //single electron (for 2017 only)
+        		"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL", //double electron (for 2017 and 2018)
+        		"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //double electron (for all years)
+        		"DummyBool", //double muon (for 2016 and 2017)
+        		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",  //double muon (for 2017 and 2018)
+        		"DummyBool", //single muon (for 2017 only)
+        		"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        		"HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        		"HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", //muon+electron (for all years)
+        		"DummyBool", //single electron (for 2016 only)
+        		"DummyBool", //single electron (for 2016 only)
+        		"DummyBool", //single electron (for 2016 only)
+        		"HLT_IsoMu24", //single muon (all years)
+        		"DummyBool", //single muon (for 2016 only)
+        		"DummyBool", //muon+electron (for 2016 only)
+        		"DummyBool", //muon+electron (for 2016 only)
+        		"DummyBool", //muon+electron (for 2016 only)
+        		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8" //double muon (for 2018 only)
+		};
 
                 break;
 	
  }
 
   //Setting the value of NPLInt depending on if it is true or not
-  if(NPLBool == "true"){NPLInt = 1;}
+  if(NPL == "true"){NPLInt = 1;}
   else{NPLInt = 0;}
 
             
@@ -581,7 +578,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
             
-  switch(RunNumInt){
+  switch(RunInt){
 
 	case 6: SJER = "sJER_up"; break;
 	case 7: SJER = "sJER_down"; break;
@@ -891,7 +888,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 	else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2016_Blinded.root"}; ProcessInt = 122;}
 	else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2016.root"}; ProcessInt = 123;}
         else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2016.root"}; ProcessInt = 124;}
-        else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl; return 0;}
+        else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
 
 
   }
@@ -904,7 +901,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 	else if(process == "SingleTop_tchannel_top"){input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top/*"}; ProcessInt = 129;}
 	else if(process == "SingleTop_tchannel_tbar"){input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_tbar/*"}; ProcessInt = 130;}
 	else if(process == "SingleTop_schannel"){input_files = {"/data/disk0/nanoAOD_2017/ST_schannel/*"}; ProcessInt = 131;}
-	else if(process == "SingleTop_tW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tW/*"}; ProcessInt = 132}
+	else if(process == "SingleTop_tW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tW/*"}; ProcessInt = 132;}
 	else if(process == "SingleTop_tbarW"){input_files = {"/data/disk0/nanoAOD_2017/ST_tbarW/*"}; ProcessInt = 133;}
 	else if(process == "SingleTop_tHq"){input_files = {"/data/disk0/nanoAOD_2017/tHq/*"}; ProcessInt = 134;}
 	else if(process == "SingleTop_tZq_W_lept_Z_had"){input_files = {"/data/disk0/nanoAOD_2017/tZq_W_lept_Z_had/*"}; ProcessInt = 135;} 
@@ -998,7 +995,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2017_Blinded.root"}; ProcessInt = 223;}
         else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2017.root"}; ProcessInt = 224;}
         else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2017.root"}; ProcessInt = 225;}
-	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl; return 0;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
 
   }
   else if(year == "2018"){
@@ -1074,11 +1071,11 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
         else if(process == "NPL_File_mumu_Blinded"){input_files = {"NPL_mumu_output_2018_Blinded.root"}; ProcessInt = 294;}
         else if(process == "NPL_File_ee_Unblinded"){input_files = {"NPL_ee_output_2018.root"}; ProcessInt = 295;}
         else if(process == "NPL_File_mumu_Unblinded"){input_files = {"NPL_mumu_output_2018.root"}; ProcessInt = 296;}
-	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl; return 0;}
+	else{std::cout << "You inputted the process: " << process << " for the year " << year << ". Please input an MC signal, background of dataset name." << std::endl;}
 
 
   }
-  else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl; return 0;}
+  else{std::cout << "Script only for 2016, 2017 or 2018 samples" << std::endl;}
 
 
 
@@ -1107,7 +1104,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
             
   //Lambda function for chi squared calculation (calculated using MC but applied to both MC and data)
 
-  auto chi2_ee{[&process, &CutRanges_ee, &SBR, &RunNumInt](const float& w_mass, const float& Top_Mass){
+  auto chi2_ee{[&process, &CutRanges_ee, &SBR, &RunInt](const float& w_mass, const float& Top_Mass){
 
     std::cout << "print 200" << std::endl;
       
@@ -1119,7 +1116,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
     float LowerBound = W_MASS - FiveSigmaW;
     float UpperBound = W_MASS + FiveSigmaW;
 
-    if(process == "tZq" && RunNumInt == 1 && SBR == true){
+    if(process == "tZq" && RunInt == 1 && SBR == true){
 
       //returning chi2 values only for when w_mass is within 5 sigma of the known W mass
       if(w_mass > LowerBound && w_mass < UpperBound){
@@ -1141,9 +1138,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 
 
-  std::vector<float> CutRanges_mumu = {};
-
-  auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &NominalRun](const float& w_mass, const float& Top_Mass){
+  auto chi2_mumu{[&process, &CutRanges_mumu, &SBR, &RunInt](const float& w_mass, const float& Top_Mass){
 
     std::cout << "print 201" << std::endl;
 
@@ -1157,7 +1152,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
     float chi2 = pow(( (w_mass - W_MASS) / W_stddev_mumu), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_mumu), 2);
 
 
-    if(process == "tZq" && NominalRun == true && SBR == true){
+    if(process == "tZq" && RunInt == 1 && SBR == true){
     
       //returning chi2 values only for when w_mass is within 5 sigma of the known W mass
           if(w_mass > LowerBound && w_mass < UpperBound){
@@ -2255,7 +2250,7 @@ auto ProbBTagMCFunction{[](const float& EffBTaggedProductInput, const float& Eff
 
 
 //reading the csv file to obtain the b tagging scale factor for each event
-auto CMSBTagSF_Function{[&RunNumInt/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+auto CMSBTagSF_Function{[&RunInt/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
   std::cout << "print 15" << std::endl;
 
@@ -2287,7 +2282,7 @@ auto CMSBTagSF_Function{[&RunNumInt/*&BTag_ScaleUp_bool, &BTag_ScaleDown_bool*/]
 
 	std::string systematic_type_string;
 
-	switch(RunNumInt){
+	switch(RunInt){
 
 		case 4: systematic_type_string = "up"; break;
 		case 5: systematic_type_string = "down"; break;
@@ -5670,8 +5665,7 @@ const floats& bjet_mass
 
 
   return BJets;
-
-}};
+}frame};
 
 
 auto LeadingBJetOutputDiscriminant{[](
@@ -5767,10 +5761,6 @@ const floats& Jet_btagCSVV2
 std::cout << "before w mass cut" << std::endl;
 
 // W mass cut
-
-constexpr float W_MASS = 80.385f;
-constexpr float W_MASS_CUT = 20.f;
-
 auto find_lead_mask{[](const ints& mask, const floats& vals) {
   
   std::cout << "print 115" << std::endl;
@@ -6112,7 +6102,6 @@ const ints& w_reco_jets
 
 }};
 
-constexpr float TOP_MASS = 173.3;
 
 auto top_reconstruction_function{[](
 
@@ -8354,6 +8343,11 @@ systDownFile_2018->Close();
 
 
   //Start of event selection
+  EnableImplicitMT();
+  RDataFrame d("Events", input_files);
+  auto d_dataframe = d.Range(0, 1000000);
+
+
   //Event cleaning
   auto d_EventCleaning = d_dataframe.Filter(filter_function, {"Flag_goodVertices",                       "Flag_globalSuperTightHalo2016Filter",                                                          "Flag_HBHENoiseFilter",                    "Flag_HBHENoiseIsoFilter",                                                                      "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter",
                                                               "Flag_BadChargedCandidateFilter",          "Flag_ecalBadCalibFilter",        "Flag_eeBadScFilter"}, "Event cleaning filter");
