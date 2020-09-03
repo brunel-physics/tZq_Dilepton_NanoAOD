@@ -150,14 +150,6 @@ namespace{
   std::string PSWeightString_ee;
   std::string PSWeightString_mumu;
 
-  std::ofstream CutFlowReport;
-  std::ofstream TriggerSF_Efficiency_File;
-  std::ofstream Chi2Range;
-  std::ofstream TriggerSF_Alpha_File;
-  std::ofstream TriggerSF_EfficiencyUncerts_File;
-  std::ofstream TriggerSF_ScaleFactors_File;
-  std::ofstream Resolution;
-  std::ofstream NPL_numbers_MC;
 
   std::vector<std::string> input_files;
   std::string Chi2Range_string;
@@ -723,7 +715,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
 	}
 
-
+	std::ofstream CutFlowReport;
 	CutFlowReport.open(cutflowstring.c_str());
 
 
@@ -1178,10 +1170,49 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
    
   }};
 
+  //For the normalisation factors
+  auto NormalisationFactorFunction{[&process, &year](){
+
+  	std::cout << "print 166" << std::endl;
+
+  	std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
+                                    "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
+                                    "ZPlusJets_PtBinned_0To50", "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250",
+                                    "ZPlusJets_PtBinned_100To250_ext1", "ZPlusJets_PtBinned_100To250_ext2", "ZPlusJets_PtBinned_100To250_ext5",
+                                    "ZPlusJets_PtBinned_250To400", "ZPlusJets_PtBinned_250To400_ext1", "ZPlusJets_PtBinned_250To400_ext2",
+                                    "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1",
+                                    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1",
+                                    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph_NanoAODv5", "ttbar_madgraph_ext", "ttbar_TTToHadronic",
+                                    "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp",
+                                    "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_schannel", "ttbar_hdampUP",
+                                    "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", "SingleTop_tchannel_top_hdampUP",
+                                    "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext",
+                                    "ttbar_fsr_UP", "ttbar_fsr_UP_ext", "ttbar_fsr_DOWN", "ttbar_fsr_DOWN_ext",
+                                    "SingleTop_tW", "SingleTop_tW_ScaleUp", "SingleTop_tW_ScaleDown", "SingleTop_tbarW",
+                                    "SingleTop_tbarW_ScaleUp", "SingleTop_tbarW_ScaleDown", "SingleTop_tHq", "SingleTop_tZq_W_lept_Z_had",
+                                    "SingleTop_tWZ_tWll", "VV_ZZTo2l2nu", "VV_ZZTo2l2nu_ext", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WW1nuqq", "VV_WZTo2L2Q",
+                                    "VV_WZTo3lNu", "VV_WZTo1l2Nu2Q", "VV_WWTo2l2Nu", "VV_WWToLNuQQ", "VV_WWToLNuQQ_ext", "VV_WGToLNuG", "VV_ZGToLLG",
+                                    "VVV_WWWTo4F", "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets", "WPlusJets_ext", "ttbarV_ttWJetsToLNu",
+                                    "ttbarV_ttWJetsToLNu_ext", "ttbarV_ttZToLLNuNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttZToLL", "ttbarV_ttZToLL_ext2", "ttbarV_ttZToLL_ext3",
+                                    "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
+
+
+
+    for(long unsigned int i = 1; i < ProcessStrings.size(); i++){
+
+        if(process == ProcessStrings.at(i)){return linereader(i, year);}
+        else{continue;}
+
+    }
+
+
+  }}; 
+
 
             
   //Event weights
-  auto EventWeight_ee{[&LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+  auto EventWeight_ee{[&NormalisationFactorFunction,
+		       &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
                        &PDF_ScaleUp,                 &PDF_ScaleDown,
                        &isr_up,                      &isr_down,
                        &fsr_up,                      &fsr_down
@@ -1309,6 +1340,8 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
             
             
  //SFs for ME up and down
+ ints SummedWeights(14, 0); 
+
   auto GeneratorWeight{[&SummedWeights, &ME_Up, &ME_Down](const ints& ME_numerator_histo, const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
         std::cout << "print 195" << std::endl;
@@ -7014,47 +7047,6 @@ auto RochCorrMuon4Mo{[](const TLorentzVector& Muon4Mo, const floats& RochCorrVec
 
 
 
-//For the normalisation factors
-auto NormalisationFactorFunction{[&process, &year](){
-
-  std::cout << "print 166" << std::endl;
-
-  std::vector<std::string> ProcessStrings = {" ", "tZq", "ZPlusJets_M50_aMCatNLO", "ZPlusJets_M50_aMCatNLO_ext", "ZPlusJets_M50_Madgraph", "ZPlusJets_M50_Madgraph_ext",
-				    "ZPlusJets_M10To50_aMCatNLO", "ZPlusJets_M10To50_aMCatNLO_ext", "ZPlusJets_M10To50_Madgraph", "ZPlusJets_M10To50_Madgraph_ext",
-			            "ZPlusJets_PtBinned_0To50", "ZPlusJets_PtBinned_50To100", "ZPlusJets_PtBinned_50To100_ext", "ZPlusJets_PtBinned_100To250",
-				    "ZPlusJets_PtBinned_100To250_ext1", "ZPlusJets_PtBinned_100To250_ext2", "ZPlusJets_PtBinned_100To250_ext5",
-				    "ZPlusJets_PtBinned_250To400", "ZPlusJets_PtBinned_250To400_ext1", "ZPlusJets_PtBinned_250To400_ext2",
-				    "ZPlusJets_PtBinned_250To400_ext5", "ZPlusJets_PtBinned_400To650", "ZPlusJets_PtBinned_400To650_ext1", 
-				    "ZPlusJets_PtBinned_400To650_ext2", "ZPlusJets_PtBinned_650ToInf", "ZPlusJets_PtBinned_650ToInf_ext1", 
-				    "ZPlusJets_PtBinned_650ToInf_ext2", "ttbar_2l2nu", "ttbar_madgraph_NanoAODv5", "ttbar_madgraph_ext", "ttbar_TTToHadronic", 
-				    "ttbar_TTToSemileptonic", "ttbar_aMCatNLO", "ttbar_inc", "SingleTop_tchannel_top", "SingleTop_tchannel_top_ScaleUp", 
-				    "SingleTop_tchannel_top_ScaleDown", "SingleTop_tchannel_antitop", "SingleTop_schannel", "ttbar_hdampUP", 
-				    "ttbar_hdampUP_ext", "ttbar_hdampDOWN", "ttbar_hdampDOWN_ext", "SingleTop_tchannel_top_hdampUP", 
-				    "SingleTop_tchannel_top_hdampDOWN", "ttbar_isr_UP", "ttbar_isr_DOWN", "ttbar_isr_DOWN_ext",
-				    "ttbar_fsr_UP", "ttbar_fsr_UP_ext", "ttbar_fsr_DOWN", "ttbar_fsr_DOWN_ext", 
-				    "SingleTop_tW", "SingleTop_tW_ScaleUp", "SingleTop_tW_ScaleDown", "SingleTop_tbarW", 
-				    "SingleTop_tbarW_ScaleUp", "SingleTop_tbarW_ScaleDown", "SingleTop_tHq", "SingleTop_tZq_W_lept_Z_had", 
-				    "SingleTop_tWZ_tWll", "VV_ZZTo2l2nu", "VV_ZZTo2l2nu_ext", "VV_ZZTo2L2Q", "VV_ZZTo4L", "VV_WW1nuqq", "VV_WZTo2L2Q", 
-				    "VV_WZTo3lNu", "VV_WZTo1l2Nu2Q", "VV_WWTo2l2Nu", "VV_WWToLNuQQ", "VV_WWToLNuQQ_ext", "VV_WGToLNuG", "VV_ZGToLLG", 
-				    "VVV_WWWTo4F", "VVV_WWZTo4F", "VVV_WZZ", "VVV_ZZZ", "WPlusJets", "WPlusJets_ext", "ttbarV_ttWJetsToLNu", 
-				    "ttbarV_ttWJetsToLNu_ext", "ttbarV_ttZToLLNuNu", "ttbarV_ttWJetsToQQ", "ttbarV_ttZToLL", "ttbarV_ttZToLL_ext2", "ttbarV_ttZToLL_ext3", 
-				    "ttbarV_ttZToQQ", "ttbarV_ttZToQQ_ext", "ttbarV_ttgamma", "ttbarV_ttgamma_ext", "ttbarV_ttHTobb", "ttbarV_ttHToNonbb"};
-
-
-
-  for(long unsigned int i = 1; i < ProcessStrings.size(); i++){
-
-	if(process == ProcessStrings.at(i)){return linereader(i, year);}
-	else{continue;}
-
-  }
-
-
-}};
-
-
-
-
 
 
 std::cout << "before egamma" << std::endl;
@@ -8343,7 +8335,7 @@ systDownFile_2018->Close();
                                                               "Flag_BadChargedCandidateFilter",          "Flag_ecalBadCalibFilter",        "Flag_eeBadScFilter"}, "Event cleaning filter");
           
   //Filtering events using the golden json file (for data not MC)
-  auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");}
+  auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
   //Filtering events that pass the ee selection criteria
   auto d_ee_selection_defines = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
@@ -8541,7 +8533,7 @@ systDownFile_2018->Close();
 	else if(process == "MC_triggerSF_ttbar"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_MC_ttbar_" + year + ".txt";}
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_Efficiency = "TriggerSF_Efficiency_MC_ZPlusJets_" + year + ".txt";}
 
-	
+	std::ofstream TriggerSF_Efficiency_File;	
 	TriggerSF_Efficiency_File.open(TriggerSF_Efficiency.c_str());	
 
 	TriggerSF_Efficiency_File << Eff_ee << '\n'
@@ -8574,7 +8566,8 @@ systDownFile_2018->Close();
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_Alpha = "TriggerSF_Alpha_MC_ZPlusJets_" + year + ".txt";}
         else{std::cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar or MC_triggerSF_ZPlusJets" << std::endl;}
 
-       
+
+	std::ofstream TriggerSF_Alpha_File;       
         TriggerSF_Alpha_File.open(TriggerSF_Alpha.c_str());
 
         TriggerSF_Alpha_File << Alpha_ee << '\n'
@@ -8602,7 +8595,8 @@ systDownFile_2018->Close();
 	else if(process == "MC_triggerSF_ZPlusJets"){ TriggerSF_EfficiencyUncerts = "TriggerSF_EfficiencyUncerts_MC_ZPlusJets_" + year + ".txt";}
         else{std::cout << "process must be either Data_triggerSF, MC_triggerSF_ttbar, MC_triggerSF_ZPlusJets" << std::endl;}
 
-       
+      
+	std::ofstream TriggerSF_EfficiencyUncerts_File; 
         TriggerSF_EfficiencyUncerts_File.open(TriggerSF_EfficiencyUncerts.c_str());
 
         TriggerSF_EfficiencyUncerts_File << Eff_ee_UpperUncert << '\n'
@@ -8939,6 +8933,7 @@ systDownFile_2018->Close();
   if(PU_ScaleUp == false && PU_ScaleDown == false && BTag_ScaleUp == false && BTag_ScaleDown == false && JetSmearing_ScaleUp == false && JetSmearing_ScaleDown == false && JetResolution_ScaleUp == false && JetResolution_ScaleDown == false && LeptonEfficiencies_ScaleUp == false && LeptonEfficiencies_ScaleDown == false && PDF_ScaleUp == false && PDF_ScaleDown == false && ME_Up == false && ME_Down == false && MET_Up == false && MET_Down == false && isr_up == false && isr_down == false && fsr_up == false && fsr_down == false){
 
   	std::string TriggerSF_ScaleFactors = "TriggerSF_ScaleFactors_" + year + ".txt";
+	std::ofstream TriggerSF_ScaleFactors_File;
   	TriggerSF_ScaleFactors_File.open(TriggerSF_ScaleFactors.c_str());
 
   	TriggerSF_ScaleFactors_File << SF_ee << '\n'
@@ -9774,6 +9769,7 @@ if(process == "tZq"){
 
 
 	//Write the nominal mass and resolution values to a text file
+	std::ofstream Resolution;
 	Resolution.open(filenamestring_variable.c_str());
 
 	Resolution << "W_stddev_ee: " << W_stddev_ee << '\n'
@@ -9886,7 +9882,8 @@ if(process == "tZq"){
 		auto DistToMax_mumu = std::distance(CutRanges_mumu.begin(), MaxElement_mumu);
                 Chi2_SBR_mumu = CutRanges_mumu.at(DistToMax_mumu);
 
-        
+
+	std::ofstream Chi2Range;        
         Chi2Range.open(Chi2Range_string.c_str());
 
         Chi2Range << "Chi2_SR_ee: " << Chi2_SR_ee << '\n'
@@ -10136,6 +10133,7 @@ if(process == "tZq"){
 
 	
 	std::string NPLNumbersStringMC = "NPL_SF_MC_" + process + "_" + year + ".txt";
+        std::ofstream NPL_numbers_MC;
 	NPL_numbers_MC.open(NPLNumbersStringMC.c_str()); 
 
         NPL_numbers_MC << "Num_OppositeSignNonPrompt_MC_ee = " << Num_OppositeSignNonPrompt_MC_ee << '\n'
