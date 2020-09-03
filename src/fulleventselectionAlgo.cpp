@@ -105,95 +105,103 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 
 namespace{
 
-constexpr double EndcapMinEta = 1.566;
-constexpr double BarrelMaxEta = 1.4442;
-double MaxTrackerEta;
-double MinElectronPt;
-double MinMuonPt;
-double MinElectronPtEmu;
-double MinMuonPtEmu;
-double MaxElectronPt;
-double MaxMuonPt;
-int NumberOfSimulatedEvents_ee;
-int NumberOfSimulatedEvents_mumu;
+  constexpr double EndcapMinEta = 1.566;
+  constexpr double BarrelMaxEta = 1.4442;
+  double MaxTrackerEta;
+  double MinElectronPt;
+  double MinMuonPt;
+  double MinElectronPtEmu;
+  double MinMuonPtEmu;
+  double MaxElectronPt;
+  double MaxMuonPt;
+  int NumberOfSimulatedEvents_ee;
+  int NumberOfSimulatedEvents_mumu;
 
+  float W_stddev_ee;
+  float Top_stddev_ee;
+  float W_stddev_mumu;
+  float Top_stddev_mumu;
 
-float W_stddev_ee;
-float Top_stddev_ee;
-float W_stddev_mumu;
-float Top_stddev_mumu;
+  float Chi2_SR_ee;
+  float Chi2_SBR_ee;
+  float Chi2_SR_mumu;
+  float Chi2_SBR_mumu;
 
-float Chi2_SR_ee;
-float Chi2_SBR_ee;
-float Chi2_SR_mumu;
-float Chi2_SBR_mumu;
+  float SF_ee;
+  float SF_mumu;
+  float SF_emu;
+  double SF_Uncert_ee;
+  double SF_Uncert_mumu;
+  double SF_Uncert_emu;
 
-constexpr float W_MASS = 80.385f;
-constexpr float W_MASS_CUT = 20.f;
-constexpr float TOP_MASS = 173.3;
+  constexpr float W_MASS = 80.385f;
+  constexpr float W_MASS_CUT = 20.f;
+  constexpr float TOP_MASS = 173.3;
 
-std::string branch;
-std::string cutflowstring;
-std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
-std::string SJER;
-std::string SIGMAJER;
-std::vector<std::string> lep_cut_ee_strings;
-std::vector<std::string> lep_cut_mumu_strings;
-std::vector<std::string> MET_triggers;
-std::vector<std::string> leptontriggers_strings;
-std::string PSWeightString_ee;
-std::string PSWeightString_mumu;
+  std::string branch;
+  std::string cutflowstring;
+  std::string JetMassInput, JetPtInput, JetEtaInput, JetPhiInput;
+  std::string SJER;
+  std::string SIGMAJER;
+  std::vector<std::string> lep_cut_ee_strings;
+  std::vector<std::string> lep_cut_mumu_strings;
+  std::vector<std::string> MET_triggers;
+  std::vector<std::string> leptontriggers_strings;
+  std::string PSWeightString_ee;
+  std::string PSWeightString_mumu;
 
-std::ofstream CutFlowReport;
-std::ofstream TriggerSF_Efficiency_File;
-std::ofstream Chi2Range;
-std::ofstream TriggerSF_Alpha_File;
-std::ofstream TriggerSF_EfficiencyUncerts_File;
-std::ofstream TriggerSF_ScaleFactors_File;
-std::ofstream Resolution;
-std::ofstream NPL_numbers_MC;
+  std::ofstream CutFlowReport;
+  std::ofstream TriggerSF_Efficiency_File;
+  std::ofstream Chi2Range;
+  std::ofstream TriggerSF_Alpha_File;
+  std::ofstream TriggerSF_EfficiencyUncerts_File;
+  std::ofstream TriggerSF_ScaleFactors_File;
+  std::ofstream Resolution;
+  std::ofstream NPL_numbers_MC;
 
-std::vector<std::string> input_files;
-std::string Chi2Range_string;
-std::string OutRootFile_ee;
-std::string OutRootFile_mumu;
-std::string OutRootFile_ee_unblinded;
-std::string OutRootFile_mumu_unblinded;
-std::string BTagEffOutput;
-std::string EndOfName;
-std::string filenamestring_variable;
-std::string TurnOnCurvesOutput;
+  std::vector<std::string> input_files;
+  std::string Chi2Range_string;
+  std::string OutRootFile_ee;
+  std::string OutRootFile_mumu;
+  std::string OutRootFile_ee_unblinded;
+  std::string OutRootFile_mumu_unblinded;
+  std::string BTagEffOutput;
+  std::string EndOfName;
+  std::string filenamestring_variable;
+  std::string TurnOnCurvesOutput;
+ 
+  std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
 
-std::vector<std::string> EventWeight_ee_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
+  std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
 
-std::vector<std::string> EventWeight_mumu_strings = {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", "MuonSFTest_Iso_sys_stat",  "CalculatedGeneratorWeight", "ME_SF", "TopWeight"};
-
-std::vector<std::string> MET_uncert_strings = {"MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY", "MET_phi", "MET_sumEt",
+  std::vector<std::string> MET_uncert_strings = {"MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY", "MET_phi", "MET_sumEt",
                                                "SmearedJet4Momentum",      "Jet_pt",                   "Jet_eta", "Jet_phi",
                                                "Jet_mass"};
 
 
 
-template<typename T>
-[[gnu::const]] T select(const T& a, const ints& mask)
-{
+  template<typename T>
+  [[gnu::const]] T select(const T& a, const ints& mask)
+  {
     return a[mask];
-}
+  }
 
-[[gnu::const]] auto delta_phi(const float phi1, const float phi2)
-{
+  [[gnu::const]] auto delta_phi(const float phi1, const float phi2)
+  {
     return vdt::fast_atan2f(vdt::fast_sinf(phi1 - phi2), vdt::fast_cosf(phi1 - phi2));
-}
+  }  
 
-[[gnu::const]] auto deltaR(const float eta1, const float phi1, const float eta2, const float phi2)
-{
+  [[gnu::const]] auto deltaR(const float eta1, const float phi1, const float eta2, const float phi2)
+  {
     return std::sqrt(std::pow(eta1 - eta2, 2) + std::pow(delta_phi(phi1, phi2), 2));
-}
+  }
 
 
 
 
-}
+} //closing bracket for namespace
+
+
 
 template<typename T, typename U>
 [[gnu::const]] bool all_equal(const T& t, const U& u)
@@ -210,7 +218,6 @@ template<typename T, typename U, typename... Types>
 
 [[gnu::const]] auto inv_mass(const floats& pts, const floats& etas, const floats& phis, const floats& ms)
 {
-
 
 
     if (!all_equal(pts.size(), etas.size(), phis.size(), ms.size()))
@@ -504,7 +511,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
  }
 
   //Setting the value of NPLInt depending on if it is true or not
-  if(NPL == "true"){NPLInt = 1;}
+  if(NPL == true){NPLInt = 1;}
   else{NPLInt = 0;}
 
             
@@ -1174,8 +1181,7 @@ void fulleventselection_calculator(const std::string& process, const bool& blind
 
             
   //Event weights
-  auto EventWeight_ee{[&NormalisationFactorFunction, &SF_ee,                           &SF_Uncert_ee,
-                       &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
+  auto EventWeight_ee{[&LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown,
                        &PDF_ScaleUp,                 &PDF_ScaleDown,
                        &isr_up,                      &isr_down,
                        &fsr_up,                      &fsr_down
@@ -4423,7 +4429,7 @@ const bools& Electron_isPFcand
 
 
 
-auto TightElectronsFunction{[&ElectronsFunction](
+auto TightElectronsFunction{[/*&ElectronsFunction*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -4439,7 +4445,7 @@ const bools& Electron_isPFcand
 }};
 
 
-auto TightElectronsFunctionEmu{[&ElectronsFunctionEmu](
+auto TightElectronsFunctionEmu{[/*&ElectronsFunctionEmu*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -4455,7 +4461,7 @@ const bools& Electron_isPFcand
 }};
 
 
-auto LooseElectronsFunction{[&ElectronsFunction](
+auto LooseElectronsFunction{[/*&ElectronsFunction*/](
 
 const floats& Electron_pt,
 const floats& Electron_eta,
@@ -4471,15 +4477,7 @@ const bools& Electron_isPFcand
 }};
 
 
-auto LooseElectronsFunctionEmu{[&ElectronsFunctionEmu](
-
-const floats& Electron_pt,
-const floats& Electron_eta,
-const ints& Electron_cutBased,
-const bools& Electron_isPFcand
-
-
-){
+auto LooseElectronsFunctionEmu{[/*&ElectronsFunctionEmu*/](const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand){
 
   std::cout << "print 46" << std::endl;
   return ElectronsFunctionEmu(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
@@ -4521,7 +4519,7 @@ const floats& isos
 }};
 
 
-auto TightMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto TightMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
   std::cout << "print 49" << std::endl;
   return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
@@ -4529,7 +4527,7 @@ auto TightMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, 
 }};
 
 
-auto TightMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto TightMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
   std::cout << "print 50" << std::endl;
   return MuonsFunctionEmu(0.25, isPFs, pts, etas, ids, isos);
@@ -4537,7 +4535,7 @@ auto TightMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats&
 }};
 
 
-auto LooseMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto LooseMuonsFunction{[/*&MuonsFunction*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
 
   std::cout << "print 51" << std::endl;
   return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
@@ -4545,7 +4543,7 @@ auto LooseMuonsFunction{[&MuonsFunction](const bools& isPFs, const floats& pts, 
 }};
 
 
-auto LooseMuonsFunctionEmu{[&MuonsFunctionEmu](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
+auto LooseMuonsFunctionEmu{[/*&MuonsFunctionEmu*/](const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos) {
  
   std::cout << "print 52" << std::endl;
   return MuonsFunctionEmu(0.15, isPFs, pts, etas, ids, isos);
@@ -5641,31 +5639,23 @@ const ints& lead_bjet
 
 
 
-auto BLorentzVector{[](
+  auto BLorentzVector{[](const floats& bjet_pt, const floats& bjet_eta, const floats& bjet_phi, const floats& bjet_mass){
 
-const floats& bjet_pt,
-const floats& bjet_eta,
-const floats& bjet_phi,
-const floats& bjet_mass
+    std::cout << "print 109" << std::endl;
 
-){
+    auto BJets = TLorentzVector{};
 
-  std::cout << "print 109" << std::endl;
-
-  auto BJets = TLorentzVector{};
-
-  for(long unsigned int i = 0; i < bjet_pt.size(); i++){
+    for(long unsigned int i = 0; i < bjet_pt.size(); i++){
 
 	auto Vec = TLorentzVector{};
 	Vec.SetPtEtaPhiM(bjet_pt.at(i), bjet_eta.at(i), bjet_phi.at(i), bjet_mass.at(i));
 	BJets += Vec;
 
-  }
+    }
 
+    return BJets;
 
-
-  return BJets;
-}frame};
+  }};
 
 
 auto LeadingBJetOutputDiscriminant{[](
@@ -8897,9 +8887,9 @@ systDownFile_2018->Close();
   float Data_Efficiency_Central_emu = ( textfilereader2_TriggerSF("Data_Central", year) ).at(2);
 
 
-  float SF_ee = Data_Efficiency_Central_ee / (MC_Efficiency_Central_ee + 1.0e-06);
-  float SF_mumu = Data_Efficiency_Central_mumu / (MC_Efficiency_Central_mumu + 1.0e-06);
-  float SF_emu = Data_Efficiency_Central_emu / (MC_Efficiency_Central_emu + 1.0e-06);
+  SF_ee = Data_Efficiency_Central_ee / (MC_Efficiency_Central_ee + 1.0e-06);
+  SF_mumu = Data_Efficiency_Central_mumu / (MC_Efficiency_Central_mumu + 1.0e-06);
+  SF_emu = Data_Efficiency_Central_emu / (MC_Efficiency_Central_emu + 1.0e-06);
 
   float MC_Efficiency_UpperUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(0);
   float MC_Efficiency_LowerUncert_ee = ( textfilereader2_TriggerSF("MC_Uncert", year) ).at(1);
@@ -8922,7 +8912,7 @@ systDownFile_2018->Close();
   double SF_LowerUncert_ee = ((Data_Efficiency_Central_ee + Data_Efficiency_LowerUncert_ee)/ (MC_Efficiency_Central_ee - MC_Efficiency_UpperUncert_ee + 1.0e-06)) - SF_ee;
 
 
-  double SF_Uncert_ee = 0.0;
+  SF_Uncert_ee = 0.0;
   if (SF_UpperUncert_ee > SF_LowerUncert_ee){SF_Uncert_ee = SF_UpperUncert_ee;}
   else{SF_Uncert_ee = SF_LowerUncert_ee;}
 
@@ -8931,7 +8921,7 @@ systDownFile_2018->Close();
   double SF_LowerUncert_mumu = ((Data_Efficiency_Central_mumu + Data_Efficiency_LowerUncert_mumu)/ (MC_Efficiency_Central_mumu - MC_Efficiency_UpperUncert_mumu + 1.0e-06)) - SF_mumu;
 
 
-  double SF_Uncert_mumu = 0.0;
+  SF_Uncert_mumu = 0.0;
   if (SF_UpperUncert_mumu > SF_LowerUncert_mumu){SF_Uncert_mumu = SF_UpperUncert_mumu;}
   else{SF_Uncert_mumu = SF_LowerUncert_mumu;}
 
@@ -8941,7 +8931,7 @@ systDownFile_2018->Close();
   double SF_LowerUncert_emu = ((Data_Efficiency_Central_emu + Data_Efficiency_LowerUncert_emu)/ (MC_Efficiency_Central_emu - MC_Efficiency_UpperUncert_emu + 1.0e-06)) - SF_emu;
 
 
-  double SF_Uncert_emu = 0.0;
+  SF_Uncert_emu = 0.0;
   if (SF_UpperUncert_emu > SF_LowerUncert_emu){SF_Uncert_emu = SF_UpperUncert_emu;}
   else{SF_Uncert_emu = SF_LowerUncert_emu;}
 
