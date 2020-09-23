@@ -7041,7 +7041,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 				      .Define("LeptonGenPartFlav", LeptonVariableFunctionChars, {"Electron_genPartFlav", "Muon_genPartFlav"})
                                       .Define("TightLeptonsPt", select<floats>, {"LeptonPt", "TightLeptons"})
                                       .Define("TightLeptonsPhi", select<floats>, {"LeptonPhi", "TightLeptons"})
-                                      .Define(TightLeptonsEta", select<floats>, {"LeptonEta", "TightLeptons"})
+                                      .Define("TightLeptonsEta", select<floats>, {"LeptonEta", "TightLeptons"})
                                       .Define("TightLeptonsCharge", select<ints>, {"LeptonCharge", "TightLeptons"})
 				      .Define("TightLeptonsJetRelIso", select<ints>, {"LeptonJetRelIso", "TightLeptons"})
 				      .Define("TightLeptonsGenPartFlav", select<chars>, {"LeptonGenPartFlav", "TightLeptons"})
@@ -7072,8 +7072,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                       .Define("SubleadingElectron_dz_ECALEndcaps", SubleadingElectron_dz_ECALEndcaps_function, {"SubleadingLeptonPt", "TightLeptonsEta", "Electron_dz"})
                                       .Define("SubleadingElectron_dxy_ECALEndcaps", SubleadingElectron_dxy_ECALEndcaps_function, {"SubleadingLeptonPt", "TightLeptonsEta", "Electron_dxy"})
 				      .Filter(LeptonCut, {"TightLeptonsPt", "LooseLeptonsPt", "OppositeSign", "nElectron", 
-						          "LeadingElectron_dz_ECALBarrel, "LeadingElectron_dxy_ECALBarrel",  "LeadingElectron_dz_ECALEndcaps,
-                               				  "LeadingElectron_dxy_ECALEndcaps", "SubleadingElectron_dz_ECALBarrel, "SubleadingElectron_dxy_ECALBarrel", 
+						          "LeadingElectron_dz_ECALBarrel", "LeadingElectron_dxy_ECALBarrel",  "LeadingElectron_dz_ECALEndcaps",
+                               				  "LeadingElectron_dxy_ECALEndcaps", "SubleadingElectron_dz_ECALBarrel", "SubleadingElectron_dxy_ECALBarrel", 
 							  "SubleadingElectron_dz_ECALEndcaps", "SubleadingElectron_dxy_ECALEndcaps", "nMuon"}, "lepton cut");
 
   std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
