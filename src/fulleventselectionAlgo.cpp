@@ -19,16 +19,73 @@
 #include "fulleventselectionAlgo.hpp"
 #include "TCanvas.h"
 
+fulleventselectionAlgo::fulleventselectionAlgo(){
+
+
+}
+
+
+fulleventselectionAlgo::~fulleventselectionAlgo()
+{
+}
+
+
+using namespace ROOT; // RDataFrame's namespace
+using ROOT::RDF::RNode;
+
+using floats = ROOT::VecOps::RVec<float>;
+using ints = ROOT::VecOps::RVec<int>;
+using bools = ROOT::VecOps::RVec<bool>;
+using chars = ROOT::VecOps::RVec<UChar_t>;
+using doubles = ROOT::VecOps::RVec<double>;
+
+constexpr double EndcapMinEta = 1.566;
+constexpr double BarrelMaxEta = 1.4442;
+double MaxTrackerEta;
+double MinElectronPt;
+double MinMuonPt;
+double MinElectronPtEmu;
+double MinMuonPtEmu;
+double MaxElectronPt;
+double MaxMuonPt;
+constexpr float Z_MASS{91.1876f};
+constexpr float Z_MASS_CUT{20.f}; 
+constexpr float W_MASS = 80.385f;
+constexpr float W_MASS_CUT = 20.f;
+constexpr float TOP_MASS = 173.3;
+float Chi2_SR;
+float Chi2_SBR;
+
+
+template<typename T>
+[[gnu::const]] T select(const T& a, const ints& mask)
+{
+  return a[mask];
+}
+
+template<typename T, typename U> //for the all equal function
+[[gnu::const]] bool all_equal(const T& t, const U& u)
+{
+  return t == u;
+}
+
+template<typename T, typename U, typename... Types>
+[[gnu::const]] bool all_equal(const T& t, const U& u, Types const&... args)
+{
+    return t == u && all_equal(u, args...);
+}
+
+
 
 std::fstream& GotoLine(std::fstream& file, unsigned int num){
 		
-    file.seekg(std::ios::beg);
+  file.seekg(std::ios::beg);
 
-    for(unsigned int i =0; i < num - 1; ++i){
-        file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    }
+  for(unsigned int i =0; i < num - 1; ++i){
+     file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+  }
 
-    return file;
+  return file;
 
 }
 
@@ -79,9 +136,10 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 }
 
 
+
 float N_SelectionCriteria_ee_MC, N_SelectionCriteria_mumu_MC, N_SelectionCriteria_emu_MC;
 float N_MET_And_LeptonSelection_ee_MC, N_MET_And_LeptonSelection_mumu_MC, N_MET_And_LeptonSelection_emu_MC;
-float N_LeptonTriggersAndSelectionCriteria_ee_MC, N_LeptonTriggersAndSelectionCriteria_mumu, N_LeptonTriggersAndSelectionCriteria_emu_MC;
+float N_LeptonTriggersAndSelectionCriteria_ee_MC, N_LeptonTriggersAndSelectionCriteria_mumu_MC, N_LeptonTriggersAndSelectionCriteria_emu_MC;
 float N_MET_LeptonTriggers_SelectionCriteria_ee_MC, N_MET_LeptonTriggers_SelectionCriteria_mumu_MC, N_MET_LeptonTriggers_SelectionCriteria_emu_MC;
 float Eff_ee_MC, Eff_mumu_MC, Eff_emu_MC;
 float Eff_MET_LeptonTriggers_SelectionCriteria_ee_MC, Eff_MET_LeptonTriggers_SelectionCriteria_mumu_MC, Eff_MET_LeptonTriggers_SelectionCriteria_emu_MC;
@@ -110,33 +168,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 	const int& ZPlusJetsCRInt,  const int& ttbarCRInt,  const int& YearInt,    const int& SystematicInt,  const int& ChannelInt, 
 			const int& DoubleCountCheckInt){
 
-  
-  using namespace ROOT; // RDataFrame's namespace
-  using ROOT::RDF::RNode;
-
-  using floats = ROOT::VecOps::RVec<float>;
-  using ints = ROOT::VecOps::RVec<int>;
-  using bools = ROOT::VecOps::RVec<bool>;
-  using chars = ROOT::VecOps::RVec<UChar_t>;
-  using doubles = ROOT::VecOps::RVec<double>;
-
-  constexpr double EndcapMinEta = 1.566;
-  constexpr double BarrelMaxEta = 1.4442;
-  double MaxTrackerEta;
-  double MinElectronPt;
-  double MinMuonPt;
-  double MinElectronPtEmu;
-  double MinMuonPtEmu;
-  double MaxElectronPt;
-  double MaxMuonPt;
-  constexpr float Z_MASS{91.1876f};
-  constexpr float Z_MASS_CUT{20.f};
-  constexpr float W_MASS = 80.385f;
-  constexpr float W_MASS_CUT = 20.f;
-  constexpr float TOP_MASS = 173.3;
-  float Chi2_SR;
-  float Chi2_SBR;
-
+  std::cout << "YearInt = " << YearInt << std::endl; 
   
   ROOT::RDF::RResultPtr<TH2D> h_bjet_num;
   ROOT::RDF::RResultPtr<TH2D> h_bjet_denom;
@@ -498,10 +530,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 0: Process = "tZq"; 
 
 		switch(YearInt){
-			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"}; break;
+			case 2016: input_files = {"root://cms-xrd-global.cern.ch//store/mc/RunIISummer16NanoAODv5/tZq_ll_4f_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano1June2019_102X_mcRun2_asymptotic_v7_ext1-v1/*/*.root"}; break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"}; break;
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"}; break;
-			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
+			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		}
 
 		break;
@@ -520,7 +552,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 2: Process = "ZPlusJets_M50_aMCatNLO_ext";
 	
 		switch(YearInt){
-                        case 2016: input_files = ; break;
+                        case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DYJetsToLL_ext_NanoAODv5/*"}; break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_ext_NanoAODv5/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -576,7 +608,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph/*"}; break;
-                        case 2017: input_files = ; break;
+                        case 2017: break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M10to50/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                 }
@@ -773,7 +805,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 26: Process = "ttbar_2l2nu";
 
 		 switch(YearInt){
-                        case 2016: input_files = ; break;
+                        case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv5/*"}; break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -792,12 +824,12 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 28: Process = ""ttbar_madgraph_ext;
+        case 28: Process = "ttbar_madgraph_ext";
 
 		 switch(YearInt){
                         case 2016: break;
-                        case 2017: input_files = ; break;
-                        case 2018: input_files = ; break;
+                        case 2017: break;
+                        case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -807,7 +839,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	
 		 switch(YearInt){
                         case 2016: break;
-                        case 2017: {"/data/disk0/nanoAOD_2017/TTToHadronic/*"}; break;
+                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic/*"}; break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
@@ -894,7 +926,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 37: Process = "SingleTop_tchannel_antitop_ScaleUp";
 
 		 switch(YearInt){
-                        case 2016: input_files = ; break;
+                        case 2016: break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -905,7 +937,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 38: Process = "SingleTop_tchannel_antitop_ScaleDown";
 
 		 switch(YearInt){
-                        case 2016: input_files = ; break;
+                        case 2016: break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -1182,24 +1214,24 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu_ext2/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu_ext/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
 
-	case 63: Process = "VV_ZZTo2l2nu_ext2";
+	case 64: Process = "VV_ZZTo2l2nu_ext2";
 
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu_ext2/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu_ext2/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
 
-        case 64: Process = "VV_ZZTo2l2Q";
+        case 65: Process = "VV_ZZTo2l2Q";
 	
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Q/*"}; break;
@@ -1210,7 +1242,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 65: Process = "VV_ZZTo4L";
+        case 66: Process = "VV_ZZTo4L";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo4L/*"}; break;
@@ -1221,7 +1253,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 66: Process = "VV_WW1nuqq";
+        case 67: Process = "VV_WW1nuqq";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTo1L1Nu2Q/*"}; break;
@@ -1232,7 +1264,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 67: Process = "VV_WZTo2l2Q";
+        case 68: Process = "VV_WZTo2l2Q";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo2L2Q/*"}; break;
@@ -1243,7 +1275,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 68: Process = "VV_WZTo3lNu";
+        case 69: Process = "VV_WZTo3lNu";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1254,7 +1286,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 69: Process = "VV_WZTo1l1Nu2Q";
+        case 70: Process = "VV_WZTo1l1Nu2Q";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo1L1Nu2Q/*"}; break;
@@ -1265,7 +1297,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 70: Process = "VV_WWTo2l2Nu";
+        case 71: Process = "VV_WWTo2l2Nu";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTo2L2Nu/*"}; break;
@@ -1276,7 +1308,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 71: Process = "VV_WWToLNuQQ";
+        case 72: Process = "VV_WWToLNuQQ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ/*"}; break;
@@ -1287,7 +1319,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 72: Process = "VV_WWToLNuQQ_ext";
+        case 73: Process = "VV_WWToLNuQQ_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWToQQ_ext/*"}; break;
@@ -1298,7 +1330,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 73: Process = "VV_WGToLNuG";
+        case 74: Process = "VV_WGToLNuG";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WGToLNuG/*"}; break;
@@ -1309,7 +1341,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 74: Process = "VV_ZGToLLG";
+        case 75: Process = "VV_ZGToLLG";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZGToLLG/*"}; break;
@@ -1320,7 +1352,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 75: Process = "VVV_WWWTo4F";
+	case 76: Process = "VVV_WWWTo4F";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F/*"}; break;
@@ -1331,7 +1363,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 76: Process = "VVV_WWZTo4F";
+        case 77: Process = "VVV_WWZTo4F";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWZ/*"}; break;
@@ -1342,7 +1374,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 77: Process = "VVV_WZZ";
+        case 78: Process = "VVV_WZZ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZZ/*"}; break;
@@ -1353,7 +1385,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 78: Process = "VVV_ZZZ";
+        case 79: Process = "VVV_ZZZ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZZ/*"}; break;
@@ -1364,7 +1396,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 79: Process = "WPlusJets";
+	case 80: Process = "WPlusJets";
 		
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu/*"}; break;
@@ -1375,7 +1407,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 80: Process = "WPlusJets_ext";
+        case 81: Process = "WPlusJets_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu_ext2/*"}; break;
@@ -1386,7 +1418,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 81: Process = "ttbarV_ttWJetsToLNu";
+        case 82: Process = "ttbarV_ttWJetsToLNu";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/*"}; break;
@@ -1397,7 +1429,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 82: Process = "ttbarV_ttWJetsToLNu_ext";
+        case 83: Process = "ttbarV_ttWJetsToLNu_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/ttWJetsToLNu_ext2/*"}; break;
@@ -1408,7 +1440,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 83: Process = "ttbarV_ttWJetsToQQ";
+	case 84: Process = "ttbarV_ttWJetsToQQ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToQQ/*"}; break;
@@ -1419,7 +1451,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 84: Process = "ttbarV_ttZToLL";
+        case 85: Process = "ttbarV_ttZToLL";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1430,7 +1462,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 85: Process = "ttbarV_ttZToLLNuNu";
+	case 86: Process = "ttbarV_ttZToLLNuNu";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu/*"}; break;
@@ -1441,7 +1473,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 85: Process = "ttbarV_ttZToLLNuNu_ext2";
+	case 87: Process = "ttbarV_ttZToLLNuNu_ext2";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext2/*"}; break;
@@ -1452,7 +1484,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 86: Process = "ttbarV_ttZToLLNuNu_ext3";
+        case 88: Process = "ttbarV_ttZToLLNuNu_ext3";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext3/*"}; break;
@@ -1463,7 +1495,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 	
-	case 87: Process = "ttbarV_ttZToQQ";
+	case 89: Process = "ttbarV_ttZToQQ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"}; break;
@@ -1474,7 +1506,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 88: Process = "ttbarV_ttZToQQ_ext";
+        case 90: Process = "ttbarV_ttZToQQ_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ_ext/*"}; break;
@@ -1485,7 +1517,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 89: Process = "ttbarV_ttgamma";
+        case 91: Process = "ttbarV_ttgamma";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttgamma/*"}; break;
@@ -1496,7 +1528,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
    
-        case 90: Process = "ttbarV_ttgamma_ext";
+        case 92: Process = "ttbarV_ttgamma_ext";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1507,7 +1539,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 91: Process = "ttbarV_ttHTobb";
+	case 93: Process = "ttbarV_ttHTobb";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHTobb/*"}; break;
@@ -1518,7 +1550,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 92: Process = "ttbarV_ttHToNonbb";
+	case 94: Process = "ttbarV_ttHToNonbb";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb/*"}; break;
@@ -1529,7 +1561,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 93: Process = "TriggerSF_MC";
+	case 95: Process = "TriggerSF_MC";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"}; break;
@@ -1540,7 +1572,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 94: Process = "TriggerSF_DATA";
+	case 96: Process = "TriggerSF_DATA";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root", "/data/disk2/nanoAOD_2016/METRun2016G/*.root", "/data/disk2/nanoAOD_2016/METRun2016H/*.root"}; break;
@@ -1554,7 +1586,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 95: Process = "Data_DoubleEGRunB";
+	case 97: Process = "Data_DoubleEGRunB";
 
 		 switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
@@ -1563,7 +1595,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		 }
 
-	case 96: Process = "Data_DoubleEGRunC";
+	case 98: Process = "Data_DoubleEGRunC";
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016C/*"}; break;
@@ -1572,7 +1604,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-        case 97: Process = "Data_DoubleEGRunD";
+        case 99: Process = "Data_DoubleEGRunD";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016D/*"}; break;
@@ -1581,7 +1613,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-	case 98: Process = "Data_DoubleEGRunE";
+	case 100: Process = "Data_DoubleEGRunE";
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016E/*"}; break;
@@ -1591,7 +1623,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  }
 
 
-	case 99: Process = "Data_DoubleEGRunF";
+	case 101: Process = "Data_DoubleEGRunF";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016F/*"}; break;
@@ -1600,7 +1632,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-	case 100: Process = "Data_DoubleEGRunG";
+	case 102: Process = "Data_DoubleEGRunG";
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016G/*"}; break;
@@ -1610,7 +1642,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  }
 
 
-	case 101: Process = "Data_DoubleEGRunH";
+	case 103: Process = "Data_DoubleEGRunH";
 
 		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016H/*"}; break;
@@ -1619,7 +1651,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-	case 102: Process = "Data_DoubleMuonRunB";
+	case 104: Process = "Data_DoubleMuonRunB";
 
 		  switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016B/*"}; break;
@@ -1627,7 +1659,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"}; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		  }
-	case 103: Process = "Data_DoubleMuonRunC";
+	case 105: Process = "Data_DoubleMuonRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016C/*"}; break;
@@ -1636,7 +1668,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 104: Process = "Data_DoubleMuonRunD";
+	case 106: Process = "Data_DoubleMuonRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016D/*"}; break;
@@ -1645,7 +1677,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 105: Process = "Data_DoubleMuonRunE";
+	case 107: Process = "Data_DoubleMuonRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016E/*"}; break;
@@ -1654,7 +1686,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 106: Process = "Data_DoubleMuonRunF";
+	case 108: Process = "Data_DoubleMuonRunF";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"}; break;
@@ -1663,7 +1695,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 107: Process = "Data_DoubleMuonRunG";
+	case 109: Process = "Data_DoubleMuonRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"}; break;
@@ -1672,7 +1704,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 102: Process = "Data_DoubleMuonRunH";
+	case 110: Process = "Data_DoubleMuonRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"}; break;
@@ -1681,7 +1713,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 103: Process = "Data_MuonEGRunB";
+	case 111: Process = "Data_MuonEGRunB";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016B/*"}; break;
@@ -1690,7 +1722,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 104: Process = "Data_MuonEGRunC";
+	case 112: Process = "Data_MuonEGRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016C/*"}; break;
@@ -1699,7 +1731,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 	
-	case 105: Process = "Data_MuonEGRunD";
+	case 113: Process = "Data_MuonEGRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016D/*"}; break;
@@ -1708,7 +1740,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-        case 106: Process = "Data_MuonEGRunE";
+        case 114: Process = "Data_MuonEGRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016E/*"}; break;
@@ -1717,7 +1749,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 107: Process = "Data_MuonEGRunF";
+	case 115: Process = "Data_MuonEGRunF";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016F/*"}; break;
@@ -1726,7 +1758,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 108: Process = "Data_MuonEGRunG";
+	case 116: Process = "Data_MuonEGRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016G/*"}; break;
@@ -1735,7 +1767,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 109: Process = "Data_MuonEGRunH";
+	case 117: Process = "Data_MuonEGRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016H/*"}; break;
@@ -1744,7 +1776,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 110: Process = "Data_SingleMuonRunB";
+	case 118: Process = "Data_SingleMuonRunB";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"}; break;
@@ -1753,7 +1785,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 111: Process = "Data_SingleMuonRunC";
+	case 119: Process = "Data_SingleMuonRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"}; break;
@@ -1762,7 +1794,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 112: Process = "Data_SingleMuonRunD";
+	case 120: Process = "Data_SingleMuonRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"}; break;
@@ -1771,7 +1803,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 113: Process = "Data_SingleMuonRunE";
+	case 121: Process = "Data_SingleMuonRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunE/*"}; break;
@@ -1780,7 +1812,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 114: Process = "Data_SingleMuonRunF";
+	case 122: Process = "Data_SingleMuonRunF";
 
                   switch(YearInt){
 			case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunF/*"}; break;
@@ -1789,7 +1821,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 115: Process = "Data_SingleMuonRunG";
+	case 123: Process = "Data_SingleMuonRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunG/*"}; break;
@@ -1798,7 +1830,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 116: Process = "Data_SingleMuonRunH";
+	case 124: Process = "Data_SingleMuonRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunH/*"}; break;
@@ -1807,7 +1839,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
  
-	case 117: Process = "Data_SingleElectronRunB";
+	case 125: Process = "Data_SingleElectronRunB";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunB/*"}; break;
@@ -1816,7 +1848,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 118: Process = "Data_SingleElectronRunC";
+	case 126: Process = "Data_SingleElectronRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunC/*"}; break;
@@ -1825,7 +1857,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 119: Process = "Data_SingleElectronRunD";
+	case 127: Process = "Data_SingleElectronRunD";
 
                   switch(YearInt){
 			case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunD/*"}; break;
@@ -1834,7 +1866,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 120: Process = "Data_SingleElectronRunE";
+	case 128: Process = "Data_SingleElectronRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunE/*"}; break;
@@ -1843,7 +1875,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 121: Process = "Data_SingleElectronRunF";
+	case 129: Process = "Data_SingleElectronRunF";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunF/*"}; break;
@@ -1852,7 +1884,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 122: Process = "Data_SingleElectronRunG";
+	case 130: Process = "Data_SingleElectronRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"}; break;
@@ -1861,7 +1893,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 123: Process = "Data_SingleElectronRunH";
+	case 131: Process = "Data_SingleElectronRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"}; break;
@@ -1870,7 +1902,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 124: Process = "Data_EGRunB";
+	case 132: Process = "Data_EGRunB";
 
 		  switch(YearInt){ 
                         case 2016: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunB/*"}; break;
@@ -1879,7 +1911,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 125: Process = "Data_EGRunC";
+	case 133: Process = "Data_EGRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunC/*"}; break;
@@ -1888,7 +1920,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 124: Process = "Data_EGRunD";
+	case 134: Process = "Data_EGRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunD/*"}; break;
@@ -1897,7 +1929,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 125: Process = "NPL_File_ee_Blinded";
+	case 135: Process = "NPL_File_ee_Blinded";
 
                   switch(YearInt){
                         case 2016: input_files = {"NPL_ee_output_2016_Blinded.root"}; break;
@@ -1906,7 +1938,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 126: Process = "NPL_File_ee_Unblinded";
+	case 136: Process = "NPL_File_ee_Unblinded";
 
                   switch(YearInt){
                         case 2016: input_files = {"NPL_ee_output_2016_Unblinded.root"}; break;
@@ -1915,7 +1947,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 127: Process = "NPL_File_mumu_Blinded";
+	case 137: Process = "NPL_File_mumu_Blinded";
 
                   switch(YearInt){
                         case 2016: input_files = {"NPL_mumu_output_2016_Blinded.root"}; break;
@@ -1924,7 +1956,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-        case 128: Process = "NPL_File_mumu_Unblinded";
+        case 138: Process = "NPL_File_mumu_Unblinded";
 
                   switch(YearInt){
                         case 2016: input_files = {"NPL_mumu_output_2016_Unblinded.root"}; break;
@@ -1956,7 +1988,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   switch(NPLInt){
 
 	case 1: NonPromptLepton = "NPL";
-        break
+        break;
 
 	default: NonPromptLepton = "";
         break;
@@ -2072,31 +2104,31 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   switch(YearInt){
                 
-  	case 2016: PSWeightString = "LeptonPt";
+  	case 2016: PSWeightString = "LeptonPt"; break;
         case 2017: switch(ProcessInt){ 
-                   	case 0: PSWeightString = PSWeight; break;
-                        case 29: PSWeightString = PSWeight; break;
-                        case 30: PSWeightString = PSWeight; break;
-                        case 33: PSWeightString = PSWeight; break;
-                        case 36: PSWeightString = PSWeight; break;
-                        case 39: PSWeightString = PSWeight; break;
-                        case 56: PSWeightString = PSWeight; break;
-                        case 89: PSWeightString = PSWeight; break;
+                   	case 0: PSWeightString = "PSWeight"; break;
+                        case 29: PSWeightString = "PSWeight"; break;
+                        case 30: PSWeightString = "PSWeight"; break;
+                        case 33: PSWeightString = "PSWeight"; break;
+                        case 36: PSWeightString = "PSWeight"; break;
+                        case 39: PSWeightString = "PSWeight"; break;
+                        case 56: PSWeightString = "PSWeight"; break;
+                        case 89: PSWeightString = "PSWeight"; break;
                         default: PSWeightString = "LeptonPt"; break;
                     }
         case 2018: switch(ProcessInt){ 
-			case 0: PSWeightString = PSWeight; break;
-                        case 29: PSWeightString = PSWeight; break;
-                        case 30: PSWeightString = PSWeight; break;
-                        case 33: PSWeightString = PSWeight; break;
-                        case 36: PSWeightString = PSWeight; break;
-                        case 39: PSWeightString = PSWeight; break;
-                        case 56: PSWeightString = PSWeight; break;
-                        case 89: PSWeightString = PSWeight; break;
+			case 0: PSWeightString = "PSWeight"; break;
+                        case 29: PSWeightString = "PSWeight"; break;
+                        case 30: PSWeightString = "PSWeight"; break;
+                        case 33: PSWeightString = "PSWeight"; break;
+                        case 36: PSWeightString = "PSWeight"; break;
+                        case 39: PSWeightString = "PSWeight"; break;
+                        case 56: PSWeightString = "PSWeight"; break;
+                        case 89: PSWeightString = "PSWeight"; break;
                         default: PSWeightString = "LeptonPt"; break;                  
 		    }
 
-	default: std::cout << "ERROR: Please choose the year as 2016, 2017 or 2018." << std::endl; break;
+	default: std::cout << "ERROR: Inside the switch statement for PSWeightString. Please choose the year as 2016, 2017 or 2018." << std::endl; break;
         
   }
 
@@ -2534,52 +2566,52 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};  
 
   //To prevent double counting datasets
-  auto DoubleCountCheckLeptonTriggers{[](const std::string TriggerType,
-					 const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 		         const bool& HLT_Ele27_WPTight_Gsf, 
-					 const bool& HLT_Ele32_eta2p1_WPTight_Gsf, 		         const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG,
-					 const bool& HLT_Ele35_WPTight_Gsf, 	   		         const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
-					 const bool& HLT_IsoMu24, 		   		         const bool& HLT_IsoMu24_eta2p1, 
-					 const bool& HLT_IsoMu27, 		   		         const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,
-					 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8,          const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,
-					 const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,          const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,
-					 const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
-					 const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,    const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-					 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL){
+  auto DoubleCountCheckLeptonTriggers{[&YearInt](const int& TriggerType,
+					 	 const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 		         const bool& HLT_Ele27_WPTight_Gsf, 
+					 	 const bool& HLT_Ele32_eta2p1_WPTight_Gsf, 		         const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG,
+					 	 const bool& HLT_Ele35_WPTight_Gsf, 	   		         const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
+					 	 const bool& HLT_IsoMu24, 		   		         const bool& HLT_IsoMu24_eta2p1, 
+					 	 const bool& HLT_IsoMu27, 		   		         const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,
+					 	 const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8,          const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,
+					 	 const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,          const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,
+					 	 const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
+					 	 const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,    const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+					 	 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL){
 
 
 	std::cout << "print 7" << std::endl;
 
 	switch(TriggerType){
 
-		case "SingleElectron": switch(YearInt){
+		case 0: switch(YearInt){//single electron
 						case 2016: return (HLT_Ele25_eta2p1_WPTight_Gsf > 0 || HLT_Ele27_WPTight_Gsf > 0 || HLT_Ele32_eta2p1_WPTight_Gsf > 0);
 						case 2017: return (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || HLT_Ele35_WPTight_Gsf > 0);
 						case 2018: return (HLT_Ele32_WPTight_Gsf_L1DoubleEG > 0 || HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0);
 						default: std::cout << "Please choose a year out of 2016, 2017 or 2018." << std::endl;
 					}
 
-		case "SingleMuon": switch(YearInt){
+		case 1: switch(YearInt){//single muon
                                    	case 2016: return (HLT_IsoMu24 <= 0 || HLT_IsoMu24_eta2p1 <= 0);
                                         case 2017: return (HLT_IsoMu27 <= 0);
                                         case 2018: return HLT_IsoMu24 <= 0;
                                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018." << std::endl;
                                    }
 
-		case "DoubleMuon": switch(YearInt){
+		case 2: switch(YearInt){//double muon
                                         case 2016: return (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0);
                                         case 2017: return (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0);
                                         case 2018: return (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0);
                                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018." << std::endl;
                                    }
 
-		case "DoubleElectron": switch(YearInt){
+		case 3: switch(YearInt){//double electron
                                         case 2016: return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
                                         case 2017: return (HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0);
                                         case 2018: return HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0;
                                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018." << std::endl;
                                    }
 
-		case "MuonEG": switch(YearInt){
+		case 4: switch(YearInt){//muon EG
                                         case 2016: return (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
                                             	   	  HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
                                             		  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
@@ -2623,12 +2655,13 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 										  const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
                                    	         			          const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,    
 										  const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-                                   	         				  const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL){
+                                   	         				  const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, 
+										  const ULong64_t& event){
 
 
 	std::cout << "print 8" << std::endl;
 
-	bool Single_E = DoubleCountCheckLeptonTriggers("SingleElectron", 
+	bool Single_E = DoubleCountCheckLeptonTriggers(0, 
 				       		      HLT_Ele25_eta2p1_WPTight_Gsf, 			    HLT_Ele27_WPTight_Gsf, 
 				       		      HLT_Ele32_eta2p1_WPTight_Gsf, 			    HLT_Ele32_WPTight_Gsf_L1DoubleEG,
                                        		      HLT_Ele35_WPTight_Gsf,        			    HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
@@ -2640,7 +2673,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                        		      HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
                                        		      HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL);
 
-	bool Single_Mu = DoubleCountCheckLeptonTriggers("SingleMuon",
+	bool Single_Mu = DoubleCountCheckLeptonTriggers(1,
 				       		      HLT_Ele25_eta2p1_WPTight_Gsf,                        HLT_Ele27_WPTight_Gsf,
                                        		      HLT_Ele32_eta2p1_WPTight_Gsf,                        HLT_Ele32_WPTight_Gsf_L1DoubleEG,
                                        		      HLT_Ele35_WPTight_Gsf,                               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
@@ -2652,7 +2685,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                        		      HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
                                        		      HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL);
 
-	bool Double_E = DoubleCountCheckLeptonTriggers("DoubleElectron",
+	bool Double_E = DoubleCountCheckLeptonTriggers(2,
 				       		      HLT_Ele25_eta2p1_WPTight_Gsf,                        HLT_Ele27_WPTight_Gsf,
                                        		      HLT_Ele32_eta2p1_WPTight_Gsf,                        HLT_Ele32_WPTight_Gsf_L1DoubleEG,
                                        		      HLT_Ele35_WPTight_Gsf,                               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
@@ -2664,7 +2697,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                        		      HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
                                        		      HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL);
 
-	bool Double_Mu = DoubleCountCheckLeptonTriggers("DoubleMuon",
+	bool Double_Mu = DoubleCountCheckLeptonTriggers(3,
 				       		      HLT_Ele25_eta2p1_WPTight_Gsf,                        HLT_Ele27_WPTight_Gsf,
                                        		      HLT_Ele32_eta2p1_WPTight_Gsf,                        HLT_Ele32_WPTight_Gsf_L1DoubleEG,
                                        		      HLT_Ele35_WPTight_Gsf,                               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
@@ -2676,7 +2709,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                        		      HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
                                        		      HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL);
 
-	bool ElecMu = DoubleCountCheckLeptonTriggers("MuonEG",
+	bool ElecMu = DoubleCountCheckLeptonTriggers(4,
 				       		     HLT_Ele25_eta2p1_WPTight_Gsf,                        HLT_Ele27_WPTight_Gsf,
                                        		     HLT_Ele32_eta2p1_WPTight_Gsf,                        HLT_Ele32_WPTight_Gsf_L1DoubleEG,
                                        	             HLT_Ele35_WPTight_Gsf,                               HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL,
@@ -2689,45 +2722,42 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                        		     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL);
 
 
-	switch(Process){
-		case "Data_DoubleEGRunB": return Double_E == true;
-		case "Data_DoubleEGRunC": return Double_E == true;
-		case "Data_DoubleEGRunD": return Double_E == true;
-		case "Data_DoubleEGRunE": return Double_E == true;
-		case "Data_DoubleEGRunF": return Double_E == true;
-		case "Data_DoubleEGRunG": return Double_E == true;
-		case "Data_DoubleEGRunH": return Double_E == true;
-		case "Data_SingleElectronRunB": return Single_E == true;
-		case "Data_SingleElectronRunC": return Single_E == true;
-		case "Data_SingleElectronRunD": return Single_E == true;
-		case "Data_SingleElectronRunE": return Single_E == true;
-		case "Data_SingleElectronRunF": return Single_E == true;
-		case "Data_SingleElectronRunG": return Single_E == true;
-		case "Data_SingleElectronRunH": return Single_E == true;
-		case "Data_DoubleMuonRunB": return Double_Mu == true;
-		case "Data_DoubleMuonRunC": return Double_Mu == true;
-		case "Data_DoubleMuonRunD": return Double_Mu == true;
-		case "Data_DoubleMuonRunE": return Double_Mu == true;
-		case "Data_DoubleMuonRunF": return Double_Mu == true;
-		case "Data_DoubleMuonRunG": return Double_Mu == true;
-		case "Data_DoubleMuonRunH": return Double_Mu == true;
-                case "Data_SingleMuonRunB": return Single_Mu == true;
-		case "Data_SingleMuonRunC": return Single_Mu == true;
-		case "Data_SingleMuonRunD": return Single_Mu == true;
-		case "Data_SingleMuonRunE": return Single_Mu == true;
-		case "Data_SingleMuonRunF": return Single_Mu == true;
-		case "Data_SingleMuonRunG": return Single_Mu == true;
-		case "Data_SingleMuonRunH": return Single_Mu == true;
-		case "Data_MuonEGRunB": return ElecMu == true;
-		case "Data_MuonEGRunC": return ElecMu == true;
-		case "Data_MuonEGRunD": return ElecMu == true;
-		case "Data_MuonEGRunE": return ElecMu == true;
-		case "Data_MuonEGRunF": return ElecMu == true;
-		case "Data_MuonEGRunG": return ElecMu == true;
-		case "Data_MuonEGRunH": return ElecMu == true;
-		default: return event;
-
-	}
+	if(Process == "Data_DoubleEGRunB"){return Double_E == true;}
+	else if(Process == "Data_DoubleEGRunC"){return Double_E == true;}
+	else if(Process == "Data_DoubleEGRunD"){return Double_E == true;}
+	else if(Process == "Data_DoubleEGRunE"){return Double_E == true;}
+	else if(Process == "Data_DoubleEGRunF"){return Double_E == true;}
+	else if(Process == "Data_DoubleEGRunG"){return Double_E == true;}
+	else if(Process == "Data_DoubleEGRunH"){return Double_E == true;}
+	else if(Process == "Data_SingleElectronRunB"){return Single_E == true;}
+	else if(Process == "Data_SingleElectronRunC"){return Single_E == true;}
+	else if(Process == "Data_SingleElectronRunD"){return Single_E == true;}
+	else if(Process == "Data_SingleElectronRunE"){return Single_E == true;}
+	else if(Process == "Data_SingleElectronRunF"){return Single_E == true;}
+	else if(Process == "Data_SingleElectronRunG"){return Single_E == true;}
+	else if(Process == "Data_SingleElectronRunH"){return Single_E == true;}
+	else if(Process == "Data_DoubleMuonRunB"){return Double_Mu == true;}
+	else if(Process == "Data_DoubleMuonRunC"){return Double_Mu == true;}
+	else if(Process == "Data_DoubleMuonRunD"){return Double_Mu == true;}
+	else if(Process == "Data_DoubleMuonRunE"){return Double_Mu == true;}
+	else if(Process == "Data_DoubleMuonRunF"){return Double_Mu == true;}
+	else if(Process == "Data_DoubleMuonRunG"){return Double_Mu == true;}
+	else if(Process == "Data_DoubleMuonRunH"){return Double_Mu == true;}
+        else if(Process == "Data_SingleMuonRunB"){return Single_Mu == true;}
+	else if(Process == "Data_SingleMuonRunC"){return Single_Mu == true;}
+	else if(Process == "Data_SingleMuonRunD"){return Single_Mu == true;}
+	else if(Process == "Data_SingleMuonRunE"){return Single_Mu == true;}
+	else if(Process == "Data_SingleMuonRunF"){return Single_Mu == true;}
+	else if(Process == "Data_SingleMuonRunG"){return Single_Mu == true;}
+	else if(Process == "Data_SingleMuonRunH"){return Single_Mu == true;}
+	else if(Process == "Data_MuonEGRunB"){return ElecMu == true;}
+	else if(Process == "Data_MuonEGRunC"){return ElecMu == true;}
+	else if(Process == "Data_MuonEGRunD"){return ElecMu == true;}
+	else if(Process == "Data_MuonEGRunE"){return ElecMu == true;}
+	else if(Process == "Data_MuonEGRunF"){return ElecMu == true;}
+	else if(Process == "Data_MuonEGRunG"){return ElecMu == true;}
+	else if(Process == "Data_MuonEGRunH"){return ElecMu == true;}
+	else{return event > 0;}
 
 
   }};
@@ -2740,7 +2770,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
       	float PU_Weight_input;
 
-      	switch(Yearint){
+      	switch(YearInt){
 
         	case 2016: PU_Weight_input = puReweight_2016->GetBinContent(puReweight_2016->GetXaxis()->FindBin(PV_npvs_input)); break;
           	case 2017: PU_Weight_input = puReweight_2017->GetBinContent(puReweight_2017->GetXaxis()->FindBin(PV_npvs_input)); break;
@@ -2756,7 +2786,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   //Lambda functions for the electron selection
   auto ElectronsFunction{[](const int targetID, const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand){
  
-  	std::cout << "print 10" << std::endl;
+  	std::cout << "print 9" << std::endl;
   	return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && 
 		Electron_cutBased >= targetID && Electron_isPFcand);
 
@@ -2764,15 +2794,16 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto MuonsFunction{[](const float target_iso, const bools& isPFs, const floats& Muon_pt, const floats& Muon_eta, const bools& ids, const floats& isos){
 
-  	std::cout << "print 9" << std::endl;
+  	std::cout << "print 10" << std::endl;
   	return (isPFs && Muon_pt > MinMuonPt && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
 
   }};
 
 
 
-  auto TightLeptonsFunction{[&ChannelInt](const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand
-					  const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos){
+  auto TightLeptonsFunction{[&ChannelInt, &ElectronsFunction, &MuonsFunction](const floats& Electron_pt,      const floats& Electron_eta, const ints& Electron_cutBased, 
+									      const bools& Electron_isPFcand, const bools& isPFs,         const floats& pts, 
+									      const floats& etas,             const bools& ids,           const floats& isos){
 
   	std::cout << "print 11" << std::endl;
 
@@ -2788,11 +2819,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  template<typename T>
-  [[gnu::const]] T select(const T& a, const ints& mask)
-  {
-    return a[mask];
-  }
 
   auto LeptonVariableFunctionFloats{[&ChannelInt](const floats& Electron_input, const floats& Muon_input){
 
@@ -2840,8 +2866,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto LooseLeptonsFunction{[&ChannelInt](const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand
-					  const bools& isPFs, const floats& pts, const floats& etas, const bools& ids, const floats& isos){
+  auto LooseLeptonsFunction{[&ChannelInt, &ElectronsFunction, &MuonsFunction](const floats& Electron_pt,      const floats& Electron_eta, const ints& Electron_cutBased, 
+									      const bools& Electron_isPFcand, const bools& isPFs,         const floats& pts, 
+									      const floats& etas,             const bools& ids,           const floats& isos){
 
   	std::cout << "print 15" << std::endl;
 
@@ -2867,7 +2894,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto SameSign{[&ChannelInt](const ints& charges){
 
   	std::cout << "print 14" << std::endl;
-	case 1: return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
+	return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
 
   }};
 
@@ -2875,14 +2902,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	std::cout << "print 17" << std::endl;
 
-	if(variable1.size() > 0){
+	if(variable.size() > 0){
 
-  		float first_largest_value = variable1.at(0);
+  		float first_largest_value = variable.at(0);
 
-        	for(long unsigned int i = 1; i < variable1.size(); i++){
+        	for(long unsigned int i = 1; i < variable.size(); i++){
 
-                	if(variable1.at(i) > first_largest_value){
-                        	first_largest_value = variable1.at(i);
+                	if(variable.at(i) > first_largest_value){
+                        	first_largest_value = variable.at(i);
                 	}
 
         	}
@@ -3476,38 +3503,40 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 
 
-  auto LeptonCut{[&ChannelInt](const floats& tight_ele_pts,   		         const floats& loose_ele_pts, const bool os,
-		     	       const unsigned int& nElectron, 		         const floats& LeadingElectron_dz_ECALBarrel,
-		     	       const floats& LeadingElectron_dxy_ECALBarrel,     const floats& LeadingElectron_dz_ECALEndcaps,
-		     	       const floats& LeadingElectron_dxy_ECALEndcaps,    const floats& SubleadingElectron_dz_ECALBarrel,
-		     	       const floats& SubleadingElectron_dxy_ECALBarrel,  const floats& SubleadingElectron_dz_ECALEndcaps,
-		     	       const floats& SubleadingElectron_dxy_ECALEndcaps, const unsigned int& nMuon){
+  auto LeptonCut{[&ChannelInt](const floats& tight_ele_pts,   		             const floats& loose_ele_pts, const bool os,
+		     	       const unsigned int& nElectron, 		             const floats& LeadingElectron_dz_ECALBarrel,
+		     	       const floats& LeadingElectron_dxy_ECALBarrel,         const floats& LeadingElectron_dz_ECALEndcaps,
+		     	       const floats& LeadingElectron_dxy_ECALEndcaps,        const floats& SubleadingElectron_dz_ECALBarrel,
+		     	       const floats& SubleadingElectron_dxy_ECALBarrel,      const floats& SubleadingElectron_dz_ECALEndcaps,
+		     	       const floats& SubleadingElectron_dxy_ECALEndcaps,     const unsigned int& nMuon){
 
   	std::cout << "print 31" << std::endl;
 
-  	const bool ele_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
-  	bool lead_pt_cut_ee{false};
-  	lead_pt_cut = tight_ele_pts.empty() ? false : *max_element(tight_ele_pts.begin(), tight_ele_pts.end()) > MaxElectronPt;
+  	const bool lepton_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
+  	bool lead_pt_cut{false};
 
-	const bool mu_cut{tight_mu_pts.size() == 2 && tight_mu_pts.size() == loose_mu_pts.size()};
-  	bool lead_pt_cut_mumu{false};
-  	lead_pt_cut_mumu = tight_mu_pts.empty() ? false : *std::max_element(tight_mu_pts.begin(), tight_mu_pts.end()) > MaxMuonPt; 
+	float MaxLeptonPt;
 
-        const bool emu_cut{tight_ele_pts.size() == 1 && tight_mu_pts.size() == 1 && (tight_mu_pts.size() == loose_mu_pts.size()) && (tight_mu_pts.size() == loose_mu_pts.size())};
-		
+	switch(ChannelInt){
+		case 1: MaxLeptonPt = MaxElectronPt; break;
+		case 2: MaxLeptonPt = MaxMuonPt; break;
+		default: std::cout << "ERROR: Channel must be ee, mumu or emu." << std::endl; break;
+	}
+
+	lead_pt_cut = tight_ele_pts.empty() ? false : *max_element(tight_ele_pts.begin(), tight_ele_pts.end()) > MaxLeptonPt;
 
 	switch(ChannelInt){
 
-		case 1: return os 				      && lead_pt_cut_ee && 
-			ele_cut 				      && nElectron == 2 &&
+		case 1: return os 				      && lead_pt_cut && 
+			lepton_cut 				      && nElectron == 2 &&
   			LeadingElectron_dz_ECALBarrel.at(0) < 0.1     && LeadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
   			LeadingElectron_dz_ECALEndcaps.at(0) < 0.2    && LeadingElectron_dxy_ECALEndcaps.at(0) < 0.1 &&
   			SubleadingElectron_dz_ECALBarrel.at(0) < 0.1  && SubleadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
   			SubleadingElectron_dz_ECALEndcaps.at(0) < 0.2 && SubleadingElectron_dxy_ECALEndcaps.at(0) < 0.1;
 
-		case 2: return os && lead_pt_cut && mu_cut && nMuon == 2;
+		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2;
 
-		case 3: return os && emu_cut && nElectron == 1 && nMuon == 1;
+		case 3: return os && lepton_cut && nElectron == 1 && nMuon == 1;
 
 		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
@@ -3559,7 +3588,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  [[gnu::const]] auto inv_mass(const floats& pts, const floats& etas, const floats& phis, const floats& ms)
+
+  auto inv_mass{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms)
    {
 
 	std::cout << "print 36" << std::endl;
@@ -3577,7 +3607,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	
     	return boost::numeric_cast<float>(vec.M());
 
-  }
+  }};
 
   auto RecoZ{[](const float& LeadingleptonPt,    const float& LeadingleptonEta,    const float& LeadingleptonPhi,    const float& LeadingleptonMass,
 		const float& SubleadingleptonPt, const float& SubleadingleptonEta, const float& SubleadingleptonPhi, const float& SubleadingleptonMass){
@@ -3598,35 +3628,24 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
   
-  auto TLorentzVectorPt{[](const TLorentzVector& object){
+  auto TLorentzVectorVariable{[](const int& VariableChoice, const TLorentzVector& object){
 
   	std::cout << "print 38" << std::endl;
 
   	doubles vec{};
-  	vec.push_back(object.Pt());
+	
+	switch(VariableChoice){
+		case 1: vec.push_back(object.Pt()); break;
+		case 2: vec.push_back(object.Phi()); break;
+		case 3: vec.push_back(object.Eta()); break;
+		case 4: vec.push_back(object.M()); break;
+		default: break;
+	}
+
   	return vec;
 
   }};
 
-  auto TLorentzVectorPhi{[](const TLorentzVector& object){
-
-        std::cout << "print 39" << std::endl;
-
-        doubles vec{};
-        vec.push_back(object.Phi());
-        return vec;
-
-  }};
-
-  auto TLorentzVectorEta{[](const TLorentzVector& object){
-
-        std::cout << "print 40" << std::endl;
-
-        doubles vec{};
-        vec.push_back(object.Eta());
-        return vec;
-
-  }};
 
   auto deltaRcheck_float{[](const float& Object1_eta, const float& Object1_phi, const float& Object2_eta, const float& Object2_phi){
 
@@ -3647,7 +3666,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto MuonFourMomentum{[](const floats& Muon_pt, const floats& Muon_eta, const floats& Muon_phi, const floats& Muon_mass){
+  auto LeptonFourMomentumFunction{[](const floats& Muon_pt, const floats& Muon_eta, const floats& Muon_phi, const floats& Muon_mass){
   
   	std::cout << "print 43" << std::endl;
 
@@ -3663,8 +3682,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto RochesterCorrections_testscript2(const int& YearInteger, const std::string& process, const ints& MuonCharge, const floats& MuonPt,
-					const floats& MuonEta, const floats& MuonPhi, const ints& Muon_genPartIdx, const ints& Muon_nTrackerLayers){
+  auto RochesterCorrections_testscript2{[](const int& YearInteger, const int& MonteCarloInt, const ints& MuonCharge, const floats& MuonPt,
+					   const floats& MuonEta, const floats& MuonPhi, const ints& Muon_genPartIdx, const ints& Muon_nTrackerLayers){
 
 	std::cout << "print 44" << std::endl;
 
@@ -3693,7 +3712,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		double mcSF;
 
 
-		if(MCInt == 1){ 
+		if(MonteCarloInt == 1){ 
 
 			if(mcSF > 0){
 
@@ -3720,8 +3739,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto RochCorrVec_Function{[&MCInt, &YearInt](const ints& MuonCharge,      const floats& MuonPt,           const floats& MuonEta, const floats& MuonPhi, 
-				                 const ints& Muon_genPartIdx, const ints& Muon_nTrackerLayers){
+  auto RochCorrVec_Function{[&MCInt, &YearInt, &RochesterCorrections_testscript2](const ints& MuonCharge,      const floats& MuonPt,           const floats& MuonEta, 
+									          const floats& MuonPhi,       const ints& Muon_genPartIdx,    const ints& Muon_nTrackerLayers){
 
   	std::cout << "print 45" << std::endl;
 
@@ -3731,8 +3750,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto RochCorrVec_Function_data{[&process, &year](const ints& MuonCharge, const floats& MuonPt,        const floats& MuonEta,
-						   const floats& MuonPhi,  const ints& DummyColumnInts, const ints& Muon_nTrackerLayers){
+  auto RochCorrVec_Function_data{[&YearInt, &RochesterCorrections_testscript2, &MCInt](const ints& MuonCharge, const floats& MuonPt,        const floats& MuonEta,
+						   			               const floats& MuonPhi,  const ints& DummyColumnInts, const ints& Muon_nTrackerLayers){
 
   	std::cout << "print 46" << std::endl;
 
@@ -3763,12 +3782,20 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto TLorentzVectorPt_float{[](const TLorentzVector& object){
+  auto TLorentzVector_float{[](const int& VariableOption, const TLorentzVector& object){
   
   	std::cout << "print 48" << std::endl;
 
   	floats vec{};
-  	vec.push_back(object.Pt());
+
+	switch(VariableOption){
+		case 1: vec.push_back(object.Pt()); break;
+		case 2: vec.push_back(object.Phi()); break;
+		case 3: vec.push_back(object.Eta()); break;
+		case 4: vec.push_back(object.M()); break;
+		default: break;
+	}
+
   	return vec;
 
   }};
@@ -4069,8 +4096,50 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
+ auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  auto SJER_nominal{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+  std::cout << "print 53" << std::endl;
+
+  bool SigmaJER = true;
+  bool JetSmearScaleFactor = false;
+  bool Up = false;
+  bool Down = false;
+
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+}};
+
+
+auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+
+  std::cout << "print 54" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = false;
+  bool Up = true;
+  bool Down = false;
+
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+}};
+
+
+auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
+
+  std::cout << "print 55" << std::endl;
+
+  bool SigmaJER = false;
+  bool JetSmearScaleFactor = false;
+  bool Up = false;
+  bool Down = true;
+  
+  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
+
+}};
+ 
+
+
+  auto SJER_Nominal_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
   	std::cout << "print 53" << std::endl;
 
@@ -4083,7 +4152,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto SJER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+  auto SJER_Up_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
   	std::cout << "print 54" << std::endl;
 
@@ -4096,7 +4165,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto SJER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
+  auto SJER_Down_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
   	std::cout << "print 55" << std::endl;
 
@@ -4284,30 +4353,30 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto deltaRcheck_floats{[](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
+  auto delta_phi{[](const float phi1, const float phi2){
+  	return vdt::fast_atan2f(vdt::fast_sinf(phi1 - phi2), vdt::fast_cosf(phi1 - phi2));
+  }};
+
+  auto deltaR{[&delta_phi](const float eta1, const float phi1, const float eta2, const float phi2){
+  	return std::sqrt(std::pow(eta1 - eta2, 2) + std::pow(delta_phi(phi1, phi2), 2));
+  }};
+
+  auto deltaRcheck_floats{[&deltaR](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
 
   	std::cout << "print 65" << std::endl;
 
   	floats min_dRs{};
 
-  	if(Object2_phi.size() > 1){
+	 if(Object2_phi.size() > 1){
 
-  		transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), 
-			  [](float Object1_eta, float Object1_phi) { 
-					return std::min(deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)), 
-							deltaR(Object1_eta, Object1_phi, Object2_eta.at(1), Object2_phi.at(1))); 
-
-					});
+  		transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return std::min(deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)), deltaR(Object1_eta, Object1_phi, Object2_eta.at(1), Object2_phi.at(1))); });
 
   	}
-        else{
+  	else{
 
-		transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), 
-			  [](float Object1_eta, float Object1_phi) { 
-				return deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)); 
-			     });
+		transform(Object1_eta.begin(), Object1_eta.end(), Object1_phi.begin(), std::back_inserter(min_dRs), [&](float Object1_eta, float Object1_phi) { return deltaR(Object1_eta, Object1_phi, Object2_eta.at(0), Object2_phi.at(0)); });
 
-  	}
+  	}	
 
   	return min_dRs;
  
@@ -4406,7 +4475,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto tight_jets_function{[&year](const floats& Jet_pt_Selection, const floats& Jet_eta_Selection, const ints& Jet_jetId_Selection, const floats& dRJet_lep){
+  auto tight_jets_function{[&YearInt](const floats& Jet_pt_Selection, const floats& Jet_eta_Selection, const ints& Jet_jetId_Selection, const floats& dRJet_lep){
 
   	std::cout << "print 73" << std::endl;
 
@@ -4551,78 +4620,144 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
+  auto WPair{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
-  auto find_w_pair{[](const int& ReturnOption, const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
+        std::cout << "print 89" << std::endl;
 
-  	std::cout << "print 89" << std::endl;
+        double w_reco_mass{std::numeric_limits<double>::infinity()};
+        size_t jet_index_1{std::numeric_limits<size_t>::max()};
+        size_t jet_index_2{std::numeric_limits<size_t>::max()};
+        const size_t njets{pts.size()};
 
-	double w_reco_mass{std::numeric_limits<double>::infinity()};
-	size_t jet_index_1{std::numeric_limits<size_t>::max()};
-	size_t jet_index_2{std::numeric_limits<size_t>::max()};
-	const size_t njets{pts.size()};
+        for (size_t i{0}; i < njets; ++i){
+                for (size_t j{i + 1}; j < njets; ++j)
+                {
+                        if (tight_jets[i] != 0 && tight_jets[j] != 0
+                        && lead_bjet[i] != 1 && lead_bjet[j] != 1)
+                        {
+                                continue;
+                        }
 
-	for (size_t i{0}; i < njets; ++i){
-		for (size_t j{i + 1}; j < njets; ++j)
-            	{
-                	if (tight_jets[i] != 0 && tight_jets[j] != 0
-                    	&& lead_bjet[i] != 1 && lead_bjet[j] != 1)
-                	{
-                    		continue;
-                	}
+                        auto jet1{TLorentzVector{}};
+                        auto jet2{TLorentzVector{}};
+                        jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                        jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
 
-                	auto jet1{TLorentzVector{}};
-                	auto jet2{TLorentzVector{}};
-                	jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
-                	jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
-
-                	if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
-                	{
-                    		w_reco_mass = reco_mass;
-                    		jet_index_1 = i;
-                    		jet_index_2 = j;
-                	}
-            	}
+                        if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
+                        {
+                                w_reco_mass = reco_mass;
+                                jet_index_1 = i;
+                                jet_index_2 = j;
+                        }
+                }
         }
 
         ints w_pair(njets, 0);
         w_pair.at(jet_index_1) = 1;
         w_pair.at(jet_index_2) = 1;
 
-	auto jet1{TLorentzVector{}};
+        auto jet1{TLorentzVector{}};
         auto jet2{TLorentzVector{}};
 
-	jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
+        jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
         jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
 
-	switch(ReturnOption){
-		case 0: return w_pair;
-		case 1: return jet1;
-		case 2: return jet2;
-		default: std::cout << "ERROR: ReturnOption must be 0, 1 or 2." << std::endl; break;
-	}
+	return w_pair;
 
   }};
 
-  auto WPair{[&find_w_pair](const int& ReturnOption, const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet){
+
+  auto WPairJet1{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
 	std::cout << "print 90" << std::endl;
-  	return find_w_pair(0, pts, etas, phis, ms, tight_jets, lead_bjet);
+
+        double w_reco_mass{std::numeric_limits<double>::infinity()};
+        size_t jet_index_1{std::numeric_limits<size_t>::max()};
+        size_t jet_index_2{std::numeric_limits<size_t>::max()};
+        const size_t njets{pts.size()};
+
+        for (size_t i{0}; i < njets; ++i){
+                for (size_t j{i + 1}; j < njets; ++j)
+                {
+                        if (tight_jets[i] != 0 && tight_jets[j] != 0
+                        && lead_bjet[i] != 1 && lead_bjet[j] != 1)
+                        {
+                                continue;
+                        }
+
+                        auto jet1{TLorentzVector{}};
+                        auto jet2{TLorentzVector{}};
+                        jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                        jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+
+                        if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
+                        {
+                                w_reco_mass = reco_mass;
+                                jet_index_1 = i;
+                                jet_index_2 = j;
+                        }
+                }
+        }
+
+        ints w_pair(njets, 0);
+        w_pair.at(jet_index_1) = 1;
+        w_pair.at(jet_index_2) = 1;
+
+        auto jet1{TLorentzVector{}};
+        auto jet2{TLorentzVector{}};
+
+        jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
+        jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
+
+        return jet1;
  
   }};
 
-  auto WPairJet1{[&find_w_pair](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
+
+  auto WPairJet2{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
 	std::cout << "print 91" << std::endl;
-	return find_w_pair(1, pts, etas, phis, ms, tight_jets, lead_bjet);   
+
+        double w_reco_mass{std::numeric_limits<double>::infinity()};
+        size_t jet_index_1{std::numeric_limits<size_t>::max()};
+        size_t jet_index_2{std::numeric_limits<size_t>::max()};
+        const size_t njets{pts.size()};
+
+        for (size_t i{0}; i < njets; ++i){
+                for (size_t j{i + 1}; j < njets; ++j)
+                {
+                        if (tight_jets[i] != 0 && tight_jets[j] != 0
+                        && lead_bjet[i] != 1 && lead_bjet[j] != 1)
+                        {
+                                continue;
+                        }
+
+                        auto jet1{TLorentzVector{}};
+                        auto jet2{TLorentzVector{}};
+                        jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                        jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+
+                        if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
+                        {
+                                w_reco_mass = reco_mass;
+                                jet_index_1 = i;
+                                jet_index_2 = j;
+                        }
+                }
+        }
+
+        ints w_pair(njets, 0);
+        w_pair.at(jet_index_1) = 1;
+        w_pair.at(jet_index_2) = 1;
+
+        auto jet1{TLorentzVector{}};
+        auto jet2{TLorentzVector{}};
+
+        jet1.SetPtEtaPhiM(pts.at(jet_index_1), etas.at(jet_index_1), phis.at(jet_index_1), ms.at(jet_index_1));
+        jet2.SetPtEtaPhiM(pts.at(jet_index_2), etas.at(jet_index_2), phis.at(jet_index_2), ms.at(jet_index_2));
+
+        return jet2;   
  
-  }};
-
-
-  auto WPairJet2{[&find_w_pair](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
-
-	 std::cout << "print 92" << std::endl;
-	return find_w_pair(2, pts, etas, phis, ms, tight_jets, lead_bjet);
-    
   }};
 
 
@@ -4805,15 +4940,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
   
-  auto HT_double{[](const doubles& Pt){
-
-  	std::cout << "print 105" << std::endl;
-
-  	doubles HT_Output = abs(Pt);
-  	return HT_Output;
-
-  }};
-
   auto deltaRcheck_Top_function{[](const doubles& Object1_phi_Selection, const doubles& Object1_eta_Selection,
 				   const float& Object2_eta_Selection,   const float& Object2_phi_Selection){
 
@@ -4905,6 +5031,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
+
+  auto MET_function{[](const floats& MET_input){
+
+  	std::cout << "print 112" << std::endl;
+  	return MET_input;
+  
+  }};
+
   
   auto BJetOutputDiscriminantFunction{[](const float& JetPt, const floats& Jet_btagCSVV2, const ints& tight_jets, const floats& Jet_eta_Selection){
 
@@ -4942,7 +5076,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  [[gnu::const]] auto inv_mass_doubles(const doubles& pts, const doubles& etas, const doubles& phis, const doubles& ms){
+  auto inv_mass_doubles{[](const doubles& pts, const doubles& etas, const doubles& phis, const doubles& ms){
 
 	std::cout << "print 115" << std::endl;
 
@@ -4965,7 +5099,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
     	return boost::numeric_cast<float>(vec.M());
 
-  }
+  }};
 
   auto UnweightedTopPt{[](const doubles& pts){
 
@@ -5005,7 +5139,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		case 28: weight = sqrt( SF_top * SF_antitop); break;
 		case 29: weight = sqrt( SF_top * SF_antitop); break;
 		case 30: weight = sqrt( SF_top * SF_antitop); break;
-		default: weight(SF_top.size(), 1.0); break;
+		default: doubles weight_vec(SF_top.size(), 1.0); weight = weight_vec; break;
 	}
  
 	return weight;
@@ -5023,7 +5157,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
   
-  auto CMSBTagSF_Function{[](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+  auto CMSBTagSF_Function{[&SystematicInt](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
   	std::cout << "print 121" << std::endl;
 
@@ -6082,7 +6216,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto CMSBTagSF{[](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+  auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
  	std::cout << "print 122" << std::endl;
  	return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
@@ -6096,14 +6230,16 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto CMSNonBTagSF{[](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+  auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
  	std::cout << "print 124" << std::endl;
  	return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
   }};
   
-  auto EffBTaggedFunction{[](const int& HistOption, const floats& pts, const floats& etas){
+  auto EffBTaggedFunction{[&h_bjet_num, &h_nonbjet_num, &h_charm_num, &h_lightjets_num, &h_gluon_num, 
+			   &h_bjet_denom, &h_nonbjet_denom, &h_charm_denom, &h_lightjets_denom, &h_gluon_denom](
+			   const int& HistOption, const floats& pts, const floats& etas){
 
   	std::cout << "print 125" << std::endl;
 
@@ -6139,6 +6275,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   	}
 
  	return BTaggedEff;
+
+  }};
+
+  auto EffBTagged_Function{[&EffBTaggedFunction](const int& HistOption, const floats& pts, const floats& etas){
+
+  	return EffBTaggedFunction(0, pts, etas);
+
+  }};
+
+  auto EffNonBTagged_Function{[&EffBTaggedFunction](const int& HistOption, const floats& pts, const floats& etas){
+
+        return EffBTaggedFunction(1, pts, etas);
 
   }};
 
@@ -6206,6 +6354,16 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
+  auto ProbBTagDataFunction{[](const float& EffBTaggedProductDataInput, const float& EffNonBTaggedProductDataInput){
+
+  	std::cout << "print 131" << std::endl;
+  
+  	float DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
+  	return DataProb;
+  
+  }};
+
+
   auto BTagWeightFunction{[](const float& ProbBTagMC, const float& ProbBTagData){
 
   	std::cout << "print 131" << std::endl;
@@ -6258,14 +6416,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 			float EGammaSF;
 
-			if(YearInput == "2016"){
+			if(YearInput == 2016){
 				if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
 				else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2016_histo->GetBinError(Bin_EGammaEffRecoSys2016);}
 				else if(type == "EGammaEff"){EGammaSF = EGammaEff2016_histo->GetBinContent(Bin_EGammaEff2016);}
 				else if(type == "EGammaEffReco"){EGammaSF = EGammaEffReco2016_histo->GetBinContent(Bin_EGammaEffReco2016);}
 				else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2016" << std::endl;}
 			}
-			else if(YearInput == "2017"){
+			else if(YearInput == 2017){
 				if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2017_histo->GetBinError(Bin_EGammaEffSys2017);}
                         	else if(type == "EGammaEffRecoSys" && pt.at(i) <= 20){EGammaSF = EGammaEffRecoSys_LowPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_LowPt_2017);}
 				else if(type == "EGammaEffRecoSys" && pt.at(i) > 20){EGammaSF = EGammaEffRecoSys_HigherPt_2017_histo->GetBinError(Bin_EGammaEffRecoSys_HigherPt_2017);}
@@ -6274,7 +6432,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         	else if(type == "EGammaEffReco" && pt.at(i) > 20){EGammaSF = EGammaEffReco_HigherPt_2017_histo->GetBinContent(Bin_EGammaEffReco_HigherPt_2017);}
                         	else{std::cout << "Choose a type out of EGammaEffSys, EGammaEffRecoSys, EGammaEff or EGammaEffReco for 2017" << std::endl;}
 			}
-			else if(YearInput == "2018"){
+			else if(YearInput == 2018){
 				if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2018_histo->GetBinError(Bin_EGammaEffSys2018);}
                         	else if(type == "EGammaEffRecoSys"){EGammaSF = EGammaEffRecoSys2018_histo->GetBinError(Bin_EGammaEffRecoSys2018);}
                         	else if(type == "EGammaEff"){EGammaSF = EGammaEff2018_histo->GetBinContent(Bin_EGammaEff2018);}
@@ -6330,7 +6488,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto MuonSF{[&Year, 				   &histo_RunsBCDEF_ID_2016,   &histo_RunsGH_ID_2016, 	     &histo_RunsBCDEF_ISO_2016, 	     
+  auto MuonSF{[&Year, 				   &histo_RunsBCDEF_ID_2016,   &histo_RunsGH_ID_2016, 	      &histo_RunsBCDEF_ISO_2016, 	     
 	       &histo_RunsGH_ISO_2016,  	   &histo_RunsBCDEF_ID_2017,   &histo_RunsBCDEF_ID_Sys_2017,  &histo_RunsBCDEF_ID_Sys_Stat_2017, 
 	       &histo_RunsBCDEF_ID_Sys_Syst_2017,  &histo_RunsBCDEF_ISO_2017,  &histo_RunsBCDEF_ISO_Sys_2017, &histo_RunsBCDEF_ISO_Sys_Stat_2017,
 	       &histo_RunsBCDEF_ISO_Sys_Syst_2017, &histo_RunsABCD_ID_2018,    &histo_RunsABCD_ISO_2018
@@ -6490,10 +6648,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   	std::cout << "print 140" << std::endl;
 
 	switch(YearInt){
-		case 2016: return MuonSF("ID sys", year, "Up", pt, eta);
-        	case 2017: return MuonSF("ID sys (syst)", year, " ", pt, eta);
+		case 2016: return MuonSF("ID sys", YearInt, "Up", pt, eta);
+        	case 2017: return MuonSF("ID sys (syst)", YearInt, " ", pt, eta);
   		case 2018: std::cout << "Need to add 2018" << std::endl; 
-		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std:endl; break;
+		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break;
 	}
 		
   }};
@@ -6507,7 +6665,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		case 2016: return MuonSF("ID sys", YearInt, "Down", pt, eta);
   		case 2017: return MuonSF("ID sys (stat)", YearInt, " ", pt, eta);
   		case 2018: std::cout << "Need to add 2018" << std::endl;
-		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std:endl; break; 
+		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break; 
 	}
 
   }};
@@ -6521,7 +6679,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		case 2016: return MuonSF("Iso sys", YearInt, "Up", pt, eta);
         	case 2017: return MuonSF("Iso sys (syst)", YearInt, " ", pt, eta);
   		case 2018: std::cout << "Need to add 2018" << std::endl; 
-		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std:endl; break;
+		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break;
 	}
 
   }};
@@ -6535,7 +6693,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		case 2016: return MuonSF("Iso sys", YearInt, "Down", pt, eta);
         	case 2017: return MuonSF("Iso sys (stat)", YearInt, " ", pt, eta);
   		case 2018: std::cout << "Need to add 2018" << std::endl;
-		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std:endl; break;
+		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break;
 	}
 
   }};
@@ -6543,7 +6701,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 
 
-  auto PSWeight{[&YearInt, &ProcessInt](floats& PSWeightInput){
+  auto PSWeightFunction{[&YearInt, &ProcessInt](const floats& PSWeightInput){
 
   	std::cout << "print 144" << std::endl;
 
@@ -6638,7 +6796,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 
 
-  auto GeneratorWeight{[&SummedWeights, &Systematicint](const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
+  auto GeneratorWeight{[&SummedWeights, &SystematicInt](const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
 
 	std::cout << "print 147" << std::endl;
 
@@ -6662,9 +6820,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto METUncertFunction{[&MET_Up, &MET_Down](const floats& MET_MetUnclustEnUpDeltaX,          const floats& MET_MetUnclustEnUpDeltaY,          const floats& MET_phi, 
-					      const floats& MET_sumEt,                         std::vector<TLorentzVector> SmearedJet4Momentum, const floats& Jet_pt, 
-					      const floats& Jet_eta, 			       const floats& Jet_phi, 				const floats& Jet_mass){
+  auto METUncertFunction{[&SystematicInt](const floats& MET_MetUnclustEnUpDeltaX,          const floats& MET_MetUnclustEnUpDeltaY,          const floats& MET_phi, 
+					  const floats& MET_sumEt,                         std::vector<TLorentzVector> SmearedJet4Momentum, const floats& Jet_pt, 
+					  const floats& Jet_eta, 			       const floats& Jet_phi, 				const floats& Jet_mass){
 
   	std::cout << "print 148" << std::endl;
 
@@ -6717,8 +6875,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	for(long unsigned int i = 0; i < MET_phi.size(); i++){
 
-  		if(MET_Up == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
-  		else if(MET_Down == true){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
+  		if(SystematicInt == 15){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
+  		else if(SystematicInt == 16){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
   		else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
 
  	}
@@ -6739,16 +6897,38 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
+  auto linereader{[&Year](const int& LineNumber){
+        
+        std::cout << "print 150" << std::endl;
+        using namespace std;
+        
+        std::string NormFileString = "Normalisation/NormalisationFactors_" + Year + ".txt";
+        
+        std::fstream file(NormFileString.c_str());
+        GotoLine(file, LineNumber);
+        
+        std::string line;
+        file >> line;
+        
+        double Value = atof(line.c_str());
+        return Value;
+ 
+ }};
 
-  auto EventWeight{[&NormalisationFactorFunction, 
-		    &SF_ee, &SF_Uncert_ee,  
-		    &SF_mumu, &SF_Uncert_mumu, 
-		    &SF_emu, &SF_Uncert_emu, 
-		    &LeptonEfficiencies_ScaleUp,  &LeptonEfficiencies_ScaleDown, 
-		    &PDF_ScaleUp, &PDF_ScaleDown,
-                    &isr_up,  &isr_down, &fsr_up, &fsr_down, &ChannelInt
-                   ](const float& PUInput, 		        const float& BTagWeightInput, 		     const floats& ReturnedPSWeightInput, 
-		     const float& CalculatedNominalWeightInput, const float& EGammaSF_egammaEffInput,        const float& EGammaSF_egammaEffRecoInput, 
+  auto NormalisationFactorFunction{[&YearInt, &ProcessInt, &MCInt, &linereader](){
+        
+        std::cout << "print 151" << std::endl;
+        
+        switch(MCInt){
+                case 1: return linereader(ProcessInt-1);
+                default: double one = 1.0; return one;
+        }
+  }};
+
+
+  auto EventWeight{[&NormalisationFactorFunction, &ChannelInt, &SystematicInt, &ttbarCRInt]
+		    (const float& PUInput, 		        const float& BTagWeightInput, 		     const floats& ReturnedPSWeightInput, 
+		     const float& EGammaSF_egammaEffInput,      const float& EGammaSF_egammaEffRecoInput, 
 		     const float& EGammaSF_egammaEffSysInput,   const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, 
 		     const float& ME_SFInput, 			const double& TopWeightInput, 		     const float& CalculatedNominalWeightInput, 
 		     const float& MuonSFTest_IDInput, 		const float& MuonSFTest_IsoInput, 	     const float& MuonSFTest_ID_sys_systInput, 
@@ -6759,8 +6939,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 			float TrigSF_ee, TrigSFUncert_ee, TrigSF_mumu, TrigSFUncert_mumu;
 
-			switch(ttbarCR){
-				case 0: TrigSF_ee = SF_ee; TrigSF_mumu = SF_mumu; TrigSFUncert_ee = SF_Uncert_ee; TrigSFUncert_mumu = SF_Uncert_mumu; break
+			switch(ttbarCRInt){
+				case 0: TrigSF_ee = SF_ee; TrigSF_mumu = SF_mumu; TrigSFUncert_ee = SF_Uncert_ee; TrigSFUncert_mumu = SF_Uncert_mumu; break;
 				default: TrigSF_ee = SF_emu; TrigSF_mumu = SF_emu; TrigSFUncert_ee = SF_Uncert_emu; TrigSFUncert_mumu = SF_Uncert_emu; break;
 
 			}
@@ -6770,12 +6950,12 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			switch(ChannelInt){
 				case 1: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
-							(TrigSF_ee += TrigSF_Uncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * 
+							(TrigSF_ee += TrigSFUncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * 
 							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput;
 
 							break;
 
-                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_ee -= TrigSF_Uncert_ee) * 
+                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_ee -= TrigSFUncert_ee) * 
 					  		 CalculatedNominalWeightInput * 
 						         EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput;
@@ -6802,19 +6982,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                         			case 18: EventWeightOutput =  PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 							 ReturnedPSWeightInput.at(0) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
-							 * TopWeightInput;
+							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput;
 
 							 break;
 
                         			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(3) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
 							 * TopWeightInput;
 
 							 break;
 
                         			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(1) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
 							 * TopWeightInput;
 
 							 break;
@@ -6825,15 +7004,16 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 							
 							 break;
 
+					}
   
 				case 2: switch(SystematicInt){
-						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF_mumu += TrigSF_Uncert_mumu) * 
+						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF_mumu += TrigSFUncert_mumu) * 
 							CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
 							CalculatedGeneratorWeightInput * TopWeightInput;
 
 							break;
 
-                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_mumu -= TrigSF_Uncert_mumu) * 
+                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_mumu -= TrigSFUncert_mumu) * 
 							 CalculatedNominalWeightInput * 
 							 MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput;
@@ -6890,8 +7070,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 				default: std::cout << "ERROR: Channel for event weights must be ee or mumu" << std::endl; break;
 
-			}
-
+		}
 
 
   	float FinalEventWeight = (EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput; 
@@ -6900,44 +7079,19 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto linereader{[&NormFileString, &Year](const int& LineNumber){
-
-  	std::cout << "print 150" << std::endl;
-   	using namespace std;
-
-   	std::string NormFileString = "Normalisation/NormalisationFactors_" + Year + ".txt"; 
-
-   	std::fstream file(NormFileString.c_str());
-   	GotoLine(file, LineNumber);
-
-   	std::string line;
-   	file >> line;
-
-   	double Value = atof(line.c_str());
-   	return Value;
-
- }};
-
-  auto NormalisationFactorFunction{[&YearInt](){
-	
-	std::cout << "print 151" << std::endl;
-
-	switch(MCInt){
-		case 1: return linereader(ProcessInt-1);}
-		default: float one = 1.0; return one;
-	} 
-  }};
 
   std::vector<float> CutRanges = {};
+  float W_stddev;
+  float Top_stddev;
 
-  auto Chi2Function{[&ProcessInt, &CutRanges, &SBRInt, &SystematicInt](const float& w_mass, const float& Top_Mass){
+  auto Chi2Function{[&ProcessInt, &CutRanges, &SBRInt, &SystematicInt, &W_stddev, &Top_stddev](const float& w_mass, const float& Top_Mass){
 
   	std::cout << "print 152" << std::endl;
 	
-  	float FiveSigmaW = 5*W_stddev_ee;
+  	float FiveSigmaW = 5*W_stddev;
 
   	//calculating chi2
-  	float chi2 = pow(( (w_mass - W_MASS) / W_stddev_ee), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev_ee), 2);
+  	float chi2 = pow(( (w_mass - W_MASS) / W_stddev), 2) + pow(( (Top_Mass - TOP_MASS) / Top_stddev), 2);
 
   	float LowerBound = W_MASS - FiveSigmaW;
   	float UpperBound = W_MASS + FiveSigmaW;
@@ -6946,7 +7100,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		case 0: switch(SystematicInt){
 				case 0: switch(SBRInt){ 
 						case 1: //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
-  							if(w_mass > LowerBound && w_mass < UpperBound){ CutRanges_ee.push_back(chi2); return chi2;}	
+  							if(w_mass > LowerBound && w_mass < UpperBound){ CutRanges.push_back(chi2); return chi2;}	
 							else{
 								std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
 								float out = 999.0;
@@ -6996,7 +7150,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
  auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
  //Preventing the double-counting of events in the single and double lepton datasets
- auto d_DoubleCountCheck = d_GoldenJson.Filter(DoubleCountCheck_EventFunction, "HLT_Ele25_eta2p1_WPTight_Gsf",
+ auto d_DoubleCountCheck = d_GoldenJson.Filter(DoubleCountCheck_EventFunction, {"HLT_Ele25_eta2p1_WPTight_Gsf",
                                                                                "HLT_Ele27_WPTight_Gsf",
                                                                                "HLT_Ele32_eta2p1_WPTight_Gsf",
                                                                                "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
@@ -7014,7 +7168,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                                                                "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
                                                                                "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
                                                                                "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                                                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL"){
+                                                                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", 
+									       "event"});
 
   if(DoubleCountCheckInt == 1){
 
@@ -7045,7 +7200,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                       .Define("TightLeptonsCharge", select<ints>, {"LeptonCharge", "TightLeptons"})
 				      .Define("TightLeptonsJetRelIso", select<ints>, {"LeptonJetRelIso", "TightLeptons"})
 				      .Define("TightLeptonsGenPartFlav", select<chars>, {"LeptonGenPartFlav", "TightLeptons"})
-                                      .Define("LooseLeptons", LooseElectronsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand",
+                                      .Define("LooseLeptons", LooseLeptonsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand",
                                                    				       "Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_softId", "Muon_pfRelIso04_all"})
                                       .Define("LooseLeptonsPt", select<floats>, {"LeptonPt", "LooseLeptons"})
 				      .Define("LooseLeptonsPhi", select<floats>, {"LeptonPhi", "LooseLeptons"})
@@ -7079,28 +7234,28 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFileName.c_str());
+  auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFile.c_str());
 
   //Calculating the trigger scale factors
-  std::string MET_Triggers_Strings = {"HLT_MET200", 			       "HLT_MET250",
-                                      "HLT_PFMET120_PFMHT120_IDTight",         "HLT_PFMET170_HBHECleaned",
-                                      "HLT_PFHT300_PFMET100", 		       "HLT_PFMET130_PFMHT130_IDTight",
-                                      "HLT_PFMET140_PFMHT140_IDTight",         "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-                                      "HLT_PFHT1050",			       "HLT_PFHT180",
-                                      "HLT_PFHT500_PFMET100_PFMHT100_IDTight", "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-                                      "HLT_PFHT700_PFMET85_PFMHT85_IDTight",   "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-                                      "HLT_PFHT800_PFMET75_PFMHT75_IDTight",   "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+  std::vector<std::string> MET_Triggers_Strings = {"HLT_MET200", 			      "HLT_MET250",
+                                      	           "HLT_PFMET120_PFMHT120_IDTight",           "HLT_PFMET170_HBHECleaned",
+                                     		   "HLT_PFHT300_PFMET100", 		      "HLT_PFMET130_PFMHT130_IDTight",
+                                      	           "HLT_PFMET140_PFMHT140_IDTight",           "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                                     	           "HLT_PFHT1050",			      "HLT_PFHT180",
+                                                   "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                                   "HLT_PFHT700_PFMET85_PFMHT85_IDTight",     "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                                                   "HLT_PFHT800_PFMET75_PFMHT75_IDTight",     "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
 
-  std::string Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
-                                         "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
-                                         "HLT_IsoMu27",				               "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                         "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                         "HLT_Ele25_eta2p1_WPTight_Gsf",		       "HLT_Ele27_WPTight_Gsf",
-                                         "HLT_Ele32_eta2p1_WPTight_Gsf",		       "HLT_IsoMu24",		
-				         "HLT_IsoMu24_eta2p1",				       "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                         "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8"};
+  std::vector<std::string> Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
+                                         	      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                         	      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
+                                         	      "HLT_IsoMu27",				            "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                         	      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                         	      "HLT_Ele25_eta2p1_WPTight_Gsf",		            "HLT_Ele27_WPTight_Gsf",
+                                         	      "HLT_Ele32_eta2p1_WPTight_Gsf",		            "HLT_IsoMu24",		
+				         	      "HLT_IsoMu24_eta2p1",				    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                         	      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                         	      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8"};
 
   auto d_MET_And_LeptonSelection = d_LeptonSelection.Filter(MET_Triggers_Function, MET_Triggers_Strings);
   auto d_LeptonTriggers_And_LeptonSelection = d_LeptonSelection.Filter(Lepton_Triggers_Function, Lepton_Triggers_Strings);
@@ -7123,7 +7278,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }
 
   float N_SelectionCriteria = *(d_LeptonSelection.Count()) * LeptonSelection_EventWeight;
-  float N_MET_And_LeptonSelection = *(d_MET_And_LeptonSelection.Count()) * MET_And_LeptonSelection_EventWeight
+  float N_MET_And_SelectionCriteria = *(d_MET_And_LeptonSelection.Count()) * MET_And_LeptonSelection_EventWeight;
   float N_LeptonTriggersAndSelectionCriteria = *(d_LeptonTriggers_And_LeptonSelection.Count()) * LeptonTriggersAndSelectionCriteria_EventWeight;
   float N_MET_LeptonTriggers_SelectionCriteria = *(d_MET_LeptonTriggers_LeptonSelection.Count()) * MET_LeptonTriggers_SelectionCriteria_EventWeight;
 
@@ -7133,13 +7288,13 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   //Calculating alpha
   float Eff_MET_LeptonTriggers_SelectionCriteria = (N_MET_LeptonTriggers_SelectionCriteria) / (N_SelectionCriteria + 1.0e-06);
   float Eff_LeptonTriggers_SelectionCriteria = (N_LeptonTriggersAndSelectionCriteria) / (N_SelectionCriteria + 1.0e-06);
-  float Eff_MET_SelectionCriteria = (N_MET_And_LeptonCriteria) / (N_SelectionCriteria + 1.0e-06);
+  float Eff_MET_SelectionCriteria = (N_MET_And_SelectionCriteria) / (N_SelectionCriteria + 1.0e-06);
 
   float Alpha = (Eff_LeptonTriggers_SelectionCriteria * Eff_MET_SelectionCriteria) / (Eff_MET_LeptonTriggers_SelectionCriteria + 1.0e-06);
 
   //Calculating the uncertainties for the efficiencies
   double level = 0.60;
-  float Eff_UpperUncert = Eff - TEfficiency::ClopperPearson(N_MET_And_SelectionCriteria, N_MET_LeptonTriggers_SelectionCriteria level, true);
+  float Eff_UpperUncert = Eff - TEfficiency::ClopperPearson(N_MET_And_SelectionCriteria, N_MET_LeptonTriggers_SelectionCriteria, level, true);
   float Eff_LowerUncert = Eff - TEfficiency::ClopperPearson(N_MET_And_SelectionCriteria, N_MET_LeptonTriggers_SelectionCriteria, level, false);
 
   //Turn on curves
@@ -7149,10 +7304,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto Weighted_dataframe = d_LeptonSelection.Define("weight", TurnOnCurveWeight, {"PU"});
 
-  auto h_LeadingElectronPt = Weighted_dataframe.Profile1D({"h_LeadingLeptonPt", "Leading lepton p_{T}", NumBins, 0, 300}, "LeadingLeptonPt", "weight");
-  auto h_SubleadingElectronPt = Weighted_dataframe.Profile1D({"h_SubleadingLeptonPt", "Subleading lepton p_{T}", NumBins, 0, 300}, "SubleadingLeptonPt", "weight");
-  auto h_LeadingElectronEta = Weighted_dataframe.Profile1D({"h_LeadingLeptonEta", "Leading lepton #eta", NumBins, -5, 5}, "LeadingLeptonEta", "weight");
-  auto h_SubleadingElectronEta = Weighted_dataframe.Profile1D({"h_SubleadingLeptonEta", "Subleading lepton #eta", NumBins, -5, 5}, "SubleadingLeptonEta", "weight");
+  auto h_LeadingLeptonPt = Weighted_dataframe.Profile1D({"h_LeadingLeptonPt", "Leading lepton p_{T}", NumBins, 0, 300}, "LeadingLeptonPt", "weight");
+  auto h_SubleadingLeptonPt = Weighted_dataframe.Profile1D({"h_SubleadingLeptonPt", "Subleading lepton p_{T}", NumBins, 0, 300}, "SubleadingLeptonPt", "weight");
+  auto h_LeadingLeptonEta = Weighted_dataframe.Profile1D({"h_LeadingLeptonEta", "Leading lepton #eta", NumBins, -5, 5}, "LeadingLeptonEta", "weight");
+  auto h_SubleadingLeptonEta = Weighted_dataframe.Profile1D({"h_SubleadingLeptonEta", "Subleading lepton #eta", NumBins, -5, 5}, "SubleadingLeptonEta", "weight");
 
   auto h_LeadingVsSubleading_LeptonPt = Weighted_dataframe.Profile2D({"h_LeadingVsSubleading_LeptonPt", "Leading lepton p_{T} vs subleading lepton p_{T}", NumBins, 0, 300, NumBins, 0, 300}, "SubleadingleptonPt", "LeadingLeptonPt", "weight");
 
@@ -7236,7 +7391,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 										 	case 1: 
 								
 											N_SelectionCriteria_ee_MC = N_SelectionCriteria;
-											N_MET_And_LeptonSelection_ee_MC = N_MET_And_LeptonSelection;
+											N_MET_And_LeptonSelection_ee_MC = N_MET_And_SelectionCriteria;
 										        N_LeptonTriggersAndSelectionCriteria_ee_MC = N_LeptonTriggersAndSelectionCriteria;
 											N_MET_LeptonTriggers_SelectionCriteria_ee_MC = N_MET_LeptonTriggers_SelectionCriteria;
 											Eff_ee_MC = Eff;
@@ -7251,7 +7406,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 											case 2: 
 
 											N_SelectionCriteria_mumu_MC = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_mumu_MC = N_MET_And_LeptonSelection;
+                                							N_MET_And_LeptonSelection_mumu_MC = N_MET_And_SelectionCriteria;
                                 							N_LeptonTriggersAndSelectionCriteria_mumu_MC = N_LeptonTriggersAndSelectionCriteria;
                                								N_MET_LeptonTriggers_SelectionCriteria_mumu_MC = N_MET_LeptonTriggers_SelectionCriteria;
                                 							Eff_mumu_MC = Eff;
@@ -7266,7 +7421,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 											case 3: 
 	
 											N_SelectionCriteria_emu_MC = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_emu_MC = N_MET_And_LeptonSelection;
+                                							N_MET_And_LeptonSelection_emu_MC = N_MET_And_SelectionCriteria;
                                 							N_LeptonTriggersAndSelectionCriteria_emu_MC = N_LeptonTriggersAndSelectionCriteria;
                                 							N_MET_LeptonTriggers_SelectionCriteria_emu_MC = N_MET_LeptonTriggers_SelectionCriteria;
                                 							Eff_emu_MC = Eff;
@@ -7278,8 +7433,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                 							Eff_LowerUncert_emu_MC = Eff_LowerUncert;
 											break;
 			
-											default: std::cout << "ERROR: ChannelInt must be 1 (for ee), 
-														      2 (for mumu) or 3 (for emu)." << std::endl; break;
+											default: std::cout << "ERROR: ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
 									}
 
@@ -7288,7 +7442,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         								case 1: 
 
 											N_SelectionCriteria_ee_DATA = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_ee_DATA = N_MET_And_LeptonSelection;
+                                							N_MET_And_LeptonSelection_ee_DATA = N_MET_And_SelectionCriteria;
                                 							N_LeptonTriggersAndSelectionCriteria_ee_DATA = N_LeptonTriggersAndSelectionCriteria;
                                 							N_MET_LeptonTriggers_SelectionCriteria_ee_DATA = N_MET_LeptonTriggers_SelectionCriteria;
                                 							Eff_ee_DATA = Eff;
@@ -7303,7 +7457,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         								case 2: 
 
 											N_SelectionCriteria_mumu_DATA = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_mumu_DATA = N_MET_And_LeptonSelection;
+                                							N_MET_And_LeptonSelection_mumu_DATA = N_MET_And_SelectionCriteria;
                                 							N_LeptonTriggersAndSelectionCriteria_mumu_DATA = N_LeptonTriggersAndSelectionCriteria;
                                 							N_MET_LeptonTriggers_SelectionCriteria_mumu_DATA = N_MET_LeptonTriggers_SelectionCriteria;
                                 							Eff_mumu_DATA = Eff;
@@ -7318,7 +7472,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         								case 3: 
 
 											N_SelectionCriteria_emu_DATA = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_emu_DATA = N_MET_And_LeptonSelection;
+                                							N_MET_And_LeptonSelection_emu_DATA = N_MET_And_SelectionCriteria;
                                 							N_LeptonTriggersAndSelectionCriteria_emu_DATA = N_LeptonTriggersAndSelectionCriteria;
                                 							N_MET_LeptonTriggers_SelectionCriteria_emu_DATA = N_MET_LeptonTriggers_SelectionCriteria;
                                 							Eff_emu_DATA = Eff;
@@ -7330,8 +7484,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                 							Eff_LowerUncert_emu_DATA = Eff_LowerUncert;
                                 							break;
 
-                        								default: std::cout << "ERROR: ChannelInt must be 1 (for ee), 
-													      2 (for mumu) or 3 (for emu)." << std::endl; break;
+                        								default: std::cout << "ERROR: ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
                 								}
 
@@ -7343,17 +7496,17 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 					
 					}
 
-				default:break
+				default: break;
 
 
 			}
 
-		default:break
+		default: break;
 
 
 	}
 
-    default:break
+    default: break;
 
   }
 
@@ -7386,8 +7539,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string TriggerSFValuesFile = "TriggerSFValues_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  std::osstream TriggerSFValues;
-  TriggerSFValues.Open(TriggerSFValuesFile.c_str());
+  std::ofstream TriggerSFValues;
+  TriggerSFValues.open(TriggerSFValuesFile.c_str());
 
   TriggerSFValues << "N_SelectionCriteria_ee_MC = " << N_SelectionCriteria_ee_MC << '\n'
 		  << "N_SelectionCriteria_mumu_MC = " << N_SelectionCriteria_mumu_MC << '\n'
@@ -7455,21 +7608,22 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                            .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
                                            .Define("RecoZ", RecoZ, {"LeadingLeptonPt", "LeadingLeptonEta", "LeadingLeptonPhi", "LeadingLeptonMass"
 								    "SubleadingLeptonPt", "SubleadingLeptonEta", "SubleadingLeptonPhi", "SubleadingLeptonMass"})
-                                           .Define("RecoZPt", TLorentzVectorPt, {"RecoZ"})
-                                           .Define("RecoZPhi", TLorentzVectorPhi, {"RecoZ"})
-                                           .Define("RecoZEta", TLorentzVectorEta, {"RecoZ"})
+                                           .Define("RecoZPt", TLorentzVectorVariable, {1, "RecoZ"})
+                                           .Define("RecoZPhi", TLorentzVectorVariable, {2, "RecoZ"})
+                                           .Define("RecoZEta", TLorentzVectorVariable, {3, "RecoZ"})
+					   .Define("RecoZMass", TLorentzVectorVariable, {4, "RecoZ"})
                                            .Define("dR_ll", deltaRcheck_float, {"LeadingLeptonEta", "LeadingLeptonPhi", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
                                            .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingElectronPhi", "SubleadingElectronPhi"})
 					   .Define("Muon_genPartIdx_Selection", select<ints>, {"Muon_genPartIdx", "TightLeptons"})
                                            .Define("Muon_nTrackerLayers_Selection", select<ints>, {"Muon_nTrackerLayers", "TightLeptons"})
-                                           .Define("LeptonFourMomentum", LeptonFourMomentum, {"TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "TightLeptonsMass"})
+                                           .Define("LeptonFourMomentum", LeptonFourMomentumFunction, {"TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "TightLeptonsMass"})
                                            .Define("RochCorrVec", RochCorrVec_Function, {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", 
 										         "Muon_genPartIdx_Selection", "Muon_nTrackerLayers_Selection"})
                                            .Define("MuonFourMomentum_RochCorr", RochCorrMuon4Mo, {"LeptonFourMomentum", "RochCorrVec"})
-                                           .Define("LeptonPt_RochCorr", TLorentzVectorPt_float, {"MuonFourMomentum_RochCorr"})
-                                           .Define("LeptonEta_RochCorr", TLorentzVectorEta_float, {"MuonFourMomentum_RochCorr"})
-                                           .Define("LeptonPhi_RochCorr", TLorentzVectorPhi_float, {"MuonFourMomentum_RochCorr"})
-                                           .Define("LeptonMass_RochCorr", TLorentzVectorMass_float, {"MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonPt_RochCorr", TLorentzVector_float, {1, "MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonEta_RochCorr", TLorentzVector_float, {3, "MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonPhi_RochCorr", TLorentzVector_float, {2, "MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonMass_RochCorr", TLorentzVector_float, {4, "MuonFourMomentum_RochCorr"})
 					   .Define("OppositeSignNonPrompt", OppositeSignNonPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
                                            .Define("OppositeSignPrompt", OppositeSignPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
                                            .Define("SameSignNonPrompt", SameSignNonPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
@@ -7491,7 +7645,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			                .Define("sigma_JER_up", sigma_JER_up, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 					.Define("sigma_JER_down", sigma_JER_down, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
                       			.Define("cJER", JetSmearingFunction_HybridMethod, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
-                      		        .Define("SmearedJet4Momentum", ApplyCJER, ApplyCJER_strings)
+                      		        .Define("SmearedJet4Momentum", ApplyCJER, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
                       			.Define("SmearedJetPt", GetSmearedJetPt, {"SmearedJet4Momentum", "Jet_pt"})
                       			.Define("SmearedJetPhi", GetSmearedJetPhi, {"SmearedJet4Momentum", "Jet_phi"})
                       			.Define("SmearedJetEta", GetSmearedJetEta, {"SmearedJet4Momentum", "Jet_eta"})
@@ -7546,7 +7700,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string JetSelectionFile = "JetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                  SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
   
-  auto Snapshot_JetSelection = d_JetSelection.Snapshot("Events", JetSelectionFileName.c_str());
+  auto Snapshot_JetSelection = d_JetSelection.Snapshot("Events", JetSelectionFile.c_str());
 
 
   //B jet selection
@@ -7588,39 +7742,39 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string BJetSelectionFile = "BJetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                  SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_JetSelection = d_BJetSelection.Snapshot("Events", BJetSelectionFileName.c_str());
+  auto Snapshot_BJetSelection = d_BJetSelection.Snapshot("Events", BJetSelectionFile.c_str());
 
 
   //For the b-tagging efficiencies
   std::string BTagString = "BTagEffPlots_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                             SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  TFile* BTagEffPlots = new TFile(BTagEffOutput.c_str(), "RECREATE");
+  TFile* BTagEffPlots = new TFile(BTagString.c_str(), "RECREATE");
   double minpt = 0;
   double maxpt = 500;
   double mineta = -3;
   double maxeta = 3;
 
-  h_bjet_num = d_BJetSelection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
+  h_bjet_num = d_BJetSelection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
   
-  h_nonbjet_num = d_BJetSelection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
+  h_nonbjet_num = d_BJetSelection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
 
-  h_charm_num = d_BJetSelection.Histo2D({"h_charm_ee_num", "h_charm_ee_num", NBins, mineta, maxpt, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
+  h_charm_num = d_BJetSelection.Histo2D({"h_charm_ee_num", "h_charm_ee_num", NumBins, mineta, maxpt, NumBins, minpt, maxpt}, {"BTAGEFF_charm_eta_num"}, {"BTAGEFF_charm_pt_num"});
   
-  h_lightjets_num = d_BJetSelection.Histo2D({"h_lightjets_ee_num", "h_lightjets_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
+  h_lightjets_num = d_BJetSelection.Histo2D({"h_lightjets_ee_num", "h_lightjets_ee_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_num"}, {"BTAGEFF_lightjets_pt_num"});
   
-  h_gluon_num = d_BJetSelection.Histo2D({"h_gluon_ee_num", "h_gluon_ee_num", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
+  h_gluon_num = d_BJetSelection.Histo2D({"h_gluon_ee_num", "h_gluon_ee_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_num"}, {"BTAGEFF_gluon_pt_num"});
 
 
-  h_bjet_denom = d_BJetSelection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
+  h_bjet_denom = d_BJetSelection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
    
-  h_nonbjet_denom = d_BJetSelection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
+  h_nonbjet_denom = d_BJetSelection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
 
-  h_charm_denom = d_BJetSelection.Histo2D({"h_charm_ee_denom", "h_charm_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
+  h_charm_denom = d_BJetSelection.Histo2D({"h_charm_ee_denom", "h_charm_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_charm_eta_denom"}, {"BTAGEFF_charm_pt_denom"});
    
-  h_lightjets_denom = d_BJetSelection.Histo2D({"h_lightjets_ee_denom", "h_lightjets_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
+  h_lightjets_denom = d_BJetSelection.Histo2D({"h_lightjets_ee_denom", "h_lightjets_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_lightjets_eta_denom"}, {"BTAGEFF_lightjets_pt_denom"});
    
-  h_gluon_denom = d_BJetSelection.Histo2D({"h_gluon_ee_denom", "h_gluon_ee_denom", NBins, mineta, maxeta, NBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
+  h_gluon_denom = d_BJetSelection.Histo2D({"h_gluon_ee_denom", "h_gluon_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_gluon_eta_denom"}, {"BTAGEFF_gluon_pt_denom"});
  
   h_bjet_num->GetXaxis()->SetTitle("#eta");
   h_nonbjet_num->GetXaxis()->SetTitle("#eta");
@@ -7656,11 +7810,11 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   h_lightjets_denom->Write();
   h_gluon_denom->Write();
 
-  TH2D* h_bjet = new TH2D("h_bjet", "h_bjet", NBins, mineta, maxeta, NBins, minpt, maxpt);
-  TH2D* h_nonbjet = new TH2D("h_nonbjet", "h_nonbjet", NBins, mineta, maxeta, NBins, minpt, maxpt);
-  TH2D* h_charm = new TH2D("h_charm", "h_charm", NBins, mineta, maxeta, NBins, minpt, maxpt);
-  TH2D* h_lightjets = new TH2D("h_lightjets", "h_lightjets", NBins, mineta, maxeta, NBins, minpt, maxpt);
-  TH2D* h_gluon = new TH2D("h_gluon", "h_gluon", NBins, mineta, maxeta, NBins, minpt, maxpt);
+  TH2D* h_bjet = new TH2D("h_bjet", "h_bjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
+  TH2D* h_nonbjet = new TH2D("h_nonbjet", "h_nonbjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
+  TH2D* h_charm = new TH2D("h_charm", "h_charm", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
+  TH2D* h_lightjets = new TH2D("h_lightjets", "h_lightjets", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
+  TH2D* h_gluon = new TH2D("h_gluon", "h_gluon", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
 
   h_bjet = dynamic_cast<TH2D*>(h_bjet_num->Clone());
   h_bjet->Divide(h_bjet_denom.GetPtr());
@@ -7681,7 +7835,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   h_bjet->GetXaxis()->SetTitle("#eta");
   h_nonbjet->GetXaxis()->SetTitle("#eta");
   h_charm->GetXaxis()->SetTitle("#eta");
-  h_lightjet->GetXaxis()->SetTitle("#eta");
+  h_lightjets->GetXaxis()->SetTitle("#eta");
   h_gluon->GetXaxis()->SetTitle("#eta");
   h_bjet->GetYaxis()->SetTitle("p_{T}");
   h_nonbjet->GetYaxis()->SetTitle("p_{T}");
@@ -7708,14 +7862,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  		    .Define("w_mass", inv_mass, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_pair_mass"})
 				    .Define("WPairJet1", WPairJet1, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
                  		    .Define("WPairJet2", WPairJet2, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
-				    .Define("WPairJet1Pt", TLorentzVectorPt, {"WPairJet1"})
-				    .Define("WPairJet1Eta", TLorentzVectorEta, {"WPairJet1"})
-				    .Define("WPairJet1Phi", TLorentzVectorPhi, {"WPairJet1"})
-				    .Define("WPairJet1Mass", TLorentzVectorMass, {"WPairJet1"})
-				    .Define("WPairJet2Pt", TLorentzVectorPt, {"WPairJet2"})
-                                    .Define("WPairJet2Eta", TLorentzVectorEta, {"WPairJet2"})
-                                    .Define("WPairJet2Phi", TLorentzVectorPhi, {"WPairJet2"})
-                                    .Define("WPairJet2Mass", TLorentzVectorMass, {"WPairJet2"})
+				    .Define("WPairJet1Pt", TLorentzVectorVariable, {1, "WPairJet1"})
+				    .Define("WPairJet1Eta", TLorentzVectorVariable, {3, "WPairJet1"})
+				    .Define("WPairJet1Phi", TLorentzVectorVariable, {2, "WPairJet1"})
+				    .Define("WPairJet1Mass", TLorentzVectorVariable, {4, "WPairJet1"})
+				    .Define("WPairJet2Pt", TLorentzVectorVariable, {1, "WPairJet2"})
+                                    .Define("WPairJet2Eta", TLorentzVectorVariable, {3, "WPairJet2"})
+                                    .Define("WPairJet2Phi", TLorentzVectorVariable, {2, "WPairJet2"})
+                                    .Define("WPairJet2Mass", TLorentzVectorVariable, {4, "WPairJet2"})
 				    .Define("dR_WJet1_WJet2", deltaRcheck_W_function, {"WPairJet1Phi", "WPairJet1Eta", "WPairJet2Phi", "WPairJet2Eta"})
 				    .Define("dWj1j2", DeltaPhi_function2, {"WPairJet1Phi", "WPairJet2Phi"})
 				    .Define("dR_WJet1_LeadingLepton", deltaRcheck_W_function2, {"WPairJet1Phi", "WPairJet1Eta", "LeadingLeptonPhi", "LeadingLeptonEta"})
@@ -7752,7 +7906,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string WCandRecoFile = "WCandReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                               SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_WCandReco = d_WCandRecoSelection.Snapshot("Events", WCandRecoFile.c_str());
+  auto Snapshot_WCandReco = d_WCandReco.Snapshot("Events", WCandRecoFile.c_str());
 
 
   //Reconstructing the top quark candidate
@@ -7764,10 +7918,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 				  .Define("BJets", BLorentzVector, {"bjetpt", "bjeteta", "bjetphi", "bjetmass"})
 				  .Define("RecoTop", top_reconstruction_function, {"bjetpt", "bjeteta", "bjetphi", "bjetmass", 	
 										   "w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass"})
-			          .Define("Top_Pt", TLorentzVectorPt, {"RecoTop"})
-			          .Define("Top_Eta", TLorentzVectorEta, {"RecoTop"})
-			          .Define("Top_Phi", TLorentzVectorPhi, {"RecoTop"})
-			          .Define("Top_Mass", TLorentzVectorMass, {"RecoTop"})
+			          .Define("Top_Pt", TLorentzVectorVariable, {1, "RecoTop"})
+			          .Define("Top_Eta", TLorentzVectorVariable, {3, "RecoTop"})
+			          .Define("Top_Phi", TLorentzVectorVariable, {2, "RecoTop"})
+			          .Define("Top_Mass", TLorentzVectorVariable, {4, "RecoTop"})
 				  .Define("Top_HT", HT_double, {"Top_Pt"})
 				  .Define("dR_Top_LeadingElectron", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "LeadingLeptonEta", "LeadingLeptonPhi"})
 			          .Define("dR_Top_SubleadingElectron", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
@@ -7778,7 +7932,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			          .Define("dR_Top_W", deltaRcheck_WTop_function, {"w_pair_eta", "w_pair_phi", "Top_Eta", "Top_Phi"})
 				  .Define("dPhi_Wj1_Top", DeltaPhi_function2, {"WPairJet1Phi", "Top_Phi"})
 				  .Define("dPhi_Wj2_Top", DeltaPhi_function2, {"WPairJet2Phi", "Top_Phi"})
-			          .Define("dR_Z_Top", deltaRcheck_W_function, deltaR_Z_Top_strings)
+			          .Define("dR_Z_Top", deltaRcheck_W_function, {"RecoZPhi", "RecoZEta", "Top_Phi", "Top_Eta"})
 				  .Define("dPhi_Z_Top", DeltaPhi_function2, {"Top_Phi", "RecoZPhi"})
 				  .Define("dR_Z_WPairJet1", deltaRcheck_W_function, {"RecoZPhi", "RecoZEta", "WPairJet1Eta", "WPairJet1Phi"})
 				  .Define("dR_Z_WPairJet2", deltaRcheck_W_function, {"RecoZPhi", "RecoZEta", "WPairJet2Eta", "WPairJet2Phi"})
@@ -7786,8 +7940,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                   .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 				  .Define("MinDeltaR", MinDeltaR, {"nJet", "RecoZPhi", "RecoZEta", JetPhiInput, JetEtaInput})
 				  .Define("MinDeltaPhi", MinDeltaPhi, {"nJet", "RecoZPhi", JetPhiInput})
-				  .Define("dR_LeadingLepton_LeadingBJet", Lepton_LeadingBJet_Function, {"bjeteta", "LeadingLeptonEta", "bjetphi", "LeadingLeptonPhi"})
-			          .Define("dR_SubleadingLepton_LeadingBJet", Lepton_LeadingBJet_Function, {"bjeteta", "SubleadingLeptonEta", "bjetphi", "SubleadingLeptonPhi"})
+				  .Define("dR_LeadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "LeadingLeptonEta", "bjetphi", "LeadingLeptonPhi"})
+			          .Define("dR_SubleadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "SubleadingLeptonEta", "bjetphi", "SubleadingLeptonPhi"})
 				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {JetPhiInput, "LeadingLeptonPhi"})
                                   .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, {JetPhiInput, "SubleadingLeptonPhi"})		
 				  .Define("MET", MET_function, {"MET_sumEt"})
@@ -7830,8 +7984,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                            .Define("notbjetpt", bjet_variable, {JetPtInput, "nJet", "nonbjets"})
                                            .Define("notbjeteta", bjet_variable, {JetEtaInput, "nJet", "nonbjets"})
   					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
-					   .Define("EffBTagged", EffBTaggedFunction, {0, JetPtInput, JetEtaInput})
-			    		   .Define("EffNonBTagged", EffBTaggedFunction, {1, JetPtInput, JetEtaInput})
+					   .Define("EffBTagged", EffBTagged_Function, {JetPtInput, JetEtaInput})
+					   .Define("EffNonBTagged", EffNonBTagged_Function, {JetPtInput, JetEtaInput})
 					   .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
 					   .Define("EffNonBTaggedProduct", EffNonBTaggedProduct, {"EffNonBTagged"})
 					   .Define("EffBTaggedProductData", EffBTaggedProductData, {"EffBTagged", "CMSBTagSF"})
@@ -7849,15 +8003,15 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 				           .Define("MuonSFTest_ID_sys_stat", MuonSFTest_ID_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
 					   .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
                                            .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
-					   .Define("ReturnedPSWeight", PSWeight, PSWeightString)
+					   .Define("ReturnedPSWeight", PSWeightFunction, {PSWeightString})
 					   .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					   .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedNominalWeight", "ReturnedPSWeight"})
 					   .Define("newMET", METUncertFunction, {"MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY", "MET_phi", "MET_sumEt",
 										 "SmearedJet4Momentum", "Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass"})
-					   .Define("EventWeight", EventWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "CalculatedNominalWeight", "EGammaSF_egammaEff", 
+					   .Define("EventWeight", EventWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "EGammaSF_egammaEff", 
 										"EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", 
-										"CalculatedGeneratorWeight", "ME_SF", "TopWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
+										"CalculatedGeneratorWeight", "ME_SF", "TopWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
 										"MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", 
 										"MuonSFTest_Iso_sys_stat"});
 								      
@@ -7877,7 +8031,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string ResolutionString = "Resolution_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                  SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  Resolution.open(Resolutiontring.c_str());
+  Resolution.open(ResolutionString.c_str());
 
   Resolution << "W_stddev: " << W_stddev << '\n'
 	     << "Top_stddev: " << Top_stddev << std::endl;
@@ -7890,7 +8044,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   	int NumberOfSimulatedEvents = *( d_Blinding.Filter("chi2 != 999.0").Count() );	
 	int OneSigmaOfNumEvents = NumberOfSimulatedEvents * 0.68;
 
-	auto histo_chi2 = Blinding_ee.Histo1D("chi2");
+	auto histo_chi2 = d_Blinding.Histo1D("chi2");
 	TAxis *xaxis = histo_chi2->GetXaxis();
 	double MaxBin = xaxis->GetBinCenter( histo_chi2->FindLastBinAbove() );
 	double MinBin = xaxis->GetBinCenter( histo_chi2->FindFirstBinAbove() ) ;
@@ -7917,7 +8071,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	//for Chi2_SBR
 	auto MaxElement = std::max_element(CutRanges.begin(), CutRanges.end());
 	auto DistToMax = std::distance(CutRanges.begin(), MaxElement);
-	Chi2_SBR = CutRanges_ee.at(DistToMax);
+	Chi2_SBR = CutRanges.at(DistToMax);
 
 	std::ofstream Chi2Range;      
 	std::string Chi2Range_string = "Chi2Range_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
@@ -7988,7 +8142,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string CutFlowReportString = "CutFlowReport_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt"; 
 
-  CutFlowReport.open(CutFlowReport_string.c_str());
+  CutFlowReport.open(CutFlowReportString.c_str());
 
   for(auto&& cutInfo: allCutsReport){
   	CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
@@ -7999,22 +8153,24 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 
 //Main function is here
-void tZq_NanoAOD(){
+void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  int Process_Selection = 93;
+  int Process_Selection = 0; //0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
   int ZPlusJetsCR_Selection = 0;
   int ttbarCR_Selection = 0;
-  int Year_Selection = 2017;
+  int Year_Selection = 2016;
   int Systematic_Selection = 0;
   int Channel_Selection = 1;
+  int DoubleCountCheck_Selection = 1;
 
-  tZq_NanoAOD_Output(MC_Selection, 	    Process_Selection, NPL_Selection,  SR_Selection,         SBR_Selection, 
-		     ZPlusJetsCR_Selection, ttbarCR_Selection, Year_Selection, Systematic_Selection, Channel_Selection);
+  tZq_NanoAOD_Output(MC_Selection, 	    Process_Selection, NPL_Selection,        SR_Selection,         SBR_Selection,    ZPlusJetsCR_Selection, 
+		     ttbarCR_Selection,     Year_Selection,    Systematic_Selection, Channel_Selection,    DoubleCountCheck_Selection);
 
 
 }
+
 
