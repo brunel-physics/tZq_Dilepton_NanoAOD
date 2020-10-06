@@ -206,6 +206,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string JetPhiInput;
   
   std::string PSWeightString;
+  std::string DoubleCountString;
 
   TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
   TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
@@ -530,7 +531,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 0: Process = "tZq"; 
 
 		switch(YearInt){
-			case 2016: input_files = {"root://cms-xrd-global.cern.ch//store/mc/RunIISummer16NanoAODv5/tZq_ll_4f_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano1June2019_102X_mcRun2_asymptotic_v7_ext1-v1/*/*.root"}; break;
+			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"}; break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"}; break;
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"}; break;
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -2104,7 +2105,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   switch(YearInt){
                 
-  	case 2016: PSWeightString = "LeptonPt"; break;
+  	case 2016: PSWeightString = "LeptonPt"; 
+
+		   break;
+
         case 2017: switch(ProcessInt){ 
                    	case 0: PSWeightString = "PSWeight"; break;
                         case 29: PSWeightString = "PSWeight"; break;
@@ -2116,6 +2120,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 89: PSWeightString = "PSWeight"; break;
                         default: PSWeightString = "LeptonPt"; break;
                     }
+	
+		   
+		   break;
+
         case 2018: switch(ProcessInt){ 
 			case 0: PSWeightString = "PSWeight"; break;
                         case 29: PSWeightString = "PSWeight"; break;
@@ -2127,6 +2135,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 89: PSWeightString = "PSWeight"; break;
                         default: PSWeightString = "LeptonPt"; break;                  
 		    }
+
+		 
+		 break;
 
 	default: std::cout << "ERROR: Inside the switch statement for PSWeightString. Please choose the year as 2016, 2017 or 2018." << std::endl; break;
         
@@ -2720,7 +2731,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                        		     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,
                                        		     HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,     HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
                                        		     HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL);
-
 
 	if(Process == "Data_DoubleEGRunB"){return Double_E == true;}
 	else if(Process == "Data_DoubleEGRunC"){return Double_E == true;}
@@ -7138,49 +7148,75 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
   //Input file selection
-  EnableImplicitMT(); //to enable multithreading
+  //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
+  
+  auto d_Range = d.Range(0, 1000); //running over the first 1000 events
 
   //Event cleaning
-  auto d_EventCleaning = d.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
+  auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
 						    "Flag_HBHENoiseIsoFilter",        "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter",
                                                     "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter",                 "Flag_eeBadScFilter"}, "Event cleaning filter");
 
  //Filtering events using the golden json file (for data not MC)
  auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
- //Preventing the double-counting of events in the single and double lepton datasets
- auto d_DoubleCountCheck = d_GoldenJson.Filter(DoubleCountCheck_EventFunction, {"HLT_Ele25_eta2p1_WPTight_Gsf",
-                                                                               "HLT_Ele27_WPTight_Gsf",
-                                                                               "HLT_Ele32_eta2p1_WPTight_Gsf",
-                                                                               "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
-                                                                               "HLT_Ele35_WPTight_Gsf",
-                                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                                                               "HLT_IsoMu24",
-                                                                               "HLT_IsoMu24_eta2p1",
-                                                                               "HLT_IsoMu27",
-                                                                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",
-                                                                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
-                                                                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
-                                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                                               "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                                               "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                                               "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                                                               "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                                                               "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL", 
-									       "event"});
+ std::vector<std::string> DoubleCountCheckStrings;
 
-  if(DoubleCountCheckInt == 1){
+ if(Process == "Data_DoubleEGRunB"       || Process == "Data_DoubleEGRunC"       || Process == "Data_DoubleEGRunD"       || 
+    Process == "Data_DoubleEGRunE"       || Process == "Data_DoubleEGRunF"       || Process == "Data_DoubleEGRunG"       || 
+    Process == "Data_DoubleEGRunH"       || Process == "Data_DoubleMuonRunB"     || Process == "Data_DoubleMuonRunC"     || 
+    Process == "Data_DoubleMuonRunD"     || Process == "Data_DoubleMuonRunE"     || Process == "Data_DoubleMuonRunF"     ||
+    Process == "Data_DoubleMuonRunG"     || Process == "Data_DoubleMuonRunH"     || Process == "Data_MuonEGRunB"         ||
+    Process == "Data_MuonEGRunC"         || Process == "Data_MuonEGRunD"	  || Process == "Data_MuonEGRunE"         ||
+    Process == "Data_MuonEGRunF"         || Process == "Data_MuonEGRunG"         || Process == "Data_MuonEGRunH"         ||
+    Process == "Data_SingleMuonRunB"     || Process == "Data_SingleMuonRunC"     || Process == "Data_SingleMuonRunD"     ||
+    Process == "Data_SingleMuonRunE"     || Process == "Data_SingleMuonRunF"     || Process == "Data_SingleMuonRunG"     ||
+    Process == "Data_SingleMuonRunH"     || Process == "Data_SingleElectronRunB" || Process == "Data_SingleElectronRunC" ||
+    Process == "Data_SingleElectronRunD" || Process == "Data_SingleElectronRunE" || Process == "Data_SingleElectronRunF" ||
+    Process == "Data_SingleElectronRunG" || Process == "Data_SingleElectronRunH"){
 
-  	std::string DoubleCountCheckFile = "DoubleCountCheck_" + Process + "_" + Systematic + "_" + NonPromptLepton + "_" +
-                                     	   SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-
- 	auto DoubleCountCheckSnapshot = d_DoubleCountCheck.Snapshot("Events", DoubleCountCheckFile.c_str());
-
- 	return;
+	DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",              	 "HLT_Ele27_WPTight_Gsf",                     
+			           "HLT_Ele32_eta2p1_WPTight_Gsf",	 		 "HLT_Ele32_WPTight_Gsf_L1DoubleEG",          
+				   "HLT_Ele35_WPTight_Gsf",                     	 "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                   "HLT_IsoMu24",		                	 "HLT_IsoMu24_eta2p1",                        
+				   "HLT_IsoMu27",			        	 "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",       
+				   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", 	 "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	 "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+				   "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",     "event"};
 
   }
+ else{
+
+	DoubleCountCheckStrings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+				   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "event"};
+
+
+ }
+
+ //Preventing the double-counting of events in the single and double lepton datasets
+ auto d_DoubleCountCheck = d_GoldenJson.Filter(DoubleCountCheck_EventFunction, DoubleCountCheckStrings); 
+
+ if(DoubleCountCheckInt == 1){
+
+    std::string DoubleCountCheckFile = "DoubleCountCheck_" + Process + "_" + Systematic + "_" + NonPromptLepton + "_" +
+                                       SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
+
+    auto DoubleCountCheckSnapshot = d_DoubleCountCheck.Snapshot("Events", DoubleCountCheckFile.c_str());
+
+    return;
+
+ }
 
 
 
@@ -7264,7 +7300,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   float LeptonSelection_EventWeight, MET_And_LeptonSelection_EventWeight, LeptonTriggersAndSelectionCriteria_EventWeight, MET_LeptonTriggers_SelectionCriteria_EventWeight;
 
   switch(ProcessInt){
-	case 93: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
+	case 95: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
 	         MET_And_LeptonSelection_EventWeight = *d_MET_And_LeptonSelection.Sum("PU");
 	         LeptonTriggersAndSelectionCriteria_EventWeight = *d_LeptonTriggers_And_LeptonSelection.Sum("PU");
                  MET_LeptonTriggers_SelectionCriteria_EventWeight = *d_MET_LeptonTriggers_LeptonSelection.Sum("PU");
@@ -7387,7 +7423,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			case 0: switch(ttbarCRInt){
 					case 0: switch(SystematicInt){ 
   							case 0: switch(ProcessInt){
-  									case 93: switch(ChannelInt){
+  									case 95: switch(ChannelInt){
 										 	case 1: 
 								
 											N_SelectionCriteria_ee_MC = N_SelectionCriteria;
@@ -7438,7 +7474,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 									}
 
 
-									case 94: switch(ChannelInt){
+									case 96: switch(ChannelInt){
                         								case 1: 
 
 											N_SelectionCriteria_ee_DATA = N_SelectionCriteria;
@@ -8162,15 +8198,16 @@ void fulleventselectionAlgo::fulleventselection(){
   int SBR_Selection = 1;
   int ZPlusJetsCR_Selection = 0;
   int ttbarCR_Selection = 0;
-  int Year_Selection = 2016;
+  int Year_Selection = 2017;
   int Systematic_Selection = 0;
   int Channel_Selection = 1;
-  int DoubleCountCheck_Selection = 1;
+  int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
   tZq_NanoAOD_Output(MC_Selection, 	    Process_Selection, NPL_Selection,        SR_Selection,         SBR_Selection,    ZPlusJetsCR_Selection, 
 		     ttbarCR_Selection,     Year_Selection,    Systematic_Selection, Channel_Selection,    DoubleCountCheck_Selection);
 
 
 }
+
 
 
