@@ -3579,8 +3579,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-
-
   auto LeptonCut{[&ChannelInt](const floats& tight_ele_pts,   		             const floats& loose_ele_pts, const bool os,
 		     	       const unsigned int& nElectron, 		             const floats& LeadingElectron_dz_ECALBarrel,
 		     	       const floats& LeadingElectron_dxy_ECALBarrel,         const floats& LeadingElectron_dz_ECALEndcaps,
@@ -3603,18 +3601,20 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	lead_pt_cut = tight_ele_pts.empty() ? false : *max_element(tight_ele_pts.begin(), tight_ele_pts.end()) > MaxLeptonPt;
 
+
 	switch(ChannelInt){
 
-		case 1: return os 				      && lead_pt_cut && 
-			lepton_cut 				      && nElectron == 2 &&
-  			LeadingElectron_dz_ECALBarrel.at(0) < 0.1     && LeadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
-  			LeadingElectron_dz_ECALEndcaps.at(0) < 0.2    && LeadingElectron_dxy_ECALEndcaps.at(0) < 0.1 &&
-  			SubleadingElectron_dz_ECALBarrel.at(0) < 0.1  && SubleadingElectron_dxy_ECALBarrel.at(0) < 0.05 &&
+		case 1: return 
+			os 				        && lead_pt_cut 							&& 
+			lepton_cut 				&& nElectron == 2						&&
+  			LeadingElectron_dz_ECALBarrel.at(0) < 0.1     && LeadingElectron_dxy_ECALBarrel.at(0) < 0.05 		&&
+  			LeadingElectron_dz_ECALEndcaps.at(0) < 0.2    && LeadingElectron_dxy_ECALEndcaps.at(0) < 0.1 		&&
+  			SubleadingElectron_dz_ECALBarrel.at(0) < 0.1  && SubleadingElectron_dxy_ECALBarrel.at(0) < 0.05 	&&
   			SubleadingElectron_dz_ECALEndcaps.at(0) < 0.2 && SubleadingElectron_dxy_ECALEndcaps.at(0) < 0.1;
 
 		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2;
 
-		case 3: return os && lepton_cut && nElectron == 1 && nMuon == 1;
+		case 3: return os && lepton_cut && (nElectron == 1 && nMuon == 1);
 
 		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
@@ -3724,13 +3724,13 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto TLorentzVectorVariablePt{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(1, object);}};
+  auto TLorentzVectorVariablePt{[&TLorentzVectorVariable](const TLorentzVector& object){std::cout << "TLorentzVectorVariable 1" << std::endl; return TLorentzVectorVariable(1, object);}};
   
-  auto TLorentzVectorVariablePhi{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(2, object);}};
+  auto TLorentzVectorVariablePhi{[&TLorentzVectorVariable](const TLorentzVector& object){std::cout << "TLorentzVectorVariable 2" << std::endl; return TLorentzVectorVariable(2, object);}};
 
-  auto TLorentzVectorVariableEta{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(3, object);}};
+  auto TLorentzVectorVariableEta{[&TLorentzVectorVariable](const TLorentzVector& object){std::cout << "TLorentzVectorVariable 3" << std::endl; return TLorentzVectorVariable(3, object);}};
   
-  auto TLorentzVectorVariableMass{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(4, object);}};
+  auto TLorentzVectorVariableMass{[&TLorentzVectorVariable](const TLorentzVector& object){std::cout << "TLorentzVectorVariable 4" << std::endl; return TLorentzVectorVariable(4, object);}};
 
 
   auto deltaRcheck_float{[](const float& Object1_eta, const float& Object1_phi, const float& Object2_eta, const float& Object2_phi){
@@ -3886,13 +3886,13 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
-  auto TLorentzVector_float_pt{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(1, object);}};
+  auto TLorentzVector_float_pt{[&TLorentzVector_float](const TLorentzVector& object){std::cout << "tlorentz1" << std::endl; return TLorentzVector_float(1, object);}};
 
-  auto TLorentzVector_float_phi{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(2, object);}};
+  auto TLorentzVector_float_phi{[&TLorentzVector_float](const TLorentzVector& object){std::cout << "tlorentz2" << std::endl; return TLorentzVector_float(2, object);}};
 
-  auto TLorentzVector_float_eta{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(3, object);}};
+  auto TLorentzVector_float_eta{[&TLorentzVector_float](const TLorentzVector& object){std::cout << "tlorentz3" << std::endl; return TLorentzVector_float(3, object);}};
   
-  auto TLorentzVector_float_mass{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(4, object);}};
+  auto TLorentzVector_float_mass{[&TLorentzVector_float](const TLorentzVector& object){std::cout << "tlorentz4" << std::endl; return TLorentzVector_float(4, object);}};
 
   auto z_mass_cut{[](const float& z_mass) {
 
@@ -7354,10 +7354,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                				  "LeadingElectron_dxy_ECALEndcaps", "SubleadingElectron_dz_ECALBarrel", "SubleadingElectron_dxy_ECALBarrel", 
 							  "SubleadingElectron_dz_ECALEndcaps", "SubleadingElectron_dxy_ECALEndcaps", "nMuon"}, "lepton cut");
 
+
   std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
   auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFile.c_str());
+
 
   //Calculating the trigger scale factors
   std::vector<std::string> MET_Triggers_Strings;
