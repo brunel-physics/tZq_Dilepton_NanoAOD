@@ -3724,6 +3724,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }};
 
+  auto TLorentzVectorVariablePt{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(1, object);}};
+  
+  auto TLorentzVectorVariablePhi{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(2, object);}};
+
+  auto TLorentzVectorVariableEta{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(3, object);}};
+  
+  auto TLorentzVectorVariableMass{[&TLorentzVectorVariable](const TLorentzVector& object){return TLorentzVectorVariable(4, object);}};
+
 
   auto deltaRcheck_float{[](const float& Object1_eta, const float& Object1_phi, const float& Object2_eta, const float& Object2_phi){
 
@@ -3877,6 +3885,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   	return vec;
 
   }};
+
+  auto TLorentzVector_float_pt{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(1, object);}};
+
+  auto TLorentzVector_float_phi{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(2, object);}};
+
+  auto TLorentzVector_float_eta{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(3, object);}};
+  
+  auto TLorentzVector_float_mass{[&TLorentzVector_float](const TLorentzVector& object){return TLorentzVector_float(4, object);}};
 
   auto z_mass_cut{[](const float& z_mass) {
 
@@ -7762,33 +7778,24 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                            .Define("OppositeSignPrompt", OppositeSignPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
                                            .Define("SameSignNonPrompt", SameSignNonPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
                                            .Define("SameSignPrompt", SameSignPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
-					   .Define("z_lep_eta", "Lepton_eta[TightLeptons]")
-                                           .Define("z_lep_phi", "Lepton_phi[TightLeptons]")
-                                           .Define("z_lep_mass", "Lepton_mass[TightLeptons]")
-                                           .Define("z_lep_pt", "Lepton_pt[TightLeptons]")
-                                           .Define("z_mass", inv_mass, {"z_lep_pt", "z_lep_eta", "z_lep_phi", "z_lep_mass"})
-                                           .Define("RecoZ", RecoZ, {"LeadingLeptonPt", "LeadingLeptonEta", "LeadingLeptonPhi", "LeadingLeptonMass"
+                                           .Define("RecoZ", RecoZ, {"LeadingLeptonPt", "LeadingLeptonEta", "LeadingLeptonPhi", "LeadingLeptonMass",
 								    "SubleadingLeptonPt", "SubleadingLeptonEta", "SubleadingLeptonPhi", "SubleadingLeptonMass"})
-                                           .Define("RecoZPt", TLorentzVectorVariable, {1, "RecoZ"})
-                                           .Define("RecoZPhi", TLorentzVectorVariable, {2, "RecoZ"})
-                                           .Define("RecoZEta", TLorentzVectorVariable, {3, "RecoZ"})
-					   .Define("RecoZMass", TLorentzVectorVariable, {4, "RecoZ"})
+                                           .Define("RecoZPt", TLorentzVectorVariablePt, {"RecoZ"})
+                                           .Define("RecoZPhi", TLorentzVectorVariablePhi, {"RecoZ"})
+                                           .Define("RecoZEta", TLorentzVectorVariableEta, {"RecoZ"})
+					   .Define("RecoZMass", TLorentzVectorVariableMass, {"RecoZ"})
                                            .Define("dR_ll", deltaRcheck_float, {"LeadingLeptonEta", "LeadingLeptonPhi", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
-                                           .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingElectronPhi", "SubleadingElectronPhi"})
+                                           .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingLeptonPhi", "SubleadingLeptonPhi"})
 					   .Define("Muon_genPartIdx_Selection", select<ints>, {"Muon_genPartIdx", "TightLeptons"})
                                            .Define("Muon_nTrackerLayers_Selection", select<ints>, {"Muon_nTrackerLayers", "TightLeptons"})
                                            .Define("LeptonFourMomentum", LeptonFourMomentumFunction, {"TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "TightLeptonsMass"})
                                            .Define("RochCorrVec", RochCorrVec_Function, {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", 
 										         "Muon_genPartIdx_Selection", "Muon_nTrackerLayers_Selection"})
                                            .Define("MuonFourMomentum_RochCorr", RochCorrMuon4Mo, {"LeptonFourMomentum", "RochCorrVec"})
-                                           .Define("LeptonPt_RochCorr", TLorentzVector_float, {1, "MuonFourMomentum_RochCorr"})
-                                           .Define("LeptonEta_RochCorr", TLorentzVector_float, {3, "MuonFourMomentum_RochCorr"})
-                                           .Define("LeptonPhi_RochCorr", TLorentzVector_float, {2, "MuonFourMomentum_RochCorr"})
-                                           .Define("LeptonMass_RochCorr", TLorentzVector_float, {4, "MuonFourMomentum_RochCorr"})
-					   .Define("OppositeSignNonPrompt", OppositeSignNonPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
-                                           .Define("OppositeSignPrompt", OppositeSignPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
-                                           .Define("SameSignNonPrompt", SameSignNonPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
-                                           .Define("SameSignPrompt", SameSignPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
+                                           .Define("LeptonPt_RochCorr", TLorentzVector_float_pt, {"MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonEta_RochCorr", TLorentzVector_float_eta, {"MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonPhi_RochCorr", TLorentzVector_float_phi, {"MuonFourMomentum_RochCorr"})
+                                           .Define("LeptonMass_RochCorr", TLorentzVector_float_mass, {"MuonFourMomentum_RochCorr"})
                                            .Define("z_mass", inv_mass, {"LeptonPt_RochCorr", "LeptonEta_RochCorr", "LeptonPhi_RochCorr", "LeptonMass_RochCorr"})
                                            .Filter(z_mass_cut, {"z_mass"}, "Z mass cut");
 
