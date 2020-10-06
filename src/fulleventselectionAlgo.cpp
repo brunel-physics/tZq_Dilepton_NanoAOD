@@ -3247,109 +3247,156 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto MET_Triggers_Function{[&YearInt](const bool& HLT_MET200, 
-					const bool& HLT_MET250,
-			 		const bool& HLT_PFMET120_PFMHT120_IDTight,
-					const bool& HLT_PFMET170_HBHECleaned,
-					const bool& HLT_PFHT300_PFMET100,
-					//const bool& HLT_MET105_IsoTrk50, //(not in run B)
-					//const bool& HLT_MET120_IsoTrk50, //(not in run B)
-					//const bool& HLT_HT430_DisplacedDijet40_DisplacedTrack, //(not in run B)
-					//const bool& HLT_HT650_DisplacedDijet60_Inclusive, //(not in run B)
-					//const bool& HLT_HT750_DisplacedDijet80_Inclusive, //(not in run B)
-					//const bool& HLT_PFMET120_PFMHT120_IDTight_HFCleaned, //(not in any)
-					//const bool& HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF, //(not in any)
-					//const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned, //(not in any)
-					//const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60, //(not in run B)
-					const bool& HLT_PFMET130_PFMHT130_IDTight,
-					const bool& HLT_PFMET140_PFMHT140_IDTight,
-					//const bool& HLT_PFMET200_HBHE_BeamHaloCleaned, //(not in run B)
-					//const bool& HLT_PFMET250_HBHECleaned, //(not in run B)
-					//const bool& HLT_PFMET300_HBHECleaned, //(not in run B)
-					//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned, (not in any)
-					//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF, (not in any)
-					//const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60, //(not in run B)
-					const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight,
-					//const bool& HLT_PFMETNoMu130_PFMHTNoMu130_IDTight, //(not in run B)
-					//const bool& HLT_PFMETNoMu140_PFMHTNoMu140_IDTight, //(not in run B)
-					const bool& HLT_PFHT1050,
-					const bool& HLT_PFHT180,
-					const bool& HLT_PFHT500_PFMET100_PFMHT100_IDTight,
-					const bool& HLT_PFHT500_PFMET110_PFMHT110_IDTight,
-					const bool& HLT_PFHT700_PFMET85_PFMHT85_IDTight,
-					const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
-					const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
-					const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight){
+  auto MET_Triggers_Function{[&YearInt, &ProcessInt](const bool& HLT_MET200, 
+						     const bool& HLT_MET250,
+			 			     const bool& HLT_PFMET120_PFMHT120_IDTight,
+						     const bool& HLT_PFMET170_HBHECleaned,
+						     const bool& HLT_PFHT300_PFMET100,
+						     //const bool& HLT_MET105_IsoTrk50, //(not in run B)
+						     //const bool& HLT_MET120_IsoTrk50, //(not in run B)
+						     //const bool& HLT_HT430_DisplacedDijet40_DisplacedTrack, //(not in run B)
+						     //const bool& HLT_HT650_DisplacedDijet60_Inclusive, //(not in run B)
+						     //const bool& HLT_HT750_DisplacedDijet80_Inclusive, //(not in run B)
+						     //const bool& HLT_PFMET120_PFMHT120_IDTight_HFCleaned, //(not in any)
+						     //const bool& HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF, //(not in any)
+						     //const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned, //(not in any)
+						     //const bool& HLT_PFMET120_PFMHT120_IDTight_PFHT60, //(not in run B)
+						     const bool& HLT_PFMET130_PFMHT130_IDTight,
+						     const bool& HLT_PFMET140_PFMHT140_IDTight,
+						     //const bool& HLT_PFMET200_HBHE_BeamHaloCleaned, //(not in run B)
+						     //const bool& HLT_PFMET250_HBHECleaned, //(not in run B)
+						     //const bool& HLT_PFMET300_HBHECleaned, //(not in run B)
+						     //const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned, (not in any)
+						     //const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF, (not in any)
+						     //const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60, //(not in run B)
+						     const bool& HLT_PFMETNoMu120_PFMHTNoMu120_IDTight,
+						     //const bool& HLT_PFMETNoMu130_PFMHTNoMu130_IDTight, //(not in run B)
+						     //const bool& HLT_PFMETNoMu140_PFMHTNoMu140_IDTight, //(not in run B)
+						     const bool& HLT_PFHT1050,
+						     const bool& HLT_PFHT180,
+						     const bool& HLT_PFHT500_PFMET100_PFMHT100_IDTight,
+						     const bool& HLT_PFHT500_PFMET110_PFMHT110_IDTight,
+						     const bool& HLT_PFHT700_PFMET85_PFMHT85_IDTight,
+						     const bool& HLT_PFHT700_PFMET95_PFMHT95_IDTight,
+						     const bool& HLT_PFHT800_PFMET75_PFMHT75_IDTight,
+						     const bool& HLT_PFHT800_PFMET85_PFMHT85_IDTight, 
+						     const ULong64_t& event){
 
 
 	std::cout << "print 29" << std::endl;
 
+	switch(ProcessInt){
 
-  	switch(YearInt){
+		case 95: switch(YearInt){
 
-		case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 || HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
+				case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 || 
+					          HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
 
-  		default: return //HLT_MET105_IsoTrk50 > 0 || //(not in run B)
-  				//HLT_MET120_IsoTrk50 > 0 || //(not in run B)
-  				//HLT_HT430_DisplacedDijet40_DisplacedTrack > 0 || //(not in run B)
-  				//HLT_HT650_DisplacedDijet60_Inclusive > 0 || //(not in run B)
-  				//HLT_HT750_DisplacedDijet80_Inclusive > 0 || //(not in run B)
-  				//HLT_PFMET120_PFMHT120_IDTight_HFCleaned > 0 || //(not in any)
-  				//HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF > 0 || //(not in any)
-  				//HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned > 0 || //(not in any)
-  				//HLT_PFMET120_PFMHT120_IDTight_PFHT60 > 0 || //(not in run B)
-  				HLT_PFMET120_PFMHT120_IDTight > 0 ||
-  				HLT_PFMET130_PFMHT130_IDTight > 0 ||
-  				HLT_PFMET140_PFMHT140_IDTight > 0 ||
-  				//HLT_PFMET200_HBHE_BeamHaloCleaned > 0 || //(not in run B)
-  				//HLT_PFMET250_HBHECleaned > 0 || //(not in run B)
-  				//HLT_PFMET300_HBHECleaned > 0 || //(not in run B)
-  				//HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned > 0 || (not in any)
-  				//HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF > 0 || (not in any)
-  				//HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60 > 0 || //(not in run B)
-  				HLT_PFMETNoMu120_PFMHTNoMu120_IDTight > 0 ||
-  				//HLT_PFMETNoMu130_PFMHTNoMu130_IDTight > 0 || //(not in run B)
-  				//HLT_PFMETNoMu140_PFMHTNoMu140_IDTight > 0 || //(not in run B)
-  				HLT_PFHT1050 > 0 ||
-  				HLT_PFHT180 > 0 ||
-  				HLT_PFHT500_PFMET100_PFMHT100_IDTight > 0 ||
-  				HLT_PFHT500_PFMET110_PFMHT110_IDTight > 0 ||
-  				HLT_PFHT700_PFMET85_PFMHT85_IDTight > 0 ||
-  				HLT_PFHT700_PFMET95_PFMHT95_IDTight > 0 ||
-  				HLT_PFHT800_PFMET75_PFMHT75_IDTight > 0 ||
-  				HLT_PFHT800_PFMET85_PFMHT85_IDTight > 0;
+  				default: return //HLT_MET105_IsoTrk50 > 0 || //(not in run B)
+  						//HLT_MET120_IsoTrk50 > 0 || //(not in run B)
+  						//HLT_HT430_DisplacedDijet40_DisplacedTrack > 0 || //(not in run B)
+  						//HLT_HT650_DisplacedDijet60_Inclusive > 0 || //(not in run B)
+  						//HLT_HT750_DisplacedDijet80_Inclusive > 0 || //(not in run B)
+  						//HLT_PFMET120_PFMHT120_IDTight_HFCleaned > 0 || //(not in any)
+  						//HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF > 0 || //(not in any)
+  						//HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned > 0 || //(not in any)
+  						//HLT_PFMET120_PFMHT120_IDTight_PFHT60 > 0 || //(not in run B)
+  						HLT_PFMET120_PFMHT120_IDTight > 0 ||
+  						HLT_PFMET130_PFMHT130_IDTight > 0 ||
+  						HLT_PFMET140_PFMHT140_IDTight > 0 ||
+  						//HLT_PFMET200_HBHE_BeamHaloCleaned > 0 || //(not in run B)
+  						//HLT_PFMET250_HBHECleaned > 0 || //(not in run B)
+  						//HLT_PFMET300_HBHECleaned > 0 || //(not in run B)
+  						//HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned > 0 || (not in any)
+  						//HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF > 0 || (not in any)
+  						//HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60 > 0 || //(not in run B)
+  						HLT_PFMETNoMu120_PFMHTNoMu120_IDTight > 0 ||
+  						//HLT_PFMETNoMu130_PFMHTNoMu130_IDTight > 0 || //(not in run B)
+  						//HLT_PFMETNoMu140_PFMHTNoMu140_IDTight > 0 || //(not in run B)
+  						HLT_PFHT1050 > 0 ||
+  						HLT_PFHT180 > 0 ||
+  						HLT_PFHT500_PFMET100_PFMHT100_IDTight > 0 ||
+  						HLT_PFHT500_PFMET110_PFMHT110_IDTight > 0 ||
+  						HLT_PFHT700_PFMET85_PFMHT85_IDTight > 0 ||
+  						HLT_PFHT700_PFMET95_PFMHT95_IDTight > 0 ||
+  						HLT_PFHT800_PFMET75_PFMHT75_IDTight > 0 ||
+  						HLT_PFHT800_PFMET85_PFMHT85_IDTight > 0;
+			
+			}
 
-  	}
+		case 96: switch(YearInt){
+
+                                case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 ||
+                                                  HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
+
+                                default: return //HLT_MET105_IsoTrk50 > 0 || //(not in run B)
+                                                //HLT_MET120_IsoTrk50 > 0 || //(not in run B)
+                                                //HLT_HT430_DisplacedDijet40_DisplacedTrack > 0 || //(not in run B)
+                                                //HLT_HT650_DisplacedDijet60_Inclusive > 0 || //(not in run B)
+                                                //HLT_HT750_DisplacedDijet80_Inclusive > 0 || //(not in run B)
+                                                //HLT_PFMET120_PFMHT120_IDTight_HFCleaned > 0 || //(not in any)
+                                                //HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF > 0 || //(not in any)
+                                                //HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned > 0 || //(not in any)
+                                                //HLT_PFMET120_PFMHT120_IDTight_PFHT60 > 0 || //(not in run B)
+                                                HLT_PFMET120_PFMHT120_IDTight > 0 ||
+                                                HLT_PFMET130_PFMHT130_IDTight > 0 ||
+                                                HLT_PFMET140_PFMHT140_IDTight > 0 ||
+                                                //HLT_PFMET200_HBHE_BeamHaloCleaned > 0 || //(not in run B)
+                                                //HLT_PFMET250_HBHECleaned > 0 || //(not in run B)
+                                                //HLT_PFMET300_HBHECleaned > 0 || //(not in run B)
+                                                //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned > 0 || (not in any)
+                                                //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF > 0 || (not in any)
+                                                //HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60 > 0 || //(not in run B)
+                                                HLT_PFMETNoMu120_PFMHTNoMu120_IDTight > 0 ||
+                                                //HLT_PFMETNoMu130_PFMHTNoMu130_IDTight > 0 || //(not in run B)
+                                                //HLT_PFMETNoMu140_PFMHTNoMu140_IDTight > 0 || //(not in run B)
+                                                HLT_PFHT1050 > 0 ||
+                                                HLT_PFHT180 > 0 ||
+                                                HLT_PFHT500_PFMET100_PFMHT100_IDTight > 0 ||
+                                                HLT_PFHT500_PFMET110_PFMHT110_IDTight > 0 ||
+                                                HLT_PFHT700_PFMET85_PFMHT85_IDTight > 0 ||
+                                                HLT_PFHT700_PFMET95_PFMHT95_IDTight > 0 ||
+                                                HLT_PFHT800_PFMET75_PFMHT75_IDTight > 0 ||
+                                                HLT_PFHT800_PFMET85_PFMHT85_IDTight > 0;
+
+                        } 
+
+	      default: return event > 0;
+  	
+	}
 
 
   }};
 
 
-  auto Lepton_Triggers_Function{[&ChannelInt, &YearInt](const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
-							const bool& HLT_Ele35_WPTight_Gsf, 
-							const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
-							const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-							const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
-							const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
-							const bool& HLT_IsoMu27, 
-							const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
-							const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-							const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
-							const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
-							const bool& HLT_Ele27_WPTight_Gsf, 
-							const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
-							const bool& HLT_IsoMu24,
-							const bool& HLT_IsoMu24_eta2p1,
-							const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
-							const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-							const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
-							const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
+  auto Lepton_Triggers_Function{[&ChannelInt, &YearInt, &ProcessInt](const bool& HLT_Ele32_WPTight_Gsf_L1DoubleEG, 
+								     const bool& HLT_Ele35_WPTight_Gsf, 
+								     const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL, 
+								     const bool& HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+								     const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, 
+								     const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8, 
+								     const bool& HLT_IsoMu27, 
+								     const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ, 
+							       	     const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+								     const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ, 
+								     const bool& HLT_Ele25_eta2p1_WPTight_Gsf, 
+								     const bool& HLT_Ele27_WPTight_Gsf, 
+								     const bool& HLT_Ele32_eta2p1_WPTight_Gsf,
+								     const bool& HLT_IsoMu24,
+								     const bool& HLT_IsoMu24_eta2p1,
+								     const bool& HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL,
+								     const bool& HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+								     const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,
+								     const bool& HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8,
+								     const ULong64_t& event
 
   ){
 
 	std::cout << "print 30" << std::endl;
 
-	switch(ChannelInt){
+	if(ProcessInt == 95 || 96){
+
+	  switch(ChannelInt){
 
 		case 1: switch(YearInt){
 				case 2016: return //single or double electron and not any of the others
@@ -3524,7 +3571,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
 
+	  }
+
 	}
+	else{return event > 0;}
 
   }};
 
@@ -7294,25 +7344,79 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFile.c_str());
 
   //Calculating the trigger scale factors
-  std::vector<std::string> MET_Triggers_Strings = {"HLT_MET200", 			      "HLT_MET250",
-                                      	           "HLT_PFMET120_PFMHT120_IDTight",           "HLT_PFMET170_HBHECleaned",
-                                     		   "HLT_PFHT300_PFMET100", 		      "HLT_PFMET130_PFMHT130_IDTight",
-                                      	           "HLT_PFMET140_PFMHT140_IDTight",           "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-                                     	           "HLT_PFHT1050",			      "HLT_PFHT180",
-                                                   "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-                                                   "HLT_PFHT700_PFMET85_PFMHT85_IDTight",     "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-                                                   "HLT_PFHT800_PFMET75_PFMHT75_IDTight",     "HLT_PFHT800_PFMET85_PFMHT85_IDTight"};
+  std::vector<std::string> MET_Triggers_Strings;
+  std::vector<std::string> Lepton_Triggers_Strings;
 
-  std::vector<std::string> Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
-                                         	      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                         	      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
-                                         	      "HLT_IsoMu27",				            "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                         	      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                         	      "HLT_Ele25_eta2p1_WPTight_Gsf",		            "HLT_Ele27_WPTight_Gsf",
-                                         	      "HLT_Ele32_eta2p1_WPTight_Gsf",		            "HLT_IsoMu24",		
-				         	      "HLT_IsoMu24_eta2p1",				    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                         	      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                         	      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8"};
+   switch(ProcessInt){
+
+	case 95: MET_Triggers_Strings = {"HLT_MET200", 			            "HLT_MET250",
+                                      	 "HLT_PFMET120_PFMHT120_IDTight",           "HLT_PFMET170_HBHECleaned",
+                                   	 "HLT_PFHT300_PFMET100", 		    "HLT_PFMET130_PFMHT130_IDTight",
+                                      	 "HLT_PFMET140_PFMHT140_IDTight",           "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                                     	 "HLT_PFHT1050",			    "HLT_PFHT180",
+                                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                         "HLT_PFHT700_PFMET85_PFMHT85_IDTight",     "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                                         "HLT_PFHT800_PFMET75_PFMHT75_IDTight",     "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+
+		 Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
+                                            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
+                                            "HLT_IsoMu27",                                        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                            "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                            "HLT_Ele25_eta2p1_WPTight_Gsf",                       "HLT_Ele27_WPTight_Gsf",
+                                            "HLT_Ele32_eta2p1_WPTight_Gsf",                       "HLT_IsoMu24",
+                                            "HLT_IsoMu24_eta2p1",                                 "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                            "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8", 	  "event"};
+
+		 break;
+
+	case 96: MET_Triggers_Strings = {"HLT_MET200",                              "HLT_MET250",
+                                         "HLT_PFMET120_PFMHT120_IDTight",           "HLT_PFMET170_HBHECleaned",
+                                         "HLT_PFHT300_PFMET100",                    "HLT_PFMET130_PFMHT130_IDTight",
+                                         "HLT_PFMET140_PFMHT140_IDTight",           "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                                         "HLT_PFHT1050",                            "HLT_PFHT180",
+                                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                         "HLT_PFHT700_PFMET85_PFMHT85_IDTight",     "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                                         "HLT_PFHT800_PFMET75_PFMHT75_IDTight",     "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+
+		 Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
+                                            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
+                                            "HLT_IsoMu27",                                        "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                            "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                            "HLT_Ele25_eta2p1_WPTight_Gsf",                       "HLT_Ele27_WPTight_Gsf",
+                                            "HLT_Ele32_eta2p1_WPTight_Gsf",                       "HLT_IsoMu24",
+                                            "HLT_IsoMu24_eta2p1",                                 "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                            "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",        "event"};	
+
+		 break;
+
+	default: MET_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+					 "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+					 "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+					 "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+					 "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+                                         "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+                                         "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+                                         "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "event"};
+
+		Lepton_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+					   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+					   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "event"};
+		
+		break;
+
+  }
+
 
   auto d_MET_And_LeptonSelection = d_LeptonSelection.Filter(MET_Triggers_Function, MET_Triggers_Strings);
   auto d_LeptonTriggers_And_LeptonSelection = d_LeptonSelection.Filter(Lepton_Triggers_Function, Lepton_Triggers_Strings);
@@ -7366,7 +7470,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto h_LeadingLeptonEta = Weighted_dataframe.Profile1D({"h_LeadingLeptonEta", "Leading lepton #eta", NumBins, -5, 5}, "LeadingLeptonEta", "weight");
   auto h_SubleadingLeptonEta = Weighted_dataframe.Profile1D({"h_SubleadingLeptonEta", "Subleading lepton #eta", NumBins, -5, 5}, "SubleadingLeptonEta", "weight");
 
-  auto h_LeadingVsSubleading_LeptonPt = Weighted_dataframe.Profile2D({"h_LeadingVsSubleading_LeptonPt", "Leading lepton p_{T} vs subleading lepton p_{T}", NumBins, 0, 300, NumBins, 0, 300}, "SubleadingleptonPt", "LeadingLeptonPt", "weight");
+  auto h_LeadingVsSubleading_LeptonPt = Weighted_dataframe.Profile2D({"h_LeadingVsSubleading_LeptonPt", "Leading lepton p_{T} vs subleading lepton p_{T}", NumBins, 0, 300, NumBins, 0, 300}, "SubleadingLeptonPt", "LeadingLeptonPt", "weight");
 
   auto h_LeadingVsSubleading_LeptonEta = Weighted_dataframe.Profile2D({"h_LeadingVsSubleading_LeptonEta", "Leading lepton #eta vs subleading lepton #eta", NumBins, -5, 5, NumBins, -5, 5}, "SubleadingLeptonEta", "LeadingLeptonEta", "weight");
 
