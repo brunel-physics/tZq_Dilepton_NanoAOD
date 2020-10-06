@@ -2834,11 +2834,17 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	std::cout << "print 12" << std::endl; 
 
+	floats Emu_vector_floats{};
+
 	switch(ChannelInt){
 
-		case 1: return abs(Electron_input) > 0; 
-		case 2: return abs(Muon_input) > 0;
-		case 3: return abs(Electron_input) > 0 || abs(Muon_input) > 0;	
+		case 1: return Electron_input; 
+		case 2: return Muon_input;
+
+		case 3: for(int i = 0; i < Electron_input.size(); i++){Emu_vector_floats.push_back(Electron_input.at(i));}
+			for(int i = 0; i < Muon_input.size(); i++){Emu_vector_floats.push_back(Muon_input.at(i));}
+			return Emu_vector_floats;
+	
 		default: std::cout << "ERROR: Choose ChannelInt to be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
 	}
@@ -2849,11 +2855,17 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
         std::cout << "print 13" << std::endl;
 
+	ints Emu_vector_ints{};
+
         switch(ChannelInt){
 
-                case 1: return abs(Electron_input) > 0;
-                case 2: return abs(Muon_input) > 0;
-                case 3: return abs(Electron_input) > 0 || abs(Muon_input) > 0;  
+                case 1: return Electron_input;
+                case 2: return Muon_input;
+
+                case 3: for(int i = 0; i < Electron_input.size(); i++){Emu_vector_ints.push_back(Electron_input.at(i));}
+                        for(int i = 0; i < Muon_input.size(); i++){Emu_vector_ints.push_back(Muon_input.at(i));}
+                        return Emu_vector_ints;
+
                 default: std::cout << "ERROR: Choose ChannelInt to be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
         }
@@ -2865,11 +2877,17 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
         std::cout << "print 14" << std::endl;
 
+	chars Emu_vector_chars{};
+
         switch(ChannelInt){
 
-                case 1: return Electron_input > 0;
-                case 2: return Muon_input > 0;
-                case 3: return Electron_input > 0 || Muon_input > 0;  
+                case 1: return Electron_input;
+                case 2: return Muon_input;
+
+                case 3: for(int i = 0; i < Electron_input.size(); i++){Emu_vector_chars.push_back(Electron_input.at(i));}
+                        for(int i = 0; i < Muon_input.size(); i++){Emu_vector_chars.push_back(Muon_input.at(i));}
+                        return Emu_vector_chars;
+
                 default: std::cout << "ERROR: Choose ChannelInt to be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
         }
@@ -7244,7 +7262,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				      .Define("LooseLeptonsPhi", select<floats>, {"LeptonPhi", "LooseLeptons"})
 				      .Define("LooseLeptonsEta", select<floats>, {"LeptonEta", "LooseLeptons"})
                                       .Define("LooseLeptonsCharge", select<ints>, {"LeptonCharge", "LooseLeptons"})
-				      .Define("LooseLeptonsMass", select<ints>, {"LeptonMass", "LooseLeptons"})
+				      .Define("LooseLeptonsMass", select<floats>, {"LeptonMass", "LooseLeptons"})
                                       .Define("OppositeSign", OppositeSign, {"LeptonCharge"})
                                       .Define("SameSign", SameSign, {"LeptonCharge"})
                                       .Define("LeadingLeptonPt", LeadingVariable, {"TightLeptonsPt"})
