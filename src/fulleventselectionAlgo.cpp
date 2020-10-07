@@ -3092,160 +3092,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto LeadingElectron_dz_ECALBarrel_function{[](const float& LeadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dz){
-
-  	std::cout << "print 21" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-		if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;  
-
-
-  }};
-
-
-  auto SubleadingElectron_dz_ECALBarrel_function{[](const float& SubleadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dz){
-
-  	std::cout << "print 22" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dz.at(i) < 0.1){OutVec.push_back(Electron_dz.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-  }};
-
-
-
-  auto LeadingElectron_dz_ECALEndcaps_function{[](const float& LeadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dz){
-
-  	std::cout << "print 23" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && 
-		   abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) < 0.2){OutVec.push_back(Electron_dz.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-  }};
-
-
-  auto SubleadingElectron_dz_ECALEndcaps_function{[](const float& SubleadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dz){
-
-  	std::cout << "print 24" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && 
-		   abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dz.at(i) <  0.2){OutVec.push_back(Electron_dz.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-
-  }};
-
-
-
-  auto LeadingElectron_dxy_ECALBarrel_function{[](const float& LeadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dxy){
-
-	std::cout << "print 25" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(LeadingElectron_pT > MaxElectronPt && 
-		   abs(Electron_eta_Selection.at(i)) < 1.479  && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-  }};
-
-
-
-  auto SubleadingElectron_dxy_ECALBarrel_function{[](const float& SubleadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dxy){
-
-  	std::cout << "print 26" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) < 1.479 && Electron_dxy.at(i) < 0.05){OutVec.push_back(Electron_dxy.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-  }};
-
-
-  auto LeadingElectron_dxy_ECALEndcaps_function{[](const float& LeadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dxy){
-
-  	std::cout << "print 27" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(LeadingElectron_pT > MaxElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && 
-		   abs(Electron_eta_Selection.at(i)) < 3.0  && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-  }};
-
-
-
-  auto SubleadingElectron_dxy_ECALEndcaps_function{[](const float& SubleadingElectron_pT, const floats& Electron_eta_Selection, const floats& Electron_dxy){
-
-  	std::cout << "print 28" << std::endl;
-
-  	floats OutVec{};
-
-  	for(long unsigned int i = 0; i < Electron_eta_Selection.size(); i++){
-
-        	if(SubleadingElectron_pT > MinElectronPt && abs(Electron_eta_Selection.at(i)) > 1.479 && 
-		   abs(Electron_eta_Selection.at(i)) < 3.0 && Electron_dxy.at(i) < 0.1){OutVec.push_back(Electron_dxy.at(i));}
-		else{float zero = 0.0; OutVec.push_back(zero);}
-
-  	}
-
-  	return OutVec;
-
-  }};
-
 
   auto MET_Triggers_Function{[&YearInt, &ProcessInt](const bool& HLT_MET200, 
 						     const bool& HLT_MET250,
@@ -3579,12 +3425,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto LeptonCut{[&ChannelInt](const floats& tight_ele_pts,   		             const floats& loose_ele_pts, const bool os,
-		     	       const unsigned int& nElectron, 		             const floats& LeadingElectron_dz_ECALBarrel,
-		     	       const floats& LeadingElectron_dxy_ECALBarrel,         const floats& LeadingElectron_dz_ECALEndcaps,
-		     	       const floats& LeadingElectron_dxy_ECALEndcaps,        const floats& SubleadingElectron_dz_ECALBarrel,
-		     	       const floats& SubleadingElectron_dxy_ECALBarrel,      const floats& SubleadingElectron_dz_ECALEndcaps,
-		     	       const floats& SubleadingElectron_dxy_ECALEndcaps,     const unsigned int& nMuon){
+  auto LeptonCut{[&ChannelInt](const floats& tight_ele_pts,   const floats& loose_ele_pts,   const bool& os, 
+			       const unsigned int& nElectron, const unsigned int& nMuon,     const floats& Electron_dz,   
+			       const floats& Electron_dxy,    const floats& LeadingLeptonPt, const floats& SubleadingLeptonPt, 
+			       const floats& LeptonEta){
 
   	std::cout << "print 31" << std::endl;
 
@@ -3605,12 +3449,13 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	switch(ChannelInt){
 
 		case 1: return 
-			os 				        && lead_pt_cut 							&& 
-			lepton_cut 				&& nElectron == 2						&&
-  			LeadingElectron_dz_ECALBarrel.at(0) < 0.1     && LeadingElectron_dxy_ECALBarrel.at(0) < 0.05 		&&
-  			LeadingElectron_dz_ECALEndcaps.at(0) < 0.2    && LeadingElectron_dxy_ECALEndcaps.at(0) < 0.1 		&&
-  			SubleadingElectron_dz_ECALBarrel.at(0) < 0.1  && SubleadingElectron_dxy_ECALBarrel.at(0) < 0.05 	&&
-  			SubleadingElectron_dz_ECALEndcaps.at(0) < 0.2 && SubleadingElectron_dxy_ECALEndcaps.at(0) < 0.1;
+			os 				         &&  lead_pt_cut 			 && 
+			lepton_cut 				 &&  nElectron == 2			 &&
+			abs(LeptonEta) < 1.442			 &&  abs(LeptonEta) > 1.566		 && 
+  			LeadingLeptonPt > MaxElectronPt          &&  SubleadingLeptonPt > MinElectronPt  && 
+			(abs(LeptonEta) < 1.442     		 &&  Electron_dz < 0.1 			 && Electron_dxy < 0.05)  || //barrel region
+                        (abs(LeptonEta) > 1.566                  &&  abs(LeptonEta) < 3.0   		 && Electron_dz < 0.2 && Electron_dxy < 0.1); //endcaps
+
 
 		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2;
 
@@ -5267,7 +5112,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto TotHTOverTotpT_floats{[](const floats& TotHT, const floats& TotpT){
+  auto TotHTOverTotpT_doubles{[](const doubles& TotHT, const doubles& TotpT){
 
   	std::cout << "print 120" << std::endl;
 
@@ -7050,7 +6895,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		    (const float& PUInput, 		        const float& BTagWeightInput, 		     const floats& ReturnedPSWeightInput, 
 		     const float& EGammaSF_egammaEffInput,      const float& EGammaSF_egammaEffRecoInput, 
 		     const float& EGammaSF_egammaEffSysInput,   const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, 
-		     const float& ME_SFInput, 			const double& TopWeightInput, 		     const float& CalculatedNominalWeightInput, 
+		     const float& ME_SFInput, 			const doubles& TopWeightInput, 		     const float& CalculatedNominalWeightInput, 
 		     const float& MuonSFTest_IDInput, 		const float& MuonSFTest_IsoInput, 	     const float& MuonSFTest_ID_sys_systInput, 
 		     const float& MuonSFTest_ID_sys_statInput,  const float& MuonSFTest_Iso_sys_systInput,   const float& MuonSFTest_Iso_sys_statInput){
 
@@ -7071,56 +6916,56 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				case 1: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
 							(TrigSF_ee += TrigSFUncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * 
-							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
                         			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_ee -= TrigSFUncert_ee) * 
 					  		 CalculatedNominalWeightInput * 
 						         EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * 
-							 TopWeightInput;
+							 TopWeightInput.at(0);
 
 							 break;
 				
 						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 							 CalculatedNominalWeightInput * 
-							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
                         
 							 break;
 
 						case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 						         		     CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * 
-									     CalculatedGeneratorWeightInput * TopWeightInput;
+									     CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 				
 							 break;
 
 						case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(2) * 
 							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
-							 TopWeightInput;
+							 TopWeightInput.at(0);
 
 							 break;
 
                         			case 18: EventWeightOutput =  PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 							 ReturnedPSWeightInput.at(0) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
                         			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(3) * 
 							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
-							 * TopWeightInput;
+							 * TopWeightInput.at(0);
 
 							 break;
 
                         			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(1) * 
 							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
-							 * TopWeightInput;
+							 * TopWeightInput.at(0);
 
 							 break;
 
 						default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 							 CalculatedNominalWeightInput * 
-							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 							
 							 break;
 
@@ -7129,60 +6974,60 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				case 2: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF_mumu += TrigSFUncert_mumu) * 
 							CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
-							CalculatedGeneratorWeightInput * TopWeightInput;
+							CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
                         			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_mumu -= TrigSFUncert_mumu) * 
 							 CalculatedNominalWeightInput * 
 							 MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * 
-							 TopWeightInput;
+							 TopWeightInput.at(0);
 				
 							 break;
 
 						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 CalculatedNominalWeightInput * 
-							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
                         			case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 						         CalculatedNominalWeightInput * 
-							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 	
                         			case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 ReturnedPSWeightInput.at(2) * 
 							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
-							 TopWeightInput;
+							 TopWeightInput.at(0);
 
 							 break;
 
 						case 18: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu *
 							 ReturnedPSWeightInput.at(0) * 
 							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
-						         TopWeightInput;
+						         TopWeightInput.at(0);
 
 							 break; 
 
                         			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 ReturnedPSWeightInput.at(3) * 
 							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
-							 TopWeightInput;
+							 TopWeightInput.at(0);
 
 							 break;
 
                         			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 ReturnedPSWeightInput.at(1) * 
 							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
-							 TopWeightInput;
+							 TopWeightInput.at(0);
 
 							 break;
 
                         			default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 CalculatedNominalWeightInput * 
-							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput;
+							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
@@ -7367,19 +7212,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                       .Define("SubleadingLeptonMass", SubleadingVariable, {"TightLeptonsMass"})
                                       .Define("LeadingLepton_RelIso_Selection", LeadingVariable, {"TightLeptonsJetRelIso"})
                                       .Define("SubleadingLepton_RelIso_Selection", SubleadingVariable, {"TightLeptonsJetRelIso"})
-                                      .Define("LeadingElectron_dz_ECALBarrel", LeadingElectron_dz_ECALBarrel_function, {"LeadingLeptonPt", "TightLeptonsEta", "Electron_dz"})
-                                      .Define("LeadingElectron_dxy_ECALBarrel", LeadingElectron_dxy_ECALBarrel_function, {"LeadingLeptonPt", "TightLeptonsEta", "Electron_dxy"})
-                                      .Define("LeadingElectron_dz_ECALEndcaps", LeadingElectron_dz_ECALEndcaps_function, {"LeadingLeptonPt", "TightLeptonsEta", "Electron_dz"})
-                                      .Define("LeadingElectron_dxy_ECALEndcaps", LeadingElectron_dxy_ECALEndcaps_function, {"LeadingLeptonPt", "TightLeptonsEta", "Electron_dxy"})
-                                      .Define("SubleadingElectron_dz_ECALBarrel", SubleadingElectron_dz_ECALBarrel_function, {"SubleadingLeptonPt", "TightLeptonsEta", "Electron_dz"})
-                                      .Define("SubleadingElectron_dxy_ECALBarrel", SubleadingElectron_dxy_ECALBarrel_function, {"SubleadingLeptonPt", "TightLeptonsEta", "Electron_dxy"})
-                                      .Define("SubleadingElectron_dz_ECALEndcaps", SubleadingElectron_dz_ECALEndcaps_function, {"SubleadingLeptonPt", "TightLeptonsEta", "Electron_dz"})
-                                      .Define("SubleadingElectron_dxy_ECALEndcaps", SubleadingElectron_dxy_ECALEndcaps_function, {"SubleadingLeptonPt", "TightLeptonsEta", "Electron_dxy"})
-				      .Filter(LeptonCut, {"TightLeptonsPt", "LooseLeptonsPt", "OppositeSign", "nElectron", 
-						          "LeadingElectron_dz_ECALBarrel", "LeadingElectron_dxy_ECALBarrel",  "LeadingElectron_dz_ECALEndcaps",
-                               				  "LeadingElectron_dxy_ECALEndcaps", "SubleadingElectron_dz_ECALBarrel", "SubleadingElectron_dxy_ECALBarrel", 
-							  "SubleadingElectron_dz_ECALEndcaps", "SubleadingElectron_dxy_ECALEndcaps", "nMuon"}, "lepton cut");
-
+				      .Filter(LeptonCut, {"TightLeptonsPt", "LooseLeptonsPt", "OppositeSign", "nElectron", "nMuon", "Electron_dz", "Electron_dxy",
+							  "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta"}, "lepton cut");
 
   std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
@@ -8171,7 +8005,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
                                            .Define("TotalPt_System", TotalVariable_System, {"RecoZPt", "w_pair_pt", "Top_Pt", "LepPtSum", "JetPtSum"})
-					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_floats, {"TotalHT_System", "TotalPt_System"})
+					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_doubles, {"TotalHT_System", "TotalPt_System"})
 					   .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
 					   .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                            .Define("notbjetpt", bjet_variable, {JetPtInput, "nJet", "nonbjets"})
