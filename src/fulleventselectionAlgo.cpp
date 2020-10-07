@@ -5211,14 +5211,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
+  auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const floats& GenPart_pt){
 
   	std::cout << "print 117" << std::endl;
 	return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
 
   }};
 
-  auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const ints& GenPart_pt){
+  auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const floats& GenPart_pt){
 		
 	std::cout << "print 118" << std::endl;
 	return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
@@ -7819,7 +7819,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                       		        .Define("sigma_JER", sigma_JER, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 			                .Define("sigma_JER_up", sigma_JER_up, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 					.Define("sigma_JER_down", sigma_JER_down, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
-                      			.Define("cJER", JetSmearingFunction_HybridMethod, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
+                      			.Define("cJER", JetSmearingFunction_HybridMethod, {{"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"}})
                       		        .Define("SmearedJet4Momentum", ApplyCJER, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
                       			.Define("SmearedJetPt", GetSmearedJetPt, {"SmearedJet4Momentum", "Jet_pt"})
                       			.Define("SmearedJetPhi", GetSmearedJetPhi, {"SmearedJet4Momentum", "Jet_phi"})
@@ -7834,7 +7834,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("ThirdJetPt", ThirdLeadingVariable, {JetPtInput})
                                         .Define("FourthJetPt", FourthLeadingVariable, {JetPtInput})
                                         .Define("SumSquaredPt", SumSquared2LeadingJets_pT, {"LeadingJetPt", "SubleadingJetPt"})
-                                        .Define("JetPtSum", JetSum, {"LeadingJetpT", "SubleadingJetPt", "ThirdJetpT", "FourthJetPt"})
+                                        .Define("JetPtSum", JetSum, {"LeadingJetPt", "SubleadingJetPt", "ThirdJetPt", "FourthJetPt"})
                                         .Define("LeadingJetEta", LeadingVariable, {JetEtaInput})
                                         .Define("SubleadingJetEta", SubleadingVariable, {JetEtaInput})
                                         .Define("ThirdJetEta", ThirdLeadingVariable, {JetEtaInput})
@@ -7843,7 +7843,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("SubleadingJetPhi", SubleadingVariable, {JetPhiInput})
                                         .Define("ThirdJetPhi", ThirdLeadingVariable, {JetPhiInput})
                                         .Define("FourthJetPhi", FourthLeadingVariable, {JetPhiInput})
-                                        .Define("dRJet_Lepton", deltaRcheck_floats, {JetEtaInput, JetPhiInput, "z_lep_eta", "z_lep_phi"})
+                                        .Define("dRJet_Lepton", deltaRcheck_floats, {JetEtaInput, JetPhiInput, "LeptonEta_RochCorr", "LeptonPhi_RochCorr"})
                                         .Define("dR_j1j2", deltaRcheck_float, {"LeadingJetEta", "LeadingJetPhi", "SubleadingJetEta", "SubleadingJetPhi"})
                                         .Define("dPhi_j1j2", DeltaPhi_floatandfloat, {"LeadingJetPhi", "SubleadingJetPhi"})
                                         .Define("LeadingJetHT", HT, {"LeadingJetPt"})
@@ -7851,9 +7851,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("ThirdJetHT", HT, {"ThirdJetPt"})
                                         .Define("FourthJetHT", HT, {"FourthJetPt"})
                                         .Define("TotJetHT", TotJetHT, {"LeadingJetHT", "SubleadingJetHT", "ThirdJetHT", "FourthJetHT"})
-                                        .Define("LeadingElectronHT", HT, {"LeadingElectronPt"})
-                                        .Define("SubleadingElectronHT", HT, {"SubleadingElectronPt"})
-                                        .Define("TotLepHT", TotLepHT, {"LeadingElectronHT", "SubleadingElectronHT"})
+                                        .Define("LeadingLeptonHT", HT, {"LeadingLeptonPt"})
+                                        .Define("SubleadingLeptonHT", HT, {"SubleadingLeptonPt"})
+                                        .Define("TotLepHT", TotLepHT, {"LeadingLeptonHT", "SubleadingLeptonHT"})
                                         .Define("TotHTOverTotpT_Jets", TotHTOverTotpT, {"TotJetHT", "JetPtSum"})
                                         .Define("LepPtSum", LepSum, {"LeadingLeptonPt", "SubleadingLeptonPt"})
                                         .Define("LepEtaSum", LepSum, {"LeadingLeptonPt", "SubleadingLeptonPt"})
@@ -8037,14 +8037,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                  		    .Define("w_mass", inv_mass, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_pair_mass"})
 				    .Define("WPairJet1", WPairJet1, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
                  		    .Define("WPairJet2", WPairJet2, {"SmearedJetPt", "SmearedJetPhi", "SmearedJetEta", "SmearedJetMass", "Jet_jetId", "lead_bjet"})
-				    .Define("WPairJet1Pt", TLorentzVectorVariable, {1, "WPairJet1"})
-				    .Define("WPairJet1Eta", TLorentzVectorVariable, {3, "WPairJet1"})
-				    .Define("WPairJet1Phi", TLorentzVectorVariable, {2, "WPairJet1"})
-				    .Define("WPairJet1Mass", TLorentzVectorVariable, {4, "WPairJet1"})
-				    .Define("WPairJet2Pt", TLorentzVectorVariable, {1, "WPairJet2"})
-                                    .Define("WPairJet2Eta", TLorentzVectorVariable, {3, "WPairJet2"})
-                                    .Define("WPairJet2Phi", TLorentzVectorVariable, {2, "WPairJet2"})
-                                    .Define("WPairJet2Mass", TLorentzVectorVariable, {4, "WPairJet2"})
+				    .Define("WPairJet1Pt", TLorentzVectorVariablePt, {"WPairJet1"})
+				    .Define("WPairJet1Eta", TLorentzVectorVariableEta, {"WPairJet1"})
+				    .Define("WPairJet1Phi", TLorentzVectorVariablePhi, {"WPairJet1"})
+				    .Define("WPairJet1Mass", TLorentzVectorVariableMass, {"WPairJet1"})
+				    .Define("WPairJet2Pt", TLorentzVectorVariablePt, {"WPairJet2"})
+                                    .Define("WPairJet2Eta", TLorentzVectorVariableEta, {"WPairJet2"})
+                                    .Define("WPairJet2Phi", TLorentzVectorVariablePhi, {"WPairJet2"})
+                                    .Define("WPairJet2Mass", TLorentzVectorVariableMass, {"WPairJet2"})
 				    .Define("dR_WJet1_WJet2", deltaRcheck_W_function, {"WPairJet1Phi", "WPairJet1Eta", "WPairJet2Phi", "WPairJet2Eta"})
 				    .Define("dWj1j2", DeltaPhi_function2, {"WPairJet1Phi", "WPairJet2Phi"})
 				    .Define("dR_WJet1_LeadingLepton", deltaRcheck_W_function2, {"WPairJet1Phi", "WPairJet1Eta", "LeadingLeptonPhi", "LeadingLeptonEta"})
@@ -8093,10 +8093,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				  .Define("BJets", BLorentzVector, {"bjetpt", "bjeteta", "bjetphi", "bjetmass"})
 				  .Define("RecoTop", top_reconstruction_function, {"bjetpt", "bjeteta", "bjetphi", "bjetmass", 	
 										   "w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass"})
-			          .Define("Top_Pt", TLorentzVectorVariable, {1, "RecoTop"})
-			          .Define("Top_Eta", TLorentzVectorVariable, {3, "RecoTop"})
-			          .Define("Top_Phi", TLorentzVectorVariable, {2, "RecoTop"})
-			          .Define("Top_Mass", TLorentzVectorVariable, {4, "RecoTop"})
+			          .Define("Top_Pt", TLorentzVectorVariablePt, {"RecoTop"})
+			          .Define("Top_Eta", TLorentzVectorVariableEta, {"RecoTop"})
+			          .Define("Top_Phi", TLorentzVectorVariablePhi, {"RecoTop"})
+			          .Define("Top_Mass", TLorentzVectorVariableMass, {"RecoTop"})
 				  .Define("Top_HT", HT_double, {"Top_Pt"})
 				  .Define("dR_Top_LeadingElectron", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "LeadingLeptonEta", "LeadingLeptonPhi"})
 			          .Define("dR_Top_SubleadingElectron", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
@@ -8120,10 +8120,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {JetPhiInput, "LeadingLeptonPhi"})
                                   .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, {JetPhiInput, "SubleadingLeptonPhi"})		
 				  .Define("MET", MET_function, {"MET_sumEt"})
-			          .Define("LeadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"LeadingJetpT", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
-                                  .Define("SubleadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"SubleadingJetpT", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
-                                  .Define("ThirdBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"ThirdJetpT", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
-                                  .Define("FourthBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"FourthJetpT", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
+			          .Define("LeadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"LeadingJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
+                                  .Define("SubleadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"SubleadingJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
+                                  .Define("ThirdBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"ThirdJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
+                                  .Define("FourthBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"FourthJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
                                   .Define("dPhi_W_Top", DeltaPhi_function4, {"w_pair_phi", "Top_Phi"})
 				  .Define("dR_Z_LeadingJet", deltaRcheck_W_function2, {"RecoZPhi", "RecoZEta", "LeadingJetPhi", "LeadingJetEta"})
                                   .Define("dR_Z_SubleadingJet", deltaRcheck_W_function2, {"RecoZPhi", "RecoZEta", "SubleadingJetPhi", "SubleadingJetEta"})
@@ -8141,7 +8141,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				  .Define("InvTopMass", inv_mass_doubles, {"Top_Pt", "Top_Eta", "Top_Phi", "Top_Mass"})
 				  .Define("UnweightedTopPt", UnweightedTopPt, {"Top_Pt"})
 				  .Define("TopReweighting_topquark", TopReweighting_topquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"})
-                                  .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_Pt"})
+                                  .Define("TopReweighting_antitopquark", TopReweighting_antitopquark, {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"})
                                   .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 
