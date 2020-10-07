@@ -3775,7 +3775,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	std::string RoccoTextFile;
 
-
 	switch(YearInteger){
 
 		case 2016: RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt"; break;
@@ -3805,14 +3804,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		if(MonteCarloInt == 1){ 
 
-			if(mcSF > 0){
+			if(Muon_genPartIdx.size() > 0 && Muon_nTrackerLayers.size() > 0){
 
-			§	RochCorrSF = rc.kSpreadMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_genPartIdx.at(i), s.at(i), m.at(i)); //(recommended), MC scale and resolution correction when matched gen muon is available
-			}
-			else{
-				RochCorrSF = rc.kSmearMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_nTrackerLayers.at(i), u.at(i), s.at(i), m.at(i)); //MC scale and extra smearing when matched gen muon is not available
+				if(mcSF > 0){
+	
+					RochCorrSF = rc.kSpreadMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_genPartIdx.at(0), s.at(i), m.at(i)); //(recommended), MC scale and resolution correction when matched gen muon is available
+				}
+				else{
+					RochCorrSF = rc.kSmearMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_nTrackerLayers.at(0), u.at(i), s.at(i), m.at(i)); //MC scale and extra smearing when matched gen muon is not available
 
+				}
 			}
+			else{RochCorrSF = 1.0;}
 
 		}
 		else{RochCorrSF = rc.kScaleDT(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), s.at(i), m.at(i));} //data
