@@ -3775,6 +3775,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	std::string RoccoTextFile;
 
+
 	switch(YearInteger){
 
 		case 2016: RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt"; break;
@@ -3793,6 +3794,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	for(unsigned int i = 0; i < MuonPt.size(); i++){
 
+		std::cout << "MuonPt.size() = " << MuonPt.size() << std::endl;
+		std::cout << "Muon_genPartIdx.size() = " << Muon_genPartIdx.size() << std::endl;
+		std::cout << "Muon_nTrackerLayers.size() = " << Muon_nTrackerLayers.size() << std::endl;
+
 		//scale factors for momentum of each muon:
 		double RochCorrSF;
 		double mcSF;
@@ -3802,7 +3807,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 			if(mcSF > 0){
 
-				RochCorrSF = rc.kSpreadMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_genPartIdx.at(i), s.at(i), m.at(i)); //(recommended), MC scale and resolution correction when matched gen muon is available
+			§	RochCorrSF = rc.kSpreadMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_genPartIdx.at(i), s.at(i), m.at(i)); //(recommended), MC scale and resolution correction when matched gen muon is available
 			}
 			else{
 				RochCorrSF = rc.kSmearMC(MuonCharge.at(i), MuonPt.at(i), MuonEta.at(i), MuonPhi.at(i), Muon_nTrackerLayers.at(i), u.at(i), s.at(i), m.at(i)); //MC scale and extra smearing when matched gen muon is not available
@@ -7774,7 +7779,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   if(ProcessInt == 93 || ProcessInt == 94){return;}
 
 
-
   //Z boson candidate reconstruction
   auto d_ZCandidateReco = d_LeptonSelection.Define("OppositeSignNonPrompt", OppositeSignNonPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
                                            .Define("OppositeSignPrompt", OppositeSignPrompt, {"TightLeptonsCharge", "TightLeptonsGenPartFlav"})
@@ -7788,11 +7792,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("RecoZMass", TLorentzVectorVariableMass, {"RecoZ"})
                                            .Define("dR_ll", deltaRcheck_float, {"LeadingLeptonEta", "LeadingLeptonPhi", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
                                            .Define("dPhi_ll", DeltaPhi_floatandfloat, {"LeadingLeptonPhi", "SubleadingLeptonPhi"})
-					   .Define("Muon_genPartIdx_Selection", select<ints>, {"Muon_genPartIdx", "TightLeptons"})
-                                           .Define("Muon_nTrackerLayers_Selection", select<ints>, {"Muon_nTrackerLayers", "TightLeptons"})
                                            .Define("LeptonFourMomentum", LeptonFourMomentumFunction, {"TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "TightLeptonsMass"})
                                            .Define("RochCorrVec", RochCorrVec_Function, {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", 
-										         "Muon_genPartIdx_Selection", "Muon_nTrackerLayers_Selection"})
+										         "Muon_genPartIdx", "Muon_nTrackerLayers"})
                                            .Define("MuonFourMomentum_RochCorr", RochCorrMuon4Mo, {"LeptonFourMomentum", "RochCorrVec"})
                                            .Define("LeptonPt_RochCorr", TLorentzVector_float_pt, {"MuonFourMomentum_RochCorr"})
                                            .Define("LeptonEta_RochCorr", TLorentzVector_float_eta, {"MuonFourMomentum_RochCorr"})
