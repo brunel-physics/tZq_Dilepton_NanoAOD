@@ -5076,14 +5076,26 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	std::cout << "print 108" << std::endl;
 
     	doubles output_vec;
-  
+	double Output;  
+
     	for(unsigned int i = 0; i < nJet; i++){
 
-    		double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
-    		double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
+		std::cout << "nJet = " << nJet << std::endl;
+		std::cout << "RecoZPhi.size() = " << RecoZPhi.size() << std::endl;
+		std::cout << "RecoZEta.size() = " << RecoZEta.size() << std::endl;	
+		std::cout << "Jet_Phi_Selection.size() = " << Jet_Phi_Selection.size() << std::endl;
+		std::cout << "Jet_eta_Selection.size() = " << Jet_eta_Selection.size() << std::endl;
 
-    		double Output = (DeltaR2 < DeltaR) ? DeltaR2 : DeltaR;  
-    		output_vec.push_back(Output);
+		if(RecoZEta.size() > 1){
+    			double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
+    			double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
+
+    			Output = (DeltaR2 < DeltaR) ? DeltaR2 : DeltaR;  
+		
+		}
+		else{Output = sqrt(pow(RecoZPhi.at(0) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(0) - Jet_eta_Selection.at(i), 2));}
+
+		output_vec.push_back(Output);
 
     	}
 
@@ -5101,13 +5113,19 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	for(unsigned int i = 0; i < nJet; i++){
 
-    		double DeltaPhi = RecoZPhi.at(i) - Jet_Phi_Selection.at(i);
-    		double DeltaPhi2 = RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1);
+		if(RecoZPhi.size() > 1){
+    			
+			double DeltaPhi = std::abs(RecoZPhi.at(i) - Jet_Phi_Selection.at(i));
+    			double DeltaPhi2 = std::abs(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1));
 
-    		output = (DeltaPhi2 < DeltaPhi) ? DeltaPhi2 : DeltaPhi;
+    			output = (DeltaPhi2 < DeltaPhi) ? DeltaPhi2 : DeltaPhi;
+
+		}
+		else{output = std::abs(RecoZPhi.at(0) - Jet_Phi_Selection.at(i));}
+
     		output_vec.push_back(output);
 
-  	}
+	}
 
   	return output_vec;
 
@@ -6380,13 +6398,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto EffBTagged_Function{[&EffBTaggedFunction](const int& HistOption, const floats& pts, const floats& etas){
+  auto EffBTagged_Function{[&EffBTaggedFunction](const floats& pts, const floats& etas){
 
   	return EffBTaggedFunction(0, pts, etas);
 
   }};
 
-  auto EffNonBTagged_Function{[&EffBTaggedFunction](const int& HistOption, const floats& pts, const floats& etas){
+  auto EffNonBTagged_Function{[&EffBTaggedFunction](const floats& pts, const floats& etas){
 
         return EffBTaggedFunction(1, pts, etas);
 
