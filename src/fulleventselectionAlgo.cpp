@@ -1971,6 +1971,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   }
 
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << "Process = " << Process << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+
   switch(ChannelInt){
         
         case 1: Channel = "ee";
@@ -2062,6 +2074,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
        		 break;
 
   }
+
 
   switch(YearInt){
 
@@ -3425,14 +3438,25 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto LeptonCut{[&ChannelInt](const floats& tight_ele_pts,   const floats& loose_ele_pts,   const bool& os, 
-			       const unsigned int& nElectron, const unsigned int& nMuon,     const floats& Electron_dz,   
-			       const floats& Electron_dxy,    const floats& LeadingLeptonPt, const floats& SubleadingLeptonPt, 
+  auto NumberOfLeptonsFunction{[&ChannelInt](const unsigned int& nElectron, const unsigned int& nMuon){
+
+	switch(ChannelInt){
+		case 1: return nElectron == 2;
+		case 2: return nMuon == 2;
+		case 3: return nElectron == 1 && nMuon == 1;
+		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu), or 3 (for emu)" << std::endl;
+	}
+
+  }};
+
+  auto LeptonCut{[&ChannelInt](const floats& tight_lepton_pts,   const floats& loose_lepton_pts,   const bool& os, 
+			       const unsigned int& nElectron,    const unsigned int& nMuon,        const floats& Electron_dz,   
+			       const floats& Electron_dxy,       const float& LeadingLeptonPt,     const float& SubleadingLeptonPt, 
 			       const floats& LeptonEta){
 
   	std::cout << "print 31" << std::endl;
 
-  	const bool lepton_cut{tight_ele_pts.size() == 2 && tight_ele_pts.size() == loose_ele_pts.size()};
+  	const bool lepton_cut{tight_lepton_pts.size() == 2 && tight_lepton_pts.size() == loose_lepton_pts.size()};
   	bool lead_pt_cut{false};
 
 	float MaxLeptonPt;
@@ -3440,26 +3464,27 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	switch(ChannelInt){
 		case 1: MaxLeptonPt = MaxElectronPt; break;
 		case 2: MaxLeptonPt = MaxMuonPt; break;
+		case 3: MaxLeptonPt = MaxElectronPt; break; //both MaxMuonPt and MaxElectronPt are 25 for the emu channel
 		default: std::cout << "ERROR: Channel must be ee, mumu or emu." << std::endl; break;
 	}
 
-	lead_pt_cut = tight_ele_pts.empty() ? false : *max_element(tight_ele_pts.begin(), tight_ele_pts.end()) > MaxLeptonPt;
+	lead_pt_cut = tight_lepton_pts.empty() ? false : *max_element(tight_lepton_pts.begin(), tight_lepton_pts.end()) > MaxLeptonPt;
 
 
 	switch(ChannelInt){
 
 		case 1: return 
 			os 				         &&  lead_pt_cut 			 && 
-			lepton_cut 				 &&  nElectron == 2			 &&
+			lepton_cut 				 &&  nElectron == 2;/*			 &&
 			abs(LeptonEta) < 1.442			 &&  abs(LeptonEta) > 1.566		 && 
   			LeadingLeptonPt > MaxElectronPt          &&  SubleadingLeptonPt > MinElectronPt  && 
 			(abs(LeptonEta) < 1.442     		 &&  Electron_dz < 0.1 			 && Electron_dxy < 0.05)  || //barrel region
                         (abs(LeptonEta) > 1.566                  &&  abs(LeptonEta) < 3.0   		 && Electron_dz < 0.2 && Electron_dxy < 0.1); //endcaps
-
+*/
 
 		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2;
 
-		case 3: return os && lepton_cut && (nElectron == 1 && nMuon == 1);
+		case 3: return os && lepton_cut && nElectron == 1 && nMuon == 1;
 
 		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
@@ -5034,6 +5059,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto TotalVariable_System{[](const doubles& RecoZInput, const floats& RecoWInput, const doubles& TopInput, const float& TotLepInput, const float& TotJetInput){
 
   	std::cout << "print 114" << std::endl;
+	std::cout << "RecoWInput.size() = " << std::endl;
 
   	doubles TotalSystemOutput = RecoZInput + RecoWInput.at(0) + TopInput + TotLepInput + TotJetInput;
   	return TotalSystemOutput;
@@ -7106,7 +7132,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 1000); //running over the first 1000 events
+  auto d_Range = d.Range(0, 1000); //running over the first 100000 events
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -7225,16 +7251,45 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::vector<std::string> MET_Triggers_Strings;
   std::vector<std::string> Lepton_Triggers_Strings;
 
+
    switch(ProcessInt){
 
-	case 95: MET_Triggers_Strings = {"HLT_MET200", 			            "HLT_MET250",
-                                      	 "HLT_PFMET120_PFMHT120_IDTight",           "HLT_PFMET170_HBHECleaned",
-                                   	 "HLT_PFHT300_PFMET100", 		    "HLT_PFMET130_PFMHT130_IDTight",
-                                      	 "HLT_PFMET140_PFMHT140_IDTight",           "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-                                     	 "HLT_PFHT1050",			    "HLT_PFHT180",
-                                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-                                         "HLT_PFHT700_PFMET85_PFMHT85_IDTight",     "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-                                         "HLT_PFHT800_PFMET75_PFMHT75_IDTight",     "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+	case 95: switch(YearInt){
+
+			case 2016: MET_Triggers_Strings = {"HLT_MET200", 		    		"HLT_MET250",
+		        				   "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
+							   "HLT_PFHT300_PFMET100",	    		"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "event"};
+
+				   break;
+
+			case 2017: MET_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_PFMET130_PFMHT130_IDTight", 
+							   "HLT_PFMET140_PFMHT140_IDTight",             "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+							   "HLT_PFHT1050",                              "HLT_PFHT180",
+							   "HLT_PFHT500_PFMET100_PFMHT100_IDTight",     "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+							   "HLT_PFHT700_PFMET85_PFMHT85_IDTight",       "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+							   "HLT_PFHT800_PFMET75_PFMHT75_IDTight",       "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+
+				   break;
+
+			case 2018: MET_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_PFMET130_PFMHT130_IDTight",
+                                                           "HLT_PFMET140_PFMHT140_IDTight",             "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                                                           "HLT_PFHT1050",                              "HLT_PFHT180",
+                                                           "HLT_PFHT500_PFMET100_PFMHT100_IDTight",     "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                                           "HLT_PFHT700_PFMET85_PFMHT85_IDTight",       "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                                                           "HLT_PFHT800_PFMET75_PFMHT75_IDTight",       "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"}; 
+
+				   break;
+	
+		 };
 
 		 Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
                                             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
@@ -7249,14 +7304,42 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		 break;
 
-	case 96: MET_Triggers_Strings = {"HLT_MET200",                              "HLT_MET250",
-                                         "HLT_PFMET120_PFMHT120_IDTight",           "HLT_PFMET170_HBHECleaned",
-                                         "HLT_PFHT300_PFMET100",                    "HLT_PFMET130_PFMHT130_IDTight",
-                                         "HLT_PFMET140_PFMHT140_IDTight",           "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
-                                         "HLT_PFHT1050",                            "HLT_PFHT180",
-                                         "HLT_PFHT500_PFMET100_PFMHT100_IDTight",   "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
-                                         "HLT_PFHT700_PFMET85_PFMHT85_IDTight",     "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
-                                         "HLT_PFHT800_PFMET75_PFMHT75_IDTight",     "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+	case 96: switch(YearInt){
+
+                        case 2016: MET_Triggers_Strings = {"HLT_MET200",                    		"HLT_MET250",
+                                                           "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
+                                                           "HLT_PFHT300_PFMET100",          		"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+							   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "event"};
+
+                                   break;
+
+                        case 2017: MET_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_PFMET130_PFMHT130_IDTight",
+                                                           "HLT_PFMET140_PFMHT140_IDTight",             "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                                                           "HLT_PFHT1050",                              "HLT_PFHT180",
+                                                           "HLT_PFHT500_PFMET100_PFMHT100_IDTight",     "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                                           "HLT_PFHT700_PFMET85_PFMHT85_IDTight",       "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                                                           "HLT_PFHT800_PFMET75_PFMHT75_IDTight",       "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+
+                                   break;
+
+                        case 2018: MET_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                           "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_PFMET130_PFMHT130_IDTight",
+                                                           "HLT_PFMET140_PFMHT140_IDTight",             "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight",
+                                                           "HLT_PFHT1050",                              "HLT_PFHT180",
+                                                           "HLT_PFHT500_PFMET100_PFMHT100_IDTight",     "HLT_PFHT500_PFMET110_PFMHT110_IDTight",
+                                                           "HLT_PFHT700_PFMET85_PFMHT85_IDTight",       "HLT_PFHT700_PFMET95_PFMHT95_IDTight",
+                                                           "HLT_PFHT800_PFMET75_PFMHT75_IDTight",       "HLT_PFHT800_PFMET85_PFMHT85_IDTight", "event"};
+
+                                   break;
+
+                 }; 
 
 		 Lepton_Triggers_Strings = {"HLT_Ele32_WPTight_Gsf_L1DoubleEG",                   "HLT_Ele35_WPTight_Gsf",
                                             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
@@ -8063,14 +8146,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   Resolution << "W_stddev: " << W_stddev << '\n'
 	     << "Top_stddev: " << Top_stddev << std::endl;
 
-  
+
   auto d_Blinding =  d_EventWeightDefines.Define("chi2", Chi2Function, {"w_mass", "InvTopMass"});
+
 
   if(ProcessInt == 0 && SystematicInt == 0){
 
   	int NumberOfSimulatedEvents = *( d_Blinding.Filter("chi2 != 999.0").Count() );	
 	int OneSigmaOfNumEvents = NumberOfSimulatedEvents * 0.68;
-
+			
 	auto histo_chi2 = d_Blinding.Histo1D("chi2");
 	TAxis *xaxis = histo_chi2->GetXaxis();
 	double MaxBin = xaxis->GetBinCenter( histo_chi2->FindLastBinAbove() );
@@ -8085,7 +8169,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	int total = 0;
 
 	for(int i = 0; i < histo_chi2_rebinned->GetEntries(); i++){
-
+		
 		auto NumberOfEvents = histo_chi2_rebinned->GetBinContent(i);
 		total += NumberOfEvents;
 
@@ -8094,6 +8178,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	}
 
+	std::cout << "before MaxElement" << std::endl;
 
 	//for Chi2_SBR
 	auto MaxElement = std::max_element(CutRanges.begin(), CutRanges.end());
@@ -8183,7 +8268,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  int Process_Selection = 0; //0 for tZq
+  int Process_Selection = 95; //95 for trigger SF MC, 96 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
