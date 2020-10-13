@@ -8184,6 +8184,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 								      
 
 
+  std::string EventWeightFile = "EventWeight_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
+
+  auto Snapshot_EventWeight = d_EventWeightDefines.Snapshot("Events", EventWeightFile.c_str());
+
 
   auto h_WMass = d_EventWeightDefines.Histo1D("w_mass", "EventWeight");
   auto h_InvTopMass = d_EventWeightDefines.Histo1D("InvTopMass", "EventWeight"); 
@@ -8325,7 +8330,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {95, 96, 0}; //95 for trigger SF MC, 96 for trigger SF data, 0 for tZq
+  std::vector<int> Process_Selection = {/*95, 96,*/0}; //95 for trigger SF MC, 96 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
