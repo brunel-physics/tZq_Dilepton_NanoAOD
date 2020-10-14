@@ -6811,82 +6811,106 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto METUncertFunction{[&SystematicInt](const floats& MET_MetUnclustEnUpDeltaX,          const floats& MET_MetUnclustEnUpDeltaY,          const floats& MET_phi, 
-					  const floats& MET_sumEt,                         std::vector<TLorentzVector> SmearedJet4Momentum, const floats& Jet_pt, 
-					  const floats& Jet_eta, 			       const floats& Jet_phi, 				const floats& Jet_mass){
+
+  auto OriginalMetFunction{[&SystematicInt](const floats& MET_sumEt, const floats& MET_phi){
+
+	std::cout << "OriginalMetFunction" << std::endl; 
+
+	std::vector<TLorentzVector> OriginalMET{};
+	TLorentzVector OriginalMET_Element{};
+
+	for(int i = 0; i < MET_phi.size(); i++){
+
+                OriginalMET_Element.SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));
+                OriginalMET.push_back(OriginalMET_Element);
+
+	}
+
+        return OriginalMET;
+
+  }};
+
+
+  auto ScaledMetFunction{[&SystematicInt](std::vector<TLorentzVector> OriginalMET, const floats& MET_sumEt, const floats& MET_phi, const floats& MET_MetUnclustEnUpDeltaX,  const floats& MET_MetUnclustEnUpDeltaY){
+
+	std::cout << "ScaledMetFunction" << std::endl;
+
+	std::vector<TLorentzVector> ScaledMET{};
+	TLorentzVector ScaledMET_Element{};
+	floats metVecOriginal_px;
+	floats metVecOriginal_py;
+
+	for(int i = 0; i < OriginalMET.size(); i++){
+	
+		metVecOriginal_px.push_back( (OriginalMET.at(i)).Px() );
+		metVecOriginal_py.push_back( (OriginalMET.at(i)).Py() );
+	
+	}
+
+
+	floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
+        floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
+        floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
+        floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;
+
+        floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
+        floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
+
+        for(long unsigned int i = 0; i < MET_phi.size(); i++){
+
+                std::cout << "for loop original met" << std::endl;
+                std::cout << "MET_phi.size() = " << MET_phi.size() << std::endl;
+                std::cout << "MET_sumEt.size() = " << MET_sumEt.size() << std::endl;
+                std::cout << "i = " << std::endl;
+
+		if(SystematicInt == 15){
+			ScaledMET_Element.SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));
+		}
+                else if(SystematicInt == 16){
+			ScaledMET_Element.SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));
+		}
+                else{ScaledMET_Element.SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
+
+                ScaledMET.push_back(ScaledMET_Element);
+
+        }	
+
+	return ScaledMET;
+
+  }};
+
+  auto UnsmearedJetTLorentzVectorFunction{[](const floats& Jet_pt, const floats& Jet_phi, const floats& Jet_eta, const floats& Jet_mass){
+
+
+	std::cout << "UnsmearedJetTLorentzVectorFunction" << std::endl;
+
+  	std::vector<TLorentzVector> UnsmearedJetVector{};
+	TLorentzVector UnsmearedJetVector_Element{};	
+
+	for(int i = 0; i < Jet_pt.size(); i++){
+		UnsmearedJetVector_Element.SetPtEtaPhiM(Jet_pt.at(i), Jet_phi.at(i), Jet_eta.at(i), Jet_mass.at(i));
+		UnsmearedJetVector.push_back(UnsmearedJetVector_Element);
+	}
+
+	return UnsmearedJetVector;
+  }};
+
+
+  auto METUncertFunction{[&SystematicInt](std::vector<TLorentzVector> OriginalMET,           std::vector<TLorentzVector> SmearedJet4Momentum, 
+				          std::vector<TLorentzVector> UnsmearedJet4Momentum){
 
   	std::cout << "print 148" << std::endl;
 
-  	std::vector<TLorentzVector> metVecOriginal{};
-  	floats metVecOriginal_px;
- 	floats metVecOriginal_py;
+	std::vector<TLorentzVector> NewMetVector{};
 
-  	std::vector<TLorentzVector> metVec{};
-  	std::vector<TLorentzVector> UnsmearedJet{};
-  	floats SmearedJetPxVec;
-  	floats SmearedJetPyVec;
-  	floats UnsmearedJetPx;
-  	floats UnsmearedJetPy;
-
-  	//TLorentzVector for unsmeared jets
-  	for(long unsigned int i = 0; i < Jet_pt.size(); i++){ ( UnsmearedJet.at(i) ).SetPtEtaPhiM(Jet_pt.at(i), Jet_eta.at(i), Jet_phi.at(i), Jet_mass.at(i)); }
-
-  	//Obtaining the px and py of unsmeared jets
-  	for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPx.push_back( (UnsmearedJet.at(i)).Px() ); }
-  	for(long unsigned int i = 0; i < UnsmearedJet.size(); i++){ UnsmearedJetPy.push_back( (UnsmearedJet.at(i)).Py() ); }
-
-  	//Obtaining the px and py of smeared jets
-  	for(long unsigned int i = 0; i < SmearedJet4Momentum.size(); i++){
- 
-  		float SmearedJetPx = ( SmearedJet4Momentum.at(i) ).Px();
-		float SmearedJetPy = ( SmearedJet4Momentum.at(i) ).Py();
- 		SmearedJetPxVec.push_back(SmearedJetPx);
-		SmearedJetPyVec.push_back(SmearedJetPy);
-
-  	}
-
-  	//Original MET vector
-  	for(long unsigned int i = 0; i < MET_phi.size(); i++){ 
-
-		(metVecOriginal.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i)); 
-		metVecOriginal_px.push_back( (metVecOriginal.at(i)).Px() );
-		metVecOriginal_py.push_back( (metVecOriginal.at(i)).Py() );
-
-  	}
-
-  	floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
-  	floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
-  	floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
-  	floats MET_py_down =  metVecOriginal_py - MET_MetUnclustEnUpDeltaY;  
-
-  	//For the nominal MET and MET uncertainties
-  
-  	floats UnclusteredEnergyUp = sqrt( pow(MET_px_up, 2) + pow(MET_py_up, 2) );
-  	floats UnclusteredEnergyDown = sqrt( pow(MET_px_down, 2) + pow(MET_py_down, 2) );
-
-  	for(long unsigned int i = 0; i < MET_phi.size(); i++){
-
-  		if(SystematicInt == 15){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));}
-  		else if(SystematicInt == 16){ (metVec.at(i)).SetPtEtaPhiE(UnclusteredEnergyDown.at(i), 0, MET_phi.at(i), UnclusteredEnergyDown.at(i));}
-  		else{ (metVec.at(i)).SetPtEtaPhiE(MET_sumEt.at(i), 0, MET_phi.at(i), MET_sumEt.at(i));}
-
- 	}
-
- 	//Propagating the jet smearing to the MET
- 
- 	for(long unsigned int i = 0; i < SmearedJetPxVec.size(); i++){
- 
- 		( metVec.at(i) ).SetPx( (metVec.at(i)).Px() + UnsmearedJetPx.at(i));
-        	( metVec.at(i) ).SetPy( (metVec.at(i)).Py() + UnsmearedJetPy.at(i));
- 		( metVec.at(i) ).SetPx( (metVec.at(i)).Px() - SmearedJetPxVec.at(i));
-        	( metVec.at(i) ).SetPy( (metVec.at(i)).Py() - SmearedJetPyVec.at(i));
- 
- 	}
-
-
-  	return metVec;
+	for(int i = 0; i < SmearedJet4Momentum.size(); i++){NewMetVector.push_back(OriginalMET.at(i) + SmearedJet4Momentum.at(i) - UnsmearedJet4Momentum.at(i));}
+	
+	return NewMetVector;
 
   }};
+
+
+
 
   auto linereader{[&Year](const int& LineNumber){
         
@@ -7533,31 +7557,36 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }
 
-  std::string TurnOnCurvesOutput = "TurnOnCurves_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+
+  if((ProcessInt == 95 || ProcessInt == 96) && SystematicInt == 0){
+
+  	std::string TurnOnCurvesOutput = "TurnOnCurves_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  TFile* TurnOnCurvesFile = new TFile(TurnOnCurvesOutput.c_str(), "RECREATE");
+  	TFile* TurnOnCurvesFile = new TFile(TurnOnCurvesOutput.c_str(), "RECREATE");
 
-  h_LeadingLeptonPt->GetYaxis()->SetTitle("Number of events");
-  h_SubleadingLeptonPt->GetYaxis()->SetTitle("Number of events");
-  h_LeadingLeptonEta->GetYaxis()->SetTitle("Number of events");
-  h_SubleadingLeptonEta->GetYaxis()->SetTitle("Number of events");
-  h_LeadingLeptonPt->GetXaxis()->SetTitle("p_{T}");
-  h_SubleadingLeptonPt->GetXaxis()->SetTitle("p_{T}");
-  h_LeadingLeptonEta->GetXaxis()->SetTitle("#eta");
-  h_SubleadingLeptonEta->GetXaxis()->SetTitle("#eta");
-  h_LeadingVsSubleading_LeptonPt->GetYaxis()->SetTitle("Leading lepton p_{T}");
-  h_LeadingVsSubleading_LeptonEta->GetYaxis()->SetTitle("Leading lepton #eta");
-  h_LeadingVsSubleading_LeptonPt->GetXaxis()->SetTitle("Subleading lepton p_{T}");
-  h_LeadingVsSubleading_LeptonEta->GetXaxis()->SetTitle("Subleading lepton #eta");
-  h_LeadingLeptonPt->Write();
-  h_SubleadingLeptonPt->Write();
-  h_LeadingLeptonEta->Write();
-  h_SubleadingLeptonEta->Write();
-  h_LeadingVsSubleading_LeptonPt->Write();
-  h_LeadingVsSubleading_LeptonEta->Write();
+  	h_LeadingLeptonPt->GetYaxis()->SetTitle("Number of events");
+  	h_SubleadingLeptonPt->GetYaxis()->SetTitle("Number of events");
+  	h_LeadingLeptonEta->GetYaxis()->SetTitle("Number of events");
+  	h_SubleadingLeptonEta->GetYaxis()->SetTitle("Number of events");
+  	h_LeadingLeptonPt->GetXaxis()->SetTitle("p_{T}");
+  	h_SubleadingLeptonPt->GetXaxis()->SetTitle("p_{T}");
+  	h_LeadingLeptonEta->GetXaxis()->SetTitle("#eta");
+  	h_SubleadingLeptonEta->GetXaxis()->SetTitle("#eta");
+  	h_LeadingVsSubleading_LeptonPt->GetYaxis()->SetTitle("Leading lepton p_{T}");
+  	h_LeadingVsSubleading_LeptonEta->GetYaxis()->SetTitle("Leading lepton #eta");
+  	h_LeadingVsSubleading_LeptonPt->GetXaxis()->SetTitle("Subleading lepton p_{T}");
+  	h_LeadingVsSubleading_LeptonEta->GetXaxis()->SetTitle("Subleading lepton #eta");
+  	h_LeadingLeptonPt->Write();
+  	h_SubleadingLeptonPt->Write();
+  	h_LeadingLeptonEta->Write();
+ 	h_SubleadingLeptonEta->Write();
+  	h_LeadingVsSubleading_LeptonPt->Write();
+  	h_LeadingVsSubleading_LeptonEta->Write();
 
-  TurnOnCurvesFile->Close();
+  	TurnOnCurvesFile->Close();
+
+  }
 
   switch(NPLInt){
   	case 0: switch(ZPlusJetsCRInt){
@@ -8174,8 +8203,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					   .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedNominalWeight", "ReturnedPSWeight"})
-					   .Define("newMET", METUncertFunction, {"MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY", "MET_phi", "MET_sumEt",
-										 "SmearedJet4Momentum", "Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass"})
+					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
+					   .Define("ScaledMET", ScaledMetFunction, {"MET_sumEt", "MET_phi", "OriginalMET", "MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY"})
+					   .Define("UnsmearedJet4Momentum", UnsmearedJetTLorentzVectorFunction, {"Jet_pt", "Jet_phi", "Jet_eta", "Jet_mass"})
+					   .Define("newMET", METUncertFunction, {"ScaledMET", "SmearedJet4Momentum", "UnsmearedJet4Momentum"})
 					   .Define("EventWeight", EventWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "EGammaSF_egammaEff", 
 										"EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", 
 										"CalculatedGeneratorWeight", "ME_SF", "TopWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
