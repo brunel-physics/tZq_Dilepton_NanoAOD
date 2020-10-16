@@ -6861,7 +6861,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                 std::cout << "for loop original met" << std::endl;
                 std::cout << "MET_phi.size() = " << MET_phi.size() << std::endl;
                 std::cout << "MET_sumEt.size() = " << MET_sumEt.size() << std::endl;
-                std::cout << "i = " << std::endl;
+                std::cout << "i = " << i << std::endl;
 
 		if(SystematicInt == 15){
 			ScaledMET_Element.SetPtEtaPhiE(UnclusteredEnergyUp.at(i), 0, MET_phi.at(i), UnclusteredEnergyUp.at(i));
@@ -6903,7 +6903,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	std::vector<TLorentzVector> NewMetVector{};
 
-	for(int i = 0; i < SmearedJet4Momentum.size(); i++){NewMetVector.push_back(OriginalMET.at(i) + SmearedJet4Momentum.at(i) - UnsmearedJet4Momentum.at(i));}
+
+	std::cout << "OriginalMET.size() = " << OriginalMET.size() << std::endl;
+	std::cout << "SmearedJet4Momentum.size() = " << SmearedJet4Momentum.size() << std::endl;
+	std::cout << "UnsmearedJet4Momentum.size() = " << UnsmearedJet4Momentum.size() << std::endl;
+
+	for(int i = 0; i < SmearedJet4Momentum.size(); i++){NewMetVector.push_back(OriginalMET.at(0) + SmearedJet4Momentum.at(i) - UnsmearedJet4Momentum.at(i));}
 	
 	return NewMetVector;
 
@@ -8204,7 +8209,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedNominalWeight", "ReturnedPSWeight"})
 					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
-					   .Define("ScaledMET", ScaledMetFunction, {"MET_sumEt", "MET_phi", "OriginalMET", "MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY"})
+					   .Define("ScaledMET", ScaledMetFunction, {"OriginalMET", "MET_sumEt", "MET_phi", "MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY"})
 					   .Define("UnsmearedJet4Momentum", UnsmearedJetTLorentzVectorFunction, {"Jet_pt", "Jet_phi", "Jet_eta", "Jet_mass"})
 					   .Define("newMET", METUncertFunction, {"ScaledMET", "SmearedJet4Momentum", "UnsmearedJet4Momentum"})
 					   .Define("EventWeight", EventWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "EGammaSF_egammaEff", 
