@@ -6925,7 +6925,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         //std::cout << "print 150" << std::endl;
         using namespace std;
         
-        std::string NormFileString = "Normalisation/NormalisationFactors_" + YearChoice + ".txt";
+        std::string NormFileString = "src/Normalisation/NormalisationFactors_" + YearChoice + ".txt";
   
         std::fstream file(NormFileString.c_str());
         GotoLine(file, LineNumber);
