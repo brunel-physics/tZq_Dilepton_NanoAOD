@@ -6890,7 +6890,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto UnsmearedJetTLorentzVectorFunction{[](const floats& Jet_pt, const floats& Jet_phi, const floats& Jet_eta, const floats& Jet_mass){
 
 
-	std::cout << "UnsmearedJetTLorentzVectorFunction" << std::endl;
+	//std::cout << "print 165" << std::endl;
 
   	std::vector<TLorentzVector> UnsmearedJetVector{};
 	TLorentzVector UnsmearedJetVector_Element{};	
@@ -6920,13 +6920,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  auto linereader{[&Year](const int& LineNumber){
+  auto linereader{[&Year](const int& LineNumber, const std::string YearChoice){
         
         //std::cout << "print 150" << std::endl;
         using namespace std;
         
-        std::string NormFileString = "Normalisation/NormalisationFactors_" + Year + ".txt";
-        
+        std::string NormFileString = "Normalisation/NormalisationFactors_" + YearChoice + ".txt";
+  
         std::fstream file(NormFileString.c_str());
         GotoLine(file, LineNumber);
         
@@ -6938,12 +6938,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  
  }};
 
-  auto NormalisationFactorFunction{[&YearInt, &ProcessInt, &MCInt, &linereader](){
+  auto NormalisationFactorFunction{[&Year, &ProcessInt, &MCInt, &linereader](){
         
         //std::cout << "print 151" << std::endl;
-        
+
         switch(MCInt){
-                case 1: return linereader(ProcessInt-1);
+                case 1: return linereader(ProcessInt+1, Year);
                 default: double one = 1.0; return one;
         }
   }};
@@ -6970,8 +6970,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			float EventWeightOutput;
 
+			std::cout << "channel int = " << ChannelInt << " SystematicInt = " << SystematicInt << std::endl;
+
 			switch(ChannelInt){
-				case 1: switch(SystematicInt){
+				case 1: 
+					switch(SystematicInt){ 
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
 							(TrigSF_ee += TrigSFUncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * 
 							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
@@ -7091,7 +7094,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 					}
 
-				default: std::cout << "ERROR: Channel for event weights must be ee or mumu" << std::endl; break;
+				default: std::cout << "ERROR: Channel for event weights must be ee or mumu. ChannelInt is: " << ChannelInt << std::endl; break;
 
 		}
 
