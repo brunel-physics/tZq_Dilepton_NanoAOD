@@ -6973,8 +6973,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			std::cout << "channel int = " << ChannelInt << " SystematicInt = " << SystematicInt << std::endl;
 
 			switch(ChannelInt){
-				case 1: 
-					switch(SystematicInt){ 
+				case 1: switch(SystematicInt){ 
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
 							(TrigSF_ee += TrigSFUncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * 
 							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
@@ -7027,11 +7026,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 						default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 							 CalculatedNominalWeightInput * 
 							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
-							
-							 break;
+					
+							 break;		
 
 					}
-  
+ 
+					break;
+ 
 				case 2: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF_mumu += TrigSFUncert_mumu) * 
 							CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
@@ -7093,6 +7094,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 							 break;
 
 					}
+
+					break;
 
 				default: std::cout << "ERROR: Channel for event weights must be ee or mumu. ChannelInt is: " << ChannelInt << std::endl; break;
 
