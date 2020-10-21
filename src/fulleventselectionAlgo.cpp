@@ -6743,7 +6743,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto NominalWeight{[&SystematicInt](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+  auto PDFWeight{[&SystematicInt](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
 
   	//std::cout << "print 145" << std::endl;
 
@@ -6766,7 +6766,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	switch(SystematicInt){
 		case 11: return PdfMax;
 		case 12: return PdfMin;
-		default: float One = 1.0; return One;
+		default: return LHEPdfWeight.at(0);
 	}
 
   }};
@@ -6800,7 +6800,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  auto GeneratorWeight{[&SummedWeights, &SystematicInt](const float& CalculatedNominalWeight, const floats& ReturnedPSWeight){
+  auto GeneratorWeight{[&SummedWeights, &SystematicInt](const float& CalculatedPDFWeight, const floats& ReturnedPSWeight){
 
 	//std::cout << "print 147" << std::endl;
 
@@ -6811,12 +6811,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	float genweight;
 
 	switch(SystematicInt){
-		case 13: genweight = ((TotalNumPositive + TotalNumNegative)/(SummedWeights[12] - SummedWeights[13])) * ((ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2))/abs(CalculatedNominalWeight)); 
+		case 13: genweight = ((TotalNumPositive + TotalNumNegative)/(SummedWeights[12] - SummedWeights[13])) * ((ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2))/abs(CalculatedPDFWeight)); 
 			 break;
 
-		case 14: genweight =  ((TotalNumPositive + TotalNumNegative)/(SummedWeights[6] - SummedWeights[7])) * ((ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0))/abs(CalculatedNominalWeight)); 
+		case 14: genweight =  ((TotalNumPositive + TotalNumNegative)/(SummedWeights[6] - SummedWeights[7])) * ((ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0))/abs(CalculatedPDFWeight)); 
 			 break;
-		default: genweight = ((TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative)) * ( CalculatedNominalWeight / abs(CalculatedNominalWeight) );
+		default: genweight = ((TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative)) * ( CalculatedPDFWeight / abs(CalculatedPDFWeight) );
 			 break;
 	}
 
@@ -6953,7 +6953,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		    (const float& PUInput, 		        const float& BTagWeightInput, 		     const floats& ReturnedPSWeightInput, 
 		     const float& EGammaSF_egammaEffInput,      const float& EGammaSF_egammaEffRecoInput, 
 		     const float& EGammaSF_egammaEffSysInput,   const float& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, 
-		     const float& ME_SFInput, 			const doubles& TopWeightInput, 		     const float& CalculatedNominalWeightInput, 
+		     const float& ME_SFInput, 			const doubles& TopWeightInput, 		     const float& CalculatedPDFWeightInput, 
 		     const float& MuonSFTest_IDInput, 		const float& MuonSFTest_IsoInput, 	     const float& MuonSFTest_ID_sys_systInput, 
 		     const float& MuonSFTest_ID_sys_statInput,  const float& MuonSFTest_Iso_sys_systInput,   const float& MuonSFTest_Iso_sys_statInput){
 
@@ -6975,56 +6975,56 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			switch(ChannelInt){
 				case 1: switch(SystematicInt){ 
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
-							(TrigSF_ee += TrigSFUncert_ee) * CalculatedNominalWeightInput * EGammaSF_egammaEffSysInput * 
+							(TrigSF_ee += TrigSFUncert_ee) * CalculatedPDFWeightInput * EGammaSF_egammaEffSysInput * 
 							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
                         			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_ee -= TrigSFUncert_ee) * 
-					  		 CalculatedNominalWeightInput * 
+					  		 CalculatedPDFWeightInput * 
 						         EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 				
 						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
-							 CalculatedNominalWeightInput * 
+							 CalculatedPDFWeightInput * 
 							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
                         
 							 break;
 
 						case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
-						         		     CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * 
+						         		     CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * 
 									     CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 				
 							 break;
 
 						case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(2) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
                         			case 18: EventWeightOutput =  PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
 							 ReturnedPSWeightInput.at(0) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
                         			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(3) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
+							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
 							 * TopWeightInput.at(0);
 
 							 break;
 
                         			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(1) * 
-							 CalculatedNominalWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
+							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
 							 * TopWeightInput.at(0);
 
 							 break;
 
 						default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
-							 CalculatedNominalWeightInput * 
+							 CalculatedPDFWeightInput * 
 							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 					
 							 break;		
@@ -7035,60 +7035,60 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  
 				case 2: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF_mumu += TrigSFUncert_mumu) * 
-							CalculatedNominalWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
+							CalculatedPDFWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
 							CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
                         			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_mumu -= TrigSFUncert_mumu) * 
-							 CalculatedNominalWeightInput * 
+							 CalculatedPDFWeightInput * 
 							 MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 				
 							 break;
 
 						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
-							 CalculatedNominalWeightInput * 
+							 CalculatedPDFWeightInput * 
 							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
                         			case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
-						         CalculatedNominalWeightInput * 
+						         CalculatedPDFWeightInput * 
 							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 	
                         			case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 ReturnedPSWeightInput.at(2) * 
-							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
 						case 18: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu *
 							 ReturnedPSWeightInput.at(0) * 
-							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 						         TopWeightInput.at(0);
 
 							 break; 
 
                         			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 ReturnedPSWeightInput.at(3) * 
-							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
                         			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
 							 ReturnedPSWeightInput.at(1) * 
-							 CalculatedNominalWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
                         			default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
-							 CalculatedNominalWeightInput * 
+							 CalculatedPDFWeightInput * 
 							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
@@ -7111,7 +7111,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << "NormalisationFactorFunction() = " << NormalisationFactorFunction() << std::endl;
         std::cout << "BTagWeightInput = " << BTagWeightInput << std::endl;
         std::cout << "TrigSF_ee = " << TrigSF_ee << std::endl;
-        std::cout << "CalculatedNominalWeightInput = " <<  CalculatedNominalWeightInput << std::endl;
+        std::cout << "CalculatedPDFWeightInput = " <<  CalculatedPDFWeightInput << std::endl;
         std::cout << "EGammaSF_egammaEffInput = " << EGammaSF_egammaEffInput << std::endl;
         std::cout << "EGammaSF_egammaEffRecoInput = " << EGammaSF_egammaEffRecoInput << std::endl;
         std::cout << "CalculatedGeneratorWeightInput = " << CalculatedGeneratorWeightInput << std::endl;
@@ -8233,16 +8233,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
                                            .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
 					   .Define("ReturnedPSWeight", PSWeightFunction, {PSWeightString})
-					   .Define("CalculatedNominalWeight", NominalWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
+					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					   .Define("ME_SF", ME_uncert_function, {"LHEPdfWeight", "LHEWeight_originalXWGTUP", "ReturnedPSWeight"})
-					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedNominalWeight", "ReturnedPSWeight"})
+					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
 					   .Define("ScaledMET", ScaledMetFunction, {"OriginalMET", "MET_sumEt", "MET_phi", "MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY"})
 					   .Define("UnsmearedJet4Momentum", UnsmearedJetTLorentzVectorFunction, {"Jet_pt", "Jet_phi", "Jet_eta", "Jet_mass"})
 					   .Define("newMET", METUncertFunction, {"ScaledMET", "SmearedJet4Momentum", "UnsmearedJet4Momentum"})
 					   .Define("EventWeight", EventWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "EGammaSF_egammaEff", 
 										"EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", 
-										"CalculatedGeneratorWeight", "ME_SF", "TopWeight", "CalculatedNominalWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
+										"CalculatedGeneratorWeight", "ME_SF", "TopWeight", "CalculatedPDFWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
 										"MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", 
 										"MuonSFTest_Iso_sys_stat"});
 								      
@@ -8373,7 +8373,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	auto ColName = colNames.at(i);
 
 	if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
-           ColName != "CalculatedNominalWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
+           ColName != "CalculatedPDFWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
            ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
            ColName != "ME_SF"                   &&
            ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     && 
@@ -8388,7 +8388,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                         
         }
  	else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
-                ColName  == "CalculatedNominalWeight" || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
+                ColName  == "CalculatedPDFWeight" || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
                 ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
                 ColName  == "ME_SF"                   || ColName == "EventWeight" ){
 
