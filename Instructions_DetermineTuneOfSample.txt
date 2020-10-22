@@ -1,0 +1,11 @@
+Instructions for determining the tune of a sample
+
+1.	go to the pdmv mcm web page: https://cms-pdmv.cern.ch/mcm/ 
+2.	click on navigation
+3.	type in the sample name (i.e.: THQ_4f_Hincl_13TeV_madgraph_pythia8) in the dataset name field and click on "search" 
+4.	search and click on the sample for the RunIIFall17NanoAODv5 campaign in the list (i.e.: HIG-RunIIFall17NanoAODv5-02474; so you should be now on that web page: https://cms-pdmv.cern.ch/mcm/requests?prepid=HIG-RunIIFall17NanoAODv5-02474&page=0&shown=127 )
+5.	Click on the 6th action symbol from the left ("View changes containing HIG-RunIIFall17NanoAODv5-02474"), you should be then here: https://cms-pdmv.cern.ch/mcm/chained_requests?contains=HIG-RunIIFall17NanoAODv5-02474&page=0&shown=15 
+6.	In the chain (third column of the table), click on the first sample name containing "LHEGS" (i.e.: HIG-RunIIFall17wmLHEGS-00941; you should be there now: https://cms-pdmv.cern.ch/mcm/requests?prepid=HIG-RunIIFall17wmLHEGS-00941&page=0&shown=127 ) 
+7.	Click on the first action symbol from the left ("Get dictionary"), you should be now there: https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get/HIG-RunIIFall17wmLHEGS-00941 
+8.	Search for the entry "fragment": you will see that in the Pythia8 settings, the "pythia8CP5SettingsBlock" is used, thus it is a TuneCP5 sample. 
+
