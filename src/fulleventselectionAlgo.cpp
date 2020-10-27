@@ -5225,6 +5225,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                 	DiscrTest.push_back(CSVv2DiscrString);
         	}
 
+
 		std::vector<std::string> OutVec{};
 		std::vector<std::string> FinalOutVec{};
 
@@ -5234,110 +5235,114 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				for(std::string data : vec){OutputVec.push_back(data);}
 			}
 
-		for(std::vector<std::string> vec : dataList){
-                	for(std::string data : vec){
+
+			for(std::vector<std::string> vec : dataList){
+                		for(std::string data : vec){
 				
-				std::string VecAt1String = vec.at(1);
-				std::string VecAt2String = vec.at(2);
-				std::string VecAt3String = vec.at(3);
-			        std::string VecAt4String = vec.at(4);
-				std::string VecAt5String = vec.at(5);
-				std::string VecAt6String = vec.at(6);
-				std::string VecAt7String = vec.at(7);
-				std::string VecAt8String = vec.at(8);
-				std::string VecAt9String = vec.at(9);
+					std::string VecAt1String = vec.at(1);
+					std::string VecAt2String = vec.at(2);
+					std::string VecAt3String = vec.at(3);
+			        	std::string VecAt4String = vec.at(4);
+					std::string VecAt5String = vec.at(5);
+					std::string VecAt6String = vec.at(6);
+					std::string VecAt7String = vec.at(7);
+					std::string VecAt8String = vec.at(8);
+					std::string VecAt9String = vec.at(9);
 				
 
-				VecAt1String.erase(0, 0);
-				VecAt2String.erase(0, 0);
-                                VecAt3String.erase(0, 0);
-                                VecAt4String.erase(0, 0);
-				VecAt1String.erase(remove(VecAt1String.begin(), VecAt1String.end(), ' '), VecAt1String.end());		
-				VecAt2String.erase(remove(VecAt2String.begin(), VecAt2String.end(), ' '), VecAt2String.end());
-				VecAt3String.erase(remove(VecAt3String.begin(), VecAt3String.end(), ' '), VecAt3String.end());
-                                VecAt4String.erase(remove(VecAt4String.begin(), VecAt4String.end(), ' '), VecAt4String.end());	
+					VecAt1String.erase(0, 0);
+					VecAt2String.erase(0, 0);
+                                	VecAt3String.erase(0, 0);
+                                	VecAt4String.erase(0, 0);
+					VecAt1String.erase(remove(VecAt1String.begin(), VecAt1String.end(), ' '), VecAt1String.end());		
+					VecAt2String.erase(remove(VecAt2String.begin(), VecAt2String.end(), ' '), VecAt2String.end());
+					VecAt3String.erase(remove(VecAt3String.begin(), VecAt3String.end(), ' '), VecAt3String.end());
+                                	VecAt4String.erase(remove(VecAt4String.begin(), VecAt4String.end(), ' '), VecAt4String.end());	
 
 
-				float VecAt4Float = stof(VecAt4String);
-                        	float VecAt5Float = stof(VecAt5String);
-				float VecAt6Float = stof(VecAt6String);
-				float VecAt7Float = stof(VecAt7String);
-				float VecAt8Float = stof(VecAt8String);
-                        	float VecAt9Float = stof(VecAt9String);
+					float VecAt4Float = stof(VecAt4String);
+                        		float VecAt5Float = stof(VecAt5String);
+					float VecAt6Float = stof(VecAt6String);
+					float VecAt7Float = stof(VecAt7String);
+					float VecAt8Float = stof(VecAt8String);
+                        		float VecAt9Float = stof(VecAt9String);
+
+					float PtTestFloat = stof(PtTest.at(i));
+					float EtaTestFloat = stof(EtaTest.at(i));
+					float DiscrTestFloat = stof(DiscrTest.at(i));
 
 
-				float PtTestFloat = stof(PtTest.at(i));
-				float EtaTestFloat = stof(EtaTest.at(i));
-				float DiscrTestFloat = stof(DiscrTest.at(i));
-
-
-
-				if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
-    				&& (VecAt1String == MeasurementTypeTest.at(i))
-    				&& (VecAt2String == SysTypeTest.at(i))
-    	  			&& (VecAt3String == JetFlavourTest.at(i))
-    				&& (VecAt4Float < EtaTestFloat)
-    				&& (VecAt5Float > EtaTestFloat)
-    	  			&& (VecAt6Float < PtTestFloat)     
-    				&& (VecAt7Float > PtTestFloat)
-    				&& (VecAt8Float < DiscrTestFloat) 
-    				&& (VecAt9Float > DiscrTestFloat)
-  				){
-					OutVec.push_back(vec.at(10));					
-				}
-				else if( (vec.at(0) != CSVv2OperatingPointTest.at(i))
-                        	|| (vec.at(1) != MeasurementTypeTest.at(i))
-                        	|| (vec.at(2) != SysTypeTest.at(i))
-                        	|| (vec.at(3) != JetFlavourTest.at(i))
-                        	|| (VecAt4Float > EtaTestFloat)
-                        	|| (VecAt5Float < EtaTestFloat)
-                        	|| (VecAt6Float > PtTestFloat)     
-                        	|| (VecAt7Float < PtTestFloat)
-                        	|| (VecAt8Float > DiscrTestFloat) 
-                        	|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
-				else{std::cout << "double check criteria" << std::endl;}
+					if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
+    					&& (VecAt1String == MeasurementTypeTest.at(i))
+    					&& (VecAt2String == SysTypeTest.at(i))
+    	  				&& (VecAt3String == JetFlavourTest.at(i))
+    					&& (VecAt4Float < EtaTestFloat)
+    					&& (VecAt5Float > EtaTestFloat)
+    	  				&& (VecAt6Float < PtTestFloat)     
+    					&& (VecAt7Float > PtTestFloat)
+    					&& (VecAt8Float < DiscrTestFloat) 
+    					&& (VecAt9Float > DiscrTestFloat)
+  					){
+						OutVec.push_back(vec.at(10));					
+					}
+					else if( (vec.at(0) != CSVv2OperatingPointTest.at(i))
+                        		|| (vec.at(1) != MeasurementTypeTest.at(i))
+                        		|| (vec.at(2) != SysTypeTest.at(i))
+                        		|| (vec.at(3) != JetFlavourTest.at(i))
+                        		|| (VecAt4Float > EtaTestFloat)
+                        		|| (VecAt5Float < EtaTestFloat)
+                        		|| (VecAt6Float > PtTestFloat)     
+                        		|| (VecAt7Float < PtTestFloat)
+                        		|| (VecAt8Float > DiscrTestFloat) 
+                        		|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
+					else{std::cout << "double check criteria" << std::endl;}
 			
-                	}
+                		}
 
-        	}
+        		}
 
-		std::vector<std::string> NewOutVec{};
-		std::vector<std::string> Zeroes{}; 
-		Zeroes.push_back("0");
-		Zeroes.push_back("0");
+			std::vector<std::string> NewOutVec{};
+			std::vector<std::string> Zeroes{}; 
+			Zeroes.push_back("0");
+			Zeroes.push_back("0");
 
-		bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
+			bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
 
-		if(OutVec.size() != 0 && check == false){
-			for(long unsigned int k = 0; k < OutVec.size(); k++){if(OutVec.at(k) != "0"){NewOutVec.push_back(OutVec.at(k));}}
+
+			if(OutVec.size() != 0 && check == false){
+				for(long unsigned int k = 0; k < OutVec.size(); k++){if(OutVec.at(k) != "0"){NewOutVec.push_back(OutVec.at(k));}}
 	
-			std::string outputString;
+				std::string outputString;
 
-			if(NewOutVec.size() > 11){outputString = NewOutVec.at( ((i+1)*11)-1 );}
-			else{outputString = NewOutVec.at(0); }
+				if(NewOutVec.size() > 11){outputString = NewOutVec.at( ((i+1)*11)-1 );}
+				else{outputString = NewOutVec.at(0); }
 
-			outputString.erase(outputString.begin()+1);
-                	outputString.erase(outputString.begin());
-                	outputString.erase(outputString.end()-2);
-                	outputString.erase(outputString.end()-1);
+				outputString.erase(outputString.begin()+1);
+                		outputString.erase(outputString.begin());
+                		outputString.erase(outputString.end()-2);
+                		outputString.erase(outputString.end()-1);
 		
-                	std::string::size_type pos = 0;
+                		std::string::size_type pos = 0;
  
-                	while ((pos = outputString.find('x', pos)) != std::string::npos)
-                	{
-                        	outputString.replace(pos, 1, PtTest.at(i));
-                        	pos += 2;
-                	}
+                		while ((pos = outputString.find('x', pos)) != std::string::npos)
+                		{
+                        		outputString.replace(pos, 1, PtTest.at(i));
+                        		pos += 2;
+                		}
                 
-			outputstringvec.push_back(outputString);
-			FinalOutVec.push_back(outputstringvec.at(i));
+				outputstringvec.push_back(outputString);
+				FinalOutVec.push_back(outputstringvec.at(i));
 	
-		}
-		else{FinalOutVec.push_back(Zeroes.at(0));}
+			}
+			else{FinalOutVec.push_back(Zeroes.at(0));}
+
+			std::cout << "end of for loop" << std::endl;
 
 
-  	}//end of for loop
+  		}//end of for loop
 
+
+	std::cout << "before Evaluating the mathematical expression in the string" << std::endl;
 
 	//Evaluating the mathematical expression in the string
 	std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
@@ -5363,6 +5368,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14;
 	float result;
 
+	
 	for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 
 		std::string FirstElement = FinalOutVec.at(i);
@@ -6230,7 +6236,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
 
   	//std::cout << "print 123" << std::endl;
-  	return tight_jets && (btags == 0) && (etas < MaxTrackerEta);
+  	return tight_jets && (btags >= 0) && (etas < MaxTrackerEta);
 
   }};
 
@@ -6300,7 +6306,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	float initial = 1;
 
-  	for(long unsigned int i = 0; i < EffBTagged.size(); i++ ){initial = EffBTagged.at(i) * initial;}
+	if(EffBTagged.size() > 0){
+  		for(long unsigned int i = 0; i < EffBTagged.size(); i++ ){initial = EffBTagged.at(i) * initial;}
+	}
+	else{initial = 1 * initial;}
 
   	return initial;
 
@@ -6325,7 +6334,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	float initial = 1;
   	float output;
 
-  	for(long unsigned int i = 0; i < EffBTagged.size(); i++){output = (CMSBTagSFInput.at(0)*EffBTagged.at(i)) * initial;}
+	if(CMSBTagSFInput.size() > 0){
+  		for(long unsigned int i = 0; i < EffBTagged.size(); i++){output = (CMSBTagSFInput.at(0)*EffBTagged.at(i)) * initial;}
+	}
+	else{output = 1 * initial;}
 
   	return output;
 
@@ -6624,7 +6636,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			else{std::cout << "Code only for 2016, 2017 or 2018." << std::endl;}
 
 		}
-		else{std::cout << "inside else statement for pushing back muon SF output" << std::endl; float One = 1.0; MuonSFOutput.push_back(One);}
+		else{float One = 1.0; MuonSFOutput.push_back(One);}
 
 
   	}
@@ -7189,7 +7201,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 100000);
+  auto d_Range = d.Range(0, 1000000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -7947,8 +7959,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                        .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
                                        .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
                                        .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
+				       .Define("BTAGEFF_bjet_Jet_btagCSVV2_num", select<floats>, {"Jet_btagCSVV2", "BTAGEFF_bjet_id_WP"})
+				       .Define("BTAGEFF_bjet_Jet_partonFlavour_num", select<ints>, {"Jet_partonFlavour", "BTAGEFF_bjet_id_WP"})
 				       .Define("BTAGEFF_nonbjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_nonbjet_id_WP"})
                                        .Define("BTAGEFF_nonbjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_nonbjet_id_WP"})
+				       .Define("BTAGEFF_nonbjet_Jet_btagCSVV2_num", select<floats>, {"Jet_btagCSVV2", "BTAGEFF_nonbjet_id_WP"})
+				       .Define("BTAGEFF_nonbjet_Jet_partonFlavour_num", select<ints>, {"Jet_partonFlavour", "BTAGEFF_nonbjet_id_WP"})
                                        .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
                                        .Define("BTAGEFF_charm_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_charm_id_WP"})
                                        .Define("BTAGEFF_lightjets_pt_num", select<floats>, {JetPtInput, "BTAGEFF_lightjets_id_WP"})
@@ -8208,11 +8224,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
                                            .Define("TotalPt_System", TotalVariable_System, {"RecoZPt", "w_pair_pt", "Top_Pt", "LepPtSum", "JetPtSum"})
 					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_doubles, {"TotalHT_System", "TotalPt_System"})
-					   .Define("CMSBTagSF", CMSBTagSF, {"bjetpt", "bjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
+					   .Define("CMSBTagSF", CMSBTagSF, {"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_partonFlavour_num"})
 					   .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                            .Define("notbjetpt", bjet_variable, {JetPtInput, "nJet", "nonbjets"})
                                            .Define("notbjeteta", bjet_variable, {JetEtaInput, "nJet", "nonbjets"})
-  					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"notbjetpt", "notbjeteta", "Jet_btagCSVV2", "Jet_partonFlavour"})
+  					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_partonFlavour_num"})
 					   .Define("EffBTagged", EffBTagged_Function, {JetPtInput, JetEtaInput})
 					   .Define("EffNonBTagged", EffNonBTagged_Function, {JetPtInput, JetEtaInput})
 					   .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
@@ -8368,35 +8384,40 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   ROOT::RDF::RResultPtr<TH1D> histo[N_Columns] = {};
 
+
   for(long unsigned int i = 0; i < N_Columns; i++){
 
   	auto ColName = colNames.at(i);
 
-	if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
-           ColName != "CalculatedPDFWeight" && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
-           ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
-           ColName != "ME_SF"                   &&
-           ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     && 
-           ColName != "WPairJet2"               && ColName != "RecoW"                     && ColName != "BJets"                         && 
-           ColName != "RecoTop"                 && ColName != "MinDeltaR"                     &&
-           ColName != "MinDeltaPhi"             && ColName != "newMET"                    && ColName != "EventWeight" ){
+	if(ColName != "LeptonFourMomentum" && ColName != "newMET" && ColName != "MuonFourMomentum_RochCorr" && ColName != "OriginalMET" && ColName != "ScaledMET" && ColName != "UnsmearedJet4Momentum"){
 
-           	std::cout << "ColName = " << ColName << std::endl;
+		if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
+           	   ColName != "CalculatedPDFWeight"     && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
+           	   ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
+           	   ColName != "ME_SF"                   &&
+              	   ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     && 
+           	   ColName != "WPairJet2"               && ColName != "RecoW"                     && ColName != "BJets"                         && 
+           	   ColName != "RecoTop"                 && ColName != "MinDeltaR"                     &&
+           	   ColName != "MinDeltaPhi"             && ColName != "newMET"                    && ColName != "EventWeight"){
 
-                histo[i] = d_Blinded.Histo1D(ColName.c_str(), "EventWeight");
-                histo[i]->Write();
+           		std::cout << "ColName = " << ColName << std::endl;
+
+                	histo[i] = d_Blinded.Histo1D(ColName.c_str(), "EventWeight");
+                	histo[i]->Write();
                         
-        }
- 	else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
-                ColName  == "CalculatedPDFWeight" || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
-                ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
-                ColName  == "ME_SF"                   || ColName == "EventWeight" ){
+        	}
+ 		else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
+                	ColName  == "CalculatedPDFWeight"     || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
+                	ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
+                	ColName  == "ME_SF"                   || ColName == "EventWeight" ){
 
-                histo[i] = d_Blinded.Histo1D(ColName.c_str());
-                histo[i]->Write();
+                	histo[i] = d_Blinded.Histo1D(ColName.c_str());
+                	histo[i]->Write();
 
-        }		
-        else{continue;}
+        	}		
+        	else{continue;}
+
+  	}
 
   }
 
