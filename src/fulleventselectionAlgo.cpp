@@ -7740,11 +7740,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::cout << "Eff_UpperUncert_MC = " << Eff_UpperUncert_MC << std::endl;
   std::cout << "Eff_LowerUncert_MC = " << Eff_LowerUncert_MC << std::endl;
 
-  float TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
+  TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
 
   //Uncertainties in the trigger scale factors
   float TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
   float TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
+
+  std::cout << "TrigSF = " << TrigSF << std::endl;
+  std::cout << "TrigSF_UpperUncert = " << TrigSF_UpperUncert << std::endl;
+  std::cout << "TrigSF_LowerUncert = " << TrigSF_LowerUncert << std::endl;
 
 
   TrigSF_Uncert = 0.0;
