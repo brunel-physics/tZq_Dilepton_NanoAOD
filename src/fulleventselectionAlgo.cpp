@@ -6976,8 +6976,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			float EventWeightOutput;
 
-			std::cout << "channel int = " << ChannelInt << " SystematicInt = " << SystematicInt << std::endl;
-
 			switch(ChannelInt){
 				case 1: switch(SystematicInt){ 
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
