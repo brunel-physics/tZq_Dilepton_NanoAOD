@@ -137,32 +137,34 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 
 
 
-float N_SelectionCriteria_ee_MC, N_SelectionCriteria_mumu_MC, N_SelectionCriteria_emu_MC;
-float N_MET_And_LeptonSelection_ee_MC, N_MET_And_LeptonSelection_mumu_MC, N_MET_And_LeptonSelection_emu_MC;
-float N_LeptonTriggersAndSelectionCriteria_ee_MC, N_LeptonTriggersAndSelectionCriteria_mumu_MC, N_LeptonTriggersAndSelectionCriteria_emu_MC;
-float N_MET_LeptonTriggers_SelectionCriteria_ee_MC, N_MET_LeptonTriggers_SelectionCriteria_mumu_MC, N_MET_LeptonTriggers_SelectionCriteria_emu_MC;
-float Eff_ee_MC, Eff_mumu_MC, Eff_emu_MC;
-float Eff_MET_LeptonTriggers_SelectionCriteria_ee_MC, Eff_MET_LeptonTriggers_SelectionCriteria_mumu_MC, Eff_MET_LeptonTriggers_SelectionCriteria_emu_MC;
-float Eff_LeptonTriggers_SelectionCriteria_ee_MC, Eff_LeptonTriggers_SelectionCriteria_mumu_MC, Eff_LeptonTriggers_SelectionCriteria_emu_MC;
-float Eff_MET_SelectionCriteria_ee_MC, Eff_MET_SelectionCriteria_mumu_MC, Eff_MET_SelectionCriteria_emu_MC;
-float Alpha_ee_MC, Alpha_mumu_MC, Alpha_emu_MC;
-float Eff_UpperUncert_ee_MC, Eff_UpperUncert_mumu_MC, Eff_UpperUncert_emu_MC;
-float Eff_LowerUncert_ee_MC, Eff_LowerUncert_mumu_MC, Eff_LowerUncert_emu_MC;
+float N_SelectionCriteria_MC;
+float N_MET_And_LeptonSelection_MC; 
+float N_LeptonTriggersAndSelectionCriteria_MC;
+float N_MET_LeptonTriggers_SelectionCriteria_MC;
+float Eff_MC;
+float Eff_MET_LeptonTriggers_SelectionCriteria_MC;
+float Eff_LeptonTriggers_SelectionCriteria_MC;
+float Eff_MET_SelectionCriteria_MC;
+float Alpha_MC;
+float Eff_UpperUncert_MC;
+float Eff_LowerUncert_MC;
 
-float N_SelectionCriteria_ee_DATA, N_SelectionCriteria_mumu_DATA, N_SelectionCriteria_emu_DATA;
-float N_MET_And_LeptonSelection_ee_DATA, N_MET_And_LeptonSelection_mumu_DATA, N_MET_And_LeptonSelection_emu_DATA;
-float N_LeptonTriggersAndSelectionCriteria_ee_DATA, N_LeptonTriggersAndSelectionCriteria_mumu_DATA, N_LeptonTriggersAndSelectionCriteria_emu_DATA;
-float N_MET_LeptonTriggers_SelectionCriteria_ee_DATA, N_MET_LeptonTriggers_SelectionCriteria_mumu_DATA, N_MET_LeptonTriggers_SelectionCriteria_emu_DATA;
-float Eff_ee_DATA, Eff_mumu_DATA, Eff_emu_DATA;
-float Eff_MET_LeptonTriggers_SelectionCriteria_ee_DATA, Eff_MET_LeptonTriggers_SelectionCriteria_mumu_DATA, Eff_MET_LeptonTriggers_SelectionCriteria_emu_DATA;
-float Eff_LeptonTriggers_SelectionCriteria_ee_DATA, Eff_LeptonTriggers_SelectionCriteria_mumu_DATA, Eff_LeptonTriggers_SelectionCriteria_emu_DATA;
-float Eff_MET_SelectionCriteria_ee_DATA, Eff_MET_SelectionCriteria_mumu_DATA, Eff_MET_SelectionCriteria_emu_DATA;
-float Alpha_ee_DATA, Alpha_mumu_DATA, Alpha_emu_DATA;
-float Eff_UpperUncert_ee_DATA, Eff_UpperUncert_mumu_DATA, Eff_UpperUncert_emu_DATA;
-float Eff_LowerUncert_ee_DATA, Eff_LowerUncert_mumu_DATA, Eff_LowerUncert_emu_DATA;
-float SF_ee, SF_mumu, SF_emu;
-float SF_Uncert_ee, SF_Uncert_mumu, SF_Uncert_emu;
- 
+
+float N_SelectionCriteria_DATA; 
+float N_MET_And_LeptonSelection_DATA; 
+float N_LeptonTriggersAndSelectionCriteria_DATA; 
+float N_MET_LeptonTriggers_SelectionCriteria_DATA; 
+float Eff_DATA; 
+float Eff_MET_LeptonTriggers_SelectionCriteria_DATA;
+float Eff_LeptonTriggers_SelectionCriteria_DATA; 
+float Eff_MET_SelectionCriteria_DATA; 
+float Alpha_DATA; 
+float Eff_UpperUncert_DATA; 
+float Eff_LowerUncert_DATA; 
+
+float TrigSF;
+float TrigSF_Uncert;
+
 
 void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const int& NPLInt,     const int& SRInt,          const int& SBRInt, 
 		 	const int& ZPlusJetsCRInt,  const int& ttbarCRInt,  const int& YearInt,    const int& SystematicInt,  const int& ChannelInt, 
@@ -6972,14 +6974,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			//std::cout << "print 149" << std::endl;
 
-			float TrigSF_ee, TrigSFUncert_ee, TrigSF_mumu, TrigSFUncert_mumu;
-
-			switch(ttbarCRInt){
-				case 0: TrigSF_ee = SF_ee; TrigSF_mumu = SF_mumu; TrigSFUncert_ee = SF_Uncert_ee; TrigSFUncert_mumu = SF_Uncert_mumu; break;
-				default: TrigSF_ee = SF_emu; TrigSF_mumu = SF_emu; TrigSFUncert_ee = SF_Uncert_emu; TrigSFUncert_mumu = SF_Uncert_emu; break;
-
-			}
-
 			float EventWeightOutput;
 
 			std::cout << "channel int = " << ChannelInt << " SystematicInt = " << SystematicInt << std::endl;
@@ -6987,55 +6981,55 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			switch(ChannelInt){
 				case 1: switch(SystematicInt){ 
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
-							(TrigSF_ee += TrigSFUncert_ee) * CalculatedPDFWeightInput * EGammaSF_egammaEffSysInput * 
+							(TrigSF += TrigSF_Uncert) * CalculatedPDFWeightInput * EGammaSF_egammaEffSysInput * 
 							EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
-                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_ee -= TrigSFUncert_ee) * 
+                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF -= TrigSF_Uncert) * 
 					  		 CalculatedPDFWeightInput * 
 						         EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 				
-						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
+						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 CalculatedPDFWeightInput * 
 							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
                         
 							 break;
 
-						case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
+						case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 						         		     CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * 
 									     CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 				
 							 break;
 
-						case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(2) * 
+						case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * ReturnedPSWeightInput.at(2) * 
 							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
-                        			case 18: EventWeightOutput =  PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
+                        			case 18: EventWeightOutput =  PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 ReturnedPSWeightInput.at(0) * 
 							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
-                        			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(3) * 
+                        			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * ReturnedPSWeightInput.at(3) * 
 							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
 							 * TopWeightInput.at(0);
 
 							 break;
 
-                        			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * ReturnedPSWeightInput.at(1) * 
+                        			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * ReturnedPSWeightInput.at(1) * 
 							 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput  
 							 * TopWeightInput.at(0);
 
 							 break;
 
-						default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_ee * 
+						default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 CalculatedPDFWeightInput * 
 							 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 					
@@ -7046,60 +7040,60 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					break;
  
 				case 2: switch(SystematicInt){
-						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF_mumu += TrigSFUncert_mumu) * 
+						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF += TrigSF_Uncert) * 
 							CalculatedPDFWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
 							CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
-                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF_mumu -= TrigSFUncert_mumu) * 
+                        			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF -= TrigSF_Uncert) * 
 							 CalculatedPDFWeightInput * 
 							 MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 				
 							 break;
 
-						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
+						case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 CalculatedPDFWeightInput * 
 							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 
-                        			case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
+                        			case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 						         CalculatedPDFWeightInput * 
 							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							 break;
 	
-                        			case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
+                        			case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 ReturnedPSWeightInput.at(2) * 
 							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
-						case 18: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu *
+						case 18: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF *
 							 ReturnedPSWeightInput.at(0) * 
 							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 						         TopWeightInput.at(0);
 
 							 break; 
 
-                        			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
+                        			case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 ReturnedPSWeightInput.at(3) * 
 							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
-                        			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
+                        			case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 ReturnedPSWeightInput.at(1) * 
 							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 
 							 break;
 
-                        			default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF_mumu * 
+                        			default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
 							 CalculatedPDFWeightInput * 
 							 MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
@@ -7122,7 +7116,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << "PUInput = " << PUInput << std::endl;
         std::cout << "NormalisationFactorFunction() = " << NormalisationFactorFunction() << std::endl;
         std::cout << "BTagWeightInput = " << BTagWeightInput << std::endl;
-        std::cout << "TrigSF_ee = " << TrigSF_ee << std::endl;
+        std::cout << "TrigSF = " << TrigSF << std::endl;
         std::cout << "CalculatedPDFWeightInput = " <<  CalculatedPDFWeightInput << std::endl;
         std::cout << "EGammaSF_egammaEffInput = " << EGammaSF_egammaEffInput << std::endl;
         std::cout << "EGammaSF_egammaEffRecoInput = " << EGammaSF_egammaEffRecoInput << std::endl;
@@ -7196,12 +7190,72 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
+  auto linereader_TriggerSF{[&Channel, &Year](const int& LineNumber, const std::string& InputTriggerSF_File){
+
+  	//std::cout << "print 154" << std::endl;
+
+  	std::string TriggerSF_TextFiles;
+
+   	if(InputTriggerSF_File == "Data"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
+   	else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
+   	else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
+
+
+  	using namespace std;
+
+   	fstream file(TriggerSF_TextFiles.c_str());
+   	GotoLine(file, LineNumber);
+
+   	std::string line;
+   	file >> line;
+
+  	double Value = atof(line.c_str());
+   	return Value;
+
+  }};
+
+
+  auto linecounter_TriggerSF{[&Channel, &Year](const std::string& InputTriggerSF_File){
+
+  	//std::cout << "print 155" << std::endl;
+
+   	std::string TriggerSF_TextFiles;
+
+	if(InputTriggerSF_File == "Data"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
+        else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";} 
+   	else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
+
+   	int number_of_lines = 0;
+   	std::string line;
+   	std::ifstream myfile(TriggerSF_TextFiles.c_str());
+
+   	while (getline(myfile, line))
+        	++number_of_lines;
+        	return number_of_lines;
+
+  }};
+
+  auto textfilereader2_TriggerSF{[&linecounter_TriggerSF, &linereader_TriggerSF](const std::string& InputTriggerSF_File){
+
+   //std::cout << "print 156" << std::endl;
+
+  	int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File);
+   	std::vector<double> Value;
+
+   	for(int i = 1; i < NumberOfLines+1; i++){
+        	Value.push_back(linereader_TriggerSF(i, InputTriggerSF_File));
+   	}
+
+   	return Value;
+
+  }}; 
+
 
   //Input file selection
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 1000000);
+  auto d_Range = d.Range(0, 100000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -7633,217 +7687,69 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }
 
-  switch(NPLInt){
-  	case 0: switch(ZPlusJetsCRInt){
-			case 0: switch(ttbarCRInt){
-					case 0: switch(SystematicInt){ 
-  							case 0: switch(ProcessInt){
-  									case 95: switch(ChannelInt){
-										 	case 1: 
-								
-											N_SelectionCriteria_ee_MC = N_SelectionCriteria;
-											N_MET_And_LeptonSelection_ee_MC = N_MET_And_SelectionCriteria;
-										        N_LeptonTriggersAndSelectionCriteria_ee_MC = N_LeptonTriggersAndSelectionCriteria;
-											N_MET_LeptonTriggers_SelectionCriteria_ee_MC = N_MET_LeptonTriggers_SelectionCriteria;
-											Eff_ee_MC = Eff;
-											Eff_MET_LeptonTriggers_SelectionCriteria_ee_MC = Eff_MET_LeptonTriggers_SelectionCriteria;
-										        Eff_LeptonTriggers_SelectionCriteria_ee_MC = Eff_LeptonTriggers_SelectionCriteria;
-											Eff_MET_SelectionCriteria_ee_MC = Eff_MET_SelectionCriteria;
-											Alpha_ee_MC = Alpha;
-											Eff_UpperUncert_ee_MC = Eff_UpperUncert;
-											Eff_LowerUncert_ee_MC = Eff_LowerUncert;
-											break;
-		
-											case 2: 
 
-											N_SelectionCriteria_mumu_MC = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_mumu_MC = N_MET_And_SelectionCriteria;
-                                							N_LeptonTriggersAndSelectionCriteria_mumu_MC = N_LeptonTriggersAndSelectionCriteria;
-                               								N_MET_LeptonTriggers_SelectionCriteria_mumu_MC = N_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_mumu_MC = Eff;
-                                							Eff_MET_LeptonTriggers_SelectionCriteria_mumu_MC = Eff_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_LeptonTriggers_SelectionCriteria_mumu_MC = Eff_LeptonTriggers_SelectionCriteria;
-                                							Eff_MET_SelectionCriteria_mumu_MC = Eff_MET_SelectionCriteria;
-                                							Alpha_mumu_MC = Alpha;
-											Eff_UpperUncert_mumu_MC = Eff_UpperUncert;
-                                							Eff_LowerUncert_mumu_MC = Eff_LowerUncert;
-											break;
+  std::string TriggerSFValuesFileWithNames = "TriggerSFValues_WithNames" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                             SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-											case 3: 
-	
-											N_SelectionCriteria_emu_MC = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_emu_MC = N_MET_And_SelectionCriteria;
-                                							N_LeptonTriggersAndSelectionCriteria_emu_MC = N_LeptonTriggersAndSelectionCriteria;
-                                							N_MET_LeptonTriggers_SelectionCriteria_emu_MC = N_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_emu_MC = Eff;
-                                							Eff_MET_LeptonTriggers_SelectionCriteria_emu_MC = Eff_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_LeptonTriggers_SelectionCriteria_emu_MC = Eff_LeptonTriggers_SelectionCriteria;
-                                							Eff_MET_SelectionCriteria_emu_MC = Eff_MET_SelectionCriteria;
-                                							Alpha_emu_MC = Alpha;
-											Eff_UpperUncert_emu_MC = Eff_UpperUncert;
-                                							Eff_LowerUncert_emu_MC = Eff_LowerUncert;
-											break;
-			
-											default: std::cout << "ERROR: ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
+  std::ofstream TriggerSFValuesWithNames;
+  TriggerSFValuesWithNames.open(TriggerSFValuesFileWithNames.c_str());
 
-									}
+  TriggerSFValuesWithNames << "N_SelectionCriteria = " << N_SelectionCriteria << '\n'
+		           << "N_MET_And_SelectionCriteria = " << N_MET_And_SelectionCriteria << '\n'
+			   << "N_LeptonTriggersAndSelectionCriteria = " << N_LeptonTriggersAndSelectionCriteria << '\n'
+		           << "N_MET_LeptonTriggers_SelectionCriteria = " << N_MET_LeptonTriggers_SelectionCriteria << '\n'
+		           << "Eff = " << Eff << '\n'
+                           << "Alpha = " << Alpha << '\n'
+                           << "Eff_UpperUncert = " << Eff_UpperUncert << '\n'
+		           << "Eff_LowerUncert = " << Eff_LowerUncert << '\n'
+   		           << std::endl;
 
 
-									case 96: switch(ChannelInt){
-                        								case 1: 
-
-											N_SelectionCriteria_ee_DATA = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_ee_DATA = N_MET_And_SelectionCriteria;
-                                							N_LeptonTriggersAndSelectionCriteria_ee_DATA = N_LeptonTriggersAndSelectionCriteria;
-                                							N_MET_LeptonTriggers_SelectionCriteria_ee_DATA = N_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_ee_DATA = Eff;
-                                							Eff_MET_LeptonTriggers_SelectionCriteria_ee_DATA = Eff_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_LeptonTriggers_SelectionCriteria_ee_DATA = Eff_LeptonTriggers_SelectionCriteria;
-                                							Eff_MET_SelectionCriteria_ee_DATA = Eff_MET_SelectionCriteria;
-                                							Alpha_ee_DATA = Alpha;
-											Eff_UpperUncert_ee_DATA = Eff_UpperUncert;
-                                							Eff_LowerUncert_ee_DATA = Eff_LowerUncert;
-                                							break;
-
-                        								case 2: 
-
-											N_SelectionCriteria_mumu_DATA = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_mumu_DATA = N_MET_And_SelectionCriteria;
-                                							N_LeptonTriggersAndSelectionCriteria_mumu_DATA = N_LeptonTriggersAndSelectionCriteria;
-                                							N_MET_LeptonTriggers_SelectionCriteria_mumu_DATA = N_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_mumu_DATA = Eff;
-                                						Eff_MET_LeptonTriggers_SelectionCriteria_mumu_DATA = Eff_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_LeptonTriggers_SelectionCriteria_mumu_DATA = Eff_LeptonTriggers_SelectionCriteria;
-                                							Eff_MET_SelectionCriteria_mumu_DATA = Eff_MET_SelectionCriteria;
-                               								Alpha_mumu_DATA = Alpha;
-											Eff_UpperUncert_mumu_DATA = Eff_UpperUncert;
-                                							Eff_LowerUncert_mumu_DATA = Eff_LowerUncert;
-                                							break;
-
-                        								case 3: 
-
-											N_SelectionCriteria_emu_DATA = N_SelectionCriteria;
-                                							N_MET_And_LeptonSelection_emu_DATA = N_MET_And_SelectionCriteria;
-                                							N_LeptonTriggersAndSelectionCriteria_emu_DATA = N_LeptonTriggersAndSelectionCriteria;
-                                							N_MET_LeptonTriggers_SelectionCriteria_emu_DATA = N_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_emu_DATA = Eff;
-                                							Eff_MET_LeptonTriggers_SelectionCriteria_emu_DATA = Eff_MET_LeptonTriggers_SelectionCriteria;
-                                							Eff_LeptonTriggers_SelectionCriteria_emu_DATA = Eff_LeptonTriggers_SelectionCriteria;
-                                							Eff_MET_SelectionCriteria_emu_DATA = Eff_MET_SelectionCriteria;
-                                							Alpha_emu_DATA = Alpha;
-											Eff_UpperUncert_emu_DATA = Eff_UpperUncert;
-                                							Eff_LowerUncert_emu_DATA = Eff_LowerUncert;
-                                							break;
-
-                        								default: std::cout << "ERROR: ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
-
-                								}
-
-									default: break;
-
- 							 }
-					
-						default:break;
-					
-					}
-
-				default: break;
-
-
-			}
-
-		default: break;
-
-
-	}
-
-    default: break;
-
-  }
-
-  //Calculating the trigger scale factors
-  SF_ee = Eff_ee_DATA/(Eff_ee_MC + 1.0e-06);
-  SF_mumu = Eff_ee_DATA/(Eff_mumu_MC + 1.0e-06);
-  SF_emu = Eff_ee_DATA/(Eff_emu_MC + 1.0e-06);
-
-  //Uncertainties in the trigger scale factors
-  float SF_UpperUncert_ee = ((Eff_ee_DATA + Eff_UpperUncert_ee_DATA) / (Eff_ee_MC - Eff_LowerUncert_ee_MC + 1.0e-06)) - SF_ee;
-  float SF_LowerUncert_ee = ((Eff_ee_DATA + Eff_LowerUncert_ee_DATA)/ (Eff_ee_MC - Eff_UpperUncert_ee_MC + 1.0e-06)) - SF_ee;
-  float SF_UpperUncert_mumu = ((Eff_mumu_DATA + Eff_UpperUncert_mumu_DATA) / (Eff_mumu_MC - Eff_LowerUncert_mumu_MC + 1.0e-06)) - SF_mumu;
-  float SF_LowerUncert_mumu = ((Eff_mumu_DATA + Eff_LowerUncert_mumu_DATA)/ (Eff_mumu_MC - Eff_UpperUncert_mumu_MC + 1.0e-06)) - SF_mumu;
-  float SF_UpperUncert_emu = ((Eff_emu_DATA + Eff_UpperUncert_emu_DATA) / (Eff_emu_MC - Eff_LowerUncert_emu_MC + 1.0e-06)) - SF_emu;
-  float SF_LowerUncert_emu = ((Eff_emu_DATA + Eff_LowerUncert_emu_DATA)/ (Eff_emu_MC - Eff_UpperUncert_emu_MC + 1.0e-06)) - SF_emu;
-
-
-  SF_Uncert_ee = 0.0;
-  if (SF_UpperUncert_ee > SF_LowerUncert_ee){SF_Uncert_ee = SF_UpperUncert_ee;}
-  else{SF_Uncert_ee = SF_LowerUncert_ee;}
-
-  SF_Uncert_mumu = 0.0;
-  if (SF_UpperUncert_mumu > SF_LowerUncert_mumu){SF_Uncert_mumu = SF_UpperUncert_mumu;}
-  else{SF_Uncert_mumu = SF_LowerUncert_mumu;}
-
-  SF_Uncert_emu = 0.0;
-  if (SF_UpperUncert_emu > SF_LowerUncert_emu){SF_Uncert_emu = SF_UpperUncert_emu;}
-  else{SF_Uncert_emu = SF_LowerUncert_emu;}
-
-  std::string TriggerSFValuesFile = "TriggerSFValues_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+  std::string TriggerSFValuesFile = "TriggerSFValues" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
   std::ofstream TriggerSFValues;
   TriggerSFValues.open(TriggerSFValuesFile.c_str());
 
-  TriggerSFValues << "N_SelectionCriteria_ee_MC = " << N_SelectionCriteria_ee_MC << '\n'
-		  << "N_SelectionCriteria_mumu_MC = " << N_SelectionCriteria_mumu_MC << '\n'
-		  << "N_SelectionCriteria_emu_MC = " << N_SelectionCriteria_emu_MC << '\n'
-		  << "N_SelectionCriteria_ee_DATA = " << N_SelectionCriteria_ee_DATA << '\n'
-                  << "N_SelectionCriteria_mumu_DATA = " << N_SelectionCriteria_mumu_DATA << '\n'
-                  << "N_SelectionCriteria_emu_DATA = " << N_SelectionCriteria_emu_DATA << '\n'
-		  << "N_MET_And_LeptonSelection_ee_MC = " << N_MET_And_LeptonSelection_ee_MC << '\n'
-		  << "N_MET_And_LeptonSelection_mumu_MC = " << N_MET_And_LeptonSelection_mumu_MC << '\n'
-		  << "N_MET_And_LeptonSelection_emu_MC = " << N_MET_And_LeptonSelection_emu_MC << '\n'
-		  << "N_MET_And_LeptonSelection_ee_DATA = " << N_MET_And_LeptonSelection_ee_DATA << '\n'
-                  << "N_MET_And_LeptonSelection_mumu_DATA = " << N_MET_And_LeptonSelection_mumu_DATA << '\n'
-                  << "N_MET_And_LeptonSelection_emu_DATA = " << N_MET_And_LeptonSelection_emu_DATA << '\n'
-		  << "N_MET_LeptonTriggers_SelectionCriteria_ee_MC = " << N_MET_LeptonTriggers_SelectionCriteria_ee_MC << '\n'
-		  << "N_MET_LeptonTriggers_SelectionCriteria_mumu_MC = " << N_MET_LeptonTriggers_SelectionCriteria_mumu_MC << '\n'
-		  << "N_MET_LeptonTriggers_SelectionCriteria_emu_MC = " << N_MET_LeptonTriggers_SelectionCriteria_emu_MC << '\n'
-		  << "N_MET_LeptonTriggers_SelectionCriteria_ee_DATA = " << N_MET_LeptonTriggers_SelectionCriteria_ee_DATA << '\n'
-                  << "N_MET_LeptonTriggers_SelectionCriteria_mumu_DATA = " << N_MET_LeptonTriggers_SelectionCriteria_mumu_DATA << '\n'
-                  << "N_MET_LeptonTriggers_SelectionCriteria_emu_DATA = " << N_MET_LeptonTriggers_SelectionCriteria_emu_DATA << '\n'
-		  << "Eff_ee_MC = " << Eff_ee_MC << '\n'
-		  << "Eff_mumu_MC = " << Eff_mumu_MC << '\n'
-		  << "Eff_emu_MC = " << Eff_emu_MC << '\n'
-		  << "Eff_ee_DATA = " << Eff_ee_DATA << '\n'
-                  << "Eff_mumu_DATA = " << Eff_mumu_DATA << '\n'
-                  << "Eff_emu_DATA = " << Eff_emu_DATA << '\n'
-                  << "Alpha_ee_MC = " << Alpha_ee_MC << '\n'
-		  << "Alpha_mumu_MC = " << Alpha_mumu_MC << '\n'
-		  << "Alpha_emu_MC = " << Alpha_emu_MC << '\n'
-		  << "Alpha_ee_DATA = " << Alpha_ee_DATA << '\n'
-                  << "Alpha_mumu_DATA = " << Alpha_mumu_DATA << '\n'
-                  << "Alpha_emu_DATA = " << Alpha_emu_DATA << '\n'                               
-                  << "Eff_UpperUncert_ee_MC = " << Eff_UpperUncert_ee_MC << '\n'
-		  << "Eff_UpperUncert_mumu_MC = " << Eff_UpperUncert_mumu_MC << '\n'
-		  << "Eff_UpperUncert_emu_MC = " << Eff_UpperUncert_emu_MC << '\n'
-		  << "Eff_LowerUncert_ee_MC = " << Eff_LowerUncert_ee_MC << '\n'
-                  << "Eff_LowerUncert_mumu_MC = " << Eff_LowerUncert_mumu_MC << '\n'
-                  << "Eff_LowerUncert_emu_MC = " << Eff_LowerUncert_emu_MC << '\n'
-		  << "Eff_UpperUncert_ee_DATA = " << Eff_UpperUncert_ee_DATA << '\n'
-                  << "Eff_UpperUncert_mumu_DATA = " << Eff_UpperUncert_mumu_DATA << '\n'
-                  << "Eff_UpperUncert_emu_DATA = " << Eff_UpperUncert_emu_DATA << '\n'
-                  << "Eff_LowerUncert_ee_DATA = " << Eff_LowerUncert_ee_DATA << '\n'
-                  << "Eff_LowerUncert_mumu_DATA = " << Eff_LowerUncert_mumu_DATA << '\n'
-                  << "Eff_LowerUncert_emu_DATA = " << Eff_LowerUncert_emu_DATA << '\n' 
-		  << "SF_ee = " << SF_ee << '\n'
-		  << "SF_mumu = " << SF_mumu << '\n'
-		  << "SF_emu = " << SF_emu << '\n'
-		  << "SF_Uncert_ee = " << SF_Uncert_ee << '\n'
-                  << "SF_Uncert_mumu = " << SF_Uncert_mumu << '\n'
-                  << "SF_Uncert_emu = " << SF_Uncert_emu << '\n'
-   		  << std::endl;
+  TriggerSFValues << N_SelectionCriteria << '\n'
+                  << N_MET_And_SelectionCriteria << '\n'
+		  << N_LeptonTriggersAndSelectionCriteria << '\n'
+                  << N_MET_LeptonTriggers_SelectionCriteria << '\n'
+                  << Eff << '\n'
+                  << Alpha << '\n'
+                  << Eff_UpperUncert << '\n'
+                  << Eff_LowerUncert << '\n'
+                  << std::endl; 
+
 
   if(ProcessInt == 95 || ProcessInt == 96){return;}
+
+  //Calculating the trigger scale factors
+  Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
+  Eff_UpperUncert_DATA = ( textfilereader2_TriggerSF("Data") ).at(6);
+  Eff_LowerUncert_DATA = ( textfilereader2_TriggerSF("Data") ).at(7);
+
+  Eff_MC = ( textfilereader2_TriggerSF("MC") ).at(4);
+  Eff_UpperUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(6);
+  Eff_LowerUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(7);
+
+  std::cout << "Eff_DATA = " << Eff_DATA << std::endl;
+  std::cout << "Eff_UpperUncert_DATA = " << Eff_UpperUncert_DATA << std::endl;
+  std::cout << "Eff_LowerUncert_DATA = " << Eff_LowerUncert_DATA << std::endl;
+  std::cout << "Eff_MC = " << Eff_MC << std::endl;
+  std::cout << "Eff_UpperUncert_MC = " << Eff_UpperUncert_MC << std::endl;
+  std::cout << "Eff_LowerUncert_MC = " << Eff_LowerUncert_MC << std::endl;
+
+  float TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
+
+  //Uncertainties in the trigger scale factors
+  float TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
+  float TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
+
+
+  TrigSF_Uncert = 0.0;
+  if (TrigSF_UpperUncert > TrigSF_LowerUncert){TrigSF_Uncert = TrigSF_UpperUncert;}
+  else{TrigSF_Uncert = TrigSF_LowerUncert;}
 
 
   //Z boson candidate reconstruction
