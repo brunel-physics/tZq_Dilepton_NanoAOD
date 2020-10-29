@@ -331,6 +331,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   TH2* histo_RunsABCD_ISO_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
   histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
+  TH2* histo_RunsABCD_ID_2018_stat = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta_stat")->Clone());
+  histo_RunsABCD_ID_2018_stat->SetDirectory(nullptr);
+
+  TH2* histo_RunsABCD_ID_2018_syst = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta_syst")->Clone());
+  histo_RunsABCD_ID_2018_syst->SetDirectory(nullptr);
+
+  TH2* histo_RunsABCD_ID_2018_stat = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta_stat")->Clone());
+  histo_RunsABCD_ID_2018_stat->SetDirectory(nullptr);
+
+  TH2* histo_RunsABCD_ISO_2018_syst = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
+  histo_RunsABCD_ISO_2018_syst->SetDirectory(nullptr);
+
   
   inputfile_RunsBCDEF_ID_2016->Close(); 
   inputfile_RunsGH_ID_2016->Close();
@@ -6532,10 +6544,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto MuonSF{[&Year, 				   &histo_RunsBCDEF_ID_2016,   &histo_RunsGH_ID_2016, 	      &histo_RunsBCDEF_ISO_2016, 	     
-	       &histo_RunsGH_ISO_2016,  	   &histo_RunsBCDEF_ID_2017,   &histo_RunsBCDEF_ID_Sys_2017,  &histo_RunsBCDEF_ID_Sys_Stat_2017, 
-	       &histo_RunsBCDEF_ID_Sys_Syst_2017,  &histo_RunsBCDEF_ISO_2017,  &histo_RunsBCDEF_ISO_Sys_2017, &histo_RunsBCDEF_ISO_Sys_Stat_2017,
-	       &histo_RunsBCDEF_ISO_Sys_Syst_2017, &histo_RunsABCD_ID_2018,    &histo_RunsABCD_ISO_2018
+  auto MuonSF{[&Year, 				   &histo_RunsBCDEF_ID_2016,     &histo_RunsGH_ID_2016, 	      &histo_RunsBCDEF_ISO_2016, 	     
+	       &histo_RunsGH_ISO_2016,  	   &histo_RunsBCDEF_ID_2017,     &histo_RunsBCDEF_ID_Sys_2017,  &histo_RunsBCDEF_ID_Sys_Stat_2017, 
+	       &histo_RunsBCDEF_ID_Sys_Syst_2017,  &histo_RunsBCDEF_ISO_2017,    &histo_RunsBCDEF_ISO_Sys_2017, &histo_RunsBCDEF_ISO_Sys_Stat_2017,
+	       &histo_RunsBCDEF_ISO_Sys_Syst_2017, &histo_RunsABCD_ID_2018,      &histo_RunsABCD_ISO_2018,      &histo_RunsABCD_ID_2018_stat,
+	       &histo_RunsABCD_ID_2018_syst,       &histo_RunsABCD_ID_2018_stat, &histo_RunsABCD_ISO_2018_syst
               ](const std::string& type, const int& YearInt, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
   	std::cout << "print 137" << std::endl;
@@ -6649,15 +6662,26 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			}
 			else if(YearInt == 2018){
 
+
 				float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 				float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+				float Error_RunsABCD_ID_2018_sys = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+                                float Error_RunsABCD_ISO_2018_sys = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+
+				float Error_RunsABCD_ID_2018_stat = histo_RunsABCD_ID_2018_stat->GetBinError( histo_RunsABCD_ID_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
+				float Error_RunsABCD_ISO_2018_stat = histo_RunsABCD_ISO_2018_stat->GetBinError( histo_RunsABCD_ISO_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
+
+				float Error_RunsABCD_ID_2018_syst = histo_RunsABCD_ID_2018_syst->GetBinError( histo_RunsABCD_ID_2018_syst->FindBin(pt.at(i), AbsEta.at(i)) );
+                                float Error_RunsABCD_ISO_2018_syst = histo_RunsABCD_ISO_2018_syst->GetBinError( histo_RunsABCD_ISO_2018_syst->FindBin(pt.at(i), AbsEta.at(i)) );
 
 				if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsABCD_ID_2018);}
-				else if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
+				if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
+				else if(type == "ID sys (syst)"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018_syst);}
+				else if(type == "ID sys (stat)"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018_stat);}
 				else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsABCD_ISO_2018);}
 				else if(type == "Iso sys"){MuonSFOutput.push_back(Error_RunsABCD_ISO_2018);}
+				else if(type == "Iso sys (syst)"){MuonSFOutput.push_back(Error_RunsABCD_ISO_2018_syst);}
+				else if(type == "Iso sys (stat)"){MuonSFOutput.push_back(Error_RunsABCD_ISO_2018_stat);}
 				else{std::cout << "Error with Muon SF type (2018)" << std::endl;}
 
 			}
@@ -6694,7 +6718,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	switch(YearInt){
 		case 2016: return MuonSF("ID sys", YearInt, "Up", pt, eta);
         	case 2017: return MuonSF("ID sys (syst)", YearInt, " ", pt, eta);
-  		case 2018: std::cout << "Need to add 2018" << std::endl; 
+  		case 2018: return MuonSF("ID sys (syst)", YearInt, " ", pt, eta); 
 		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break;
 	}
 		
@@ -6708,7 +6732,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	switch(YearInt){
 		case 2016: return MuonSF("ID sys", YearInt, "Down", pt, eta);
   		case 2017: return MuonSF("ID sys (stat)", YearInt, " ", pt, eta);
-  		case 2018: std::cout << "Need to add 2018" << std::endl;
+  		case 2018: return MuonSF("ID sys (stat)", YearInt, " ", pt, eta);
 		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break; 
 	}
 
@@ -6722,7 +6746,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	switch(YearInt){
 		case 2016: return MuonSF("Iso sys", YearInt, "Up", pt, eta);
         	case 2017: return MuonSF("Iso sys (syst)", YearInt, " ", pt, eta);
-  		case 2018: std::cout << "Need to add 2018" << std::endl; 
+  		case 2018: return MuonSF("Iso sys (syst)", YearInt, " ", pt, eta); 
 		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break;
 	}
 
@@ -6736,7 +6760,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	switch(YearInt){
 		case 2016: return MuonSF("Iso sys", YearInt, "Down", pt, eta);
         	case 2017: return MuonSF("Iso sys (stat)", YearInt, " ", pt, eta);
-  		case 2018: std::cout << "Need to add 2018" << std::endl;
+  		case 2018: return MuonSF("Iso sys (stat)", YearInt, " ", pt, eta);
 		default: std::cout << "ERROR: Please choose the year out of 2016, 2017 or 2018" << std::endl; break;
 	}
 
