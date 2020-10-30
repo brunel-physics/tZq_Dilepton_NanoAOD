@@ -63,6 +63,14 @@ template<typename T>
   return a[mask];
 }
 
+template<typename T>
+[[gnu::const]] T select_floats(const T& a, const floats& mask)
+{
+  std::cout << "a.size() = " << a.size() << std::endl;
+  std::cout << "mask.size() = " << mask.size() << std::endl;
+  return a[mask];
+}
+
 template<typename T, typename U> //for the all equal function
 [[gnu::const]] bool all_equal(const T& t, const U& u)
 {
@@ -274,6 +282,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   EGammaEffRecoSys_inputfile_2018->Close();
 
 
+  std::cout << "before inputfile_RunsBCDEF_ID_2016" << std::endl;
+
   TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
   TH2* histo_RunsBCDEF_ID_2016 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
   histo_RunsBCDEF_ID_2016->SetDirectory(nullptr);
@@ -323,6 +333,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
   histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 
+  std::cout << "before inputfile_RunsABCD_ID_2018" << std::endl;
+
   TFile* inputfile_RunsABCD_ID_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
   TH2* histo_RunsABCD_ID_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta")->Clone());
   histo_RunsABCD_ID_2018->SetDirectory(nullptr);
@@ -331,19 +343,28 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   TH2* histo_RunsABCD_ISO_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
   histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
+  std::cout << "before histo_RunsABCD_ID_2018_stat" << std::endl;
+
   TH2* histo_RunsABCD_ID_2018_stat = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta_stat")->Clone());
   histo_RunsABCD_ID_2018_stat->SetDirectory(nullptr);
+
+  std::cout << "after histo_RunsABCD_ID_2018_stat" << std::endl;
 
   TH2* histo_RunsABCD_ID_2018_syst = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta_syst")->Clone());
   histo_RunsABCD_ID_2018_syst->SetDirectory(nullptr);
 
-  TH2* histo_RunsABCD_ID_2018_stat = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta_stat")->Clone());
-  histo_RunsABCD_ID_2018_stat->SetDirectory(nullptr);
+  std::cout << "after histo_RunsABCD_ID_2018_syst" << std::endl;
+
+  TH2* histo_RunsABCD_ISO_2018_stat = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
+  histo_RunsABCD_ISO_2018_stat->SetDirectory(nullptr);
+
+  std::cout << "after histo_RunsABCD_ISO_2018_stat " << std::endl;
 
   TH2* histo_RunsABCD_ISO_2018_syst = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
   histo_RunsABCD_ISO_2018_syst->SetDirectory(nullptr);
 
-  
+  std::cout << "after histo_RunsABCD_ISO_2018_syst" << std::endl;  
+
   inputfile_RunsBCDEF_ID_2016->Close(); 
   inputfile_RunsGH_ID_2016->Close();
   inputfile_RunsBCDEF_ISO_2016->Close();
@@ -3516,7 +3537,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   			LeadingLeptonPt > MaxElectronPt          &&  SubleadingLeptonPt > MinElectronPt  && 
 			(abs(LeptonEta) < 1.442     		 &&  Electron_dz < 0.1 			 && Electron_dxy < 0.05)  || //barrel region
                         (abs(LeptonEta) > 1.566                  &&  abs(LeptonEta) < 3.0   		 && Electron_dz < 0.2 && Electron_dxy < 0.1); //endcaps
-*/
+			*/
 
 		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2;
 
@@ -4533,6 +4554,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
      
         std::cout << "print 75" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "btags.size() = " << btags.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
 	return tight_jets && (btags > 0.8838f) && (etas < MaxTrackerEta);
   
   }};
@@ -4549,6 +4573,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
 	std::cout << "print 77" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+	std::cout << "btags.size() = " << btags.size() << std::endl;
+	std::cout << "etas.size() = " << etas.size() << std::endl;
+	std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
   }};
@@ -4557,6 +4585,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
 	std::cout << "print 78" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "btags.size() = " << btags.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
         return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4566,6 +4598,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
         
       	std::cout << "print 79" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "btags.size() = " << btags.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
       	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4575,6 +4611,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
                 
       	std::cout << "print 80" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "btags.size() = " << btags.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
       	return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4583,6 +4623,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
 
   	std::cout << "print 81" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "btags.size() = " << btags.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
     	return abs(Jet_partonFlavour) != 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4591,6 +4635,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
   	std::cout << "print 82" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4599,6 +4646,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
 	std::cout << "print 83" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4607,6 +4657,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
 	std::cout << "print 84" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4615,6 +4668,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
 	std::cout << "print 85" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
+
         return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4623,6 +4680,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
 	
 	std::cout << "print 86" << std::endl;
+	std::cout << "tight_jets.size() = " << tight_jets.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 	return abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -6548,7 +6608,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	       &histo_RunsGH_ISO_2016,  	   &histo_RunsBCDEF_ID_2017,     &histo_RunsBCDEF_ID_Sys_2017,  &histo_RunsBCDEF_ID_Sys_Stat_2017, 
 	       &histo_RunsBCDEF_ID_Sys_Syst_2017,  &histo_RunsBCDEF_ISO_2017,    &histo_RunsBCDEF_ISO_Sys_2017, &histo_RunsBCDEF_ISO_Sys_Stat_2017,
 	       &histo_RunsBCDEF_ISO_Sys_Syst_2017, &histo_RunsABCD_ID_2018,      &histo_RunsABCD_ISO_2018,      &histo_RunsABCD_ID_2018_stat,
-	       &histo_RunsABCD_ID_2018_syst,       &histo_RunsABCD_ID_2018_stat, &histo_RunsABCD_ISO_2018_syst
+	       &histo_RunsABCD_ID_2018_syst,       &histo_RunsABCD_ISO_2018_stat, &histo_RunsABCD_ISO_2018_syst
               ](const std::string& type, const int& YearInt, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
   	std::cout << "print 137" << std::endl;
@@ -6665,8 +6725,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 				float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 				float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsABCD_ID_2018_sys = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-                                float Error_RunsABCD_ISO_2018_sys = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+				float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+                                float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 
 				float Error_RunsABCD_ID_2018_stat = histo_RunsABCD_ID_2018_stat->GetBinError( histo_RunsABCD_ID_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
 				float Error_RunsABCD_ISO_2018_stat = histo_RunsABCD_ISO_2018_stat->GetBinError( histo_RunsABCD_ISO_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
@@ -7301,7 +7361,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 100000);
+  auto d_Range = d.Range(0, 1000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -8180,7 +8240,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
                                            .Define("TotalPt_System", TotalVariable_System, {"RecoZPt", "w_pair_pt", "Top_Pt", "LepPtSum", "JetPtSum"})
 					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_doubles, {"TotalHT_System", "TotalPt_System"})
-					   .Define("CMSBTagSF", CMSBTagSF, {"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "Jet_btagCSVV2"/*"BTAGEFF_nonbjet_Jet_btagCSVV2_num"*/, "Jet_partonFlavour"/*"BTAGEFF_nonbjet_Jet_partonFlavour_num"*/})
+					   .Define("CMSBTagSF", CMSBTagSF, {"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_bjet_Jet_btagCSVV2_num", "BTAGEFF_bjet_Jet_partonFlavour_num"})
 					   .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
                                            .Define("notbjetpt", bjet_variable, {JetPtInput, "nJet", "nonbjets"})
                                            .Define("notbjeteta", bjet_variable, {JetEtaInput, "nJet", "nonbjets"})
@@ -8393,6 +8453,24 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
 
 
+  if( (Process == "tZq" || Process == "tHq" || Process == "ttW" || Process == "ttZ" || Process == "WZ") && Systematic == "Nominal"){
+
+	auto h_OS_MC = d_Blinded.Histo1D("OppositeSignNonPrompt", "EventWeight");
+	auto h_SS_MC = d_Blinded.Histo1D("SameSignNonPrompt", "EventWeight"); 
+	int N_0S_MC = h_OS_MC->GetEntries();
+	int N_SS_MC = h_SS_MC->GetEntries(); 
+
+	std::ofstream NPLInfoFile;
+	std::string NPLInfoString = "NPLInfo_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                    SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
+
+	NPLInfoFile.open(NPLInfoString.c_str());
+	NPLInfoFile << N_0S_MC << std::endl;
+	NPLInfoFile << N_SS_MC << std::endl;
+
+  }
+
+
 }
 
 
@@ -8419,6 +8497,112 @@ void fulleventselectionAlgo::fulleventselection(){
 
   }
 
+
+  //Obtaining the ratio for the NPL estimation
+
+  if(NPL_Selection == 0){
+
+  	std::string Year_String;
+  	std::string Channel_String;
+  	std::string SR_String;
+  	std::string SBR_String;
+
+  	switch(Year_Selection){
+
+		case 2016: Year_String == "2016"; break;
+		case 2017: Year_String == "2016"; break;
+		case 2018: Year_String == "2016"; break;
+
+  	}
+
+  	switch(Channel_Selection){
+
+		case 1: Channel_String == "ee"; break;
+		case 2: Channel_String == "mumu"; break;
+		case 3: Channel_String == "emu"; break;
+
+  	}
+
+  	switch(SR_Selection){
+
+		case 0: SR_String == "SR"; 
+		case 1: SR_String == "";
+  	}
+
+  	switch(SBR_Selection){
+
+        	case 0: SBR_String == "SBR";
+        	case 1: SBR_String == "";
+  	}
+
+
+  	std::string NPL_TextFile;
+
+  	auto linereader_NPL{[&Channel_String, &Year_String, &SR_String, &SBR_String, &NPL_TextFile](const int& LineNumber, const std::string SampleInput){
+
+  		std::cout << "print 190" << std::endl;
+
+   		NPL_TextFile = "NPLInfo_" + SampleInput + "_Nominal_" + Channel_String + "__" + SR_String + "_" + SBR_String + "___" + Year_String + ".txt";
+
+  		using namespace std;
+
+   		fstream file(NPL_TextFile.c_str());
+   		GotoLine(file, LineNumber);
+
+   		std::string line;
+   		file >> line;
+
+  		double Value = atof(line.c_str());
+   		return Value;
+
+  	}};
+
+
+  	auto linecounter_NPL{[&NPL_TextFile](const std::string& SampleInput){
+
+  		std::cout << "print 191" << std::endl;
+
+   		int number_of_lines = 0;
+   		std::string line;
+   		std::ifstream myfile(NPL_TextFile.c_str());
+
+   		while (getline(myfile, line))
+        		++number_of_lines;
+        		return number_of_lines;
+
+  	}};
+
+  	auto textfilereader2_NPL{[&NPL_TextFile, &linecounter_NPL, &linereader_NPL](const std::string& SampleInput){
+
+   	std::cout << "print 192" << std::endl;
+
+  		int NumberOfLines = linecounter_NPL(NPL_TextFile);
+   		std::vector<double> Value;
+
+   		for(int i = 1; i < NumberOfLines+1; i++){
+        		Value.push_back(linereader_NPL(i, NPL_TextFile));
+   		}
+
+   		return Value;
+
+ 	 }};
+
+	float NPL_Ratio_Numerator = textfilereader2_NPL("tZq").at(0) + textfilereader2_NPL("tHq").at(0) + 
+				    textfilereader2_NPL("ttW").at(0) + textfilereader2_NPL("ttZ").at(0) + textfilereader2_NPL("WZ").at(0);
+
+	float NPL_Ratio_Denominator = textfilereader2_NPL("tZq").at(1) + textfilereader2_NPL("tHq").at(1) +                       
+                                      textfilereader2_NPL("ttW").at(1) + textfilereader2_NPL("ttZ").at(1) + textfilereader2_NPL("WZ").at(1);
+
+  
+        float NPL_Weight = NPL_Ratio_Numerator / NPL_Ratio_Denominator;
+
+	std::ofstream NPLWeightFile;
+        std::string NPLWeightString = "NPLWeight_" + Year_String + ".txt";
+
+        NPLWeightFile.open(NPLWeightString.c_str());
+        NPLWeightFile << NPL_Weight << std::endl;
+
+  }
 
 }
 
