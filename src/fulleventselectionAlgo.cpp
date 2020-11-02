@@ -5152,11 +5152,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	doubles weight;
 
 	switch(ProcessInt){
+		case 25: weight = sqrt( SF_top * SF_antitop); break;
 		case 26: weight = sqrt( SF_top * SF_antitop); break;
 		case 27: weight = sqrt( SF_top * SF_antitop); break;
 		case 28: weight = sqrt( SF_top * SF_antitop); break;
 		case 29: weight = sqrt( SF_top * SF_antitop); break;
 		case 30: weight = sqrt( SF_top * SF_antitop); break;
+		case 31: weight = sqrt( SF_top * SF_antitop); break;
 		default: doubles weight_vec(SF_top.size(), 1.0); weight = weight_vec; break;
 	}
  
