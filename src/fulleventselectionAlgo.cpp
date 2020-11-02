@@ -2137,14 +2137,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		   break;
 
         case 2017: switch(ProcessInt){ 
-                   	case 0: PSWeightString = "PSWeight"; break;
-                        case 29: PSWeightString = "PSWeight"; break;
-                        case 30: PSWeightString = "PSWeight"; break;
-                        case 33: PSWeightString = "PSWeight"; break;
-                        case 36: PSWeightString = "PSWeight"; break;
-                        case 39: PSWeightString = "PSWeight"; break;
-                        case 56: PSWeightString = "PSWeight"; break;
-                        case 89: PSWeightString = "PSWeight"; break;
+                   	case 0: PSWeightString = "PSWeight"; break; //tZq
+			case 28: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
+			case 29: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
+                        case 32: PSWeightString = "PSWeight"; break; //single top t-channel (top)
+			case 33: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale up)
+			case 34: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale down)
+			case 35: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
+			case 36: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale up)
+			case 37: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale down)
+			case 38: PSWeightString = "PSWeight"; break; //single top s-channel
+			case 57: PSWeightString = "PSWeight"; break; //single top (tbarW)
+			case 92: PSWeightString = "PSWeight"; break; //ttgamma
                         default: PSWeightString = "LeptonPt"; break;
                     }
 	
@@ -2152,15 +2156,19 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		   break;
 
         case 2018: switch(ProcessInt){ 
-			case 0: PSWeightString = "PSWeight"; break;
-                        case 29: PSWeightString = "PSWeight"; break;
-                        case 30: PSWeightString = "PSWeight"; break;
-                        case 33: PSWeightString = "PSWeight"; break;
-                        case 36: PSWeightString = "PSWeight"; break;
-                        case 39: PSWeightString = "PSWeight"; break;
-                        case 56: PSWeightString = "PSWeight"; break;
-                        case 89: PSWeightString = "PSWeight"; break;
-                        default: PSWeightString = "LeptonPt"; break;                  
+                        case 0: PSWeightString = "PSWeight"; break; //tZq
+                        case 28: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
+                        case 29: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
+                        case 32: PSWeightString = "PSWeight"; break; //single top t-channel (top)
+                        case 33: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale up)
+                        case 34: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale down)
+                        case 35: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
+                        case 36: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale up)
+                        case 37: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale down)
+			case 38: PSWeightString = "PSWeight"; break; //single top s-channel
+                        case 57: PSWeightString = "PSWeight"; break; //single top (tbarW)
+                        case 92: PSWeightString = "PSWeight"; break; //ttgamma
+			default: PSWeightString = "LeptonPt"; break;                  
 		    }
 
 		 
@@ -6756,26 +6764,34 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		case 2016: return Ones;
 		case 2017: switch(ProcessInt){
-				case 0: return PSWeightInput;
-				case 29: return PSWeightInput;
-				case 30: return PSWeightInput;
-				case 33: return PSWeightInput;
-				case 36: return PSWeightInput;
-				case 39: return PSWeightInput;
-				case 56: return PSWeightInput;
-				case 89: return PSWeightInput;
+				case 0: return PSWeightInput; //tZq
+				case 28: return PSWeightInput; //ttbar (to hadronic)
+				case 29: return PSWeightInput; //ttbar (to semileptonic)
+				case 32: return PSWeightInput; //single top t-channel (top)
+				case 33: return PSWeightInput; //single top t-channel (top, scale up)
+				case 34: return PSWeightInput; //single top t-channel (top, scale down)
+				case 35: return PSWeightInput; //single top t-channel (antitop)
+				case 36: return PSWeightInput; //single top t-channel (antitop, scale up)
+				case 37: return PSWeightInput; //single top t-channel (antitop, scale down)
+				case 38: return PSWeightInput; //single top s-channel
+				case 57: return PSWeightInput; //single top (tbarW)
+				case 92: return PSWeightInput; //ttgamma
 				default: return Ones;
 			    }
 		case 2018: switch(ProcessInt){
-                            	case 0: return PSWeightInput;
-                                case 29: return PSWeightInput;
-                                case 30: return PSWeightInput;
-                                case 33: return PSWeightInput;
-                                case 36: return PSWeightInput;
-                                case 39: return PSWeightInput;
-                                case 56: return PSWeightInput;
-                                case 89: return PSWeightInput;
-                                default: return Ones;
+                                case 0: return PSWeightInput; //tZq
+                                case 28: return PSWeightInput; //ttbar (to hadronic)
+                                case 29: return PSWeightInput; //ttbar (to semileptonic)
+                                case 32: return PSWeightInput; //single top t-channel (top)
+                                case 33: return PSWeightInput; //single top t-channel (top, scale up)
+                                case 34: return PSWeightInput; //single top t-channel (top, scale down)
+                                case 35: return PSWeightInput; //single top t-channel (antitop)
+                                case 36: return PSWeightInput; //single top t-channel (antitop, scale up)
+                                case 37: return PSWeightInput; //single top t-channel (antitop, scale down)
+                                case 38: return PSWeightInput; //single top s-channel
+                                case 57: return PSWeightInput; //single top (tbarW)
+                                case 92: return PSWeightInput; //ttgamma
+				default: return Ones;
 			    }
 
 	}
