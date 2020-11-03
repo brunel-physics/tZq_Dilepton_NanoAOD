@@ -845,7 +845,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic/*"}; break;
+                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*"}; break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
@@ -856,7 +856,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		 switch(YearInt){
                         case 2016: break;
-                        case 2017: break;
+                        case 2017: nput_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5_ext/*"}; break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
@@ -4543,7 +4543,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
 	//std::cout << "print 78" << std::endl;
-        return abs(Jet_partonFlavour) == 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+        return abs(Jet_partonFlavour) == 4 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4552,7 +4552,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
         
       	//std::cout << "print 79" << std::endl;
-      	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+      	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4561,7 +4561,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
                 
       	//std::cout << "print 80" << std::endl;
-      	return abs(Jet_partonFlavour) == 21 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+      	return abs(Jet_partonFlavour) == 21 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4569,7 +4569,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
 
   	//std::cout << "print 81" << std::endl;
-    	return abs(Jet_partonFlavour) != 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+    	return abs(Jet_partonFlavour) != 5 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -5188,11 +5188,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto CMSBTagSF_Function{[&SystematicInt](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
 
   	//std::cout << "print 121" << std::endl;
-	std::cout << "pts.size() = " << pts.size() << std::endl; 
-	std::cout << "etas.size() = " << etas.size() << std::endl;
-	std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
-	std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
-
 
   	floats ResultVector{};
 
@@ -5300,6 +5295,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					float EtaTestFloat = stof(EtaTest.at(i));
 					float DiscrTestFloat = stof(DiscrTest.at(i));
 
+					/*
+
+				        std::cout << "CSVv2OperatingPointTest.at(i) = " << CSVv2OperatingPointTest.at(i) << std::endl;
+					std::cout << "MeasurementTypeTest.at(i) = " << MeasurementTypeTest.at(i) << std::endl;
+					std::cout << "SysTypeTest.at(i) = " << SysTypeTest.at(i) << std::endl;
+					std::cout << "JetFlavourTest.at(i) = " << JetFlavourTest.at(i) << std::endl;
+					std::cout << "EtaTestFloat = " << EtaTestFloat << std::endl;
+					std::cout << "PtTestFloat = " << PtTestFloat << std::endl;
+					std::cout << "DiscrTestFloat = " << DiscrTestFloat << std::endl;
+					*/
 
 					if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
     					&& (VecAt1String == MeasurementTypeTest.at(i))
@@ -5343,8 +5348,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	
 				std::string outputString;
 
+				std::cout << "before if" << std::endl;
+
 				if(NewOutVec.size() > 11){outputString = NewOutVec.at( ((i+1)*11)-1 );}
 				else{outputString = NewOutVec.at(0); }
+
+				 std::cout << "after if" << std::endl;
 
 				outputString.erase(outputString.begin()+1);
                 		outputString.erase(outputString.begin());
@@ -6254,6 +6263,22 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
  	//std::cout << "print 122" << std::endl;
+ 	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << "inside CMSBTagSF" << std::endl;
+        std::cout << "pts.size() = " << pts.size() << std::endl;
+        std::cout << "etas.size() = " << etas.size() << std::endl;
+        std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
+        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
+	std::cout << "pts = " << pts << std::endl;
+        std::cout << "etas = " << etas << std::endl;
+        std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
+        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
+	std::cout << "CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour) = " << CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour) << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
  	return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
 
   }};
@@ -6268,6 +6293,24 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
 
  	//std::cout << "print 124" << std::endl;
+ 	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl; 
+ 	std::cout << "inside CMSNonBTagSF" << std::endl;
+	std::cout << "pts.size() = " << pts.size() << std::endl;
+	std::cout << "etas.size() = " << etas.size() << std::endl;
+	std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
+	std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
+	std::cout << "pts = " << pts << std::endl;
+        std::cout << "etas = " << etas << std::endl;
+        std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
+        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
+	std::cout << "CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour) = " << CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour) << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+ 	//
+
  	return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
 
   }};
