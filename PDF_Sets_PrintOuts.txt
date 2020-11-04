@@ -1,0 +1,1423 @@
+root -l 
+TFile * fin = new TFile("", "READ")
+TBranch * br = Events->GetBranch("LHEPdfWeight")
+br->Print()
+
+
+2016
+
+tZq
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :   636928 : Total  Size=  262538769 bytes  File Size  =   99907146 *
+*Baskets :     1137 : Basket Size=     265216 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_M50_aMCatNLO
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1416028 : Total  Size=  583639258 bytes  File Size  =  225919672 *
+*Baskets :     2158 : Basket Size=     276480 bytes  Compression=   2.58     *
+*............................................................................*
+
+ZPlusJets_M50_Madgraph
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 262000 - 262100*
+*Entries :  1365611 : Total  Size=  557406972 bytes  File Size  =  225922012 *
+*Baskets :     2176 : Basket Size=     279552 bytes  Compression=   2.47     *
+*............................................................................*
+
+
+ZPlusJets_M50_Madgraph_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 262000 - 262100*
+*Entries :  1701085 : Total  Size=  694332466 bytes  File Size  =  281410064 *
+*Baskets :     2654 : Basket Size=     281600 bytes  Compression=   2.47     *
+*............................................................................*
+
+
+
+ZPlusJets_M10To50_aMCatNLO:
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   959884 : Total  Size=  395618877 bytes  File Size  =  166238714 *
+*Baskets :     1341 : Basket Size=     312320 bytes  Compression=   2.38     *
+*............................................................................*
+
+ZPlusJets_M10ToM50_ext_aMCatNLO
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1907538 : Total  Size=  786197295 bytes  File Size  =  330457786 *
+*Baskets :     2671 : Basket Size=     311296 bytes  Compression=   2.38     *
+*............................................................................*
+
+ZPlusJets_M10To50_Madgraph
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 262000 - 262100*
+*Entries :  1075231 : Total  Size=  438854542 bytes  File Size  =  195050740 *
+*Baskets :     1466 : Basket Size=     314880 bytes  Compression=   2.25     *
+*............................................................................*
+
+ZPlusJets_PtBinned_0To50
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :    68305 : Total  Size=   28155349 bytes  File Size  =   10897754 *
+*Baskets :      121 : Basket Size=     279552 bytes  Compression=   2.58     *
+*............................................................................*
+
+ZPlusJets_PtBinned_50To100
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1163694 : Total  Size=  479644623 bytes  File Size  =  182277534 *
+*Baskets :     1855 : Basket Size=     274944 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_PtBinned_50To100_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   954071 : Total  Size=  393242233 bytes  File Size  =  149387578 *
+*Baskets :     1509 : Basket Size=     275968 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_PtBinned_100To250
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1226934 : Total  Size=  505717270 bytes  File Size  =  192503280 *
+*Baskets :     2018 : Basket Size=     264704 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_PtBinned_100To250_ext1
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   936229 : Total  Size=  385894926 bytes  File Size  =  146891024 *
+*Baskets :     1542 : Basket Size=     265216 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_PtBinned_100To250_ext2
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   328977 : Total  Size=  135598647 bytes  File Size  =   51626606 *
+*Baskets :      547 : Basket Size=     264704 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_PtBinned_100To250_ext5
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1394074 : Total  Size=  574609688 bytes  File Size  =  218796632 *
+*Baskets :     2300 : Basket Size=     265216 bytes  Compression=   2.63     *
+*............................................................................*
+
+ZPlusJets_PtBinned_250To400
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :     3070 : Total  Size=    1267302 bytes  File Size  =     496408 *
+*Baskets :       18 : Basket Size=     256000 bytes  Compression=   2.55     *
+*............................................................................*
+
+ZPlusJets_PtBinned_250To400_ext1
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   590806 : Total  Size=  243525714 bytes  File Size  =   93530584 *
+*Baskets :     1038 : Basket Size=     257024 bytes  Compression=   2.60     *
+*............................................................................*
+
+ZPlusJets_PtBinned_250To400_ext2
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   594317 : Total  Size=  244971810 bytes  File Size  =   94076676 *
+*Baskets :     1034 : Basket Size=     257536 bytes  Compression=   2.60     *
+*............................................................................*
+
+ZPlusJets_PtBinned_250To400_ext5
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1243550 : Total  Size=  512577777 bytes  File Size  =  196827394 *
+*Baskets :     2153 : Basket Size=     256512 bytes  Compression=   2.60     *
+*............................................................................*
+
+ZPlusJets_PtBinned_400To650
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   432056 : Total  Size=  178094663 bytes  File Size  =   69564334 *
+*Baskets :      799 : Basket Size=     256512 bytes  Compression=   2.56     *
+*............................................................................*
+
+ZPlusJets_PtBinned_400To650_ext1
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   477622 : Total  Size=  196876902 bytes  File Size  =   76873944 *
+*Baskets :      882 : Basket Size=     258048 bytes  Compression=   2.56     *
+*............................................................................*
+
+ZPlusJets_PtBinned_400To650_ext2
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   604038 : Total  Size=  248985473 bytes  File Size  =   97249638 *
+*Baskets :     1113 : Basket Size=     258560 bytes  Compression=   2.56     *
+*............................................................................*
+
+ZPlusJets_PtBinned_650ToInf
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   430691 : Total  Size=  177521492 bytes  File Size  =   71423400 *
+*Baskets :      700 : Basket Size=     263680 bytes  Compression=   2.49     *
+*............................................................................*
+
+ZPlusJets_PtBinned_650ToInf_ext1
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   599665 : Total  Size=  247167665 bytes  File Size  =   99403822 *
+*Baskets :      965 : Basket Size=     264704 bytes  Compression=   2.49     *
+*............................................................................*
+
+ZPlusJets_PtBinned_650ToInf_ext2
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   597526 : Total  Size=  246286833 bytes  File Size  =   99094782 *
+*Baskets :      969 : Basket Size=     264192 bytes  Compression=   2.49     *
+*............................................................................*
+
+ttbar_madgraph
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 262000 - 262100*
+*Entries :    18886 : Total  Size=    7710675 bytes  File Size  =    3176914 *
+*Baskets :       43 : Basket Size=     263168 bytes  Compression=   2.43     *
+*............................................................................*
+
+ttbar_aMCatNLO
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   670495 : Total  Size=  276369899 bytes  File Size  =  106278406 *
+*Baskets :     1151 : Basket Size=     269824 bytes  Compression=   2.60     *
+*............................................................................*
+
+ttbar_inc
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   729318 : Total  Size=  294775772 bytes  File Size  =  108655736 *
+*Baskets :     1200 : Basket Size=     269312 bytes  Compression=   2.71     *
+*............................................................................*
+
+ST_tchannel_top
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :   746440 : Total  Size=  307657386 bytes  File Size  =  114308828 *
+*Baskets :     1134 : Basket Size=     282112 bytes  Compression=   2.69     *
+*............................................................................*
+
+ST_tchannel_top_ScaleUp
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :   935608 : Total  Size=  385644197 bytes  File Size  =  143440546 *
+*Baskets :     1589 : Basket Size=     274432 bytes  Compression=   2.69     *
+*............................................................................*
+
+ST_tchannel_top_ScaleDown
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :  1798076 : Total  Size=  741106690 bytes  File Size  =  275410380 *
+*Baskets :     2742 : Basket Size=     282624 bytes  Compression=   2.69     *
+*............................................................................*
+
+ST_tchannel_antitop
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :   744977 : Total  Size=  307052450 bytes  File Size  =  120347536 *
+*Baskets :     1114 : Basket Size=     283136 bytes  Compression=   2.55     *
+*............................................................................*
+
+ST_schannel
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :  1478399 : Total  Size=  609365758 bytes  File Size  =  230374980 *
+*Baskets :     2430 : Basket Size=     272384 bytes  Compression=   2.64     *
+*............................................................................*
+
+TT_hdampUP
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :    56520 : Total  Size=   22845916 bytes  File Size  =    8404100 *
+*Baskets :      104 : Basket Size=     268800 bytes  Compression=   2.72     *
+*............................................................................*
+
+TT_hdampUP_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :  1263504 : Total  Size=  510679130 bytes  File Size  =  187717384 *
+*Baskets :     2046 : Basket Size=     270848 bytes  Compression=   2.72     *
+*............................................................................*
+
+
+TT_hdampDOWN
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :  1282434 : Total  Size=  518331101 bytes  File Size  =  191781774 *
+*Baskets :     2085 : Basket Size=     269824 bytes  Compression=   2.70     *
+*............................................................................*
+
+TT_hdampDOWN_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :  1015080 : Total  Size=  410272343 bytes  File Size  =  151823326 *
+*Baskets :     1647 : Basket Size=     269824 bytes  Compression=   2.70     *
+*............................................................................*
+
+
+ST_tchannel_top_hdampUP
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    81800 : Total  Size=   34044451 bytes  File Size  =   10715402 *
+*Baskets :      139 : Basket Size=     274944 bytes  Compression=   3.18     *
+*............................................................................*
+
+ST_tchannel_top_hdampDOWN
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   302000 : Total  Size=  125689943 bytes  File Size  =   39676282 *
+*Baskets :      527 : Basket Size=     275968 bytes  Compression=   3.17     *
+*............................................................................*
+
+ST_tchannel_antitop_hdampDOWN
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   678000 : Total  Size=  282177447 bytes  File Size  =   94667810 *
+*Baskets :     1183 : Basket Size=     273408 bytes  Compression=   2.98     *
+*............................................................................*
+
+ST_tchannel_antitop_hdampUP
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   144000 : Total  Size=   59932840 bytes  File Size  =   20034832 *
+*Baskets :      260 : Basket Size=     273408 bytes  Compression=   2.99     *
+*............................................................................*
+
+TT_isr_UP
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   692004 : Total  Size=  279696011 bytes  File Size  =  103132406 *
+*Baskets :     1155 : Basket Size=     269312 bytes  Compression=   2.71     *
+*............................................................................*
+
+
+TT_isr_DOWN
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :  1263209 : Total  Size=  510561585 bytes  File Size  =  188175366 *
+*Baskets :     2061 : Basket Size=     268800 bytes  Compression=   2.71     *
+*............................................................................*
+
+TT_isr_DOWN_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   325413 : Total  Size=  131526321 bytes  File Size  =   48476102 *
+*Baskets :      541 : Basket Size=     269312 bytes  Compression=   2.71     *
+*............................................................................*
+
+TT_fsr_UP
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   825080 : Total  Size=  333480842 bytes  File Size  =  122909260 *
+*Baskets :     1358 : Basket Size=     272384 bytes  Compression=   2.71     *
+*............................................................................*
+
+
+TT_fsr_UP_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   898059 : Total  Size=  362977002 bytes  File Size  =  133791128 *
+*Baskets :     1474 : Basket Size=     272896 bytes  Compression=   2.71     *
+*............................................................................*
+
+TT_fsr_DOWN
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :  1276460 : Total  Size=  515916842 bytes  File Size  =  190122208 *
+*Baskets :     2078 : Basket Size=     266240 bytes  Compression=   2.71     *
+*............................................................................*
+
+TT_fsr_DOWN_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   954114 : Total  Size=  385632814 bytes  File Size  =  142138420 *
+*Baskets :     1562 : Basket Size=     265728 bytes  Compression=   2.71     *
+*............................................................................*
+
+ST_tW
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   734310 : Total  Size=    2968950 bytes  File Size  =      56834 *
+*Baskets :      287 : Basket Size=      34304 bytes  Compression=  52.13     *
+*............................................................................*
+ST_tW_ScaleUp
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   806370 : Total  Size=    3260133 bytes  File Size  =      62788 *
+*Baskets :      314 : Basket Size=      33792 bytes  Compression=  51.82     *
+*............................................................................*
+
+ST_tW_ScaleDown
+	
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   806660 : Total  Size=    3262056 bytes  File Size  =      63574 *
+*Baskets :      321 : Basket Size=      33792 bytes  Compression=  51.20     *
+*............................................................................*
+
+ST_tbarW
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   554382 : Total  Size=    2241826 bytes  File Size  =      43346 *
+*Baskets :      219 : Basket Size=      33792 bytes  Compression=  51.61     *
+*............................................................................*
+
+ST_tbarW_ScaleUp
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   789240 : Total  Size=    3190632 bytes  File Size  =      60978 *
+*Baskets :      305 : Basket Size=      34304 bytes  Compression=  52.22     *
+*............................................................................*
+
+ST_tbarW_ScaleDown
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   453420 : Total  Size=    1833618 bytes  File Size  =      35426 *
+*Baskets :      179 : Basket Size=      34304 bytes  Compression=  51.65     *
+*............................................................................*
+tHq
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 262000 - 262100*
+*Entries :   614400 : Total  Size=  250796145 bytes  File Size  =  105618818 *
+*Baskets :     1105 : Basket Size=     269312 bytes  Compression=   2.37     *
+*............................................................................*
+
+tWZ_tWLL
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 262000 - 262100*
+*Entries :    50000 : Total  Size=   20410964 bytes  File Size  =    8519364 *
+*Baskets :       96 : Basket Size=     266752 bytes  Compression=   2.40     *
+*............................................................................*
+
+ZZTo2l2Nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   917550 : Total  Size=  370841883 bytes  File Size  =  141633230 *
+*Baskets :     1387 : Basket Size=     279040 bytes  Compression=   2.62     *
+*............................................................................*
+
+ZZTo2L2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   799954 : Total  Size=  329729788 bytes  File Size  =  126517192 *
+*Baskets :     1360 : Basket Size=     274944 bytes  Compression=   2.61     *
+*............................................................................*
+
+
+ZZTo4L
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1226205 : Total  Size=  505419320 bytes  File Size  =  197222152 *
+*Baskets :     2040 : Basket Size=     278016 bytes  Compression=   2.56     *
+*............................................................................*
+
+WWTo1lnuqq
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   902400 : Total  Size=  364719539 bytes  File Size  =  138455054 *
+*Baskets :     1371 : Basket Size=     283648 bytes  Compression=   2.63     *
+*............................................................................*
+
+WZTo2l2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1069069 : Total  Size=  440651057 bytes  File Size  =  169575214 *
+*Baskets :     1781 : Basket Size=     274432 bytes  Compression=   2.60     *
+*............................................................................*
+
+WZTo1L1Nu2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   762908 : Total  Size=  314455391 bytes  File Size  =  120096854 *
+*Baskets :     1255 : Basket Size=     280576 bytes  Compression=   2.62     *
+*............................................................................*
+
+
+
+WWTo2L2Nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :  1045766 : Total  Size=  422658369 bytes  File Size  =  160417578 *
+*Baskets :     1545 : Basket Size=     283648 bytes  Compression=   2.63     *
+*............................................................................*
+
+WWToLNuQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   902400 : Total  Size=  364719539 bytes  File Size  =  138455054 *
+*Baskets :     1371 : Basket Size=     283648 bytes  Compression=   2.63     *
+*............................................................................*
+
+WWToLNuQQ_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   820200 : Total  Size=  331498422 bytes  File Size  =  125878100 *
+*Baskets :     1258 : Basket Size=     283136 bytes  Compression=   2.63     *
+*............................................................................*
+
+WWW
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :   201600 : Total  Size=   83098286 bytes  File Size  =   31691420 *
+*Baskets :      354 : Basket Size=     279040 bytes  Compression=   2.62     *
+*............................................................................*
+
+WWZ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292001 - 292102*
+*Entries :     1000 : Total  Size=     414026 bytes  File Size  =     168224 *
+*Baskets :       14 : Basket Size=      32000 bytes  Compression=   2.46     *
+*............................................................................*
+
+WZZ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   189284 : Total  Size=   78019298 bytes  File Size  =   29945684 *
+*Baskets :      310 : Basket Size=     278016 bytes  Compression=   2.61     *
+*............................................................................*
+
+ZZZ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   249237 : Total  Size=  102733341 bytes  File Size  =   40055594 *
+*Baskets :      433 : Basket Size=     281088 bytes  Compression=   2.56     *
+*............................................................................*
+
+WPlusJets
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   993818 : Total  Size=  409610040 bytes  File Size  =  158559776 *
+*Baskets :     1436 : Basket Size=     292352 bytes  Compression=   2.58     *
+*............................................................................*
+
+WPlusJets_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :  1758681 : Total  Size=  724874206 bytes  File Size  =  280632668 *
+*Baskets :     2726 : Basket Size=     293888 bytes  Compression=   2.58     *
+*............................................................................*
+
+ttWJetsToLNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   746042 : Total  Size=  307509215 bytes  File Size  =  119641378 *
+*Baskets :     1279 : Basket Size=     265216 bytes  Compression=   2.57     *
+*............................................................................*
+
+ttWJetsToLNu_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   669454 : Total  Size=  275939154 bytes  File Size  =  107335760 *
+*Baskets :     1134 : Basket Size=     266240 bytes  Compression=   2.57     *
+*............................................................................*
+
+ttWJetsToQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   613934 : Total  Size=  253055758 bytes  File Size  =   98321380 *
+*Baskets :     1050 : Basket Size=     269824 bytes  Compression=   2.57     *
+*............................................................................*
+
+ttZToLLNuNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :    38200 : Total  Size=   15747293 bytes  File Size  =    6030918 *
+*Baskets :       77 : Basket Size=     265728 bytes  Compression=   2.61     *
+*............................................................................*
+
+ttZToLLNuNu_ext2
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   951586 : Total  Size=  392228550 bytes  File Size  =  150079032 *
+*Baskets :     1602 : Basket Size=     265216 bytes  Compression=   2.61     *
+*............................................................................*
+
+
+ttZToLLNuNu_ext3
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   740552 : Total  Size=  305243302 bytes  File Size  =  116783052 *
+*Baskets :     1242 : Basket Size=     266240 bytes  Compression=   2.61     *
+*............................................................................*
+
+
+ttZToQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   152905 : Total  Size=   63027662 bytes  File Size  =   24125948 *
+*Baskets :      278 : Basket Size=     270336 bytes  Compression=   2.61     *
+*............................................................................*
+
+
+ttHTobb
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :    56632 : Total  Size=   22891927 bytes  File Size  =    8698410 *
+*Baskets :      111 : Basket Size=     276480 bytes  Compression=   2.63     *
+*............................................................................*
+
+
+ttHToNonbb
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :    19196 : Total  Size=    7760589 bytes  File Size  =    2959738 *
+*Baskets :       45 : Basket Size=     275456 bytes  Compression=   2.62     *
+*............................................................................*
+
+
+2017
+
+tZq:
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1600009 : Total  Size=  665839357 bytes  File Size  =  204259882 *
+*Baskets :     2157 : Basket Size=     355328 bytes  Compression=   3.26     *
+*............................................................................*
+
+ZPlusJets_M50_aMCatNLO:
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  2074095 : Total  Size=  282209853 bytes  File Size  =  100253678 *
+*Baskets :     1215 : Basket Size=     246784 bytes  Compression=   2.81     *
+*............................................................................*
+
+ZPlusJets_M50_aMCatNLO_ext:
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   860545 : Total  Size=  117090099 bytes  File Size  =   41576174 *
+*Baskets :      509 : Basket Size=     246272 bytes  Compression=   2.82     *
+*............................................................................*
+
+ttbar_2l2nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   799268 : Total  Size=  108760678 bytes  File Size  =   36164356 *
+*Baskets :      548 : Basket Size=     233472 bytes  Compression=   3.01     *
+*............................................................................*
+
+ttbar_madgraph
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   964561 : Total  Size=  131256331 bytes  File Size  =   44032370 *
+*Baskets :      693 : Basket Size=     237568 bytes  Compression=   2.98     *
+*............................................................................*
+
+TTToHadronic
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   867870 : Total  Size=  118095782 bytes  File Size  =   39248116 *
+*Baskets :      596 : Basket Size=     243712 bytes  Compression=   3.01     *
+*............................................................................*
+
+TTToSemileptonic
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   827928 : Total  Size=  112661926 bytes  File Size  =   37356992 *
+*Baskets :      580 : Basket Size=     236544 bytes  Compression=   3.02     *
+*............................................................................*
+
+ttbar_aMCatNLO
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   964561 : Total  Size=  131256331 bytes  File Size  =   44032370 *
+*Baskets :      693 : Basket Size=     237568 bytes  Compression=   2.98     *
+*............................................................................*
+
+ST_tchannel_top
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1260800 : Total  Size=  524731356 bytes  File Size  =  165534512 *
+*Baskets :     2184 : Basket Size=     256512 bytes  Compression=   3.17     *
+*............................................................................*
+
+ST_tchannel_tbar
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1204000 : Total  Size=  501093509 bytes  File Size  =  168053586 *
+*Baskets :     2101 : Basket Size=     254976 bytes  Compression=   2.98     *
+*............................................................................*
+
+ST_schannel
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1371289 : Total  Size=  570739470 bytes  File Size  =  182336508 *
+*Baskets :     2594 : Basket Size=     243200 bytes  Compression=   3.13     *
+*............................................................................*
+
+
+ST_tchannel_top_hdampUP
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    26000 : Total  Size=   10822931 bytes  File Size  =    3419458 *
+*Baskets :       59 : Basket Size=     246272 bytes  Compression=   3.16     *
+*............................................................................*
+
+ST_tchannel_top_hdampdown
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    35800 : Total  Size=   14901693 bytes  File Size  =    4718626 *
+*Baskets :       77 : Basket Size=     246272 bytes  Compression=   3.16     *
+*............................................................................*
+
+ST_tchannel_antitop_hdampup
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    46848 : Total  Size=   19499950 bytes  File Size  =    6550148 *
+*Baskets :       98 : Basket Size=     244224 bytes  Compression=   2.98     *
+*............................................................................*
+
+
+
+
+
+
+
+
+ST_tchannel_antitop_hdampdown
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    53592 : Total  Size=   22306653 bytes  File Size  =    7511970 *
+*Baskets :      109 : Basket Size=     246272 bytes  Compression=   2.97     *
+*............................................................................*
+
+ST_tW
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    59660 : Total  Size=    8118945 bytes  File Size  =    2715930 *
+*Baskets :       43 : Basket Size=     244224 bytes  Compression=   2.99     *
+*............................................................................*
+
+ST_tbarW
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1191740 : Total  Size=  162159760 bytes  File Size  =   54037540 *
+*Baskets :      758 : Basket Size=     243712 bytes  Compression=   3.00     *
+*............................................................................*
+
+ST_tHq
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   347448 : Total  Size=    1407114 bytes  File Size  =      30378 *
+*Baskets :      155 : Basket Size=      31232 bytes  Compression=  46.20     *
+*............................................................................*
+
+tZq_W_Lept_Z_had
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292000 - 292102*
+*Entries :   336000 : Total  Size=  139849857 bytes  File Size  =   53190038 *
+*Baskets :      673 : Basket Size=     242176 bytes  Compression=   2.63     *
+*............................................................................*
+
+tWZ_tWll
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :    49000 : Total  Size=     199370 bytes  File Size  =       5186 *
+*Baskets :       27 : Basket Size=      27136 bytes  Compression=  38.26     *
+*............................................................................*
+
+ZZTo2l2Nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1143154 : Total  Size=  155551192 bytes  File Size  =   55632612 *
+*Baskets :      750 : Basket Size=     245248 bytes  Compression=   2.80     *
+*............................................................................*
+
+ZZTo2l2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1491159 : Total  Size=  202917368 bytes  File Size  =   71572616 *
+*Baskets :     1094 : Basket Size=     240128 bytes  Compression=   2.83     *
+*............................................................................*
+
+ZZTo4L
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1255643 : Total  Size=  170853838 bytes  File Size  =   60548536 *
+*Baskets :      788 : Basket Size=     255488 bytes  Compression=   2.82     *
+*............................................................................*
+
+
+WWTolnuqq
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1480224 : Total  Size=  201417564 bytes  File Size  =   71693924 *
+*Baskets :      978 : Basket Size=     250368 bytes  Compression=   2.81     *
+*............................................................................*
+
+WZTo2l2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1029390 : Total  Size=  140079179 bytes  File Size  =   49249706 *
+*Baskets :      749 : Basket Size=     240640 bytes  Compression=   2.84     *
+*............................................................................*
+
+WZTo3lNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1143300 : Total  Size=  155574209 bytes  File Size  =   54814062 *
+*Baskets :      779 : Basket Size=     240640 bytes  Compression=   2.84     *
+*............................................................................*
+
+WZTo2l2Nu2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   965675 : Total  Size=  131407617 bytes  File Size  =   46031862 *
+*Baskets :      691 : Basket Size=     245760 bytes  Compression=   2.85     *
+*............................................................................*
+
+WWTo2l2Nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1143925 : Total  Size=  155655721 bytes  File Size  =   54278086 *
+*Baskets :      747 : Basket Size=     247296 bytes  Compression=   2.87     *
+*............................................................................*
+
+WWToLNuQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   398992 : Total  Size=   54292404 bytes  File Size  =   19322716 *
+*Baskets :      266 : Basket Size=     251392 bytes  Compression=   2.81     *
+*............................................................................*
+
+WGToLNuG
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   172591 : Total  Size=   71832582 bytes  File Size  =   22125060 *
+*Baskets :      314 : Basket Size=     254976 bytes  Compression=   3.25     *
+*............................................................................*
+
+ZGToLLG
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :  1032691 : Total  Size=    4167488 bytes  File Size  =      68566 *
+*Baskets :      333 : Basket Size=      36352 bytes  Compression=  60.68     *
+*............................................................................*
+
+WWWTo4F
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   232300 : Total  Size=   96683189 bytes  File Size  =   30750894 *
+*Baskets :      421 : Basket Size=     248320 bytes  Compression=   3.14     *
+*............................................................................*
+
+
+WWZTo4F
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   188200 : Total  Size=   78331049 bytes  File Size  =   24923206 *
+*Baskets :      361 : Basket Size=     246272 bytes  Compression=   3.14     *
+*............................................................................*
+
+WZZ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 292201 - 292302*
+*Entries :   250000 : Total  Size=  103051621 bytes  File Size  =   39617978 *
+*Baskets :      469 : Basket Size=     246784 bytes  Compression=   2.60     *
+*............................................................................*
+
+ZZZ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    16800 : Total  Size=    2287042 bytes  File Size  =     829036 *
+*Baskets :       16 : Basket Size=     246272 bytes  Compression=   2.76     *
+*............................................................................*
+
+WPlusJets
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1115786 : Total  Size=  151821187 bytes  File Size  =   52731494 *
+*Baskets :      677 : Basket Size=     262656 bytes  Compression=   2.88     *
+*............................................................................*
+
+ttWJetsToLNu
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   742027 : Total  Size=  100982878 bytes  File Size  =   35339632 *
+*Baskets :      612 : Basket Size=     233984 bytes  Compression=   2.86     *
+*............................................................................*
+
+ttWJetsToQQ
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   514057 : Total  Size=   69958684 bytes  File Size  =   24445932 *
+*Baskets :      426 : Basket Size=     238592 bytes  Compression=   2.86     *
+*............................................................................*
+
+ttZToLL
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   228254 : Total  Size=   31062880 bytes  File Size  =   10104644 *
+*Baskets :      182 : Basket Size=     231936 bytes  Compression=   3.07     *
+*............................................................................*
+
+ttZToLLNuNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   692235 : Total  Size=   94205934 bytes  File Size  =   31691424 *
+*Baskets :      564 : Basket Size=     236032 bytes  Compression=   2.97     *
+*............................................................................*
+
+ttZToQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    57600 : Total  Size=    7839875 bytes  File Size  =    2634694 *
+*Baskets :       53 : Basket Size=     239104 bytes  Compression=   2.98     *
+*............................................................................*
+
+ttZToQQ_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   165000 : Total  Size=   22456085 bytes  File Size  =    7530482 *
+*Baskets :      143 : Basket Size=     239104 bytes  Compression=   2.98     *
+*............................................................................*
+
+ttgamma
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   769212 : Total  Size=  104673171 bytes  File Size  =   33413694 *
+*Baskets :      549 : Basket Size=     226816 bytes  Compression=   3.13     *
+*............................................................................*
+
+
+
+ttHTobb
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   856191 : Total  Size=  116522480 bytes  File Size  =   40289376 *
+*Baskets :      734 : Basket Size=     245248 bytes  Compression=   2.89     *
+*............................................................................*
+
+
+ttHToNonbb
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 260001 - 260100*
+*Entries :   289548 : Total  Size=  117035226 bytes  File Size  =   43132388 *
+*Baskets :      526 : Basket Size=     247296 bytes  Compression=   2.71     *
+*............................................................................*
+
+
+2018
+
+tZq
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :     8000 : Total  Size=    3331552 bytes  File Size  =    1033908 *
+*Baskets :       28 : Basket Size=     246784 bytes  Compression=   3.22     *
+*............................................................................*
+
+ZPlusJets_M50_aMCatNLO
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    74196 : Total  Size=   10096386 bytes  File Size  =    3585764 *
+*Baskets :       48 : Basket Size=     257024 bytes  Compression=   2.82     *
+*............................................................................*
+
+ZPlusJets_M50_aMCatNLO_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1256977 : Total  Size=  171028286 bytes  File Size  =   60686856 *
+*Baskets :      724 : Basket Size=     255488 bytes  Compression=   2.82     *
+*............................................................................*
+
+ZPlusJets_M10To50_Madgraph
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   791565 : Total  Size=  107696611 bytes  File Size  =   38363678 *
+*Baskets :      397 : Basket Size=     299008 bytes  Compression=   2.81     *
+*............................................................................*
+
+ttbar_2l2nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1540000 : Total  Size=  209551678 bytes  File Size  =   69552168 *
+*Baskets :     1020 : Basket Size=     243200 bytes  Compression=   3.01     *
+*............................................................................*
+	
+
+ttbar_madgraph
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   771922 : Total  Size=  105041949 bytes  File Size  =   35207430 *
+*Baskets :      551 : Basket Size=     246272 bytes  Compression=   2.98     *
+*............................................................................*
+
+TTToHadronic
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1080000 : Total  Size=  146958978 bytes  File Size  =   48747140 *
+*Baskets :      720 : Basket Size=     252928 bytes  Compression=   3.01     *
+*............................................................................*
+
+TTToSemileptonic
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1495000 : Total  Size=  203430479 bytes  File Size  =   67323738 *
+*Baskets :     1009 : Basket Size=     244736 bytes  Compression=   3.02     *
+*............................................................................*
+
+ttbar_aMCatNLO
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   771922 : Total  Size=  105041949 bytes  File Size  =   35207430 *
+*Baskets :      551 : Basket Size=     246272 bytes  Compression=   2.98     *
+*............................................................................*
+
+ST_tchannel_top
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1778400 : Total  Size=  740146478 bytes  File Size  =  224997968 *
+*Baskets :     3042 : Basket Size=     266752 bytes  Compression=   3.29     *
+*............................................................................*
+
+ST_tchannel_antitop
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1778400 : Total  Size=  740145715 bytes  File Size  =  248080670 *
+*Baskets :     3035 : Basket Size=     265728 bytes  Compression=   2.98     *
+*............................................................................*
+
+
+ST_schannel
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :  1090000 : Total  Size=  453659481 bytes  File Size  =  143799746 *
+*Baskets :     2009 : Basket Size=     254976 bytes  Compression=   3.15     *
+*............................................................................*
+
+
+ST_tchannel_top_hdampup
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    81576 : Total  Size=   33953556 bytes  File Size  =   10345220 *
+*Baskets :      160 : Basket Size=     253952 bytes  Compression=   3.28     *
+*............................................................................*
+
+ST_tchannel_top_hdampdown
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :     1976 : Total  Size=     824260 bytes  File Size  =     260460 *
+*Baskets :       16 : Basket Size=     256000 bytes  Compression=   3.16     *
+*............................................................................*
+
+ST_tchannel_antitop_hdampup
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :     3000 : Total  Size=    1250462 bytes  File Size  =     427604 *
+*Baskets :       18 : Basket Size=     253952 bytes  Compression=   2.92     *
+*............................................................................*
+
+ST_tchannel_antitop_hdampdown
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    12000 : Total  Size=    4996206 bytes  File Size  =    1687100 *
+*Baskets :       34 : Basket Size=     253952 bytes  Compression=   2.96     *
+*............................................................................*
+
+
+tW
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    80000 : Total  Size=   10886493 bytes  File Size  =    3609974 *
+*Baskets :       55 : Basket Size=     254976 bytes  Compression=   3.02     *
+*............................................................................*
+
+ST_tbarW
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   935000 : Total  Size=  127224590 bytes  File Size  =   42127232 *
+*Baskets :      588 : Basket Size=     253952 bytes  Compression=   3.02     *
+*............................................................................*
+
+tHq
+
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :  1063998 : Total  Size=    4307540 bytes  File Size  =      91922 *
+*Baskets :      469 : Basket Size=      31232 bytes  Compression=  46.75     *
+*............................................................................*
+
+tZq_W_lept_Z_had
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   306000 : Total  Size=  127353180 bytes  File Size  =   39118424 *
+*Baskets :      520 : Basket Size=     254464 bytes  Compression=   3.26     *
+*............................................................................*
+
+tWZ_tWLL
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :   122600 : Total  Size=     497912 bytes  File Size  =      12494 *
+*Baskets :       65 : Basket Size=      27648 bytes  Compression=  39.71     *
+*............................................................................*
+
+ZZTo2l2Nu
+
+ZZTo2L2Nu_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   588000 : Total  Size=   80010027 bytes  File Size  =   28608254 *
+*Baskets :      381 : Basket Size=     255488 bytes  Compression=   2.80     *
+*............................................................................*
+
+ZZTo2L2Nu_ext2
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1211500 : Total  Size=  164849191 bytes  File Size  =   58939574 *
+*Baskets :      777 : Basket Size=     256000 bytes  Compression=   2.80     *
+*............................................................................*
+
+ZZTo2l2Q
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1474873 : Total  Size=  200697676 bytes  File Size  =   70648084 *
+*Baskets :     1050 : Basket Size=     251392 bytes  Compression=   2.84     *
+*............................................................................*
+
+ZZTo4L
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  2058000 : Total  Size=  280025729 bytes  File Size  =   99115102 *
+*Baskets :     1259 : Basket Size=     267776 bytes  Compression=   2.82     *
+*............................................................................*
+
+WWTolnuqq
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1249300 : Total  Size=  169992934 bytes  File Size  =   60449744 *
+*Baskets :      804 : Basket Size=     261120 bytes  Compression=   2.81     *
+*............................................................................*
+
+WZTo2l2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1092221 : Total  Size=  148626157 bytes  File Size  =   52200494 *
+*Baskets :      767 : Basket Size=     252416 bytes  Compression=   2.85     *
+*............................................................................*
+
+WZTo3lNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1052282 : Total  Size=  143185733 bytes  File Size  =   50387602 *
+*Baskets :      687 : Basket Size=     251392 bytes  Compression=   2.84     *
+*............................................................................*
+
+WZTo1l1Nu2Q
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    42261 : Total  Size=    5751700 bytes  File Size  =    2019220 *
+*Baskets :       34 : Basket Size=     254976 bytes  Compression=   2.85     *
+*............................................................................*
+
+WWTo2l2Nu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   350400 : Total  Size=   47679859 bytes  File Size  =   16629998 *
+*Baskets :      229 : Basket Size=     257024 bytes  Compression=   2.87     *
+*............................................................................*
+
+WWToLNuQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :  1249300 : Total  Size=  169992934 bytes  File Size  =   60449744 *
+*Baskets :      804 : Basket Size=     261120 bytes  Compression=   2.81     *
+*............................................................................*
+
+WGToLNuG
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   147681 : Total  Size=   61464681 bytes  File Size  =   18896054 *
+*Baskets :      265 : Basket Size=     265728 bytes  Compression=   3.25     *
+*............................................................................*
+
+ZGToLLG
+
+
+*Br    0 :LHEPdfWeight : Float_t                                             *
+*Entries :  1169674 : Total  Size=    4719671 bytes  File Size  =      76600 *
+*Baskets :      372 : Basket Size=      36864 bytes  Compression=  61.51     *
+*............................................................................*
+
+WWW
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :   240000 : Total  Size=   99886825 bytes  File Size  =   31785302 *
+*Baskets :      425 : Basket Size=     259072 bytes  Compression=   3.14     *
+*............................................................................*
+
+WWZ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 306000 - 306102*
+*Entries :    45000 : Total  Size=   18730746 bytes  File Size  =    5962208 *
+*Baskets :       94 : Basket Size=     256000 bytes  Compression=   3.14     *
+*............................................................................*
+
+WZZ	
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   250000 : Total  Size=   34018592 bytes  File Size  =   12080308 *
+*Baskets :      166 : Basket Size=     250880 bytes  Compression=   2.82     *
+*............................................................................*
+
+ZZZ	
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   250000 : Total  Size=   34017611 bytes  File Size  =   12300290 *
+*Baskets :      157 : Basket Size=     254976 bytes  Compression=   2.77     *
+*............................................................................*
+
+WPlusJets
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   219283 : Total  Size=   29837701 bytes  File Size  =   10353002 *
+*Baskets :      135 : Basket Size=     273408 bytes  Compression=   2.88     *
+*............................................................................*
+
+ttWJetsToLNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   736658 : Total  Size=  100251059 bytes  File Size  =   35048934 *
+*Baskets :      597 : Basket Size=     242688 bytes  Compression=   2.86     *
+*............................................................................*
+
+
+ttWJetsToQQ
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   112596 : Total  Size=   15323909 bytes  File Size  =    5346154 *
+*Baskets :       95 : Basket Size=     245248 bytes  Compression=   2.87     *
+*............................................................................*
+
+ttZToLL
+
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    48000 : Total  Size=    6532967 bytes  File Size  =    2122178 *
+*Baskets :       41 : Basket Size=     238592 bytes  Compression=   3.08     *
+*............................................................................*
+
+ttZToLLNuNu
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   792000 : Total  Size=  107781713 bytes  File Size  =   36210706 *
+*Baskets :      635 : Basket Size=     242688 bytes  Compression=   2.98     *
+*............................................................................*
+
+ttZToQQ
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   170000 : Total  Size=   23136085 bytes  File Size  =    7752850 *
+*Baskets :      143 : Basket Size=     246272 bytes  Compression=   2.98     *
+*............................................................................*
+
+ttZToQQ_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   735000 : Total  Size=  100026879 bytes  File Size  =   33460578 *
+*Baskets :      609 : Basket Size=     246272 bytes  Compression=   2.99     *
+*............................................................................*
+
+ttgamma
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    27000 : Total  Size=    3675005 bytes  File Size  =    1188598 *
+*Baskets :       23 : Basket Size=     236032 bytes  Compression=   3.09     *
+*............................................................................*
+
+ttgamma_ext
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   792000 : Total  Size=  107772993 bytes  File Size  =   34369682 *
+*Baskets :      555 : Basket Size=     233472 bytes  Compression=   3.14     *
+*............................................................................*
+
+ttHTobb
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :   814000 : Total  Size=  110755292 bytes  File Size  =   38208148 *
+*Baskets :      466 : Basket Size=     251904 bytes  Compression=   2.90     *
+*............................................................................*
+
+ttHToNonbb
+
+*Br    0 :LHEPdfWeight :                                                     *
+*         | Float_t LHE pdf variation weights (w_var / w_nominal) for LHA IDs 91400 - 91432*
+*Entries :    74000 : Total  Size=   10069621 bytes  File Size  =    3477366 *
+*Baskets :       47 : Basket Size=     252928 bytes  Compression=   2.90     *
+*............................................................................*
+
