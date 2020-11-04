@@ -217,6 +217,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   
   std::string PSWeightString;
   std::string DoubleCountString;
+	
+  std::string HessianOrMC;
 
   TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
   TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
@@ -555,7 +557,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   switch(ProcessInt){
 
-	case 0: Process = "tZq"; 
+	case 0: Process = "tZq"; HessianOrMC = ; 
 
 		switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"}; break;
@@ -6843,30 +6845,45 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto PDFWeight{[&SystematicInt](const floats& LHEPdfWeight, const floats& LHEWeight_originalXWGTUP){
+  auto PDFWeight{[&SystematicInt](const floats& LHEPdfWeight, const unsigned int& nLHEPdfWeight){
 
   	//std::cout << "print 145" << std::endl;
 
-  	float PdfMin = 1.0;
-  	float PdfMax = 1.0;
+	float PdfUncert;
 
-  	//For the min and max Pdf weights
-  	for(unsigned int i = 0; i < LHEPdfWeight.size(); i++){
+  	//For the up and down PDF uncertainties
+  	
+	if(HessianOrMC == "Hessian"){
+  		//For Hessian PDF sets
+  		float PdfUncert_Hessian_Squared;
+  	
+  		for(unsigned int k = 1; k < nLHEPdfWeight; k++){PdfUncert_Hessian_Squared += pow((LHEPdfWeight.at(k) - LHEPdfWeight.at(0)), 2);}
 
-        	float LHEDivision = LHEPdfWeight.at(i) / LHEWeight_originalXWGTUP.at(0); //the size of LHEWeight_originalXWGTUP is always 1
+		float PdfUncert_Hessian = sqrt(PdfUncert_Hessian_Squared);
+		PdfUncert = PdfUncert_Hessian;
+	}
+	else if(HessianOrMC == "MC"){
+		//For MC PDF sets
+		float SumOfLHEPdfWeights;
+	
+		for(unsigned int k = 1; k < nLHEPdfWeight; k++){SumOfLHEPdfWeights += nLHEPdfWeight.at(k);}
 
-        	if(LHEDivision > PdfMax){PdfMax = LHEDivision;}
-        	else{continue;}
+		float MeanPdfWeight = (1/nLHEPdfWeight) * SumOfLHEPdfWeights;	
+		float PartOf_PdfUncert_MC;
 
-        	if(LHEDivision < PdfMin){PdfMin = LHEDivision;}
-        	else{continue;}
+		for(unsigned int k = 1; k < nLHEPdfWeight; k++){PartOf_PdfUncert_MC += pow((LHEPdfWeight.at(k) - MeanPdfWeight), 2)
 
-  	}
+		float PdfUncert_MC = sqrt( ( 1/(nLHEPdfWeight-1) ) * PartOf_PdfUncert_MC ); 
+		PdfUncert = PdfUncert_MC;
+	}
+
+	float NominalPdfWeight;
+	NominalPdfWeight = LHEPdfWeight.at(0);
 
 	switch(SystematicInt){
-		case 11: return PdfMax;
-		case 12: return PdfMin;
-		default: return LHEPdfWeight.at(0);
+		case 11: return NominalPdfWeight + PdfUncert;
+		case 12: return NominalPdfWeight - PdfUncert;
+		default: return NominalPdfWeight;
 	}
 
   }};
@@ -8230,7 +8247,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
                                            .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
 					   .Define("ReturnedPSWeight", PSWeightFunction, {PSWeightString})
-					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "LHEWeight_originalXWGTUP"})
+					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "nLHEPdfWeight"})
 					   .Define("ME_SF", ME_uncert_function, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
