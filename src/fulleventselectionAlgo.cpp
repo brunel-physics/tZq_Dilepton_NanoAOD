@@ -856,7 +856,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		 switch(YearInt){
                         case 2016: break;
-                        case 2017: nput_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5_ext/*"}; break;
+                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5_ext/*"}; break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
