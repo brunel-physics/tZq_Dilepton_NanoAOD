@@ -219,6 +219,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string DoubleCountString;
 	
   std::string HessianOrMC;
+  std::string Tune;
 
   TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
   TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
@@ -6845,7 +6846,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto PDFWeight{[&SystematicInt](const floats& LHEPdfWeight, const unsigned int& nLHEPdfWeight){
+  auto PDFWeight{[&SystematicInt, &HessianOrMC](const floats& LHEPdfWeight, const unsigned int& nLHEPdfWeight, const float& LHEWeight_originalXWGTUP){
 
   	//std::cout << "print 145" << std::endl;
 
@@ -6877,8 +6878,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		PdfUncert = PdfUncert_MC;
 	}
 
-	float NominalPdfWeight;
-	NominalPdfWeight = LHEPdfWeight.at(0);
+	float NominalPdfWeight = LHEWeight_originalXWGTUP;
 
 	switch(SystematicInt){
 		case 11: return NominalPdfWeight + PdfUncert;
@@ -8247,7 +8247,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
                                            .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
 					   .Define("ReturnedPSWeight", PSWeightFunction, {PSWeightString})
-					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "nLHEPdfWeight"})
+					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "nLHEPdfWeight", "LHEWeight_originalXWGTUP"})
 					   .Define("ME_SF", ME_uncert_function, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
