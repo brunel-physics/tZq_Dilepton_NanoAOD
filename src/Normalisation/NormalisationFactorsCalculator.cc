@@ -12,6 +12,8 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	int_lumi = 35883;
 
 	if(process == "tZq"){NumberOfSimEvents = 13656784; cross_section = 0.0758;}
+	else if(process == "tZq_scaleup"){NumberOfSimEvents = 6940360; cross_section = 0.0758;}
+	else if(process == "tZq_scaledown"){NumberOfSimEvents = 6982676; cross_section = 0.0758;}
 	else if(process == "ZPlusJets_M50_aMCatNLO"){NumberOfSimEvents = 120777245; cross_section = 5941.0;}
 	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ZPlusJets_M50_Madgraph"){NumberOfSimEvents = 49748967; cross_section = 4963.0;}
@@ -55,6 +57,17 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ttbar_hdampUP_ext"){NumberOfSimEvents = 28855428; cross_section = 730.6;}
 	else if(process == "ttbar_hdampDOWN"){NumberOfSimEvents = 29047858; cross_section = 730.7;}
 	else if(process == "ttbar_hdampDOWN_ext"){NumberOfSimEvents = 29229088; cross_section = 730.7;}
+	else if(process == "TT_2l2nu_hdampUP"){NumberOfSimEvents = 9923800; cross_section = 88.29;}
+	else if(process == "TT_2l2nu_hdampUP_ext1"){NumberOfSimEvents = 4965300; cross_section = 88.29;}
+	else if(process == "TT_2l2nu_hdampUP_ext2"){NumberOfSimEvents = 29860800; cross_section = 88.29;}
+	else if(process == "TT_2l2nu_hdampDOWN"){NumberOfSimEvents = 9963900; cross_section = 88.29;}
+	else if(process == "TT_2l2nu_hdampDOWN_ext1"){NumberOfSimEvents = 4944800; cross_section = 88.29;}
+	else if(process == "TT_2l2nu_hdampDOWN_ext2"){NumberOfSimEvents = 29190500; cross_section = 88.29;}
+	else if(process == "TTToHadronic_hdampUP"){NumberOfSimEvents = 28695100; cross_section = 377.96;}
+	else if(process == "TTToHadronic_hdampDOWN"){NumberOfSimEvents = 28900700; cross_section = 377.96;}
+	else if(process == "TTToSemileptonic_hdampUP"){NumberOfSimEvents = 29671200; cross_section = 365.34;}
+	else if(process == "TTToSemileptonic_hdampDOWN"){NumberOfSimEvents = 29818400; cross_section = 365.34;}
+	else if(process == "TTToSemileptonic_hdampDOWN_ext"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "SingleTop_tchannel_top_hdampUP"){NumberOfSimEvents = 5998200; cross_section = 113.3;} 
 	else if(process == "SingleTop_tchannel_top_hdampDOWN"){NumberOfSimEvents = 5922400; cross_section = 113.3;} 
 	else if(process == "SingleTop_tchannel_antitop_hdampUP"){NumberOfSimEvents = 3999400; cross_section = 67.91;} 
@@ -79,9 +92,10 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "VV_ZZTo2l2nu_ext"){NumberOfSimEvents = 0; cross_section = 0;}
         else if(process == "VV_ZZTo2l2Q"){NumberOfSimEvents = 15462693; cross_section = 3.222;}
 	else if(process == "VV_ZZTo4L"){NumberOfSimEvents = 10711278; cross_section = 1.204;}
-	else if(process == "VV_WW1nuqq"){NumberOfSimEvents = 0; cross_section = 0;}
+	else if(process == "VV_WW1nuqq"){NumberOfSimEvents = 1999200; cross_section = 43.53;}
 	else if(process == "VV_WZTo2l2Q"){NumberOfSimEvents = 26517272; cross_section = 5.606;}
 	else if(process == "VV_WZTo3lNu"){NumberOfSimEvents = 1959179; cross_section = 4.688;}
+	else if(process == "VV_WZTo3lNu_ext"){NumberOfSimEvents = 0; cross_section = 0;}
         else if(process == "VV_WZTo1l2Nu2Q"){NumberOfSimEvents = 24311445; cross_section = 10.73;}
         else if(process == "VV_WWTo2l2Nu"){NumberOfSimEvents = 1999000; cross_section = 10.48;}
 	else if(process == "VV_WWToLNuQQ"){NumberOfSimEvents = 1999200; cross_section = 43.53;}
@@ -114,6 +128,8 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	int_lumi = 41528;
 
 	if(process == "tZq"){NumberOfSimEvents = 13276146; cross_section = 0.07358;}
+	else if(process == "tZq_scaleup"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "tZq_scaledown"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ZPlusJets_M50_aMCatNLO"){NumberOfSimEvents = 27529915; cross_section = 6529.0;}
 	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){NumberOfSimEvents = 182104014; cross_section = 6529.0;}
 	else if(process == "ZPlusJets_M50_Madgraph"){NumberOfSimEvents = 0; cross_section = 0;}
@@ -157,6 +173,17 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ttbar_hdampUP_ext"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ttbar_hdampDOWN"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ttbar_hdampDOWN_ext"){NumberOfSimEvents = 0; cross_section = 0;}
+	else if(process == "TT_2l2nu_hdampUP"){NumberOfSimEvents = 3288128; cross_section = 88.29;}
+        else if(process == "TT_2l2nu_hdampUP_ext1"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TT_2l2nu_hdampUP_ext2"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TT_2l2nu_hdampDOWN"){NumberOfSimEvents = 5476459; cross_section = 88.29;}
+        else if(process == "TT_2l2nu_hdampDOWN_ext1"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TT_2l2nu_hdampDOWN_ext2"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TTToHadronic_hdampUP"){NumberOfSimEvents = 27203920; cross_section = 377.96;}
+        else if(process == "TTToHadronic_hdampDOWN"){NumberOfSimEvents = 27117982; cross_section = 377.96;}
+        else if(process == "TTToSemileptonic_hdampUP"){NumberOfSimEvents = 23977012; cross_section = 365.34;}
+        else if(process == "TTToSemileptonic_hdampDOWN"){NumberOfSimEvents = 27117982; cross_section = 377.96;}
+        else if(process == "TTToSemileptonic_hdampDOWN_ext"){NumberOfSimEvents =  26849863; cross_section = 365.34;}
 	else if(process == "SingleTop_tchannel_top_hdampUP"){NumberOfSimEvents = 1990000; cross_section = 113.3;}
 	else if(process == "SingleTop_tchannel_top_hdampDOWN"){NumberOfSimEvents = 5965095; cross_section = 113.3;}
 	else if(process == "SingleTop_tchannel_antitop_hdampUP"){NumberOfSimEvents = 976576; cross_section = 67.91;}
@@ -184,6 +211,7 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "VV_WW1nuqq"){NumberOfSimEvents = 8785360; cross_section = 45.99;}
 	else if(process == "VV_WZTo2l2Q"){NumberOfSimEvents = 27582164; cross_section = 5.606;}
 	else if(process == "VV_WZTo3lNu"){NumberOfSimEvents = 10987679; cross_section = 5.052;}
+	else if(process == "VV_WZTo3lNu_ext"){NumberOfSimEvents = 0; cross_section = 0;}
         else if(process == "VV_WZTo1l2Nu2Q"){NumberOfSimEvents = 4997672; cross_section = 45.68;}
         else if(process == "VV_WWTo2l2Nu"){NumberOfSimEvents = 2000000; cross_section = 11.08;}
 	else if(process == "VV_WWToLNuQQ"){NumberOfSimEvents = 8785360; cross_section = 45.99;}
@@ -216,6 +244,8 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	int_lumi = 59688;
 
 	if(process == "tZq"){NumberOfSimEvents = 13736000; cross_section = 0.07358;}
+	else if(process == "tZq_scaleup"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "tZq_scaledown"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ZPlusJets_M50_aMCatNLO"){NumberOfSimEvents = 997561; cross_section = 6529.0;}
 	else if(process == "ZPlusJets_M50_aMCatNLO_ext"){NumberOfSimEvents = 193094040; cross_section = 6529.0;}
 	else if(process == "ZPlusJets_M50_Madgraph"){NumberOfSimEvents = 0; cross_section = 0;}
@@ -259,6 +289,17 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "ttbar_hdampUP_ext"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ttbar_hdampDOWN"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "ttbar_hdampDOWN_ext"){NumberOfSimEvents = 0; cross_section = 0;}
+	else if(process == "TT_2l2nu_hdampUP"){NumberOfSimEvents = 5260000; cross_section = 687.0;}
+        else if(process == "TT_2l2nu_hdampUP_ext1"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TT_2l2nu_hdampUP_ext2"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TT_2l2nu_hdampDOWN"){NumberOfSimEvents = 5458000; cross_section = 687.1;}
+        else if(process == "TT_2l2nu_hdampDOWN_ext1"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TT_2l2nu_hdampDOWN_ext2"){NumberOfSimEvents = 0; cross_section = 0;}
+        else if(process == "TTToHadronic_hdampUP"){NumberOfSimEvents = 24965000; cross_section = 687.0;}
+        else if(process == "TTToHadronic_hdampDOWN"){NumberOfSimEvents = 26425000; cross_section = 687.1;}
+        else if(process == "TTToSemileptonic_hdampUP"){NumberOfSimEvents = 26892000; cross_section = 687.0;}
+        else if(process == "TTToSemileptonic_hdampDOWN"){NumberOfSimEvents = 25904000; cross_section = 687.1;}
+        else if(process == "TTToSemileptonic_hdampDOWN_ext"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "SingleTop_tchannel_top_hdampUP"){NumberOfSimEvents = 1913789; cross_section = 115.3;}
 	else if(process == "SingleTop_tchannel_top_hdampDOWN"){NumberOfSimEvents = 5855752; cross_section = 115.3;}
 	else if(process == "SingleTop_tchannel_antitop_hdampUP"){NumberOfSimEvents = 997000; cross_section = 69.09;}
@@ -286,6 +327,7 @@ auto Normalisation_Calculation(const string& process, const string& year){
 	else if(process == "VV_WW1nuqq"){NumberOfSimEvents = 0; cross_section = 0;}
 	else if(process == "VV_WZTo2l2Q"){NumberOfSimEvents = 28193648; cross_section = 5.606;}
 	else if(process == "VV_WZTo3lNu"){NumberOfSimEvents = 10749269; cross_section = 5.052;}
+	else if(process == "VV_WZTo3lNu_ext"){NumberOfSimEvents = 11248318; cross_section = 5.052;}
         else if(process == "VV_WZTo1l2Nu2Q"){NumberOfSimEvents = 18901469; cross_section = 10.73;}
         else if(process == "VV_WWTo2l2Nu"){NumberOfSimEvents = 7758900; cross_section = 11.08;}
 	else if(process == "VV_WWToLNuQQ"){NumberOfSimEvents = 19199100; cross_section = 45.68;}
@@ -335,7 +377,8 @@ void NormalisationFactorsCalculator2(const string& year){
   normfilename = "NormalisationFactors_" + year + ".txt";
   NormalisationFactors.open(normfilename.c_str());
 
-  vector<string> Samples = {"tZq", 		                        "ZPlusJets_M50_aMCatNLO",             "ZPlusJets_M50_aMCatNLO_ext", 
+  vector<string> Samples = {"tZq",				        "tZq_scaleup", 		              "tZq_scaledown",                       
+			    "ZPlusJets_M50_aMCatNLO",                   "ZPlusJets_M50_aMCatNLO_ext", 
 			    "ZPlusJets_M50_Madgraph",                   "ZPlusJets_M50_Madgraph_ext",         "ZPlusJets_M10To50_aMCatNLO", 
 			    "ZPlusJets_M10To50_aMCatNLO_ext",           "ZPlusJets_M10To50_Madgraph",         "ZPlusJets_M10To50_Madgraph_ext", 
 			    "ZPlusJets_PtBinned_0To50",                 "ZPlusJets_PtBinned_50To100",         "ZPlusJets_PtBinned_50To100_ext", 
@@ -349,7 +392,11 @@ void NormalisationFactorsCalculator2(const string& year){
 			    "SingleTop_tchannel_top", 			"SingleTop_tchannel_top_ScaleUp",     "SingleTop_tchannel_top_ScaleDown", 
 			    "SingleTop_tchannel_antitop", 		"SingleTop_tchannel_antitop_ScaleUp", "SingleTop_tchannel_antitop_ScaleUp", 
 			    "SingleTop_schannel", 			"ttbar_hdampUP", 		      "ttbar_hdampUP_ext", 
-			    "ttbar_hdampDOWN", 				"ttbar_hdampDOWN_ext", 		      "SingleTop_tchannel_top_hdampUP", 
+			    "ttbar_hdampDOWN", 				"ttbar_hdampDOWN_ext", 		      "TT_2l2nu_hdampUP",
+       			    "TT_2l2nu_hdampUP_ext1",			"TT_2l2nu_hdampUP_ext2",              "TT_2l2nu_hdampDOWN",
+        		    "TT_2l2nu_hdampDOWN_ext1",			"TT_2l2nu_hdampDOWN_ext2",	      "TTToHadronic_hdampUP",
+        		    "TTToHadronic_hdampDOWN",		        "TTToSemileptonic_hdampUP",	      "TTToSemileptonic_hdampDOWN",
+        		    "TTToSemileptonic_hdampDOWN_ext", 	        "SingleTop_tchannel_top_hdampUP", 
 			    "SingleTop_tchannel_top_hdampDOWN", 	"SingleTop_tchannel_antitop_hdampUP", "SingleTop_tchannel_antitop_hdampDOWN",
 		            "ttbar_isr_UP", 				"ttbar_isr_DOWN", 		      "ttbar_isr_DOWN_ext", 
 			    "ttbar_fsr_UP", 				"ttbar_fsr_UP_ext", 		      "ttbar_fsr_DOWN", 
@@ -358,7 +405,8 @@ void NormalisationFactorsCalculator2(const string& year){
 			    "SingleTop_tbarW_ScaleDown", 		"SingleTop_tHq", 		      "SingleTop_tZq_W_lept_Z_had", 
 			    "SingleTop_tWZ_tWll", 		        "VV_ZZTo2l2nu", 		      "VV_ZZTo2l2nu_ext", 
 			    "VV_ZZTo2l2Q", 				"VV_ZZTo4L",			      "VV_WW1nuqq", 
-			    "VV_WZTo2l2Q", 				"VV_WZTo3lNu", 			      "VV_WZTo1l2Nu2Q", 
+			    "VV_WZTo2l2Q", 				"VV_WZTo3lNu", 			      "VV_WZTo3lNu_ext", 
+			    "VV_WZTo1l2Nu2Q", 
 			    "VV_WWTo2l2Nu", 			        "VV_WWToLNuQQ", 		      "VV_WWToLNuQQ_ext", 
 			    "VV_WGToLNuG", 			        "VV_ZGToLLG", 			      "VVV_WWWTo4F", 
 			    "VVV_WWZTo4F", 				"VVV_WZZ", 			      "VVV_ZZZ", 
