@@ -5379,13 +5379,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	doubles weight;
 
 	switch(ProcessInt){
-		case 26: weight = sqrt( SF_top * SF_antitop); break;
-		case 27: weight = sqrt( SF_top * SF_antitop); break;
-		case 28: weight = sqrt( SF_top * SF_antitop); break;
-		case 29: weight = sqrt( SF_top * SF_antitop); break;
-		case 30: weight = sqrt( SF_top * SF_antitop); break;
-		case 31: weight = sqrt( SF_top * SF_antitop); break;
-		case 32: weight = sqrt( SF_top * SF_antitop); break;
+		case 28: weight = sqrt( SF_top * SF_antitop); break; //ttbar_2l2nu
+		case 29: weight = sqrt( SF_top * SF_antitop); break; //ttbar_madgraph
+		case 30: weight = sqrt( SF_top * SF_antitop); break; //ttbar_madgraph_ext
+		case 31: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToHadronic
+		case 32: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToSemileptonic
+		case 33: weight = sqrt( SF_top * SF_antitop); break; //ttbar_atMCaNLO
+		case 34: weight = sqrt( SF_top * SF_antitop); break; //ttbar_inc
 		default: doubles weight_vec(SF_top.size(), 1.0); weight = weight_vec; break;
 	}
  
