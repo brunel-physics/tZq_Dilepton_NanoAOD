@@ -2317,6 +2317,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
         case 2017: switch(ProcessInt){ 
                    	case 0: PSWeightString = "PSWeight"; break; //tZq
+			case 1: PSWeightString = "PSWeight"; break; //tZq (scale up)
+			case 2: PSWeightString = "PSWeight"; break; //tZq (scale down)
 			case 28: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
 			case 29: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
                         case 32: PSWeightString = "PSWeight"; break; //single top t-channel (top)
@@ -2336,6 +2338,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
         case 2018: switch(ProcessInt){ 
                         case 0: PSWeightString = "PSWeight"; break; //tZq
+			case 1: PSWeightString = "PSWeight"; break; //tZq (scale up)
+                        case 2: PSWeightString = "PSWeight"; break; //tZq (scale down)
                         case 29: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
                         case 30: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
                         case 33: PSWeightString = "PSWeight"; break; //single top t-channel (top)
@@ -3347,7 +3351,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	switch(ProcessInt){
 
-		case 98: switch(YearInt){
+		case 111: switch(YearInt){
 
 				case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 || 
 					          HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
@@ -3384,7 +3388,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			
 			}
 
-		case 99: switch(YearInt){
+		case 112: switch(YearInt){
 
                                 case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 ||
                                                   HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
@@ -3454,7 +3458,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	//std::cout << "print 30" << std::endl;
 
-	if(ProcessInt == 98 || 99){
+	if(ProcessInt == 111 || 112){
 
 	  switch(ChannelInt){
 
@@ -7013,6 +7017,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		case 2016: return Ones;
 		case 2017: switch(ProcessInt){
 				case 0: return PSWeightInput; //tZq
+				case 1: return PSWeightInput; //tZq (scale up)
+				case 2: return PSWeightInput; //tZq (scale down)
 				case 29: return PSWeightInput; //ttbar (to hadronic)
 				case 30: return PSWeightInput; //ttbar (to semileptonic)
 				case 33: return PSWeightInput; //single top t-channel (top)
@@ -7028,6 +7034,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			    }
 		case 2018: switch(ProcessInt){
                                 case 0: return PSWeightInput; //tZq
+				case 1: return PSWeightInput; //tZq (scale up)
+                                case 2: return PSWeightInput; //tZq (scale down)
                                 case 29: return PSWeightInput; //ttbar (to hadronic)
                                 case 30: return PSWeightInput; //ttbar (to semileptonic)
                                 case 33: return PSWeightInput; //single top t-channel (top)
@@ -7683,7 +7691,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
    switch(ProcessInt){
 
-	case 98: switch(YearInt){
+	case 111: switch(YearInt){
 
 			case 2016: MET_Triggers_Strings = {"HLT_MET200", 		    		"HLT_MET250",
 		        				   "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
@@ -7761,7 +7769,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		 break;
 
-	case 99: switch(YearInt){
+	case 112: switch(YearInt){
 
                         case 2016: MET_Triggers_Strings = {"HLT_MET200",                    		"HLT_MET250",
                                                            "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
@@ -7872,7 +7880,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   float LeptonSelection_EventWeight, MET_And_LeptonSelection_EventWeight, LeptonTriggersAndSelectionCriteria_EventWeight, MET_LeptonTriggers_SelectionCriteria_EventWeight;
 
   switch(ProcessInt){
-	case 98: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
+	case 111: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
 	         MET_And_LeptonSelection_EventWeight = *d_MET_And_LeptonSelection.Sum("PU");
 	         LeptonTriggersAndSelectionCriteria_EventWeight = *d_LeptonTriggers_And_LeptonSelection.Sum("PU");
                  MET_LeptonTriggers_SelectionCriteria_EventWeight = *d_MET_LeptonTriggers_LeptonSelection.Sum("PU");
@@ -7965,7 +7973,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
 
 
-  if((ProcessInt == 98 || ProcessInt == 99) && SystematicInt == 0){
+  if((ProcessInt == 111 || ProcessInt == 112) && SystematicInt == 0){
 
   	std::string TurnOnCurvesOutput = "TurnOnCurves_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
@@ -8030,7 +8038,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                   << std::endl; 
 
 
-  if(ProcessInt == 98 || ProcessInt == 99){return;}
+  if(ProcessInt == 111 || ProcessInt == 112){return;}
 
   //Calculating the trigger scale factors
   Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
@@ -8524,9 +8532,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto d_Blinding =  d_EventWeightDefines.Define("chi2", Chi2Function, {"w_mass", "InvTopMass"});
 
-  std::cout << "ProcessInt = " << ProcessInt << std::endl;
-  std::cout << "SystematicInt = " << SystematicInt << std::endl;
-
 
   if(ProcessInt == 0 && SystematicInt == 0){
 
@@ -8672,7 +8677,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {98, 99, 0}; //98 for trigger SF MC, 99 for trigger SF data, 0 for tZq
+  std::vector<int> Process_Selection = {111, 112, 0}; //111 for trigger SF MC, 112 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
