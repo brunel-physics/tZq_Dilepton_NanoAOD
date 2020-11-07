@@ -569,7 +569,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		break;
 
-	case 1: Process = "tZq_scaleup"; HessiamOrMC = "";
+	case 1: Process = "tZq_scaleup"; HessianOrMC = "";
 
 		switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_scaleup/*"}; break;
@@ -578,7 +578,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		}
 
-	case 2: Process = "tZq_scaledown"; HessiamOrMC = "";
+	case 2: Process = "tZq_scaledown"; HessianOrMC = "";
 
                 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_scaledown/*"}; break;
@@ -995,7 +995,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 38: Process = "SingleTop_tchannel_antitop_ScaleDown";
+        case 40: Process = "SingleTop_tchannel_antitop_ScaleDown";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_ScaleDown"}; break;
@@ -1006,7 +1006,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 40: Process = "SingleTop_schannel";
+	case 41: Process = "SingleTop_schannel";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_schannel/*"}; break;
@@ -1017,7 +1017,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 41: Process = "ttbar_hdampUP";
+        case 42: Process = "ttbar_hdampUP";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP/*"}; break;
@@ -1028,7 +1028,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 42: Process = "ttbar_hdampUP_ext";
+        case 43: Process = "ttbar_hdampUP_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_hdampUP_ext/*"}; break;
@@ -1039,7 +1039,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 43: Process = "ttbar_hdampDOWN";
+        case 44: Process = "ttbar_hdampDOWN";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_hdampDOWN/*"}; break;
@@ -1050,7 +1050,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 44: Process = "ttbar_hdampDOWN_ext";
+        case 45: Process = "ttbar_hdampDOWN_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_hdampDOWN_ext/*"}; break;
@@ -1061,7 +1061,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 45: Process = "TT_2l2nu_hdampUP";
+	case 46: Process = "TT_2l2nu_hdampUP";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampUP/*"}; break;
@@ -1072,7 +1072,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 46: Process = "TT_2l2nu_hdampUP_ext1";
+	case 47: Process = "TT_2l2nu_hdampUP_ext1";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampUP_ext1/*"}; break;
@@ -1083,7 +1083,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
          
                  break;
 
-	case 47: Process = "TT_2l2nu_hdampUP_ext2";
+	case 48: Process = "TT_2l2nu_hdampUP_ext2";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampUP_ext2/*"}; break;
@@ -1094,7 +1094,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
          
                  break;
 
-	case 48: Process = "TT_2l2nu_hdampDOWN";
+	case 49: Process = "TT_2l2nu_hdampDOWN";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN/*"}; break;
@@ -1105,7 +1105,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
          
                  break;
 	
-	case 49: Process = "TT_2l2nu_hdampDOWN_ext1";
+	case 50: Process = "TT_2l2nu_hdampDOWN_ext1";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_ext1/*"}; break;
@@ -1116,7 +1116,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 	
-	case 50: Process = "TT_2l2nu_hdampDOWN_ext2";
+	case 51: Process = "TT_2l2nu_hdampDOWN_ext2";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_ext2/*"}; break;
@@ -1128,7 +1128,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  break;
 
 
-	case 51: Process = "TTToHadronic_hdampUP";
+	case 52: Process = "TTToHadronic_hdampUP";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_hdampUP/*"}; break;
@@ -1139,7 +1139,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 52: Process = "TTToHadronic_hdampDOWN";
+	case 53: Process = "TTToHadronic_hdampDOWN";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_hdampDOWN/*"}; break;
@@ -1150,7 +1150,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 	
-	case 53: Process = "TTToSemileptonic_hdampUP";
+	case 54: Process = "TTToSemileptonic_hdampUP";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic_hdampUP/*"}; break;
@@ -1161,7 +1161,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 54: Process = "TTToSemileptonic_hdampDOWN";
+        case 55: Process = "TTToSemileptonic_hdampDOWN";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic_hdampDOWN/*"}; break;
@@ -1172,7 +1172,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 55: Process = "TTToSemileptonic_hdampDOWN_ext";
+	case 56: Process = "TTToSemileptonic_hdampDOWN_ext";
 
                  switch(YearInt){
                         case 2016: break;
@@ -1184,7 +1184,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  break;
 
 
-        case 56: Process = "SingleTop_tchannel_top_hdampUP";
+        case 57: Process = "SingleTop_tchannel_top_hdampUP";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampup/*"}; break;
@@ -1195,7 +1195,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 57: Process = "SingleTop_tchannel_top_hdampDOWN";
+	case 58: Process = "SingleTop_tchannel_top_hdampDOWN";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdampdown/*"}; break;
@@ -1206,7 +1206,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-    	case 58: Process = "SingleTop_tchannel_antitop_hdampUP";
+    	case 59: Process = "SingleTop_tchannel_antitop_hdampUP";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdampup/*"}; break;
@@ -1217,7 +1217,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 59: Process = "SingleTop_tchannel_antitop_hdampDOWN";
+        case 60: Process = "SingleTop_tchannel_antitop_hdampDOWN";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdampdown/*"}; break;
@@ -1228,7 +1228,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 60: Process = "ttbar_isr_UP";
+        case 61: Process = "ttbar_isr_UP";
 
 		 switch(YearInt){
                         case 2016: input_files =  {"/data/disk2/nanoAOD_2016/TT_isr_UP/*"}; break;
@@ -1239,7 +1239,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 61: Process = "ttbar_isr_DOWN";
+        case 62: Process = "ttbar_isr_DOWN";
 		
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_isr_DOWN/*"}; break;
@@ -1250,7 +1250,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 62: Process = "ttbar_isr_DOWN_ext";
+        case 63: Process = "ttbar_isr_DOWN_ext";
 	
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_isr_DOWN_ext/*"}; break;
@@ -1261,7 +1261,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 63: Process = "ttbar_fsr_UP";
+        case 64: Process = "ttbar_fsr_UP";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_UP/*"}; break;
@@ -1272,7 +1272,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 64: Process = "ttbar_fsr_UP_ext";
+        case 65: Process = "ttbar_fsr_UP_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_UP_ext/*"}; break;
@@ -1283,7 +1283,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 65: Process = "ttbar_fsr_DOWN";
+	case 66: Process = "ttbar_fsr_DOWN";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_DOWN/*"}; break;
@@ -1294,7 +1294,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 66: Process = "ttbar_fsr_DOWN_ext";
+        case 67: Process = "ttbar_fsr_DOWN_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_fsr_DOWN_ext/*"}; break;
@@ -1305,7 +1305,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 67: Process = "SingleTop_tW";
+        case 68: Process = "SingleTop_tW";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tW_top/*"}; break;
@@ -1316,7 +1316,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 68: Process = "SingleTop_tW_ScaleUp";
+        case 69: Process = "SingleTop_tW_ScaleUp";
 	
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleUp/*"}; break;
@@ -1327,7 +1327,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 69: Process = "SingleTop_tW_ScaleDown";
+        case 70: Process = "SingleTop_tW_ScaleDown";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tW_top_ScaleDown/*"}; break;
@@ -1338,7 +1338,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 70: Process = "SingleTop_tbarW";
+        case 71: Process = "SingleTop_tbarW";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tW_tbar/*"}; break;
@@ -1349,7 +1349,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 71: Process = "SingleTop_tbarW_ScaleUp";
+	case 72: Process = "SingleTop_tbarW_ScaleUp";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleUp/*"}; break;
@@ -1360,7 +1360,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 72: Process = "SingleTop_tbarW_ScaleDown";
+        case 73: Process = "SingleTop_tbarW_ScaleDown";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tW_tbar_ScaleDown/*"}; break;
@@ -1371,7 +1371,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 73: Process = "SingleTop_tHq";
+        case 74: Process = "SingleTop_tHq";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tHq/*"}; break;
@@ -1382,7 +1382,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 74: Process = "SingleTop_tZq_W_lept_Z_had";
+        case 75: Process = "SingleTop_tZq_W_lept_Z_had";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1393,7 +1393,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	
                  break;
 
-        case 75: Process = "SingleTop_tWZ_tWll";
+        case 76: Process = "SingleTop_tWZ_tWll";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWLL/*"}; break;
@@ -1404,7 +1404,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 76: Process = "VV_ZZTo2l2nu";
+        case 77: Process = "VV_ZZTo2l2nu";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Nu/*"}; break;
@@ -1415,7 +1415,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 77: Process = "VV_ZZTo2l2nu_ext1";
+	case 78: Process = "VV_ZZTo2l2nu_ext1";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1426,7 +1426,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 78: Process = "VV_ZZTo2l2nu_ext2";
+	case 79: Process = "VV_ZZTo2l2nu_ext2";
 
                  switch(YearInt){
                         case 2016: break;
@@ -1437,7 +1437,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 79: Process = "VV_ZZTo2l2Q";
+        case 80: Process = "VV_ZZTo2l2Q";
 	
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Q/*"}; break;
@@ -1448,7 +1448,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 80: Process = "VV_ZZTo4L";
+        case 81: Process = "VV_ZZTo4L";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo4L/*"}; break;
@@ -1459,7 +1459,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 81: Process = "VV_WW1nuqq";
+        case 82: Process = "VV_WW1nuqq";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTolnuqq/*"}; break;
@@ -1470,7 +1470,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 82: Process = "VV_WW1nuqq_ext";
+	case 83: Process = "VV_WW1nuqq_ext";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTolnuqq_ext/*"}; break;
@@ -1481,7 +1481,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
          
                  break;
 
-        case 83: Process = "VV_WZTo2l2Q";
+        case 84: Process = "VV_WZTo2l2Q";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo2L2Q/*"}; break;
@@ -1492,7 +1492,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 84: Process = "VV_WZTo3lNu";
+        case 85: Process = "VV_WZTo3lNu";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1503,7 +1503,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 85: Process = "VV_WZTo3lNu_ext";
+	case 86: Process = "VV_WZTo3lNu_ext";
 
                  switch(YearInt){
                         case 2016: break;
@@ -1515,7 +1515,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  break;
 
 
-        case 86: Process = "VV_WZTo1l1Nu2Q";
+        case 87: Process = "VV_WZTo1l1Nu2Q";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo1L1Nu2Q/*"}; break;
@@ -1526,7 +1526,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 87: Process = "VV_WWTo2l2Nu";
+        case 88: Process = "VV_WWTo2l2Nu";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTo2L2Nu/*"}; break;
@@ -1537,7 +1537,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 88: Process = "VV_WWToLNuQQ";
+        case 89: Process = "VV_WWToLNuQQ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ/*"}; break;
@@ -1548,7 +1548,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 89: Process = "VV_WWToLNuQQ_ext";
+        case 90: Process = "VV_WWToLNuQQ_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWToQQ_ext/*"}; break;
@@ -1559,7 +1559,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 90: Process = "VV_WGToLNuG";
+        case 91: Process = "VV_WGToLNuG";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WGToLNuG/*"}; break;
@@ -1570,7 +1570,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 91: Process = "VV_ZGToLLG";
+        case 92: Process = "VV_ZGToLLG";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZGToLLG/*"}; break;
@@ -1581,7 +1581,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 92: Process = "VVV_WWWTo4F";
+	case 93: Process = "VVV_WWWTo4F";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F/*"}; break;
@@ -1592,7 +1592,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 93: Process = "VVV_WWZTo4F";
+        case 94: Process = "VVV_WWZTo4F";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWZ/*"}; break;
@@ -1603,7 +1603,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 94: Process = "VVV_WZZ";
+        case 95: Process = "VVV_WZZ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZZ/*"}; break;
@@ -1614,7 +1614,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 95: Process = "VVV_ZZZ";
+        case 96: Process = "VVV_ZZZ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZZ/*"}; break;
@@ -1625,7 +1625,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 96: Process = "WPlusJets";
+	case 97: Process = "WPlusJets";
 		
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu/*"}; break;
@@ -1636,7 +1636,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 97: Process = "WPlusJets_ext";
+        case 98: Process = "WPlusJets_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WJetsToLNu_ext2/*"}; break;
@@ -1647,7 +1647,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 98: Process = "ttbarV_ttWJetsToLNu";
+        case 99: Process = "ttbarV_ttWJetsToLNu";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/*"}; break;
@@ -1658,7 +1658,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 99: Process = "ttbarV_ttWJetsToLNu_ext";
+        case 100: Process = "ttbarV_ttWJetsToLNu_ext";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu/ttWJetsToLNu_ext2/*"}; break;
@@ -1669,7 +1669,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 100: Process = "ttbarV_ttWJetsToQQ";
+	case 101: Process = "ttbarV_ttWJetsToQQ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToQQ/*"}; break;
@@ -1680,7 +1680,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 101: Process = "ttbarV_ttZToLL";
+        case 102: Process = "ttbarV_ttZToLL";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1691,7 +1691,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 102: Process = "ttbarV_ttZToLLNuNu";
+	case 103: Process = "ttbarV_ttZToLLNuNu";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu/*"}; break;
@@ -1702,7 +1702,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 103: Process = "ttbarV_ttZToLLNuNu_ext2";
+	case 104: Process = "ttbarV_ttZToLLNuNu_ext2";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext2/*"}; break;
@@ -1713,7 +1713,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 104: Process = "ttbarV_ttZToLLNuNu_ext3";
+        case 105: Process = "ttbarV_ttZToLLNuNu_ext3";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_ext3/*"}; break;
@@ -1724,7 +1724,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 	
-	case 105: Process = "ttbarV_ttZToQQ";
+	case 106: Process = "ttbarV_ttZToQQ";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ/*"}; break;
@@ -1735,7 +1735,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 106: Process = "ttbarV_ttZToQQ_ext";
+        case 107: Process = "ttbarV_ttZToQQ_ext";
 
 		 switch(YearInt){
                         case 2016: break; 
@@ -1746,7 +1746,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-        case 107: Process = "ttbarV_ttgamma";
+        case 108: Process = "ttbarV_ttgamma";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttgamma/*"}; break;
@@ -1757,7 +1757,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
    
-        case 108: Process = "ttbarV_ttgamma_ext";
+        case 109: Process = "ttbarV_ttgamma_ext";
 
 		 switch(YearInt){
                         case 2016: break;
@@ -1768,7 +1768,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 109: Process = "ttbarV_ttHTobb";
+	case 110: Process = "ttbarV_ttHTobb";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHTobb/*"}; break;
@@ -1779,7 +1779,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 110: Process = "ttbarV_ttHToNonbb";
+	case 111: Process = "ttbarV_ttHToNonbb";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb/*"}; break;
@@ -1790,7 +1790,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 111: Process = "TriggerSF_MC";
+	case 112: Process = "TriggerSF_MC";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"}; break;
@@ -1801,7 +1801,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 112: Process = "TriggerSF_DATA";
+	case 113: Process = "TriggerSF_DATA";
 
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root", "/data/disk2/nanoAOD_2016/METRun2016G/*.root", "/data/disk2/nanoAOD_2016/METRun2016H/*.root"}; break;
@@ -1815,7 +1815,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 113: Process = "Data_DoubleEGRunB";
+	case 114: Process = "Data_DoubleEGRunB";
 
 		 switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
@@ -1824,7 +1824,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		 }
 
-	case 114: Process = "Data_DoubleEGRunC";
+	case 115: Process = "Data_DoubleEGRunC";
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016C/*"}; break;
@@ -1833,7 +1833,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-        case 115: Process = "Data_DoubleEGRunD";
+        case 116: Process = "Data_DoubleEGRunD";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016D/*"}; break;
@@ -1842,7 +1842,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-	case 116: Process = "Data_DoubleEGRunE";
+	case 117: Process = "Data_DoubleEGRunE";
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016E/*"}; break;
@@ -1852,7 +1852,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  }
 
 
-	case 117: Process = "Data_DoubleEGRunF";
+	case 118: Process = "Data_DoubleEGRunF";
 
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016F/*"}; break;
@@ -1861,7 +1861,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-	case 118: Process = "Data_DoubleEGRunG";
+	case 119: Process = "Data_DoubleEGRunG";
 
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016G/*"}; break;
@@ -1871,7 +1871,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  }
 
 
-	case 119: Process = "Data_DoubleEGRunH";
+	case 120: Process = "Data_DoubleEGRunH";
 
 		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016H/*"}; break;
@@ -1880,7 +1880,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
-	case 120: Process = "Data_DoubleMuonRunB";
+	case 121: Process = "Data_DoubleMuonRunB";
 
 		  switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016B/*"}; break;
@@ -1888,7 +1888,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"}; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		  }
-	case 121: Process = "Data_DoubleMuonRunC";
+	case 122: Process = "Data_DoubleMuonRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016C/*"}; break;
@@ -1897,7 +1897,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 122: Process = "Data_DoubleMuonRunD";
+	case 123: Process = "Data_DoubleMuonRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016D/*"}; break;
@@ -1906,7 +1906,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 123: Process = "Data_DoubleMuonRunE";
+	case 124: Process = "Data_DoubleMuonRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016E/*"}; break;
@@ -1915,7 +1915,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 124: Process = "Data_DoubleMuonRunF";
+	case 125: Process = "Data_DoubleMuonRunF";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"}; break;
@@ -1924,7 +1924,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 125: Process = "Data_DoubleMuonRunG";
+	case 126: Process = "Data_DoubleMuonRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"}; break;
@@ -1933,7 +1933,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 126: Process = "Data_DoubleMuonRunH";
+	case 127: Process = "Data_DoubleMuonRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"}; break;
@@ -1942,7 +1942,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 127: Process = "Data_MuonEGRunB";
+	case 128: Process = "Data_MuonEGRunB";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016B/*"}; break;
@@ -1951,7 +1951,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 128: Process = "Data_MuonEGRunC";
+	case 129: Process = "Data_MuonEGRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016C/*"}; break;
@@ -1960,7 +1960,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 	
-	case 129: Process = "Data_MuonEGRunD";
+	case 130: Process = "Data_MuonEGRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016D/*"}; break;
@@ -1969,7 +1969,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-        case 130: Process = "Data_MuonEGRunE";
+        case 131: Process = "Data_MuonEGRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016E/*"}; break;
@@ -1978,7 +1978,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 131: Process = "Data_MuonEGRunF";
+	case 132: Process = "Data_MuonEGRunF";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016F/*"}; break;
@@ -1987,7 +1987,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 132: Process = "Data_MuonEGRunG";
+	case 133: Process = "Data_MuonEGRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016G/*"}; break;
@@ -1996,7 +1996,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 133: Process = "Data_MuonEGRunH";
+	case 134: Process = "Data_MuonEGRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016H/*"}; break;
@@ -2005,7 +2005,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 134: Process = "Data_SingleMuonRunB";
+	case 135: Process = "Data_SingleMuonRunB";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"}; break;
@@ -2014,7 +2014,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 135: Process = "Data_SingleMuonRunC";
+	case 136: Process = "Data_SingleMuonRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"}; break;
@@ -2023,7 +2023,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 136: Process = "Data_SingleMuonRunD";
+	case 137: Process = "Data_SingleMuonRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"}; break;
@@ -2032,7 +2032,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 137: Process = "Data_SingleMuonRunE";
+	case 138: Process = "Data_SingleMuonRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunE/*"}; break;
@@ -2041,7 +2041,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 138: Process = "Data_SingleMuonRunF";
+	case 139: Process = "Data_SingleMuonRunF";
 
                   switch(YearInt){
 			case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunF/*"}; break;
@@ -2050,7 +2050,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 139: Process = "Data_SingleMuonRunG";
+	case 140: Process = "Data_SingleMuonRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunG/*"}; break;
@@ -2059,7 +2059,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 140: Process = "Data_SingleMuonRunH";
+	case 141: Process = "Data_SingleMuonRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunH/*"}; break;
@@ -2068,7 +2068,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
  
-	case 141: Process = "Data_SingleElectronRunB";
+	case 142: Process = "Data_SingleElectronRunB";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunB/*"}; break;
@@ -2077,7 +2077,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 142: Process = "Data_SingleElectronRunC";
+	case 143: Process = "Data_SingleElectronRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunC/*"}; break;
@@ -2086,7 +2086,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 143: Process = "Data_SingleElectronRunD";
+	case 144: Process = "Data_SingleElectronRunD";
 
                   switch(YearInt){
 			case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunD/*"}; break;
@@ -2095,7 +2095,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 144: Process = "Data_SingleElectronRunE";
+	case 145: Process = "Data_SingleElectronRunE";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunE/*"}; break;
@@ -2104,7 +2104,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 145: Process = "Data_SingleElectronRunF";
+	case 146: Process = "Data_SingleElectronRunF";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunF/*"}; break;
@@ -2113,7 +2113,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 146: Process = "Data_SingleElectronRunG";
+	case 147: Process = "Data_SingleElectronRunG";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"}; break;
@@ -2122,7 +2122,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 147: Process = "Data_SingleElectronRunH";
+	case 148: Process = "Data_SingleElectronRunH";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"}; break;
@@ -2131,7 +2131,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 148: Process = "Data_EGRunB";
+	case 149: Process = "Data_EGRunB";
 
 		  switch(YearInt){ 
                         case 2016: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunB/*"}; break;
@@ -2140,7 +2140,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 149: Process = "Data_EGRunC";
+	case 150: Process = "Data_EGRunC";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunC/*"}; break;
@@ -2149,7 +2149,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
-	case 150: Process = "Data_EGRunD";
+	case 151: Process = "Data_EGRunD";
 
                   switch(YearInt){
                         case 2016: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunD/*"}; break;
@@ -2319,17 +2319,25 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                    	case 0: PSWeightString = "PSWeight"; break; //tZq
 			case 1: PSWeightString = "PSWeight"; break; //tZq (scale up)
 			case 2: PSWeightString = "PSWeight"; break; //tZq (scale down)
-			case 28: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
-			case 29: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
-                        case 32: PSWeightString = "PSWeight"; break; //single top t-channel (top)
-			case 33: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale up)
-			case 34: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale down)
-			case 35: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
-			case 36: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale up)
-			case 37: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale down)
-			case 38: PSWeightString = "PSWeight"; break; //single top s-channel
-			case 57: PSWeightString = "PSWeight"; break; //single top (tbarW)
-			case 93: PSWeightString = "PSWeight"; break; //ttgamma
+			case 31: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
+			case 32: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
+			case 56: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic, hdamp down, ext)
+                        case 35: PSWeightString = "PSWeight"; break; //single top t-channel (top)
+			case 36: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale up)
+			case 37: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale down)
+			case 38: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
+			case 39: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale up)
+			case 40: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale down)
+			case 41: PSWeightString = "PSWeight"; break; //single top s-channel
+			case 52: PSWeightString = "PSWeight"; break; //ttbar (to hadronic, hdamp up)
+                        case 53: PSWeightString = "PSWeight"; break; //ttbar (to hadronic, hdamp down)
+			case 54: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic, hdamp up)
+                        case 55: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic, hdamp down)
+			case 71: PSWeightString = "PSWeight"; break; //single top (tbarW)
+			case 72: PSWeightString = "PSWeight"; break; //single top (tbarW, scale up)
+			case 73: PSWeightString = "PSWeight"; break; //single top (tbarW, scale down)
+			case 108: PSWeightString = "PSWeight"; break; //ttgamma
+			case 109: PSWeightString = "PSWeight"; break; //ttgamma (ext)
                         default: PSWeightString = "LeptonPt"; break;
                     }
 	
@@ -2337,22 +2345,31 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		   break;
 
         case 2018: switch(ProcessInt){ 
-                        case 0: PSWeightString = "PSWeight"; break; //tZq
-			case 1: PSWeightString = "PSWeight"; break; //tZq (scale up)
+			case 0: PSWeightString = "PSWeight"; break; //tZq
+                        case 1: PSWeightString = "PSWeight"; break; //tZq (scale up)
                         case 2: PSWeightString = "PSWeight"; break; //tZq (scale down)
-                        case 29: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
-                        case 30: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
-                        case 33: PSWeightString = "PSWeight"; break; //single top t-channel (top)
-                        case 34: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale up)
-                        case 35: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale down)
-                        case 36: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
-                        case 37: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale up)
-                        case 38: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale down)
-			case 39: PSWeightString = "PSWeight"; break; //single top s-channel
-                        case 58: PSWeightString = "PSWeight"; break; //single top (tbarW)
-                        case 94: PSWeightString = "PSWeight"; break; //ttgamma
-			default: PSWeightString = "LeptonPt"; break;                  
-		    }
+                        case 31: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
+                        case 32: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
+                        case 56: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic, hdamp down, ext)
+                        case 35: PSWeightString = "PSWeight"; break; //single top t-channel (top)
+                        case 36: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale up)
+                        case 37: PSWeightString = "PSWeight"; break; //single top t-channel (top, scale down)
+                        case 38: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
+                        case 39: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale up)
+                        case 40: PSWeightString = "PSWeight"; break; //single top t-channel (antitop, scale down)
+                        case 41: PSWeightString = "PSWeight"; break; //single top s-channel
+                        case 52: PSWeightString = "PSWeight"; break; //ttbar (to hadronic, hdamp up)
+                        case 53: PSWeightString = "PSWeight"; break; //ttbar (to hadronic, hdamp down)
+                        case 54: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic, hdamp up)
+                        case 55: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic, hdamp down)
+                        case 71: PSWeightString = "PSWeight"; break; //single top (tbarW)
+                        case 72: PSWeightString = "PSWeight"; break; //single top (tbarW, scale up)
+                        case 73: PSWeightString = "PSWeight"; break; //single top (tbarW, scale down)
+                        case 108: PSWeightString = "PSWeight"; break; //ttgamma
+                        case 109: PSWeightString = "PSWeight"; break; //ttgamma (ext)
+                        default: PSWeightString = "LeptonPt"; break;		    
+
+		   }
 
 		 
 		 break;
@@ -3351,7 +3368,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	switch(ProcessInt){
 
-		case 111: switch(YearInt){
+		case 112: switch(YearInt){
 
 				case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 || 
 					          HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
@@ -3388,7 +3405,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			
 			}
 
-		case 112: switch(YearInt){
+		case 113: switch(YearInt){
 
                                 case 2016: return HLT_MET200 > 0 || HLT_MET250 > 0 ||
                                                   HLT_PFMET120_PFMHT120_IDTight > 0 || HLT_PFMET170_HBHECleaned > 0 || HLT_PFHT300_PFMET100 > 0;
@@ -3458,7 +3475,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	//std::cout << "print 30" << std::endl;
 
-	if(ProcessInt == 111 || 112){
+	if(ProcessInt == 112 || 113){
 
 	  switch(ChannelInt){
 
@@ -7017,38 +7034,56 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		case 2016: return Ones;
 		case 2017: switch(ProcessInt){
 				case 0: return PSWeightInput; //tZq
-				case 1: return PSWeightInput; //tZq (scale up)
-				case 2: return PSWeightInput; //tZq (scale down)
-				case 29: return PSWeightInput; //ttbar (to hadronic)
-				case 30: return PSWeightInput; //ttbar (to semileptonic)
-				case 33: return PSWeightInput; //single top t-channel (top)
-				case 34: return PSWeightInput; //single top t-channel (top, scale up)
-				case 35: return PSWeightInput; //single top t-channel (top, scale down)
-				case 36: return PSWeightInput; //single top t-channel (antitop)
-				case 37: return PSWeightInput; //single top t-channel (antitop, scale up)
-				case 38: return PSWeightInput; //single top t-channel (antitop, scale down)
-				case 39: return PSWeightInput; //single top s-channel
-				case 58: return PSWeightInput; //single top (tbarW)
-				case 94: return PSWeightInput; //ttgamma
-				default: return Ones;
-			    }
+                        	case 1: return PSWeightInput; //tZq (scale up)
+                        	case 2: return PSWeightInput; //tZq (scale down)
+                        	case 31: return PSWeightInput; //ttbar (to hadronic)
+                        	case 32: return PSWeightInput; //ttbar (to semileptonic)
+                        	case 56: return PSWeightInput; //ttbar (to semileptonic, hdamp down, ext)
+                        	case 35: return PSWeightInput; //single top t-channel (top)
+                        	case 36: return PSWeightInput; //single top t-channel (top, scale up)
+                        	case 37: return PSWeightInput; //single top t-channel (top, scale down)
+                        	case 38: return PSWeightInput; //single top t-channel (antitop)
+                        	case 39: return PSWeightInput; //single top t-channel (antitop, scale up)
+                        	case 40: return PSWeightInput; //single top t-channel (antitop, scale down)
+                        	case 41: return PSWeightInput; //single top s-channel
+                        	case 52: return PSWeightInput; //ttbar (to hadronic, hdamp up)
+                        	case 53: return PSWeightInput; //ttbar (to hadronic, hdamp down)
+                        	case 54: return PSWeightInput; //ttbar (to semileptonic, hdamp up)
+                        	case 55: return PSWeightInput; //ttbar (to semileptonic, hdamp down)
+                        	case 71: return PSWeightInput; //single top (tbarW)
+                        	case 72: return PSWeightInput; //single top (tbarW, scale up)
+                        	case 73: return PSWeightInput; //single top (tbarW, scale down)
+                        	case 108: return PSWeightInput; //ttgamma
+                        	case 109: return PSWeightInput; //ttgamma (ext)
+                        	default: return Ones;			    
+
+			}
 		case 2018: switch(ProcessInt){
-                                case 0: return PSWeightInput; //tZq
-				case 1: return PSWeightInput; //tZq (scale up)
+				case 0: return PSWeightInput; //tZq
+                                case 1: return PSWeightInput; //tZq (scale up)
                                 case 2: return PSWeightInput; //tZq (scale down)
-                                case 29: return PSWeightInput; //ttbar (to hadronic)
-                                case 30: return PSWeightInput; //ttbar (to semileptonic)
-                                case 33: return PSWeightInput; //single top t-channel (top)
-                                case 34: return PSWeightInput; //single top t-channel (top, scale up)
-                                case 35: return PSWeightInput; //single top t-channel (top, scale down)
-                                case 36: return PSWeightInput; //single top t-channel (antitop)
-                                case 37: return PSWeightInput; //single top t-channel (antitop, scale up)
-                                case 38: return PSWeightInput; //single top t-channel (antitop, scale down)
-                                case 39: return PSWeightInput; //single top s-channel
-                                case 58: return PSWeightInput; //single top (tbarW)
-                                case 94: return PSWeightInput; //ttgamma
-				default: return Ones;
-			    }
+                                case 31: return PSWeightInput; //ttbar (to hadronic)
+                                case 32: return PSWeightInput; //ttbar (to semileptonic)
+                                case 56: return PSWeightInput; //ttbar (to semileptonic, hdamp down, ext)
+                                case 35: return PSWeightInput; //single top t-channel (top)
+                                case 36: return PSWeightInput; //single top t-channel (top, scale up)
+                                case 37: return PSWeightInput; //single top t-channel (top, scale down)
+                                case 38: return PSWeightInput; //single top t-channel (antitop)
+                                case 39: return PSWeightInput; //single top t-channel (antitop, scale up)
+                                case 40: return PSWeightInput; //single top t-channel (antitop, scale down)
+                                case 41: return PSWeightInput; //single top s-channel
+                                case 52: return PSWeightInput; //ttbar (to hadronic, hdamp up)
+                                case 53: return PSWeightInput; //ttbar (to hadronic, hdamp down)
+                                case 54: return PSWeightInput; //ttbar (to semileptonic, hdamp up)
+                                case 55: return PSWeightInput; //ttbar (to semileptonic, hdamp down)
+                                case 71: return PSWeightInput; //single top (tbarW)
+                                case 72: return PSWeightInput; //single top (tbarW, scale up)
+                                case 73: return PSWeightInput; //single top (tbarW, scale down)
+                                case 108: return PSWeightInput; //ttgamma
+                                case 109: return PSWeightInput; //ttgamma (ext)
+                                default: return Ones;			
+    
+			}
 
 	}
 
@@ -7691,7 +7726,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
    switch(ProcessInt){
 
-	case 111: switch(YearInt){
+	case 112: switch(YearInt){
 
 			case 2016: MET_Triggers_Strings = {"HLT_MET200", 		    		"HLT_MET250",
 		        				   "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
@@ -7769,7 +7804,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		 break;
 
-	case 112: switch(YearInt){
+	case 113: switch(YearInt){
 
                         case 2016: MET_Triggers_Strings = {"HLT_MET200",                    		"HLT_MET250",
                                                            "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
@@ -7880,7 +7915,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   float LeptonSelection_EventWeight, MET_And_LeptonSelection_EventWeight, LeptonTriggersAndSelectionCriteria_EventWeight, MET_LeptonTriggers_SelectionCriteria_EventWeight;
 
   switch(ProcessInt){
-	case 111: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
+	case 112: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
 	         MET_And_LeptonSelection_EventWeight = *d_MET_And_LeptonSelection.Sum("PU");
 	         LeptonTriggersAndSelectionCriteria_EventWeight = *d_LeptonTriggers_And_LeptonSelection.Sum("PU");
                  MET_LeptonTriggers_SelectionCriteria_EventWeight = *d_MET_LeptonTriggers_LeptonSelection.Sum("PU");
@@ -7973,7 +8008,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
 
 
-  if((ProcessInt == 111 || ProcessInt == 112) && SystematicInt == 0){
+  if((ProcessInt == 112 || ProcessInt == 113) && SystematicInt == 0){
 
   	std::string TurnOnCurvesOutput = "TurnOnCurves_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
@@ -8038,7 +8073,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                   << std::endl; 
 
 
-  if(ProcessInt == 111 || ProcessInt == 112){return;}
+  if(ProcessInt == 112 || ProcessInt == 113){return;}
 
   //Calculating the trigger scale factors
   Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
@@ -8677,7 +8712,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {111, 112, 0}; //111 for trigger SF MC, 112 for trigger SF data, 0 for tZq
+  std::vector<int> Process_Selection = {112, 113, 0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
