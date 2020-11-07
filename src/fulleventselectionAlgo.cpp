@@ -6895,7 +6895,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto PDFWeight{[&SystematicInt, &HessianOrMC](const floats& LHEPdfWeight, const unsigned int& nLHEPdfWeight, const float& LHEWeight_originalXWGTUP){
+  auto PDFWeight{[&SystematicInt, &HessianOrMC](const floats& LHEPdfWeight, const unsigned int& nLHEPdfWeight){
 
   	//std::cout << "print 145" << std::endl;
 
@@ -6927,7 +6927,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		PdfUncert = PdfUncert_MC;
 	}
 
-	float NominalPdfWeight = LHEWeight_originalXWGTUP;
+	float NominalPdfWeight = LHEPdfWeight.at(0);
 
 	switch(SystematicInt){
 		case 11: return NominalPdfWeight + PdfUncert;
@@ -8303,7 +8303,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("MuonSFTest_Iso_sys_syst", MuonSFTest_Iso_sys_syst, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
                                            .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
 					   .Define("ReturnedPSWeight", PSWeightFunction, {PSWeightString})
-					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "nLHEPdfWeight", "LHEWeight_originalXWGTUP"})
+					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "nLHEPdfWeight"})
 					   .Define("ME_SF", ME_uncert_function, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
