@@ -562,7 +562,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"}; HessianOrMC = "MC"; break;
-			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"}; HessianOrMC = "Hessian; break;
+			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"}; HessianOrMC = "Hessian"; break;
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"}; HessianOrMC = "Hessian"; break;
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		}
