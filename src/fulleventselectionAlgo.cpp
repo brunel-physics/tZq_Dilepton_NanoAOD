@@ -5399,6 +5399,41 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	floats ResultVector{};
 
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << "pts.size() = " << pts.size() << std::endl;
+	std::cout << "etas.size() = " << etas.size() << std::endl;
+	std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
+	std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
+	std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
+	 std::cout << "pts = " << pts << std::endl;
+        std::cout << "etas = " << etas << std::endl;
+        std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
+        std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
+        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+
+	//Checking if the pt is greater than 20 (the min pt in the .csv file)
+	//if it is not, an efficiency of 1 is returned
+	for(int i = 0; i < pts.size(); i++){
+
+		if(pts.at(i) <= 20){
+
+			floats EffOne;
+			EffOne.push_back(1.0); 
+			return EffOne;
+
+		}
+		else{
+			continue;
+		}
+
+	}
+	
+
   	for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
 
 		CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
@@ -5503,16 +5538,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					float EtaTestFloat = stof(EtaTest.at(i));
 					float DiscrTestFloat = stof(DiscrTest.at(i));
 
-					/*
-
-				        std::cout << "CSVv2OperatingPointTest.at(i) = " << CSVv2OperatingPointTest.at(i) << std::endl;
-					std::cout << "MeasurementTypeTest.at(i) = " << MeasurementTypeTest.at(i) << std::endl;
-					std::cout << "SysTypeTest.at(i) = " << SysTypeTest.at(i) << std::endl;
-					std::cout << "JetFlavourTest.at(i) = " << JetFlavourTest.at(i) << std::endl;
-					std::cout << "EtaTestFloat = " << EtaTestFloat << std::endl;
-					std::cout << "PtTestFloat = " << PtTestFloat << std::endl;
-					std::cout << "DiscrTestFloat = " << DiscrTestFloat << std::endl;
-					*/
 
 					if( (vec.at(0) == CSVv2OperatingPointTest.at(i)) 
     					&& (VecAt1String == MeasurementTypeTest.at(i))
@@ -5550,11 +5575,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
 
-			for(long unsigned int k = 0; k < OutVec.size(); k++){std::cout << "OutVec.at(i) = " << OutVec.at(i) << std::endl;}
-
 
 			if(OutVec.size() != 0 && check == false){
-				for(long unsigned int k = 0; k < OutVec.size(); k++){if(OutVec.at(k) != "0"){NewOutVec.push_back(OutVec.at(k));}}
+				for(long unsigned int k = 0; k < OutVec.size(); k++){
+					if(OutVec.at(k) != "0"){NewOutVec.push_back(OutVec.at(k));}
+					else{continue;}
+				}
 	
 				std::string outputString;
 
