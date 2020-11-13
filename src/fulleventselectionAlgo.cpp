@@ -4728,7 +4728,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
 	//std::cout << "print 77" << std::endl;
-	return abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+	return tight_jets && abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
   }};
 
@@ -4736,7 +4736,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_charm_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
 
 	//std::cout << "print 78" << std::endl;
-        return abs(Jet_partonFlavour) == 4 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
+        return tight_jets && abs(Jet_partonFlavour) == 4 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4745,7 +4745,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_lightjets_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
         
       	//std::cout << "print 79" << std::endl;
-      	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
+      	return tight_jets && abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4754,7 +4754,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_gluon_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
                 
       	//std::cout << "print 80" << std::endl;
-      	return abs(Jet_partonFlavour) == 21 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
+      	return tight_jets && abs(Jet_partonFlavour) == 21 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4762,7 +4762,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
 
   	//std::cout << "print 81" << std::endl;
-    	return abs(Jet_partonFlavour) != 5 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
+    	return tight_jets && abs(Jet_partonFlavour) != 5 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4770,7 +4770,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
   	//std::cout << "print 82" << std::endl;
-	return abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
+	return tight_jets && abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4778,7 +4778,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_charm_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
 	//std::cout << "print 83" << std::endl;
-	return abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
+	return tight_jets && abs(Jet_partonFlavour) == 4 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4786,7 +4786,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_lightjets_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
 	//std::cout << "print 84" << std::endl;
-	return abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
+	return tight_jets && abs(Jet_partonFlavour) > 0 && abs(Jet_partonFlavour) < 4 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4794,7 +4794,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BTAGEFF_gluon_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
 
 	//std::cout << "print 85" << std::endl;
-        return abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
+        return tight_jets && abs(Jet_partonFlavour) == 21 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -4802,7 +4802,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
 	
 	//std::cout << "print 86" << std::endl;
-	return abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
+	return tight_jets && abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -5398,7 +5398,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	//std::cout << "print 121" << std::endl;
 
   	floats ResultVector{};
-
+/*
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
@@ -5415,24 +5415,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
-
-	//Checking if the pt is greater than 20 (the min pt in the .csv file)
-	//if it is not, an efficiency of 1 is returned
-	for(int i = 0; i < pts.size(); i++){
-
-		if(pts.at(i) <= 20){
-
-			floats EffOne;
-			EffOne.push_back(1.0); 
-			return EffOne;
-
-		}
-		else{
-			continue;
-		}
-
-	}
-	
+*/
 
   	for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
 
@@ -5569,9 +5552,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         		}
 
 			std::vector<std::string> NewOutVec{};
-			std::vector<std::string> Zeroes{}; 
-			Zeroes.push_back("0");
-			Zeroes.push_back("0");
+			std::vector<std::string> Ones{}; 
+			Ones.push_back("1");
+			Ones.push_back("1");
 
 			bool check = all_of(OutVec.begin(), OutVec.end(), [](std::string s){return s == "0";});
 
@@ -5584,17 +5567,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	
 				std::string outputString;
 
-				std::cout << "before if" << std::endl;
-
 				if(NewOutVec.size() > 11){
-					std::cout << "i = " << i << std::endl; 
-					std::cout << "((i+1)*11)-1  = " << ((i+1)*11)-1  << std::endl; 
-					std::cout << "NewOutVec.size() = " << NewOutVec.size() << std::endl;
 					outputString = NewOutVec.at( ((i+1)*11)-1 );
 				}
 				else{outputString = NewOutVec.at(0); }
-
-				 std::cout << "after if" << std::endl;
 
 				outputString.erase(outputString.begin()+1);
                 		outputString.erase(outputString.begin());
@@ -5613,7 +5589,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				FinalOutVec.push_back(outputstringvec.at(i));
 	
 			}
-			else{FinalOutVec.push_back(Zeroes.at(0));}
+			else{FinalOutVec.push_back(Ones.at(0));}
 
 
   		}//end of for loop
@@ -6587,6 +6563,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		float Denominator = EffHistogramDenominator->GetBinContent(PtDenom, EtaDenom);
 
 		float eff = Numerator / Denominator;
+		
+		std::cout << "eff = " << eff << std::endl;
+		std::cout << "Numerator = " << Numerator << std::endl;
+		std::cout << "Denominator = " << Denominator << std::endl;
 	
 		if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
         	else{BTaggedEff.push_back(1.);}
@@ -6613,6 +6593,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   	//std::cout << "print 126" << std::endl;
 
+	std::cout << "inside EffBTaggedProduct" << std::endl;
+	std::cout << "EffBTagged = " << EffBTagged << std::endl;
+
   	float initial = 1;
 
 	if(EffBTagged.size() > 0){
@@ -6627,6 +6610,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto EffNonBTaggedProduct{[](const floats& EffNonBTagged){
 
   	//std::cout << "print 127" << std::endl;
+
+	std::cout << "inside EffNonBTaggedProduct" << std::endl;
+	std::cout << "EffNonBTagged" << EffNonBTagged << std::endl;
  
   	float initial = 1;
 
@@ -6642,6 +6628,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	float initial = 1;
   	float output;
+
+	std::cout << "inside EffBTaggedProductData" << std::endl;
+	std::cout << "EffBTagged = " << EffBTagged << std::endl;
+	std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
 
 	if(CMSBTagSFInput.size() > 0){
   		for(long unsigned int i = 0; i < EffBTagged.size(); i++){output = (CMSBTagSFInput.at(0)*EffBTagged.at(i)) * initial;}
@@ -6660,6 +6650,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	float initial = 1;
 
+	std::cout << "inside EffNonBTaggedProductData" << std::endl;
+	std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
+	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
+
   	int size = (CMSNonBTagSFInput.size() < EffNonBTagged.size()) ? CMSNonBTagSFInput.size() : EffNonBTagged.size();
 
   	for(int i = 0; i < size; i++){initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;}
@@ -6673,6 +6667,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 130" << std::endl;
 
+	std::cout << "EffBTaggedProductInput = " << EffBTaggedProductInput << std::endl;
+	std::cout << "EffNonBTaggedProductInput = " << EffNonBTaggedProductInput << std::endl;
+
   	float MCProb = EffBTaggedProductInput * EffNonBTaggedProductInput; 
   	return MCProb;
 
@@ -6682,7 +6679,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto ProbBTagDataFunction{[](const float& EffBTaggedProductDataInput, const float& EffNonBTaggedProductDataInput){
 
   	//std::cout << "print 131" << std::endl;
-  
+ 
+	std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
+	std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
+ 
   	float DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
   	return DataProb;
   
@@ -6694,6 +6694,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	//std::cout << "print 131" << std::endl;
 
 	float BTagWeight = (ProbBTagData) / (ProbBTagMC);
+
+	std::cout << "ProbBTagData = " << ProbBTagData << std::endl;
+	std::cout << "ProbBTagMC = " << ProbBTagMC << std::endl;
 	
         if( !isnan(BTagWeight) && !isinf(BTagWeight) ){return BTagWeight;}
 	else{float One = 1.0; return One;}
@@ -8130,25 +8133,31 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                       			.Define("SmearedJetPhi", GetSmearedJetPhi, {"SmearedJet4Momentum", "Jet_phi"})
                       			.Define("SmearedJetEta", GetSmearedJetEta, {"SmearedJet4Momentum", "Jet_eta"})
                       			.Define("SmearedJetMass", GetSmearedJetMass, {"SmearedJet4Momentum", "Jet_mass"})
-		      		        .Define("LeadingJetMass", LeadingVariable, {JetMassInput})
-                                        .Define("SubleadingJetMass", SubleadingVariable, {JetMassInput})
-                                        .Define("ThirdJetMass", ThirdLeadingVariable, {JetMassInput})
-                                        .Define("FourthJetMass", FourthLeadingVariable, {JetMassInput})
-                                        .Define("LeadingJetPt", LeadingVariable, {JetPtInput})
-                                        .Define("SubleadingJetPt", SubleadingVariable, {JetPtInput})
-                                        .Define("ThirdJetPt", ThirdLeadingVariable, {JetPtInput})
-                                        .Define("FourthJetPt", FourthLeadingVariable, {JetPtInput})
+					.Define("dRJet_Lepton", deltaRcheck_floats, {JetEtaInput, JetPhiInput, "LeptonEta_RochCorr", "LeptonPhi_RochCorr"})
+					.Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_Lepton"})
+					.Define("TightSmearedJetsPt", select<floats>, {JetPtInput, "tight_jets"})
+					.Define("TightSmearedJetsEta", select<floats>, {JetEtaInput, "tight_jets"})
+					.Define("TightSmearedJetsPhi", select<floats>, {JetPhiInput, "tight_jets"})
+                                        .Define("TightSmearedJetsMass", select<floats>, {JetMassInput, "tight_jets"})
+					.Define("TightSmearedJetsPartonFlavour", select<ints>, {"Jet_partonFlavour", "tight_jets"})
+		      		        .Define("LeadingJetMass", LeadingVariable, {"TightSmearedJetsMass"})
+                                        .Define("SubleadingJetMass", SubleadingVariable, {"TightSmearedJetsMass"})
+                                        .Define("ThirdJetMass", ThirdLeadingVariable, {"TightSmearedJetsMass"})
+                                        .Define("FourthJetMass", FourthLeadingVariable, {"TightSmearedJetsMass"})
+                                        .Define("LeadingJetPt", LeadingVariable, {"TightSmearedJetsPt"})
+                                        .Define("SubleadingJetPt", SubleadingVariable, {"TightSmearedJetsPt"})
+                                        .Define("ThirdJetPt", ThirdLeadingVariable, {"TightSmearedJetsPt"})
+                                        .Define("FourthJetPt", FourthLeadingVariable, {"TightSmearedJetsPt"})
                                         .Define("SumSquaredPt", SumSquared2LeadingJets_pT, {"LeadingJetPt", "SubleadingJetPt"})
                                         .Define("JetPtSum", JetSum, {"LeadingJetPt", "SubleadingJetPt", "ThirdJetPt", "FourthJetPt"})
-                                        .Define("LeadingJetEta", LeadingVariable, {JetEtaInput})
-                                        .Define("SubleadingJetEta", SubleadingVariable, {JetEtaInput})
-                                        .Define("ThirdJetEta", ThirdLeadingVariable, {JetEtaInput})
-                                        .Define("FourthJetEta", FourthLeadingVariable, {JetEtaInput})
-                                        .Define("LeadingJetPhi", LeadingVariable, {JetPhiInput})
-                                        .Define("SubleadingJetPhi", SubleadingVariable, {JetPhiInput})
-                                        .Define("ThirdJetPhi", ThirdLeadingVariable, {JetPhiInput})
-                                        .Define("FourthJetPhi", FourthLeadingVariable, {JetPhiInput})
-                                        .Define("dRJet_Lepton", deltaRcheck_floats, {JetEtaInput, JetPhiInput, "LeptonEta_RochCorr", "LeptonPhi_RochCorr"})
+                                        .Define("LeadingJetEta", LeadingVariable, {"TightSmearedJetsEta"})
+                                        .Define("SubleadingJetEta", SubleadingVariable, {"TightSmearedJetsEta"})
+                                        .Define("ThirdJetEta", ThirdLeadingVariable, {"TightSmearedJetsEta"})
+                                        .Define("FourthJetEta", FourthLeadingVariable, {"TightSmearedJetsEta"})
+                                        .Define("LeadingJetPhi", LeadingVariable, {"TightSmearedJetsPhi"})
+                                        .Define("SubleadingJetPhi", SubleadingVariable, {"TightSmearedJetsPhi"})
+                                        .Define("ThirdJetPhi", ThirdLeadingVariable, {"TightSmearedJetsPhi"})
+                                        .Define("FourthJetPhi", FourthLeadingVariable, {"TightSmearedJetsPhi"})
                                         .Define("dR_j1j2", deltaRcheck_float, {"LeadingJetEta", "LeadingJetPhi", "SubleadingJetEta", "SubleadingJetPhi"})
                                         .Define("dPhi_j1j2", DeltaPhi_floatandfloat, {"LeadingJetPhi", "SubleadingJetPhi"})
                                         .Define("LeadingJetHT", HT, {"LeadingJetPt"})
@@ -8174,7 +8183,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 									        "LeadingJetMass", "SubleadingJetMass", "ThirdJetMass"})
                                         .Define("JetEtaSum", JetSum, {"LeadingJetEta", "SubleadingJetEta", "ThirdJetEta", "FourthJetEta"})
                                         .Define("JetPhiSum", JetSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
-                                        .Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_Lepton"})
                                         .Filter(jet_selection_function, {"tight_jets"}, "jet cut");
 
   std::string JetSelectionFile = "JetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
@@ -8184,42 +8192,42 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
   //B jet selection
-  auto d_BJetSelection = d_JetSelection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
+  auto d_BJetSelection = d_JetSelection.Define("bjets", bjet_id, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta"})
                                        .Define("nbjets", numberofbjets, {"bjets"})
-                                       .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
-				       .Define("BTAGEFF_nonbjet_id_WP", BTAGEFF_nonbjet_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
-				       .Define("BTAGEFF_nonbjet_id", BTAGEFF_nonbjet_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", JetEtaInput, "Jet_partonFlavour"})
-                                       .Define("BTAGEFF_bjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_bjet_id_WP"})
-                                       .Define("BTAGEFF_bjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id_WP"})
+                                       .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+				       .Define("BTAGEFF_nonbjet_id_WP", BTAGEFF_nonbjet_id_WP, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_charm_id_WP", BTAGEFF_charm_id_WP, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_lightjets_id_WP", BTAGEFF_lightjets_id_WP, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_gluon_id_WP", BTAGEFF_gluon_id_WP, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+				       .Define("BTAGEFF_nonbjet_id", BTAGEFF_nonbjet_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_charm_id", BTAGEFF_charm_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_lightjets_id", BTAGEFF_lightjets_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_gluon_id", BTAGEFF_gluon_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_bjet_pt_num", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_bjet_id_WP"})
+                                       .Define("BTAGEFF_bjet_eta_num", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_bjet_id_WP"})
 				       .Define("BTAGEFF_bjet_Jet_btagCSVV2_num", select<floats>, {"Jet_btagCSVV2", "BTAGEFF_bjet_id_WP"})
 				       .Define("BTAGEFF_bjet_Jet_partonFlavour_num", select<ints>, {"Jet_partonFlavour", "BTAGEFF_bjet_id_WP"})
 				       .Define("BTAGEFF_nonbjet_pt_num", select<floats>, {JetPtInput, "BTAGEFF_nonbjet_id_WP"})
                                        .Define("BTAGEFF_nonbjet_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_nonbjet_id_WP"})
 				       .Define("BTAGEFF_nonbjet_Jet_btagCSVV2_num", select<floats>, {"Jet_btagCSVV2", "BTAGEFF_nonbjet_id_WP"})
 				       .Define("BTAGEFF_nonbjet_Jet_partonFlavour_num", select<ints>, {"Jet_partonFlavour", "BTAGEFF_nonbjet_id_WP"})
-                                       .Define("BTAGEFF_charm_pt_num", select<floats>, {JetPtInput, "BTAGEFF_charm_id_WP"})
-                                       .Define("BTAGEFF_charm_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_charm_id_WP"})
-                                       .Define("BTAGEFF_lightjets_pt_num", select<floats>, {JetPtInput, "BTAGEFF_lightjets_id_WP"})
-                                       .Define("BTAGEFF_lightjets_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_lightjets_id_WP"})
-                                       .Define("BTAGEFF_gluon_pt_num", select<floats>, {JetPtInput, "BTAGEFF_gluon_id_WP"})
-                                       .Define("BTAGEFF_gluon_eta_num", select<floats>, {JetEtaInput, "BTAGEFF_gluon_id_WP"})
-                                       .Define("BTAGEFF_bjet_pt_denom", select<floats>, {JetPtInput, "BTAGEFF_bjet_id"})
-                                       .Define("BTAGEFF_bjet_eta_denom", select<floats>, {JetEtaInput, "BTAGEFF_bjet_id"})
-				       .Define("BTAGEFF_nonbjet_pt_denom", select<floats>, {JetPtInput, "BTAGEFF_nonbjet_id"})
-                                       .Define("BTAGEFF_nonbjet_eta_denom", select<floats>, {JetEtaInput, "BTAGEFF_nonbjet_id"})
-                                       .Define("BTAGEFF_charm_pt_denom", select<floats>, {JetPtInput, "BTAGEFF_charm_id"})
-                                       .Define("BTAGEFF_charm_eta_denom", select<floats>, {JetEtaInput, "BTAGEFF_charm_id"})
-                                       .Define("BTAGEFF_lightjets_pt_denom", select<floats>, {JetPtInput, "BTAGEFF_lightjets_id"})
-                                       .Define("BTAGEFF_lightjets_eta_denom", select<floats>, {JetEtaInput, "BTAGEFF_lightjets_id"})
-                                       .Define("BTAGEFF_gluon_pt_denom", select<floats>, {JetPtInput, "BTAGEFF_gluon_id"})
-                                       .Define("BTAGEFF_gluon_eta_denom", select<floats>, {JetEtaInput, "BTAGEFF_gluon_id"})
+                                       .Define("BTAGEFF_charm_pt_num", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_charm_id_WP"})
+                                       .Define("BTAGEFF_charm_eta_num", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_charm_id_WP"})
+                                       .Define("BTAGEFF_lightjets_pt_num", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_lightjets_id_WP"})
+                                       .Define("BTAGEFF_lightjets_eta_num", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_lightjets_id_WP"})
+                                       .Define("BTAGEFF_gluon_pt_num", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_gluon_id_WP"})
+                                       .Define("BTAGEFF_gluon_eta_num", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_gluon_id_WP"})
+                                       .Define("BTAGEFF_bjet_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_bjet_id"})
+                                       .Define("BTAGEFF_bjet_eta_denom", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_bjet_id"})
+				       .Define("BTAGEFF_nonbjet_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_nonbjet_id"})
+                                       .Define("BTAGEFF_nonbjet_eta_denom", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_nonbjet_id"})
+                                       .Define("BTAGEFF_charm_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_charm_id"})
+                                       .Define("BTAGEFF_charm_eta_denom", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_charm_id"})
+                                       .Define("BTAGEFF_lightjets_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_lightjets_id"})
+                                       .Define("BTAGEFF_lightjets_eta_denom", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_lightjets_id"})
+                                       .Define("BTAGEFF_gluon_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_gluon_id"})
+                                       .Define("BTAGEFF_gluon_eta_denom", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_gluon_id"})
 				       .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 			 
 
@@ -8422,17 +8430,17 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				  .Define("dR_Z_WPairJet2", deltaRcheck_W_function, {"RecoZPhi", "RecoZEta", "WPairJet2Eta", "WPairJet2Phi"})
 			          .Define("dPhi_Z_WPairJet1", DeltaPhi_function2, {"RecoZPhi", "WPairJet1Phi"})
                                   .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
-				  .Define("MinDeltaR", MinDeltaR, {"nJet", "RecoZPhi", "RecoZEta", JetPhiInput, JetEtaInput})
-				  .Define("MinDeltaPhi", MinDeltaPhi, {"nJet", "RecoZPhi", JetPhiInput})
+				  .Define("MinDeltaR", MinDeltaR, {"nJet", "RecoZPhi", "RecoZEta", "TightSmearedJetsPhi", "TightSmearedJetsEta"})
+				  .Define("MinDeltaPhi", MinDeltaPhi, {"nJet", "RecoZPhi", "TightSmearedJetsPhi"})
 				  .Define("dR_LeadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "LeadingLeptonEta", "bjetphi", "LeadingLeptonPhi"})
 			          .Define("dR_SubleadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "SubleadingLeptonEta", "bjetphi", "SubleadingLeptonPhi"})
-				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {JetPhiInput, "LeadingLeptonPhi"})
-                                  .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, {JetPhiInput, "SubleadingLeptonPhi"})		
+				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "LeadingLeptonPhi"})
+                                  .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "SubleadingLeptonPhi"})		
 				  .Define("MET", MET_function, {"MET_sumEt"})
-			          .Define("LeadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"LeadingJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
-                                  .Define("SubleadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"SubleadingJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
-                                  .Define("ThirdBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"ThirdJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
-                                  .Define("FourthBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"FourthJetPt", "Jet_btagCSVV2", "tight_jets", JetEtaInput})
+			          .Define("LeadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"LeadingJetPt", "Jet_btagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+                                  .Define("SubleadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"SubleadingJetPt", "Jet_btagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+                                  .Define("ThirdBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"ThirdJetPt", "Jet_btagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+                                  .Define("FourthBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"FourthJetPt", "Jet_btagCSVV2", "tight_jets", "TightSmearedJetsEta"})
                                   .Define("dPhi_W_Top", DeltaPhi_function4, {"w_pair_phi", "Top_Phi"})
 				  .Define("dR_Z_LeadingJet", deltaRcheck_W_function2, {"RecoZPhi", "RecoZEta", "LeadingJetPhi", "LeadingJetEta"})
                                   .Define("dR_Z_SubleadingJet", deltaRcheck_W_function2, {"RecoZPhi", "RecoZEta", "SubleadingJetPhi", "SubleadingJetEta"})
@@ -8464,12 +8472,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                            .Define("TotalPt_System", TotalVariable_System, {"RecoZPt", "w_pair_pt", "Top_Pt", "LepPtSum", "JetPtSum"})
 					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_doubles, {"TotalHT_System", "TotalPt_System"})
 					   .Define("CMSBTagSF", CMSBTagSF, {"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_bjet_Jet_btagCSVV2_num", "BTAGEFF_bjet_Jet_partonFlavour_num"})
-					   .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", JetEtaInput})
-                                           .Define("notbjetpt", bjet_variable, {JetPtInput, "nJet", "nonbjets"})
-                                           .Define("notbjeteta", bjet_variable, {JetEtaInput, "nJet", "nonbjets"})
+					   .Define("nonbjets", nonbjet_id, {"tight_jets", "Jet_btagCSVV2", "TightSmearedJetsEta"})
+                                           .Define("notbjetpt", bjet_variable, {"TightSmearedJetsPt", "nJet", "nonbjets"})
+                                           .Define("notbjeteta", bjet_variable, {"TightSmearedJetsEta", "nJet", "nonbjets"})
   					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_partonFlavour_num"})
-					   .Define("EffBTagged", EffBTagged_Function, {JetPtInput, JetEtaInput})
-					   .Define("EffNonBTagged", EffNonBTagged_Function, {JetPtInput, JetEtaInput})
+					   .Define("EffBTagged", EffBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta"})
+					   .Define("EffNonBTagged", EffNonBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta"})
 					   .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
 					   .Define("EffNonBTaggedProduct", EffNonBTaggedProduct, {"EffNonBTagged"})
 					   .Define("EffBTaggedProductData", EffBTaggedProductData, {"EffBTagged", "CMSBTagSF"})
@@ -8523,9 +8531,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	W_stddev = h_WMass->GetStdDev(); 
   	Top_stddev = h_InvTopMass->GetStdDev();
-
-	std::cout << "W_stddev = " << std::endl;
-	std::cout << "Top_stddev = " << std::endl;
 
   	std::string GaussianFitsFileString = "GaussianFits_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                              SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
