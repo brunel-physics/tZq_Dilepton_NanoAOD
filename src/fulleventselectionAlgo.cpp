@@ -5132,14 +5132,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto MinDeltaR{[](const unsigned int& nJet, const doubles& RecoZPhi, const doubles& RecoZEta, const floats& Jet_Phi_Selection, const floats& Jet_eta_Selection){
+  auto MinDeltaR{[](const ints& nJet, const doubles& RecoZPhi, const doubles& RecoZEta, const floats& Jet_Phi_Selection, const floats& Jet_eta_Selection){
 
   	std::cout << "print 108" << std::endl;
 
     	doubles output_vec;
 	double Output;  
 
-    	for(unsigned int i = 0; i < nJet; i++){
+    	for(int i = 0; i < nJet.size(); i++){
 
 		if(RecoZEta.size() > 1){
     			double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
@@ -5159,14 +5159,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto MinDeltaPhi{[](const unsigned int& nJet, const doubles& RecoZPhi, const floats& Jet_Phi_Selection){
+  auto MinDeltaPhi{[](const ints& nJet, const doubles& RecoZPhi, const floats& Jet_Phi_Selection){
 
   	std::cout << "print 109" << std::endl;
 
   	double output;
   	doubles output_vec{};
 
-  	for(unsigned int i = 0; i < nJet; i++){
+  	for(int i = 0; i < nJet.size(); i++){
 
 		if(RecoZPhi.size() > 1){
     			
@@ -8288,7 +8288,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   //Reconstructing the top quark candidate
   auto d_TopCandReco = d_WCandReco.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
-				  .Define("TightSmearedJetsNumber", select<ints>, {"TightSmearedJetsNumber", "tight_jets"})
+				  .Define("TightSmearedJetsNumber", select<ints>, {"nJet", "tight_jets"})
 				  .Define("bjetmass", bjet_variable, {"TightSmearedJetsMass", "TightSmearedJetsNumber", "lead_bjet"})
 				  .Define("bjetpt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "lead_bjet"})
 			          .Define("bjeteta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "lead_bjet"})
@@ -8316,8 +8316,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				  .Define("dR_Z_WPairJet2", deltaRcheck_W_function, {"RecoZPhi", "RecoZEta", "WPairJet2Eta", "WPairJet2Phi"})
 			          .Define("dPhi_Z_WPairJet1", DeltaPhi_function2, {"RecoZPhi", "WPairJet1Phi"})
                                   .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
-				  .Define("MinDeltaR", MinDeltaR, {"nJet", "RecoZPhi", "RecoZEta", "TightSmearedJetsPhi", "TightSmearedJetsEta"})
-				  .Define("MinDeltaPhi", MinDeltaPhi, {"nJet", "RecoZPhi", "TightSmearedJetsPhi"})
+				  .Define("MinDeltaR", MinDeltaR, {"TightSmearedJetsNumber", "RecoZPhi", "RecoZEta", "TightSmearedJetsPhi", "TightSmearedJetsEta"})
+				  .Define("MinDeltaPhi", MinDeltaPhi, {"TightSmearedJetsNumber", "RecoZPhi", "TightSmearedJetsPhi"})
 				  .Define("dR_LeadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "LeadingLeptonEta", "bjetphi", "LeadingLeptonPhi"})
 			          .Define("dR_SubleadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "SubleadingLeptonEta", "bjetphi", "SubleadingLeptonPhi"})
 				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "LeadingLeptonPhi"})
