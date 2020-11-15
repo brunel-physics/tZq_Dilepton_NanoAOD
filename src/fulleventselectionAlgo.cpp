@@ -8288,7 +8288,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   //Reconstructing the top quark candidate
   auto d_TopCandReco = d_WCandReco.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
-				  .Define("TightSmearedJetsNumber", select<ints>, {"nJet", "tight_jets"})
+				  .Define("TightSmearedJetsNumber", select<ints>, {"TightSmearedJetsNumber", "tight_jets"})
 				  .Define("bjetmass", bjet_variable, {"TightSmearedJetsMass", "TightSmearedJetsNumber", "lead_bjet"})
 				  .Define("bjetpt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "lead_bjet"})
 			          .Define("bjeteta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "lead_bjet"})
