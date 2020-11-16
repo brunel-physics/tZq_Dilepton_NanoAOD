@@ -5025,6 +5025,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
+  auto NumberOfSmearedTightJetsFunction{[](const ints& tight_jets){
+
+	ints ntightjets_vec;
+	const int ntightjets{std::count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
+
+	ntightjets_vec.push_back(ntightjets);
+        return ntightjets_vec;
+
+  }};
+
 
   auto bjet_variable{[](const floats& Jet_variable, const ints& nJet, const ints& lead_bjet){
 
@@ -5067,6 +5077,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				      const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass ){
 
   	std::cout << "print 104" << std::endl;
+	std::cout << "bjets_pt.size() = " << bjets_pt.size() << std::endl;
+	std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
 
   	auto reco_top = TLorentzVector{}; 
   	auto BJets = TLorentzVector{};
@@ -5075,6 +5087,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	double top_reco_mass = std::numeric_limits<double>::infinity();
   	size_t index_1{std::numeric_limits<size_t>::max()};
   	const size_t num{w_pair_pt.size()};
+
+	if(num <= 0 || bjets_pt.size() == 0){reco_top.SetPtEtaPhiM(0, 0, 0, 0); return reco_top;}
+
+	std::cout << "after if" << std::endl;
 
   	for(unsigned int i = 0; i < num; i++){
 
@@ -5218,7 +5234,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto BJetOutputDiscriminantFunction{[](const float& JetPt, const floats& Jet_btagCSVV2, const ints& tight_jets, const floats& Jet_eta_Selection){
 
   	std::cout << "print 112" << std::endl;
-  	return JetPt && (Jet_btagCSVV2  > 0.8838) && tight_jets && (abs(Jet_eta_Selection) < MaxTrackerEta);
+  	return JetPt && (Jet_btagCSVV2  > 0.8838) /*&& tight_jets */&& (abs(Jet_eta_Selection) < MaxTrackerEta);
 
   }};
 
@@ -6459,7 +6475,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
 
   	std::cout << "print 123" << std::endl;
-  	return tight_jets && (btags >= 0) && (etas < MaxTrackerEta);
+  	return /*tight_jets && */(btags >= 0) && (etas < MaxTrackerEta);
 
   }};
 
@@ -8288,7 +8304,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   //Reconstructing the top quark candidate
   auto d_TopCandReco = d_WCandReco.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
-				  .Define("TightSmearedJetsNumber", select<ints>, {"TightSmearedJetsNumber", "tight_jets"})
+				  .Define("TightSmearedJetsNumber", NumberOfSmearedTightJetsFunction, {"tight_jets"})
 				  .Define("bjetmass", bjet_variable, {"TightSmearedJetsMass", "TightSmearedJetsNumber", "lead_bjet"})
 				  .Define("bjetpt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "lead_bjet"})
 			          .Define("bjeteta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "lead_bjet"})
