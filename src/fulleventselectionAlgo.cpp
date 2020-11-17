@@ -3680,10 +3680,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	lead_pt_cut = tight_lepton_pts.empty() ? false : *max_element(tight_lepton_pts.begin(), tight_lepton_pts.end()) > MaxLeptonPt;
 
-
-	std::cout << "Electron_dxy_dz.size() = " << Electron_dxy_dz.size() << std::endl;
-
-	bool Electron_dxy_dz_bool = all_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return Electron_dxy_dz.at(i) > 0;});
+	bool Electron_dxy_dz_bool = all_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return i > 0;});
 
 	switch(ChannelInt){
 
@@ -7560,7 +7557,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 1000);
+  auto d_Range = d.Range(0, 100000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -8600,7 +8597,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {/*112, 113,*/ 0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
+  std::vector<int> Process_Selection = {112, 113, 0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
