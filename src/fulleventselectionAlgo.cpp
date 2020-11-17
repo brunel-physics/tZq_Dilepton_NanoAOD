@@ -3126,7 +3126,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	std::cout << "print 16" << std::endl;
 
- 	return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
+	return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
 
   }};
 
@@ -3649,21 +3649,24 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto Electron_dxy_dz_Function{[](const floats& Electron_dz, const floats& Electron_dxy, const float& LeadingLeptonPt, const float& SubleadingLeptonPt, const floats& LeptonEta){
 
-  	return abs(LeptonEta) < 1.442                   &&  abs(LeptonEta) > 1.566              && 
+  	return Electron_dz.size() > 0 			&& Electron_dz.size() < 3 		&&
+	       abs(LeptonEta) < 1.442                   &&  abs(LeptonEta) > 1.566              && 
                LeadingLeptonPt > MaxElectronPt          &&  SubleadingLeptonPt > MinElectronPt  && 
                (abs(LeptonEta) < 1.442                  &&  Electron_dz < 0.1                   && Electron_dxy < 0.05)  || //barrel region
                (abs(LeptonEta) > 1.566                  &&  abs(LeptonEta) < 3.0                && Electron_dz < 0.2 && Electron_dxy < 0.1); //endcaps
 
   }}; 
 
-  auto LeptonCut{[&ChannelInt](const floats& tight_lepton_pts,   const floats& loose_lepton_pts,   const bool& os, 
-			       const unsigned int& nElectron,    const unsigned int& nMuon,        const floats& Electron_dz,   
-			       const floats& Electron_dxy,       const float& LeadingLeptonPt,     const float& SubleadingLeptonPt, 
-			       const floats& LeptonEta,          const ints& Electron_dxy_dz){
+
+
+  auto LeptonCut{[&ChannelInt](const bool& os,                   const unsigned int& nElectron,    const unsigned int& nMuon,        
+			       const floats& Electron_dz,        const floats& Electron_dxy,       const float& LeadingLeptonPt,     
+			       const float& SubleadingLeptonPt,  const floats& LeptonEta,          const ints& Electron_dxy_dz,
+			       const floats& tight_lepton_pts,   const floats& loose_lepton_pts){
 
   	std::cout << "print 31" << std::endl;
 
-  	const bool lepton_cut{tight_lepton_pts.size() == 2 && tight_lepton_pts.size() == loose_lepton_pts.size()};
+	const bool lepton_cut{tight_lepton_pts.size() == 2 && tight_lepton_pts.size() == loose_lepton_pts.size()};
   	bool lead_pt_cut{false};
 
 	float MaxLeptonPt;
@@ -3677,31 +3680,18 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	lead_pt_cut = tight_lepton_pts.empty() ? false : *max_element(tight_lepton_pts.begin(), tight_lepton_pts.end()) > MaxLeptonPt;
 
-	/*
-	bool Electron_dxy_dz_bool = false;
 
-	auto n_Electron_dxy_dz = count_if(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int j){
-		if(Electron_dxy_dz.size() > 0){return Electron_dxy_dx.at(j) >0;}
-	});
+	std::cout << "Electron_dxy_dz.size() = " << Electron_dxy_dz.size() << std::endl;
 
-	std::cout << "n_Electron_dxy_dz = " << n_Electron_dxy_dz << std::endl;
-	*/
-
+	bool Electron_dxy_dz_bool = all_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return Electron_dxy_dz.at(i) > 0;});
 
 	switch(ChannelInt){
 
-		case 1: return 
-			os 				         &&  lead_pt_cut 			 && 
-			lepton_cut 				 &&  nElectron == 2;/*			 &&
-			abs(LeptonEta) < 1.442			 &&  abs(LeptonEta) > 1.566		 && 
-  			LeadingLeptonPt > MaxElectronPt          &&  SubleadingLeptonPt > MinElectronPt  && 
-			(abs(LeptonEta) < 1.442     		 &&  Electron_dz < 0.1 			 && Electron_dxy < 0.05)  || //barrel region
-                        (abs(LeptonEta) > 1.566                  &&  abs(LeptonEta) < 3.0   		 && Electron_dz < 0.2 && Electron_dxy < 0.1); //endcaps
-			*/
+		case 1: return os && lead_pt_cut && lepton_cut && nElectron == 2 && Electron_dxy_dz_bool;
+		
+		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2 && Electron_dxy_dz_bool;
 
-		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2;
-
-		case 3: return os && lepton_cut && nElectron == 1 && nMuon == 1;
+		case 3: return os && lead_pt_cut && lepton_cut && nElectron == 1 && nMuon == 1 && Electron_dxy_dz_bool;
 
 		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
@@ -3713,7 +3703,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
   	std::cout << "print 32" << std::endl;
-  	bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
+	bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   	bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
 
   	return OppositeSignChargeCheck && (LeptonNonPromptCheck == 1);
@@ -3723,7 +3713,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
   	std::cout << "print 33" << std::endl;
-  	bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
+
+	bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   	bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});
 
   	return OppositeSignChargeCheck && (LeptonPromptCheck == 1);
@@ -3735,7 +3726,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   
   	std::cout << "print 34" << std::endl;
 
-  	bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
+	bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
   	bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
 
   	return SameSignChargeCheck && (LeptonNonPromptCheck == 1);
@@ -3746,7 +3737,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	std::cout << "print 35" << std::endl;  
 
-  	bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
+	bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
   	bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});  
 
   	return SameSignChargeCheck && (LeptonPromptCheck == 1);
@@ -5028,7 +5019,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto NumberOfSmearedTightJetsFunction{[](const ints& tight_jets){
 
 	ints ntightjets_vec;
-	const int ntightjets{std::count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
+	const auto ntightjets{std::count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
 
 	ntightjets_vec.push_back(ntightjets);
         return ntightjets_vec;
@@ -7569,7 +7560,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 100000);
+  auto d_Range = d.Range(0, 1000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -7674,8 +7665,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                       .Define("LeadingLepton_RelIso_Selection", LeadingVariable, {"TightLeptonsJetRelIso"})
                                       .Define("SubleadingLepton_RelIso_Selection", SubleadingVariable, {"TightLeptonsJetRelIso"})
 				      .Define("Electron_dxy_dz", Electron_dxy_dz_Function, {"Electron_dz", "Electron_dxy", "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta"})
-				      .Filter(LeptonCut, {"TightLeptonsPt", "LooseLeptonsPt", "OppositeSign", "nElectron", "nMuon", "Electron_dz", "Electron_dxy",
-							  "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta", "Electron_dxy_dz"}, "lepton cut");
+				      .Filter(LeptonCut, {"OppositeSign", "nElectron", "nMuon", "Electron_dz", "Electron_dxy",
+							  "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta", "Electron_dxy_dz", 
+						          "TightLeptonsPt", "LooseLeptonsPt"}, "lepton cut");
 
   std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
@@ -8608,7 +8600,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {112, 113, 0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
+  std::vector<int> Process_Selection = {/*112, 113,*/ 0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
