@@ -6518,6 +6518,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		double eff = Numerator / Denominator;
 		
+		std::cout << "pts.at(i) = " << pts.at(i) << std::endl;
+		std::cout << "etas.at(i) = " << etas.at(i) << std::endl;
 		std::cout << "eff = " << eff << std::endl;
 		std::cout << "Numerator = " << Numerator << std::endl;
 		std::cout << "Denominator = " << Denominator << std::endl;
@@ -6606,7 +6608,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << '\n' << std::endl;
 
 	if(CMSBTagSFInput.size() > 0){
-  		for(long unsigned int i = 0; i < EffBTagged.size(); i++){output = (CMSBTagSFInput.at(0)*EffBTagged.at(i)) * initial;}
+  		for(long unsigned int i = 0; i < EffBTagged.size(); i++){output = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
 	}
 	else{output = 1 * initial;}
 
@@ -6636,7 +6638,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	for(int i = 0; i < size; i++){
 		if(CMSNonBTagSFInput.at(i) != 1){
-			initial = (1 - (CMSNonBTagSFInput.at(0)*EffNonBTagged.at(i)) ) * initial;
+			initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
 		}
 		else{continue;}
 	}
@@ -8219,13 +8221,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   double mineta = -3;
   double maxeta = 3;
 
-  h_bjet_num = d_BJetSelection.Histo2D({"h_bjet_ee_num", "h_bjet_ee_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
+  h_bjet_num = d_BJetSelection.Histo2D({"h_bjet_num", "h_bjet_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_num"}, {"BTAGEFF_bjet_pt_num"});
   
-  h_nonbjet_num = d_BJetSelection.Histo2D({"h_nonbjet_ee_num", "h_nonbjet_ee_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
+  h_nonbjet_num = d_BJetSelection.Histo2D({"h_nonbjet_num", "h_nonbjet_num", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_num"}, {"BTAGEFF_nonbjet_pt_num"});
 
-  h_bjet_denom = d_BJetSelection.Histo2D({"h_bjet_ee_denom", "h_bjet_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
+  h_bjet_denom = d_BJetSelection.Histo2D({"h_bjet_denom", "h_bjet_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_bjet_eta_denom"}, {"BTAGEFF_bjet_pt_denom"});
    
-  h_nonbjet_denom = d_BJetSelection.Histo2D({"h_nonbjet_ee_denom", "h_nonbjet_ee_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
+  h_nonbjet_denom = d_BJetSelection.Histo2D({"h_nonbjet_denom", "h_nonbjet_denom", NumBins, mineta, maxeta, NumBins, minpt, maxpt}, {"BTAGEFF_nonbjet_eta_denom"}, {"BTAGEFF_nonbjet_pt_denom"});
 
   h_bjet_num->GetXaxis()->SetTitle("#eta");
   h_nonbjet_num->GetXaxis()->SetTitle("#eta");
@@ -8389,13 +8391,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
                                            .Define("TotalPt_System", TotalVariable_System, {"RecoZPt", "w_pair_pt", "Top_Pt", "LepPtSum", "JetPtSum"})
 					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_doubles, {"TotalHT_System", "TotalPt_System"})
-					   .Define("CMSBTagSF", CMSBTagSF, {/*"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsPartonFlavour"*/"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_bjet_Jet_btagCSVV2_num", "BTAGEFF_bjet_Jet_partonFlavour_num"})
+					   .Define("CMSBTagSF", CMSBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsPartonFlavour"/*"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_bjet_Jet_btagCSVV2_num", "BTAGEFF_bjet_Jet_partonFlavour_num"*/})
 					   .Define("nonbjets", nonbjet_id, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta"})
                                            .Define("notbjetpt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "nonbjets"})
                                            .Define("notbjeteta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "nonbjets"})
-  					   .Define("CMSNonBTagSF", CMSNonBTagSF, {/*"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsPartonFlavour"*/"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_partonFlavour_num"})
-					   .Define("EffBTagged", EffBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta"/*"bjetpt", "bjeteta"*/})
-					   .Define("EffNonBTagged", EffNonBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta"/*"notbjetpt", "notbjeteta"*/})
+  					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsPartonFlavour"/*"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_partonFlavour_num"*/})
+					   .Define("EffBTagged", EffBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta"})
+					   .Define("EffNonBTagged", EffNonBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta"})
 					   .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
 					   .Define("EffNonBTaggedProduct", EffNonBTaggedProduct, {"EffNonBTagged"})
 					   .Define("EffBTaggedProductData", EffBTaggedProductData, {"EffBTagged", "CMSBTagSF"})
