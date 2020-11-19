@@ -549,7 +549,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   switch(MCInt){
 
 	case 0: SampleType = "data";
-		JetMassInput = "Jet_mass"; JetPtInput = "Jet_pt"; JetEtaInput = "Jet_eta"; JetPhiInput = "Jet_phi";
+		JetMassInput = "Jet_mass"; JetPtInput = "Jet_pt"; JetEtaInput = "Jet_eta"; JetPhiInput = "Jet_phi"; 
 		break;
 
 	case 1: SampleType = "MC";
@@ -3680,7 +3680,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	lead_pt_cut = tight_lepton_pts.empty() ? false : *max_element(tight_lepton_pts.begin(), tight_lepton_pts.end()) > MaxLeptonPt;
 
-	bool Electron_dxy_dz_bool = all_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return i > 0;});
+	bool Electron_dxy_dz_bool = any_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return i > 0;});
 
 	switch(ChannelInt){
 
@@ -4486,7 +4486,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  	for(long unsigned int i = 0; i < JetPhi.size(); i++){
 
 		float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
-        	NewPhiVec.push_back(NewPhi);
+        	//float NewPhi = JetPhi.at(i);
+		NewPhiVec.push_back(NewPhi);
 
  	}
  
@@ -4504,7 +4505,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  	for(long unsigned int i = 0; i < JetEta.size(); i++){
 
         	float NewEta = (SmearedJet4Momentum.at(i)).Eta();
-        	NewEtaVec.push_back(NewEta);
+        	//float NewEta = JetEta.at(i);
+		NewEtaVec.push_back(NewEta);
 
  	}
 
@@ -5419,6 +5421,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		std::vector<std::string> DiscrTest{};
 
         	for(long unsigned int i = 0; i < pts.size(); i++){
+
+			if(abs(CSVv2Discr.at(i)) > 1.0){
+				std::cout << "ERROR: CSVv2 discriminant is " << CSVv2Discr.at(i) << ". Returning 1" << std::endl; 
+				doubles VecOfOnes(pts.size(), 1.0); return VecOfOnes;}
+			else{continue;}
+
                 	std::stringstream ss;
                 	ss << CSVv2Discr.at(i);
                 	std::string CSVv2DiscrString(ss.str());
@@ -5494,7 +5502,26 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                         		|| (VecAt6Float > PtTestFloat)     
                         		|| (VecAt7Float < PtTestFloat)
                         		|| (VecAt8Float > DiscrTestFloat) 
-                        		|| (VecAt9Float < DiscrTestFloat)){OutVec.push_back("0");}
+                        		|| (VecAt9Float < DiscrTestFloat)){
+						std::cout << "vec.at(0) = " << vec.at(0) << std::endl;
+						std::cout << "CSVv2OperatingPointTest.at(i) = " << CSVv2OperatingPointTest.at(i) << std::endl;
+						std::cout << "vec.at(1) = " << vec.at(1) << std::endl;
+                                                std::cout << "MeasurementTypeTest.at(i) = " << MeasurementTypeTest.at(i) << std::endl;
+						std::cout << "vec.at(2) = " << vec.at(2) << std::endl;
+                                                std::cout << "SysTypeTest.at(i) = " << SysTypeTest.at(i) << std::endl;
+						std::cout << "vec.at(3) = " << vec.at(3) << std::endl;
+                                                std::cout << "JetFlavourTest.at(i) = " << JetFlavourTest.at(i) << std::endl;
+						std::cout << "EtaTestFloat = " << EtaTestFloat << std::endl;
+						std::cout << "VecAt4Float = " << VecAt4Float << std::endl;
+						std::cout << "VecAt5Float = " << VecAt5Float << std::endl;
+						std::cout << "PtTestFloat = " << PtTestFloat << std::endl;
+                                                std::cout << "VecAt6Float = " << VecAt6Float << std::endl;
+                                                std::cout << "VecAt7Float = " << VecAt7Float << std::endl;
+						std::cout << "DiscrTestFloat = " << DiscrTestFloat << std::endl;
+                                                std::cout << "VecAt8Float = " << VecAt8Float << std::endl;
+                                                std::cout << "VecAt9Float = " << VecAt9Float << std::endl; 
+						OutVec.push_back("0");
+					}
 					else{std::cout << "double check criteria" << std::endl;}
 			
                 		}
@@ -7586,7 +7613,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 10000);
+  auto d_Range = d.Range(0, 100000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -8117,7 +8144,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                       		        .Define("sigma_JER", sigma_JER, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 			                .Define("sigma_JER_up", sigma_JER_up, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 					.Define("sigma_JER_down", sigma_JER_down, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
-                      			.Define("cJER", JetSmearingFunction_HybridMethod, {{"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"}})
+                      			.Define("cJER", JetSmearingFunction_HybridMethod, {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"})
                       		        .Define("SmearedJet4Momentum", ApplyCJER, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
                       			.Define("SmearedJetPt", GetSmearedJetPt, {"SmearedJet4Momentum", "Jet_pt"})
                       			.Define("SmearedJetPhi", GetSmearedJetPhi, {"SmearedJet4Momentum", "Jet_phi"})
@@ -8626,7 +8653,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {/*112, 113,*/0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
+  std::vector<int> Process_Selection = {112, 113, 0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
