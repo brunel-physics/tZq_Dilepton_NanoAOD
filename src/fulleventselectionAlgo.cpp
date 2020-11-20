@@ -3680,15 +3680,15 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	lead_pt_cut = tight_lepton_pts.empty() ? false : *max_element(tight_lepton_pts.begin(), tight_lepton_pts.end()) > MaxLeptonPt;
 
-	bool Electron_dxy_dz_bool = any_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return i > 0;});
+	//bool Electron_dxy_dz_bool = any_of(Electron_dxy_dz.begin(), Electron_dxy_dz.end(), [&Electron_dxy_dz](int i = 0){return i > 0;});
 
 	switch(ChannelInt){
 
-		case 1: return os && lead_pt_cut && lepton_cut && nElectron == 2 && Electron_dxy_dz_bool;
+		case 1: return os && lead_pt_cut && lepton_cut && nElectron == 2/* && Electron_dxy_dz_bool*/;
 		
-		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2 && Electron_dxy_dz_bool;
+		case 2: return os && lead_pt_cut && lepton_cut && nMuon == 2/* && Electron_dxy_dz_bool*/;
 
-		case 3: return os && lead_pt_cut && lepton_cut && nElectron == 1 && nMuon == 1 && Electron_dxy_dz_bool;
+		case 3: return os && lead_pt_cut && lepton_cut && nElectron == 1 && nMuon == 1/* && Electron_dxy_dz_bool*/;
 
 		default: std::cout << "ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)." << std::endl; break;
 
@@ -5350,7 +5350,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	//std::cout << "print 121" << std::endl;
 
   	doubles ResultVector{};
-
+/*
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
@@ -5367,9 +5367,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
-
+*/
 
   	for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
+
+//		if(CSVv2Discr.at(j) > 1){std::cout << "ERROR: CSVv2 discriminant is = " << CSVv2Discr << "returning a SF of 1." << std::endl; ResultVector.push_back(1.0);}
+//		else{
 
 		CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 		std::vector<std::vector<std::string> > dataList = reader.getData();
@@ -5421,11 +5424,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		std::vector<std::string> DiscrTest{};
 
         	for(long unsigned int i = 0; i < pts.size(); i++){
-
-			if(abs(CSVv2Discr.at(i)) > 1.0){
-				std::cout << "ERROR: CSVv2 discriminant is " << CSVv2Discr.at(i) << ". Returning 1" << std::endl; 
-				doubles VecOfOnes(pts.size(), 1.0); return VecOfOnes;}
-			else{continue;}
 
                 	std::stringstream ss;
                 	ss << CSVv2Discr.at(i);
@@ -5503,6 +5501,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                         		|| (VecAt7Float < PtTestFloat)
                         		|| (VecAt8Float > DiscrTestFloat) 
                         		|| (VecAt9Float < DiscrTestFloat)){
+
+/*
 						std::cout << "vec.at(0) = " << vec.at(0) << std::endl;
 						std::cout << "CSVv2OperatingPointTest.at(i) = " << CSVv2OperatingPointTest.at(i) << std::endl;
 						std::cout << "vec.at(1) = " << vec.at(1) << std::endl;
@@ -5520,6 +5520,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 						std::cout << "DiscrTestFloat = " << DiscrTestFloat << std::endl;
                                                 std::cout << "VecAt8Float = " << VecAt8Float << std::endl;
                                                 std::cout << "VecAt9Float = " << VecAt9Float << std::endl; 
+*/
 						OutVec.push_back("0");
 					}
 					else{std::cout << "double check criteria" << std::endl;}
@@ -6446,6 +6447,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			VecForConcString13.clear();
 
 		}//end of for loop
+
+
+//		}//end of else statement
 
 
 	}//end of first for loop
@@ -8081,7 +8085,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                   << Eff_LowerUncert << '\n'
                   << std::endl; 
 
-
   if(ProcessInt == 112 || ProcessInt == 113){return;}
 
   //Calculating the trigger scale factors
@@ -8664,18 +8667,16 @@ void fulleventselectionAlgo::fulleventselection(){
   int Channel_Selection = 1;
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
-
-  for(int i = 0; Process_Selection.size(); i++){
+  for(int i = 0; i < Process_Selection.size(); i++){
 
   	tZq_NanoAOD_Output(MC_Selection, 	    Process_Selection.at(i), NPL_Selection,        SR_Selection,         SBR_Selection,             ZPlusJetsCR_Selection, 
 		           ttbarCR_Selection,       Year_Selection,          Systematic_Selection, Channel_Selection,    DoubleCountCheck_Selection);
 
   }
 
-
   //Obtaining the ratio for the NPL estimation
 
-  if(NPL_Selection == 0){
+  if(NPL_Selection == 1){
 
   	std::string Year_String;
   	std::string Channel_String;
@@ -8848,6 +8849,8 @@ void fulleventselectionAlgo::fulleventselection(){
         NPLWeightFile << NPL_Weight << std::endl;
 
   }
+
+
 
 }
 
