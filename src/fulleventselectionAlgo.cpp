@@ -5584,11 +5584,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                         		outputString.replace(pos, 1, PtTest.at(i));
                         		pos += 2;
                 		}
-                
+               
+				std::cout << "outputString = " << outputString << std::endl; 
 				outputstringvec.push_back(outputString);
 				std::cout << "outputstringvec.size() = " << outputstringvec.size() << std::endl;
 				std::cout << "i = " << i << std::endl;
-				FinalOutVec.push_back(outputstringvec.at(i));
+				FinalOutVec.push_back(outputString); //use to be outputstringvec.at(i)
 				std::cout << "after FinalOutVec.push_back(outputstringvec.at(i))" << std::endl;
 	
 			}
