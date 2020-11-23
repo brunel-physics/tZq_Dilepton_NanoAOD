@@ -186,12 +186,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   ROOT::RDF::RResultPtr<TH2D> h_bjet_denom;
   ROOT::RDF::RResultPtr<TH2D> h_nonbjet_num;
   ROOT::RDF::RResultPtr<TH2D> h_nonbjet_denom;
-  ROOT::RDF::RResultPtr<TH2D> h_charm_num;
-  ROOT::RDF::RResultPtr<TH2D> h_charm_denom;
-  ROOT::RDF::RResultPtr<TH2D> h_lightjets_num;
-  ROOT::RDF::RResultPtr<TH2D> h_lightjets_denom;
-  ROOT::RDF::RResultPtr<TH2D> h_gluon_num;
-  ROOT::RDF::RResultPtr<TH2D> h_gluon_denom;
+
+  TH2D * h_bjet;
+  TH2D * h_nonbjet;
 
   std::vector<std::string> input_files;
  
@@ -5357,31 +5354,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	doubles ResultVector{};
 
-//	std::cout << '\n' << std::endl;
-//	std::cout << '\n' << std::endl;
-//	std::cout << '\n' << std::endl;
-//	std::cout << "pts.size() = " << pts.size() << std::endl;
-//	std::cout << "etas.size() = " << etas.size() << std::endl;
-//	std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
-//	std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
-//	std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
-/*	 std::cout << "pts = " << pts << std::endl;
-        std::cout << "etas = " << etas << std::endl;
-        std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
-        std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
-        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-*/
-
   	for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
-
-//		if(CSVv2Discr.at(j) > 1){std::cout << "ERROR: CSVv2 discriminant is = " << CSVv2Discr << "returning a SF of 1." << std::endl; ResultVector.push_back(1.0);}
-//		else{
-
-		std::cout << "j = " << j << std::endl;
-		std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
 
 		CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 		std::vector<std::vector<std::string> > dataList = reader.getData();
@@ -5444,14 +5417,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         	}
 
 
-		std::vector<std::string> OutVec{};
 		std::vector<std::string> FinalOutVec{};
 
 		for(long unsigned int i = 0; i < CSVv2OperatingPointTest.size(); i++){
-
-			std::cout << "inside CSVv2OperatingPointTest for loop" << std::endl;
-			std::cout << "CSVv2OperatingPointTest.size() = " << CSVv2OperatingPointTest.size() << std::endl;
-			std::cout << "i = " << i << std::endl;
 
 			for(std::vector<std::string> vec : dataList){
 				for(std::string data : vec){OutputVec.push_back(data);}
@@ -5488,15 +5456,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					float VecAt7Float = stof(VecAt7String);
 					float VecAt8Float = stof(VecAt8String);
                         		float VecAt9Float = stof(VecAt9String);
-/*
-					std::cout << "PtTest.size() = " << PtTest.size() << std::endl;
-					std::cout << "EtaTest.size() = " << EtaTest.size() << std::endl;
-					std::cout << "DiscrTest.size() = " << DiscrTest.size() << std::endl;
-					std::cout << "CSVv2OperatingPointTest.size() = " << CSVv2OperatingPointTest.size() << std::endl;
-					std::cout << "MeasurementTypeTest.size() = " << MeasurementTypeTest.size() << std::endl;
-					std::cout << "SysTypeTest.size() = " << SysTypeTest.size() << std::endl;
-					std::cout << "JetFlavourTest.size() = " << JetFlavourTest.size() << std::endl;
-*/
 					float PtTestFloat = stof(PtTest.at(i));
 					float EtaTestFloat = stof(EtaTest.at(i));
 					float DiscrTestFloat = stof(DiscrTest.at(i));
@@ -5513,7 +5472,24 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
     					&& (VecAt8Float < DiscrTestFloat) 
     					&& (VecAt9Float > DiscrTestFloat)
   					){
-						OutVec.push_back(vec.at(10)); break;					
+						std::string outputString = vec.at(10);
+
+						outputString.erase(outputString.begin()+1);
+                        			outputString.erase(outputString.begin());
+                        			outputString.erase(outputString.end()-2);
+                        			outputString.erase(outputString.end()-1);
+
+                        			std::string::size_type pos = 0;
+
+                        			while ((pos = outputString.find('x', pos)) != std::string::npos)
+                                		{
+                                        		outputString.replace(pos, 1, PtTest.at(i));
+                                        		pos += 2;
+                                		}
+ 
+						FinalOutVec.push_back(outputString);
+						break;
+					
 					}
 					else{continue;}
 			
@@ -5522,45 +5498,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         		}
 
 
-			std::cout << '\n' << std::endl;
-			std::cout << '\n' << std::endl;
-			std::cout << '\n' << std::endl;			
-			std::cout << "OutVec.size() =" << OutVec.size() << std::endl;
-			std::cout << '\n' << std::endl;
-                        std::cout << '\n' << std::endl;
-                        std::cout << '\n' << std::endl;	
-
-			std::string outputString;
-
-			if(OutVec.size() == 1){
-				outputString = OutVec.at(0);
-
-				outputString.erase(outputString.begin()+1);
-                		outputString.erase(outputString.begin());
-                		outputString.erase(outputString.end()-2);
-                		outputString.erase(outputString.end()-1);
-		
-                		std::string::size_type pos = 0;
- 
-                		while ((pos = outputString.find('x', pos)) != std::string::npos)
-                		{
-                        		outputString.replace(pos, 1, PtTest.at(i));
-                        		pos += 2;
-                		}
-				
-			}
-			else{outputString = "1.0";}               
-
-			std::cout << "outputString = " << outputString << std::endl; 
-			std::cout << "i = " << i << std::endl;
-			FinalOutVec.push_back(outputString); //use to be outputstringvec.at(i)
-			std::cout << "after FinalOutVec.push_back(outputstringvec.at(i))" << std::endl;
-	
-
   		}//end of for loop
 
 
-	std::cout << "before Evaluating the mathematical expression in the string" << std::endl;
 
 	//Evaluating the mathematical expression in the string
 	std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
@@ -5586,7 +5526,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	int index, index2, index3, index4, index5, index6, index7, index8, index9, index10, index11, index12, index13, index14;
 	float result;
 
-	std::cout << "before FinalOutVec for loop" << std::endl;	
 
 	for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 
@@ -6439,12 +6378,19 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		}//end of for loop
 
 
-	std::cout << "before AfterOutVec for loop" << std::endl;
-
-//		}//end of else statement
-
-
 	}//end of first for loop
+
+	
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << "pts = " << pts << std::endl;
+        std::cout << "etas = " << etas << std::endl;
+        std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
+        std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
+        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
+	std::cout << "ResultVector = " << ResultVector << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
 
 	return ResultVector;
 
@@ -6509,48 +6455,43 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
   
-  auto EffBTaggedFunction{[&h_bjet_num, &h_nonbjet_num, &h_charm_num, &h_lightjets_num, &h_gluon_num, 
-			   &h_bjet_denom, &h_nonbjet_denom, &h_charm_denom, &h_lightjets_denom, &h_gluon_denom](
+  auto EffBTaggedFunction{[&h_bjet, &h_nonbjet](
 			   const int& HistOption, const floats& pts, const floats& etas){
 
-  	//std::cout << "print 125" << std::endl;
+  	std::cout << "print 125" << std::endl;
 
   	doubles BTaggedEff{};
 
-	ROOT::RDF::RResultPtr<TH2D> EffHistogramNumerator;
-	ROOT::RDF::RResultPtr<TH2D> EffHistogramDenominator;
+	double eff;
+	int PtBin;
+	int EtaBin;
 
-	switch(HistOption){
-		case 0: EffHistogramNumerator = h_bjet_num; EffHistogramDenominator = h_bjet_denom; break;
-		case 1: EffHistogramNumerator = h_nonbjet_num; EffHistogramDenominator = h_nonbjet_denom; break;
-		case 2: EffHistogramNumerator = h_charm_num; EffHistogramDenominator = h_charm_denom; break;
-		case 3: EffHistogramNumerator = h_lightjets_num; EffHistogramDenominator = h_lightjets_denom; break;
-		case 4: EffHistogramNumerator = h_gluon_num; EffHistogramDenominator = h_gluon_denom; break;
-        }
+	for(long unsigned int i = 0; i < pts.size(); i++){
 
-  	for(long unsigned int i = 0; i < pts.size(); i++){
-
-		int PtNum = EffHistogramNumerator->GetYaxis()->FindBin(pts.at(i));
-		int EtaNum = EffHistogramNumerator->GetXaxis()->FindBin(etas.at(i));
-
-		int PtDenom = EffHistogramDenominator->GetYaxis()->FindBin(pts.at(i));
-		int EtaDenom = EffHistogramDenominator->GetXaxis()->FindBin(etas.at(i));
-
-		double Numerator = EffHistogramNumerator->GetBinContent(PtNum, EtaNum);
-		double Denominator = EffHistogramDenominator->GetBinContent(PtDenom, EtaDenom);
-
-		double eff = Numerator / Denominator;
-		
+		std::cout << "in EffBTaggedFunction, i = " << i << std::endl;
 		std::cout << "pts.at(i) = " << pts.at(i) << std::endl;
 		std::cout << "etas.at(i) = " << etas.at(i) << std::endl;
-		std::cout << "eff = " << eff << std::endl;
-		std::cout << "Numerator = " << Numerator << std::endl;
-		std::cout << "Denominator = " << Denominator << std::endl;
-	
-		if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
-        	else{BTaggedEff.push_back(1.);}
+		std::cout << "h_bjet->GetEntries() = " << h_bjet->GetEntries() << std::endl;
+		std::cout << "h_nonbjet->GetEntries() = " << h_nonbjet->GetEntries() << std::endl;
 
-  	}
+		switch(HistOption){
+			case 0: PtBin = h_bjet->GetYaxis()->FindBin(pts.at(i));
+				EtaBin = h_bjet->GetXaxis()->FindBin(etas.at(i));
+				eff = h_bjet->GetBinContent(PtBin, EtaBin);
+				break;
+
+			case 1: PtBin = h_nonbjet->GetYaxis()->FindBin(pts.at(i));
+                        	EtaBin = h_nonbjet->GetXaxis()->FindBin(etas.at(i));
+                       	 	eff = h_nonbjet->GetBinContent(PtBin, EtaBin);
+                        	break;
+
+			default: throw std::logic_error("HistOption must be 0 or 1"); 
+        	}
+
+		if(!isnan(eff) && !isinf(eff) && eff > 0){BTaggedEff.push_back(eff);}
+                else{std::cout << "eff = " << eff << std::endl; throw std::logic_error("eff is either zero, nan or inf");}
+
+	}
 
  	return BTaggedEff;
 
@@ -6618,7 +6559,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	//std::cout << "print 128" << std::endl;
 
   	double initial = 1;
-  	double output;
 
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
@@ -6631,11 +6571,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << '\n' << std::endl;
 
 	if(CMSBTagSFInput.size() > 0){
-  		for(long unsigned int i = 0; i < EffBTagged.size(); i++){output = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
+  		for(long unsigned int i = 0; i < EffBTagged.size(); i++){initial = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
 	}
-	else{output = 1 * initial;}
+	else{throw std::logic_error("Size of btag SF vector is zero");}
 
-  	return output;
+  	return initial;
 
   }};
 
@@ -6657,13 +6597,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
 
-  	int size = (CMSNonBTagSFInput.size() < EffNonBTagged.size()) ? CMSNonBTagSFInput.size() : EffNonBTagged.size();
 
-  	for(int i = 0; i < size; i++){
-		if(CMSNonBTagSFInput.at(i) != 1){
+  	for(int i = 0; i < EffNonBTagged.size(); i++){
+		if(CMSNonBTagSFInput.at(i) > 0){
 			initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
 		}
-		else{continue;}
+		else{throw std::logic_error("CMSNonBTagSFInput has a size of zero");}
 	}
 
 	std::cout << '\n' << std::endl;
@@ -6710,8 +6649,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	//std::cout << "ProbBTagData = " << ProbBTagData << std::endl;
 	//std::cout << "ProbBTagMC = " << ProbBTagMC << std::endl;
 	
-        if( !isnan(BTagWeight) && !isinf(BTagWeight) ){return BTagWeight;}
-	else{double One = 1.0; return One;}
+        if( !isnan(BTagWeight) && !isinf(BTagWeight) && BTagWeight != 0){return BTagWeight;}
+	else{throw std::logic_error("BTagWeight is either nan, infinity or zero"); /*double One = 1.0; return One;*/}
 
   }};
 
@@ -8265,8 +8204,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   h_bjet_denom->Write();
   h_nonbjet_denom->Write();
 
-  TH2D* h_bjet = new TH2D("h_bjet", "h_bjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
-  TH2D* h_nonbjet = new TH2D("h_nonbjet", "h_nonbjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
+  h_bjet = new TH2D("h_bjet", "h_bjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
+  h_nonbjet = new TH2D("h_nonbjet", "h_nonbjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
 
   h_bjet = dynamic_cast<TH2D*>(h_bjet_num->Clone());
   h_bjet->Divide(h_bjet_denom.GetPtr());
