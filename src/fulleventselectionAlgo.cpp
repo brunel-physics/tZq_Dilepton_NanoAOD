@@ -8208,8 +8208,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   h_nonbjet = new TH2D("h_nonbjet", "h_nonbjet", NumBins, mineta, maxeta, NumBins, minpt, maxpt);
 
   h_bjet = dynamic_cast<TH2D*>(h_bjet_num->Clone());
+  h_bjet->SetDirectory(nullptr);
   h_bjet->Divide(h_bjet_denom.GetPtr());
   h_nonbjet = dynamic_cast<TH2D*>(h_nonbjet_num->Clone());
+  h_nonbjet->SetDirectory(nullptr);
   h_nonbjet->Divide(h_nonbjet_denom.GetPtr());
 
   h_bjet->SetTitle("h_bjet");
