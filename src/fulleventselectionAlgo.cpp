@@ -6466,23 +6466,55 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	int PtBin;
 	int EtaBin;
 
+	TAxis *xaxis_hbjet = h_bjet->GetXaxis();
+        double MaxX_hbjet = xaxis_hbjet->GetBinCenter(h_bjet->FindLastBinAbove());
+        double MinX_hbjet = xaxis_hbjet->GetBinCenter(h_bjet->FindFirstBinAbove());
+
+        TAxis *yaxis_hbjet = h_bjet->GetYaxis();
+        double MaxY_hbjet = yaxis_hbjet->GetBinCenter(h_bjet->FindLastBinAbove());
+        double MinY_hbjet = yaxis_hbjet->GetBinCenter(h_bjet->FindFirstBinAbove());
+
+        TAxis *xaxis_hnonbjet = h_nonbjet->GetXaxis();
+        double MaxX_hnonbjet = xaxis_hnonbjet->GetBinCenter(h_nonbjet->FindLastBinAbove());
+        double MinX_hnonbjet = xaxis_hnonbjet->GetBinCenter(h_nonbjet->FindFirstBinAbove());
+
+        TAxis *yaxis_hnonbjet = h_nonbjet->GetYaxis();
+        double MaxY_hnonbjet = yaxis_hnonbjet->GetBinCenter(h_nonbjet->FindLastBinAbove());
+        double MinY_hnonbjet = yaxis_hnonbjet->GetBinCenter(h_nonbjet->FindFirstBinAbove());
+
 	for(long unsigned int i = 0; i < pts.size(); i++){
 
 		std::cout << "in EffBTaggedFunction, i = " << i << std::endl;
 		std::cout << "pts.at(i) = " << pts.at(i) << std::endl;
 		std::cout << "etas.at(i) = " << etas.at(i) << std::endl;
-		std::cout << "h_bjet->GetEntries() = " << h_bjet->GetEntries() << std::endl;
-		std::cout << "h_nonbjet->GetEntries() = " << h_nonbjet->GetEntries() << std::endl;
+		std::cout << "MaxX_hbjet = " << MaxX_hbjet << std::endl;
+		std::cout << "MinX_hbjet = " << MinX_hbjet << std::endl;
+		std::cout << "MaxY_hbjet = " << MaxY_hbjet << std::endl;
+		std::cout << "MinY_hbjet = " << MinY_hbjet << std::endl;
+		std::cout << "MaxX_hnonbjet = " << MaxX_hnonbjet << std::endl;
+		std::cout << "MinX_hnonbjet = " << MinX_hnonbjet << std::endl;
+		std::cout << "MaxY_hnonbjet = " << MaxY_hnonbjet << std::endl;
+		std::cout << "MinY_hnonbjet = " << MinY_hnonbjet << std::endl;
 
 		switch(HistOption){
 			case 0: PtBin = h_bjet->GetYaxis()->FindBin(pts.at(i));
 				EtaBin = h_bjet->GetXaxis()->FindBin(etas.at(i));
-				eff = h_bjet->GetBinContent(PtBin, EtaBin);
+				
+				if( (pts.at(i) > MinY_hbjet && pts.at(i) < MaxY_hbjet) && (etas.at(i) > MinX_hbjet && etas.at(i) < MaxX_hbjet) ){
+					eff = h_bjet->GetBinContent(EtaBin, PtBin);
+				}
+				else{eff = 1.0;}
+
 				break;
 
 			case 1: PtBin = h_nonbjet->GetYaxis()->FindBin(pts.at(i));
                         	EtaBin = h_nonbjet->GetXaxis()->FindBin(etas.at(i));
-                       	 	eff = h_nonbjet->GetBinContent(PtBin, EtaBin);
+                       	 	
+				if( (pts.at(i) > MinY_hnonbjet && pts.at(i) < MaxY_hnonbjet) && (etas.at(i) > MinX_hnonbjet && etas.at(i) < MaxX_hnonbjet) ){
+                                        eff = h_nonbjet->GetBinContent(EtaBin, PtBin);
+                                }
+                                else{eff = 1.0;}
+
                         	break;
 
 			default: throw std::logic_error("HistOption must be 0 or 1"); 
@@ -6493,6 +6525,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	}
 
+	std::cout << "BTaggedEff = " << BTaggedEff << std::endl;
  	return BTaggedEff;
 
   }};
