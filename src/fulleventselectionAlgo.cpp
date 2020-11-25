@@ -6468,7 +6468,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	for(long unsigned int i = 0; i < pts.size(); i++){
 
-		if(CSVv2Discr.at(i) > 0 && CSVv2Discr.at(i) < 1){
+		if((CSVv2Discr.at(i) > 0  && CSVv2Discr.at(i) < 1) &&
+		    abs(etas.at(i)) < 2.5 && 
+		    pts.at(i) > 20        && pts.at(i) < 1000){
+
 			switch(HistOption){
 				case 0: PtBin = h_bjet->GetYaxis()->FindBin(pts.at(i));
 					EtaBin = h_bjet->GetXaxis()->FindBin(etas.at(i));
@@ -6580,7 +6583,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	std::cout << "print 128" << std::endl;
 
   	double initial = 1;
-/*
+
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
@@ -6590,11 +6593,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
-*/
+
 	if(CMSBTagSFInput.size() > 0){
   		for(long unsigned int i = 0; i < EffBTagged.size(); i++){initial = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
 	}
-	else{throw std::logic_error("Size of btag SF vector is zero");}
+	//else{throw std::logic_error("Size of btag SF vector is zero");}
 
   	return initial;
 
