@@ -1408,7 +1408,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo2L2Nu/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Nu/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu/*"}; break;
+                        case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -4715,33 +4715,33 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour) {
+  auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_hadronFlavour) {
 
 	std::cout << "print 77" << std::endl;
-	return /*tight_jets &&*/ abs(Jet_partonFlavour) == 5 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
+	return abs(Jet_hadronFlavour) == 0 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
   }};
 
-  auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_partonFlavour){
+  auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_hadronFlavour){
 
   	std::cout << "print 81" << std::endl;
-    	return /*tight_jets &&*/ abs(Jet_partonFlavour) != 5 && /*btags > 0.8838f*/ btags > 0 && abs(etas) < MaxTrackerEta;
+    	return (abs(Jet_hadronFlavour) == 1 || abs(Jet_hadronFlavour) == 2) && btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
 
-  auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour) {
+  auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_hadronFlavour) {
 
   	std::cout << "print 82" << std::endl;
-	return /*tight_jets &&*/ abs(Jet_partonFlavour) == 5 && abs(etas) < MaxTrackerEta;
+	return abs(Jet_hadronFlavour) == 0 && abs(etas) < MaxTrackerEta;
 
   }};
 
 
- auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_partonFlavour){
+ auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_hadronFlavour){
 	
 	std::cout << "print 86" << std::endl;
-	return /*tight_jets &&*/ abs(Jet_partonFlavour) != 5 && abs(etas) < MaxTrackerEta;
+	return (abs(Jet_hadronFlavour) == 1 || abs(Jet_hadronFlavour) == 2) && abs(etas) < MaxTrackerEta;
 
   }};
 
@@ -5348,13 +5348,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
   
-  auto CMSBTagSF_Function{[&SystematicInt](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_partonFlavour){
+  auto CMSBTagSF_Function{[&SystematicInt](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_hadronFlavour){
 
   	std::cout << "print 121" << std::endl;
 
   	doubles ResultVector{};
 
-  	for(long unsigned int j = 0; j < Jet_partonFlavour.size(); j++){
+  	for(long unsigned int j = 0; j < Jet_hadronFlavour.size(); j++){
 
 		CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 		std::vector<std::vector<std::string> > dataList = reader.getData();
@@ -5369,9 +5369,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		std::vector<std::string> CSVv2OperatingPointTest(pts.size(), number); 
 		std::string MeasurementTypeString;
 
-		if(abs(Jet_partonFlavour.at(j)) == 4 || abs(Jet_partonFlavour.at(j)) == 5){MeasurementTypeString = "mujets";}
-		else if( (abs(Jet_partonFlavour.at(j)) >= 0 && abs(Jet_partonFlavour.at(j)) < 4) || ( abs(Jet_partonFlavour.at(j)) == 21 ) ){MeasurementTypeString = "incl";}
-		else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_partonFlavour.at(j) << std::endl;}
+		if(abs(Jet_hadronFlavour.at(j)) == 0 || abs(Jet_hadronFlavour.at(j)) == 1){MeasurementTypeString = "mujets";}
+		else if(abs(Jet_hadronFlavour.at(j)) == 2){MeasurementTypeString = "incl";}
+		else{std::cout << "Not charm, bjet, gluon or light jet. Flavour = " << Jet_hadronFlavour.at(j) << std::endl;}
 
         	std::vector<std::string> MeasurementTypeTest(pts.size(), MeasurementTypeString); 
 		std::string systematic_type_string;
@@ -5383,9 +5383,19 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		}
 
         	std::vector<std::string> SysTypeTest(pts.size(), "central");
-        	std::vector<std::string> JetFlavourTest(pts.size(), "0"); 
+        	std::vector<std::string> JetFlavourTest{}; 
         	std::vector<std::string> EtaTest{};
+		std::vector<std::string> PtTest{};
+		std::vector<std::string> DiscrTest{};
 
+		for(long unsigned int i = 0; i < Jet_hadronFlavour.size(); i++){
+
+			std::stringstream ss;
+                        ss << abs(Jet_hadronFlavour.at(i));
+                        std::string Jet_hadronFlavourString(ss.str());
+                        JetFlavourTest.push_back(Jet_hadronFlavourString);
+
+		}
 
 
 		for(long unsigned int i = 0; i < etas.size(); i++){
@@ -5395,8 +5405,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			EtaTest.push_back(EtaString);
 		}
 
-		std::vector<std::string> PtTest{};
-
 
         	for(long unsigned int i = 0; i < pts.size(); i++){
                 	std::stringstream ss;
@@ -5405,10 +5413,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                 	PtTest.push_back(PtString);
         	}
 
-		std::vector<std::string> DiscrTest{};
 
-
-        	for(long unsigned int i = 0; i < pts.size(); i++){
+        	for(long unsigned int i = 0; i < CSVv2Discr.size(); i++){
 
                 	std::stringstream ss;
                 	ss << CSVv2Discr.at(i);
@@ -6387,16 +6393,21 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << "etas = " << etas << std::endl;
         std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
         std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
-        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
+        std::cout << "Jet_hadronFlavour = " << Jet_hadronFlavour << std::endl;
 	std::cout << "ResultVector = " << ResultVector << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
 
+	//doubles FinalVector{};
+	//for(long unsigned int i = 0; i < pts.size(); i++){FinalVector.push_back(ResultVector.at(i));}
+	//std::cout << "FinalVector = " << FinalVector << std::endl;
+	//return FinalVector;
+	
 	return ResultVector;
 
   }};
 
-  auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+  auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_hadronFlavour){
 
  	std::cout << "print 122" << std::endl;
 
@@ -6407,18 +6418,18 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << "pts.size() = " << pts.size() << std::endl;
         std::cout << "etas.size() = " << etas.size() << std::endl;
         std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
-        std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
+        std::cout << "Jet_hadronFlavour.size() = " << Jet_hadronFlavour.size() << std::endl;
 	std::cout << "pts = " << pts << std::endl;
         std::cout << "etas = " << etas << std::endl;
         std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
-        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
-	std::cout << "CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour) = " << CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour) << std::endl;
+        std::cout << "Jet_hadronFlavour = " << Jet_hadronFlavour << std::endl;
+	std::cout << "CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_hadronFlavour) = " << CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_hadronFlavour) << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
 */
 
- 	return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_partonFlavour);
+ 	return CMSBTagSF_Function(pts, etas, CSVv2Discr, true, Jet_hadronFlavour);
 
   }};
 
@@ -6429,7 +6440,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_partonFlavour){
+  auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_hadronFlavour){
 
  	std::cout << "print 124" << std::endl;
 
@@ -6440,23 +6451,23 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << "pts.size() = " << pts.size() << std::endl;
 	std::cout << "etas.size() = " << etas.size() << std::endl;
 	std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
-	std::cout << "Jet_partonFlavour.size() = " << Jet_partonFlavour.size() << std::endl;
+	std::cout << "Jet_hadronFlavour.size() = " << Jet_hadronFlavour.size() << std::endl;
 	std::cout << "pts = " << pts << std::endl;
         std::cout << "etas = " << etas << std::endl;
         std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
-        std::cout << "Jet_partonFlavour = " << Jet_partonFlavour << std::endl;
-	std::cout << "CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour) = " << CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour) << std::endl;
+        std::cout << "Jet_hadronFlavour = " << Jet_hadronFlavour << std::endl;
+	std::cout << "CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_hadronFlavour) = " << CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_hadronFlavour) << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
  */	
 
- 	return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_partonFlavour);
+ 	return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_hadronFlavour);
 
   }};
   
   auto EffBTaggedFunction{[&h_bjet, &h_nonbjet](
-			   const int& HistOption, const floats& pts, const floats& etas, const floats& CSVv2Discr){
+			   const int& HistOption, const floats& pts, const floats& etas, const floats& CSVv2Discr, const ints& JetFlav){
 
   	std::cout << "print 125" << std::endl;
 
@@ -6468,9 +6479,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	for(long unsigned int i = 0; i < pts.size(); i++){
 
-		if((CSVv2Discr.at(i) > 0  && CSVv2Discr.at(i) < 1) &&
-		    abs(etas.at(i)) < 2.5 && 
-		    pts.at(i) > 20        && pts.at(i) < 1000){
+		std::cout << "inside EffBTaggedFunction. pts.at(i) = " << pts.at(i) << " .etas.at(i) = " << etas.at(i) << " .CSVv2Discr.at(i) = " << CSVv2Discr.at(i) << " .Jetflav.at(i) = " << JetFlav.at(i) << std::endl;
+
+		//if( abs(etas.at(i)) < 2.5){ //&& 
+		//    pts.at(i) > 20        && pts.at(i) < 10000     &&
+		//    JetFlav.at(i) <= 2){
 
 			switch(HistOption){
 				case 0: PtBin = h_bjet->GetYaxis()->FindBin(pts.at(i));
@@ -6494,8 +6507,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			BTaggedEff.push_back(eff);
 		
-		}
-		else{continue;}	
+		//}
+		//else{continue;}	
 
 	}
 
@@ -6506,15 +6519,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  auto EffBTagged_Function{[&EffBTaggedFunction](const floats& pts, const floats& etas, const floats& CSVv2Discr){
+  auto EffBTagged_Function{[&EffBTaggedFunction](const floats& pts, const floats& etas, const floats& CSVv2Discr, const ints& JetFlav){
 
-  	return EffBTaggedFunction(0, pts, etas, CSVv2Discr);
+  	return EffBTaggedFunction(0, pts, etas, CSVv2Discr, JetFlav);
 
   }};
 
-  auto EffNonBTagged_Function{[&EffBTaggedFunction](const floats& pts, const floats& etas, const floats& CSVv2Discr){
+  auto EffNonBTagged_Function{[&EffBTaggedFunction](const floats& pts, const floats& etas, const floats& CSVv2Discr, const ints& JetFlav){
 
-        return EffBTaggedFunction(1, pts, etas, CSVv2Discr);
+        return EffBTaggedFunction(1, pts, etas, CSVv2Discr, JetFlav);
 
   }};
 
@@ -6552,14 +6565,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	std::cout << "print 127" << std::endl;
 
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-	std::cout << "inside EffNonBTaggedProduct" << std::endl;
-	std::cout << "EffNonBTagged" << EffNonBTagged << std::endl;
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl; 
+//	std::cout << '\n' << std::endl;
+//        std::cout << '\n' << std::endl;
+//        std::cout << '\n' << std::endl;
+//	std::cout << "inside EffNonBTaggedProduct" << std::endl;
+//	std::cout << "EffNonBTagged" << EffNonBTagged << std::endl;
+//	std::cout << '\n' << std::endl;
+//       std::cout << '\n' << std::endl;
+//        std::cout << '\n' << std::endl; 
 
   	double initial = 1;
 
@@ -6568,11 +6581,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		else{initial = (1 - EffNonBTagged.at(i)) * initial;}
 	}
 
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << "initial in NonEffBTaggedProduct = " << initial << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
+//	std::cout << '\n' << std::endl; 
+// 	std::cout << '\n' << std::endl;
+//      std::cout << "initial in NonEffBTaggedProduct = " << initial << std::endl;
+//      std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
 
   	return initial;
 
@@ -6582,19 +6595,25 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	std::cout << "print 128" << std::endl;
 
+	if(EffBTagged.size() != CMSBTagSFInput.size()){
+                std::cout << "EffBTagged = " << EffBTagged << std::endl;
+                std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
+                throw std::logic_error("Eff and CMS SF vectors are not the same size");
+        }
+
   	double initial = 1;
 
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-	std::cout << "inside EffBTaggedProductData" << std::endl;
-	std::cout << "EffBTagged = " << EffBTagged << std::endl;
-	std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
+//	std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
+//	std::cout << "inside EffBTaggedProductData" << std::endl;
+//	std::cout << "EffBTagged = " << EffBTagged << std::endl;
+//	std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
+//	std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
 
-	if(CMSBTagSFInput.size() > 0){
+	if(CMSBTagSFInput.size() > 0 && EffBTagged.size() > 0){
   		for(long unsigned int i = 0; i < EffBTagged.size(); i++){initial = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
 	}
 	//else{throw std::logic_error("Size of btag SF vector is zero");}
@@ -6610,28 +6629,33 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	std::cout << "print 129" << std::endl;
 
   	double initial = 1;
-/*
-	std::cout << '\n' << std::endl;
-	std::cout << '\n' << std::endl;
-	std::cout << '\n' << std::endl;
-	std::cout << "inside EffNonBTaggedProductData" << std::endl;
-	std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
-	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
-*/
 
-  	for(int i = 0; i < EffNonBTagged.size(); i++){
-		if(CMSNonBTagSFInput.at(i) > 0){
-			initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
-		}
-		else{throw std::logic_error("CMSNonBTagSFInput has a size of zero");}
+	if(EffNonBTagged.size() != CMSNonBTagSFInput.size()){
+		std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
+        	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
+		throw std::logic_error("Eff and CMS SF vectors are not the same size");
 	}
 
-	std::cout << '\n' << std::endl;
-	std::cout << "INITIAL = " << initial << std::endl;
-	std::cout << '\n' << std::endl;
+//	std::cout << '\n' << std::endl;
+//	std::cout << '\n' << std::endl;
+//	std::cout << '\n' << std::endl;
+//	std::cout << "inside EffNonBTaggedProductData" << std::endl;
+//	std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
+//	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
+//	std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
+//      std::cout << '\n' << std::endl;
+
+
+  	for(int i = 0; i < EffNonBTagged.size(); i++){
+		if(CMSNonBTagSFInput.size() > 0){
+			initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
+		}
+	}
+
+//	std::cout << '\n' << std::endl;
+//	std::cout << "INITIAL = " << initial << std::endl;
+//	std::cout << '\n' << std::endl;
 
   	return initial;
 
@@ -6642,8 +6666,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	std::cout << "print 130" << std::endl;
 
-	std::cout << "EffBTaggedProductInput = " << EffBTaggedProductInput << std::endl;
-	std::cout << "EffNonBTaggedProductInput = " << EffNonBTaggedProductInput << std::endl;
+	//std::cout << "EffBTaggedProductInput = " << EffBTaggedProductInput << std::endl;
+	//std::cout << "EffNonBTaggedProductInput = " << EffNonBTaggedProductInput << std::endl;
 
   	double MCProb = EffBTaggedProductInput * EffNonBTaggedProductInput; 
   	return MCProb;
@@ -7639,7 +7663,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
  }
 
+ std::string SignCriterion;
 
+ switch(NPLInt){
+	case 0: SignCriterion = "OppositeSign"; break;
+	case 1: SignCriterion = "SameSign"; break;
+	default: throw std::logic_error("NPLInt must be 0 or 1");
+ }
 
  //Lepton selection
  auto d_LeptonSelection = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
@@ -7677,7 +7707,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                       .Define("LeadingLepton_RelIso_Selection", LeadingVariable, {"TightLeptonsJetRelIso"})
                                       .Define("SubleadingLepton_RelIso_Selection", SubleadingVariable, {"TightLeptonsJetRelIso"})
 				      .Define("Electron_dxy_dz", Electron_dxy_dz_Function, {"Electron_dz", "Electron_dxy", "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta"})
-				      .Filter(LeptonCut, {"OppositeSign", "nElectron", "nMuon", "Electron_dz", "Electron_dxy",
+				      .Filter(LeptonCut, {SignCriterion, "nElectron", "nMuon", "Electron_dz", "Electron_dxy",
 							  "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta", "Electron_dxy_dz", 
 						          "TightLeptonsPt", "LooseLeptonsPt"}, "lepton cut");
 
@@ -8115,7 +8145,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					.Define("TightSmearedJetsPhi", select<floats>, {JetPhiInput, "tight_jets"})
                                         .Define("TightSmearedJetsMass", select<floats>, {JetMassInput, "tight_jets"})
 					.Define("TightSmearedJetsBTagCSVV2", select<floats>, {"Jet_btagCSVV2", "tight_jets"})
-					.Define("TightSmearedJetsPartonFlavour", select<ints>, {"Jet_partonFlavour", "tight_jets"})
+					.Define("TightSmearedJetsHadronFlavour", select<ints>, {"Jet_hadronFlavour", "tight_jets"})
 					.Define("TightSmearedJetsJetID", select<ints>, {"Jet_jetId", "tight_jets"})
 		      		        .Define("LeadingJetMass", LeadingVariable, {"TightSmearedJetsMass"})
                                         .Define("SubleadingJetMass", SubleadingVariable, {"TightSmearedJetsMass"})
@@ -8171,18 +8201,18 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //B jet selection
   auto d_BJetSelection = d_JetSelection.Define("bjets", bjet_id, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta"})
                                        .Define("nbjets", numberofbjets, {"bjets"})
-                                       .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
-				       .Define("BTAGEFF_nonbjet_id_WP", BTAGEFF_nonbjet_id_WP, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
-                                       .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
-				       .Define("BTAGEFF_nonbjet_id", BTAGEFF_nonbjet_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsPartonFlavour"})
+                                       .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsHadronFlavour"})
+				       .Define("BTAGEFF_nonbjet_id_WP", BTAGEFF_nonbjet_id_WP, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsHadronFlavour"})
+                                       .Define("BTAGEFF_bjet_id", BTAGEFF_bjet_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsHadronFlavour"})
+				       .Define("BTAGEFF_nonbjet_id", BTAGEFF_nonbjet_id, {"tight_jets", "TightSmearedJetsEta", "TightSmearedJetsHadronFlavour"})
                                        .Define("BTAGEFF_bjet_pt_num", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_bjet_id_WP"})
                                        .Define("BTAGEFF_bjet_eta_num", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_bjet_id_WP"})
 				       .Define("BTAGEFF_bjet_Jet_btagCSVV2_num", select<floats>, {"TightSmearedJetsBTagCSVV2", "BTAGEFF_bjet_id_WP"})
-				       .Define("BTAGEFF_bjet_Jet_partonFlavour_num", select<ints>, {"TightSmearedJetsPartonFlavour", "BTAGEFF_bjet_id_WP"})
+				       .Define("BTAGEFF_bjet_Jet_hadronFlavour_num", select<ints>, {"TightSmearedJetsHadronFlavour", "BTAGEFF_bjet_id_WP"})
 				       .Define("BTAGEFF_nonbjet_pt_num", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_nonbjet_id_WP"})
                                        .Define("BTAGEFF_nonbjet_eta_num", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_nonbjet_id_WP"})
 				       .Define("BTAGEFF_nonbjet_Jet_btagCSVV2_num", select<floats>, {"TightSmearedJetsBTagCSVV2", "BTAGEFF_nonbjet_id_WP"})
-				       .Define("BTAGEFF_nonbjet_Jet_partonFlavour_num", select<ints>, {"TightSmearedJetsPartonFlavour", "BTAGEFF_nonbjet_id_WP"})
+				       .Define("BTAGEFF_nonbjet_Jet_hadronFlavour_num", select<ints>, {"TightSmearedJetsHadronFlavour", "BTAGEFF_nonbjet_id_WP"})
                                        .Define("BTAGEFF_bjet_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_bjet_id"})
                                        .Define("BTAGEFF_bjet_eta_denom", select<floats>, {"TightSmearedJetsEta", "BTAGEFF_bjet_id"})
 				       .Define("BTAGEFF_nonbjet_pt_denom", select<floats>, {"TightSmearedJetsPt", "BTAGEFF_nonbjet_id"})
@@ -8378,13 +8408,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
                                            .Define("TotalPt_System", TotalVariable_System, {"RecoZPt", "w_pair_pt", "Top_Pt", "LepPtSum", "JetPtSum"})
 					   .Define("TotHTOverTotpT_System", TotHTOverTotpT_doubles, {"TotalHT_System", "TotalPt_System"})
-					   .Define("CMSBTagSF", CMSBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsPartonFlavour"/*"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_bjet_Jet_btagCSVV2_num", "BTAGEFF_bjet_Jet_partonFlavour_num"*/})
+					   .Define("CMSBTagSF", CMSBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"/*"BTAGEFF_bjet_pt_num", "BTAGEFF_bjet_eta_num", "BTAGEFF_bjet_Jet_btagCSVV2_num", "BTAGEFF_bjet_Jet_hadronFlavour_num"*/})
 					   .Define("nonbjets", nonbjet_id, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta"})
                                            .Define("notbjetpt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "nonbjets"})
                                            .Define("notbjeteta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "nonbjets"})
-  					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsPartonFlavour"/*"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_partonFlavour_num"*/})
-					   .Define("EffBTagged", EffBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2"})
-					   .Define("EffNonBTagged", EffNonBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2"})
+  					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"/*"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_hadronFlavour_num"*/})
+					   .Define("EffBTagged", EffBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"})
+					   .Define("EffNonBTagged", EffNonBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"})
 					   .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
 					   .Define("EffNonBTaggedProduct", EffNonBTaggedProduct, {"EffNonBTagged"})
 					   .Define("EffBTaggedProductData", EffBTaggedProductData, {"EffBTagged", "CMSBTagSF"})
