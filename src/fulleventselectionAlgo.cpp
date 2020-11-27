@@ -561,7 +561,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll/*"}; HessianOrMC = "MC"; break;
-			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll/*"}; HessianOrMC = "Hessian"; break;
+			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"}; HessianOrMC = "Hessian"; break;
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		}
@@ -5507,6 +5507,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   		}//end of for loop
 
 
+	std::cout << "FinalOutVec = " << FinalOutVec << std::endl;
+
 
 	//Evaluating the mathematical expression in the string
 	std::string ConcatenatedString, ConcatenatedString2, ConcatenatedString3, ConcatenatedString4;
@@ -6397,12 +6399,17 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << "ResultVector = " << ResultVector << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
+/*
+	doubles FinalVector{};
 
-	//doubles FinalVector{};
-	//for(long unsigned int i = 0; i < pts.size(); i++){FinalVector.push_back(ResultVector.at(i));}
-	//std::cout << "FinalVector = " << FinalVector << std::endl;
-	//return FinalVector;
-	
+	for(long unsigned int i = 0; i < ResultVector.size()-1; i+=3){
+		FinalVector.push_back(ResultVector.at(i+1));
+		FinalVector.push_back(ResultVector.at(i));
+	}
+
+	std::cout << "FinalVector = " << FinalVector << std::endl;
+	return FinalVector;
+*/	
 	return ResultVector;
 
   }};
