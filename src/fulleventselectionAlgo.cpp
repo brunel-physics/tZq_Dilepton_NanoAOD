@@ -5356,18 +5356,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	for(long unsigned int j = 0; j < Jet_hadronFlavour.size(); j++){
 
-		std::cout << '\n' << std::endl;
-		std::cout << '\n' << std::endl;
-		std::cout << "j = " << std::endl;
-		std::cout << "pts.size() = " << pts.size() << std::endl;
-		std::cout << "etas.size() = " << etas.size() << std::endl;
-		std::cout << "CSVv2Discr.size() = " << CSVv2Discr.size() << std::endl;
-		std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
-		std::cout << "Jet_hadronFlavour.size() = " << Jet_hadronFlavour.size() << std::endl;
-		std::cout << '\n' << std::endl;
-		std::cout << '\n' << std::endl;		
-
-
 		CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 		std::vector<std::vector<std::string> > dataList = reader.getData();
 		std::vector<std::string> OutputVec{}; 
@@ -5441,13 +5429,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		//for loop to run over input events to see if the values of the variables match
 		//if they do, the string in column 11 of the csv file (the equation string) is pushed back to the FinalOutVec vector
 		for(long unsigned int i = 0; i < CSVv2OperatingPointTest.size(); i++){
-
-			std::cout << '\n' << std::endl;
-			std::cout << '\n' << std::endl;
-			std::cout << "CSVv2OperatingPointTest.size() = " << CSVv2OperatingPointTest.size() << std::endl;
-			std::cout << "i = " << i << std::endl;
-			std::cout << '\n' << std::endl;
-                        std::cout << '\n' << std::endl;
 
 			for(std::vector<std::string> vec : dataList){
 				for(std::string data : vec){OutputVec.push_back(data);}
@@ -5564,11 +5545,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	for(long unsigned int i = 0; i < FinalOutVec.size(); i++){
 
-		std::cout << "i = " << i << " .FinalOutVec.size() = " << FinalOutVec.size() << std::endl;
-
 		std::string FirstElement = FinalOutVec.at(i);
-
-		std::cout << "FirstElement = " << FirstElement << std::endl;
 
 		if(FirstElement.at(0) != '('){
 
@@ -6419,18 +6396,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	}//end of first for loop
 
-/*	
-	std::cout << '\n' << std::endl;
-	std::cout << '\n' << std::endl;
-	std::cout << "pts = " << pts << std::endl;
-        std::cout << "etas = " << etas << std::endl;
-        std::cout << "CSVv2Discr = " << CSVv2Discr << std::endl;
-        std::cout << "BTagOrNot = " << BTagOrNot << std::endl;
-        std::cout << "Jet_hadronFlavour = " << Jet_hadronFlavour << std::endl;
-*/
-	std::cout << "ResultVector = " << ResultVector << std::endl;
-	std::cout << '\n' << std::endl;
-        std::cout << '\n' << std::endl;
 
 	doubles FinalVector{};
 
@@ -6438,7 +6403,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		FinalVector.push_back(ResultVector.at(i));
 	}
 
-	std::cout << "FinalVector = " << FinalVector << std::endl;
 	return FinalVector;
 	
 	//return ResultVector;
@@ -6481,8 +6445,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_hadronFlavour){
 
  	//std::cout << "print 124" << std::endl;
-
-/* 	std::cout << '\n' << std::endl;
+/*
+ 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl; 
  	std::cout << "inside CMSNonBTagSF" << std::endl;
@@ -6498,7 +6462,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
- */	
+*/	
 
  	return CMSBTagSF_Function(pts, etas, CSVv2Discr, false, Jet_hadronFlavour);
 
@@ -6516,12 +6480,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	int EtaBin;
 
 	for(long unsigned int i = 0; i < pts.size(); i++){
-
-//		std::cout << "inside EffBTaggedFunction. pts.at(i) = " << pts.at(i) << " .etas.at(i) = " << etas.at(i) << " .CSVv2Discr.at(i) = " << CSVv2Discr.at(i) << " .Jetflav.at(i) = " << JetFlav.at(i) << std::endl;
-
-		//if( abs(etas.at(i)) < 2.5){ //&& 
-		//    pts.at(i) > 20        && pts.at(i) < 10000     &&
-		//    JetFlav.at(i) <= 2){
 
 			switch(HistOption){
 				case 0: PtBin = h_bjet->GetYaxis()->FindBin(pts.at(i));
@@ -6545,12 +6503,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			BTaggedEff.push_back(eff);
 		
-		//}
-		//else{continue;}	
-
 	}
 
-	std::cout << "BTaggedEff = " << BTaggedEff << std::endl;
  	return BTaggedEff;
 
   }};
@@ -6641,20 +6595,22 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	double initial = 1;
 
-//	std::cout << '\n' << std::endl;
-//      std::cout << '\n' << std::endl;
-//      std::cout << '\n' << std::endl;
-//	std::cout << "inside EffBTaggedProductData" << std::endl;
-//	std::cout << "EffBTagged = " << EffBTagged << std::endl;
-//	std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
-//	std::cout << '\n' << std::endl;
-//      std::cout << '\n' << std::endl;
-//      std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+  	std::cout << "inside EffBTaggedProductData" << std::endl;
+	std::cout << "EffBTagged = " << EffBTagged << std::endl;
+	std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
 
 	if(CMSBTagSFInput.size() > 0 && EffBTagged.size() > 0){
   		for(long unsigned int i = 0; i < EffBTagged.size(); i++){initial = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
 	}
 	//else{throw std::logic_error("Size of btag SF vector is zero");}
+
+	std::cout << "inital = " << initial << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
 
   	return initial;
 
@@ -6674,26 +6630,27 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		throw std::logic_error("Eff and CMS SF vectors are not the same size");
 	}
 
-//	std::cout << '\n' << std::endl;
-//	std::cout << '\n' << std::endl;
-//	std::cout << '\n' << std::endl;
-//	std::cout << "inside EffNonBTaggedProductData" << std::endl;
-//	std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
-//	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
-//	std::cout << '\n' << std::endl;
-//      std::cout << '\n' << std::endl;
-//      std::cout << '\n' << std::endl;
-
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << "inside EffNonBTaggedProductData" << std::endl;
+	std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
+	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
 
   	for(int i = 0; i < EffNonBTagged.size(); i++){
 		if(CMSNonBTagSFInput.size() > 0){
-			initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
+			if(CMSNonBTagSFInput.at(i) != 1 || EffNonBTagged.at(i) != 1){
+				initial = (1 - (CMSNonBTagSFInput.at(i)*EffNonBTagged.at(i)) ) * initial;
+			}
+			else{initial = 1 * initial;}
 		}
 	}
 
-//	std::cout << '\n' << std::endl;
-//	std::cout << "INITIAL = " << initial << std::endl;
-//	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+	std::cout << "INITIAL = " << initial << std::endl;
+	std::cout << '\n' << std::endl;
 
   	return initial;
 
@@ -6717,8 +6674,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 131" << std::endl;
  
-	//std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
-	//std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
+	std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
+	std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
  
   	double DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
   	return DataProb;
