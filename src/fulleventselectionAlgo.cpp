@@ -6594,23 +6594,25 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         }
 
   	double initial = 1;
-
+/*
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
   	std::cout << "inside EffBTaggedProductData" << std::endl;
 	std::cout << "EffBTagged = " << EffBTagged << std::endl;
 	std::cout << "CMSBTagSFInput = " << CMSBTagSFInput << std::endl;
-
+*/
 	if(CMSBTagSFInput.size() > 0 && EffBTagged.size() > 0){
   		for(long unsigned int i = 0; i < EffBTagged.size(); i++){initial = (CMSBTagSFInput.at(i)*EffBTagged.at(i)) * initial;}
 	}
 	//else{throw std::logic_error("Size of btag SF vector is zero");}
 
+/*
 	std::cout << "inital = " << initial << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
+*/
 
   	return initial;
 
@@ -6630,13 +6632,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		throw std::logic_error("Eff and CMS SF vectors are not the same size");
 	}
 
+/*
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << "inside EffNonBTaggedProductData" << std::endl;
 	std::cout << "EffNonBTagged = " << EffNonBTagged << std::endl;
 	std::cout << "CMSNonBTagSFInput = " << CMSNonBTagSFInput << std::endl;
-
+*/
   	for(int i = 0; i < EffNonBTagged.size(); i++){
 		if(CMSNonBTagSFInput.size() > 0){
 			if(CMSNonBTagSFInput.at(i) != 1 || EffNonBTagged.at(i) != 1){
@@ -6646,12 +6649,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		}
 	}
 
+/*
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
 	std::cout << "INITIAL = " << initial << std::endl;
 	std::cout << '\n' << std::endl;
-
+*/
   	return initial;
 
   }};
@@ -6674,8 +6678,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 131" << std::endl;
  
-	std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
-	std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
+	//std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
+	//std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
  
   	double DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
   	return DataProb;
@@ -6689,8 +6693,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	double BTagWeight = (ProbBTagData) / (ProbBTagMC);
 
-	std::cout << "ProbBTagData = " << ProbBTagData << std::endl;
-	std::cout << "ProbBTagMC = " << ProbBTagMC << std::endl;
+	//std::cout << "ProbBTagData = " << ProbBTagData << std::endl;
+	//std::cout << "ProbBTagMC = " << ProbBTagMC << std::endl;
 	
         if( !isnan(BTagWeight) && !isinf(BTagWeight) && BTagWeight != 0){return BTagWeight;}
 	else{throw std::logic_error("BTagWeight is either nan, infinity or zero"); /*double One = 1.0; return One;*/}
@@ -6709,8 +6713,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 132" << std::endl;
 
-   	floats OutputVector{};
-   	floats OutputVectorFinal{};
+   	doubles OutputVector{};
+   	doubles OutputVectorFinal{};
 
    	for(long unsigned int i = 0; i < pt.size(); i++){
 
@@ -6736,7 +6740,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                 	int Bin_EGammaEffReco2018 = EGammaEffReco2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
                 	int Bin_EGammaEffRecoSys2018 = EGammaEffSys2018_histo->FindBin( SuperClusterEta.at(i), pt.at(i) );
 
-			float EGammaSF;
+			double EGammaSF;
 
 			if(YearInput == 2016){
 				if(type == "EGammaEffSys"){EGammaSF = EGammaEffSys2016_histo->GetBinError(Bin_EGammaEffSys2016);}
@@ -6823,7 +6827,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	float lumiRunBCDEF = 19713.888;
   	float lumiRunGH = 16146.178;
 
-  	floats MuonSFOutput{};
+  	doubles MuonSFOutput{};
 
   	for(long unsigned int i = 0; i < pt.size(); i++){
 
@@ -6831,16 +6835,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			if(YearInt == 2016){
 
-				float MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinContent( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinContent( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinError( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinError( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinError( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinError( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinContent( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinContent( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinContent( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinContent( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ID_2016 = histo_RunsBCDEF_ID_2016->GetBinError( histo_RunsBCDEF_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsGH_ID_2016 = histo_RunsGH_ID_2016->GetBinError( histo_RunsGH_ID_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ISO_2016 = histo_RunsBCDEF_ISO_2016->GetBinError( histo_RunsBCDEF_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsGH_ISO_2016 = histo_RunsGH_ISO_2016->GetBinError( histo_RunsGH_ISO_2016->FindBin(pt.at(i), AbsEta.at(i)) );
 
-				float Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsBCDEF, MuonSF_RunsBCDEF, Error_RunsGH, MuonSF_RunsGH;
+				double Error_RunsBCDEFGH, MuonSF_RunsBCDEFGH, Error_RunsBCDEF, MuonSF_RunsBCDEF, Error_RunsGH, MuonSF_RunsGH;
 
 				if(type == "ID" || type == "ID sys"){
 
@@ -6898,22 +6902,22 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			}
 			else if(YearInt == 2017){
 
-				float MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinContent( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinError( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinError( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinError( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinContent( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinContent( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinContent( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ID_2017 = histo_RunsBCDEF_ID_2017->GetBinError( histo_RunsBCDEF_ID_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ID_Sys_2017 = histo_RunsBCDEF_ID_Sys_2017->GetBinError( histo_RunsBCDEF_ID_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ID_Sys_Stat_2017 = histo_RunsBCDEF_ID_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ID_Sys_Syst_2017 = histo_RunsBCDEF_ID_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ID_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ISO_2017 = histo_RunsBCDEF_ISO_2017->GetBinError( histo_RunsBCDEF_ISO_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ISO_Sys_2017 = histo_RunsBCDEF_ISO_Sys_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ISO_Sys_Stat_2017 = histo_RunsBCDEF_ISO_Sys_Stat_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Stat_2017->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsBCDEF_ISO_Sys_Syst_2017 = histo_RunsBCDEF_ISO_Sys_Syst_2017->GetBinError( histo_RunsBCDEF_ISO_Sys_Syst_2017->FindBin(pt.at(i), AbsEta.at(i)) );
 
 				if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ID_2017);}
 				else if(type == "Iso"){MuonSFOutput.push_back(MuonSF_RunsBCDEF_ISO_2017);}
@@ -6929,16 +6933,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			else if(YearInt == 2018){
 
 
-				float MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-				float MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
-                                float Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinContent( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+				double MuonSF_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinContent( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsABCD_ID_2018 = histo_RunsABCD_ID_2018->GetBinError( histo_RunsABCD_ID_2018->FindBin(pt.at(i), AbsEta.at(i)) );
+                                double Error_RunsABCD_ISO_2018 = histo_RunsABCD_ISO_2018->GetBinError( histo_RunsABCD_ISO_2018->FindBin(pt.at(i), AbsEta.at(i)) );
 
-				float Error_RunsABCD_ID_2018_stat = histo_RunsABCD_ID_2018_stat->GetBinError( histo_RunsABCD_ID_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
-				float Error_RunsABCD_ISO_2018_stat = histo_RunsABCD_ISO_2018_stat->GetBinError( histo_RunsABCD_ISO_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsABCD_ID_2018_stat = histo_RunsABCD_ID_2018_stat->GetBinError( histo_RunsABCD_ID_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsABCD_ISO_2018_stat = histo_RunsABCD_ISO_2018_stat->GetBinError( histo_RunsABCD_ISO_2018_stat->FindBin(pt.at(i), AbsEta.at(i)) );
 
-				float Error_RunsABCD_ID_2018_syst = histo_RunsABCD_ID_2018_syst->GetBinError( histo_RunsABCD_ID_2018_syst->FindBin(pt.at(i), AbsEta.at(i)) );
-                                float Error_RunsABCD_ISO_2018_syst = histo_RunsABCD_ISO_2018_syst->GetBinError( histo_RunsABCD_ISO_2018_syst->FindBin(pt.at(i), AbsEta.at(i)) );
+				double Error_RunsABCD_ID_2018_syst = histo_RunsABCD_ID_2018_syst->GetBinError( histo_RunsABCD_ID_2018_syst->FindBin(pt.at(i), AbsEta.at(i)) );
+                                double Error_RunsABCD_ISO_2018_syst = histo_RunsABCD_ISO_2018_syst->GetBinError( histo_RunsABCD_ISO_2018_syst->FindBin(pt.at(i), AbsEta.at(i)) );
 
 				if(type == "ID"){MuonSFOutput.push_back(MuonSF_RunsABCD_ID_2018);}
 				if(type == "ID sys"){MuonSFOutput.push_back(Error_RunsABCD_ID_2018);}
@@ -6954,7 +6958,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			else{throw std::logic_error("Year must be 2016, 2017 or 2018");}
 
 		}
-		else{float One = 1.0; MuonSFOutput.push_back(One);}
+		else{double One = 1.0; MuonSFOutput.push_back(One);}
 
 
   	}
@@ -7154,6 +7158,32 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
         int TotalNumNegative = SummedWeights[1] + SummedWeights[3] + SummedWeights[5] + SummedWeights[7] + SummedWeights[9] + SummedWeights[11] + SummedWeights[13];
 
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << "SummedWeights.size() = " << SummedWeights.size() << std::endl;
+	std::cout << "SummedWeights[0] = " << SummedWeights[0] << std::endl;
+        std::cout << "SummedWeights[1] = " << SummedWeights[1] << std::endl;
+	std::cout << "SummedWeights[2] = " << SummedWeights[2] << std::endl;
+        std::cout << "SummedWeights[3] = " << SummedWeights[3] << std::endl;
+	std::cout << "SummedWeights[4] = " << SummedWeights[4] << std::endl;
+        std::cout << "SummedWeights[5] = " << SummedWeights[5] << std::endl;
+	std::cout << "SummedWeights[6] = " << SummedWeights[6] << std::endl;
+        std::cout << "SummedWeights[7] = " << SummedWeights[7] << std::endl;
+	std::cout << "SummedWeights[8] = " << SummedWeights[8] << std::endl;
+        std::cout << "SummedWeights[9] = " << SummedWeights[9] << std::endl;	
+	std::cout << "SummedWeights[10] = " << SummedWeights[10] << std::endl;
+        std::cout << "SummedWeights[11] = " << SummedWeights[11] << std::endl;
+	std::cout << "SummedWeights[12] = " << SummedWeights[12] << std::endl;
+	std::cout << "SummedWeights[13] = " << SummedWeights[13] << std::endl;
+	std::cout << "ReturnedPSWeight.at(0) = " << ReturnedPSWeight.at(0) << std::endl;
+	std::cout << "ReturnedPSWeight.at(1) = " << ReturnedPSWeight.at(1) << std::endl;
+	std::cout << "ReturnedPSWeight.at(2) = " << ReturnedPSWeight.at(2) << std::endl;
+	std::cout << "ReturnedPSWeight.at(3) = " << ReturnedPSWeight.at(3) << std::endl; 
+	std::cout << "CalculatedPDFWeight = " << CalculatedPDFWeight << std::endl;
+	std::cout << "abs(CalculatedPDFWeight) = " << abs(CalculatedPDFWeight) << std::endl;
+	std::cout << "TotalNumPositive = " << TotalNumPositive << std::endl;
+	std::cout << "TotalNumNegative = " << TotalNumNegative << std::endl;
+
 	double genweight;
 
 	switch(SystematicInt){
@@ -7166,6 +7196,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			 break;
 	}
 
+	std::cout << "genweight = " << genweight << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
 	return genweight;
 
   }};
@@ -7296,12 +7329,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
   auto EventWeight{[&NormalisationFactorFunction, &ChannelInt, &SystematicInt, &ttbarCRInt]
-		    (const float& PUInput, 		        const double& BTagWeightInput, 		     const floats& ReturnedPSWeightInput, 
-		     const float& EGammaSF_egammaEffInput,      const float& EGammaSF_egammaEffRecoInput, 
-		     const float& EGammaSF_egammaEffSysInput,   const float& EGammaSF_egammaEffRecoSysInput, const double& CalculatedGeneratorWeightInput, 
-		     const double& ME_SFInput, 			const doubles& TopWeightInput, 		     const float& CalculatedPDFWeightInput, 
-		     const float& MuonSFTest_IDInput, 		const float& MuonSFTest_IsoInput, 	     const float& MuonSFTest_ID_sys_systInput, 
-		     const float& MuonSFTest_ID_sys_statInput,  const float& MuonSFTest_Iso_sys_systInput,   const float& MuonSFTest_Iso_sys_statInput){
+		    (const float& PUInput, 		         const double& BTagWeightInput, 	       const floats& ReturnedPSWeightInput, 
+		     const double& EGammaSF_egammaEffInput,      const double& EGammaSF_egammaEffRecoInput, 
+		     const double& EGammaSF_egammaEffSysInput,   const double& EGammaSF_egammaEffRecoSysInput, const double& CalculatedGeneratorWeightInput, 
+		     const double& ME_SFInput, 			 const doubles& TopWeightInput, 	       const float& CalculatedPDFWeightInput, 
+		     const double& MuonSFTest_IDInput, 		 const double& MuonSFTest_IsoInput, 	       const double& MuonSFTest_ID_sys_systInput, 
+		     const double& MuonSFTest_ID_sys_statInput,  const double& MuonSFTest_Iso_sys_systInput,   const double& MuonSFTest_Iso_sys_statInput){
 
 
 			//std::cout << "print 149" << std::endl;
@@ -7439,7 +7472,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  	float FinalEventWeight = (EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput; 
+  	double FinalEventWeight = (EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput; 
 
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
@@ -7453,12 +7486,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << "CalculatedGeneratorWeightInput = " << CalculatedGeneratorWeightInput << std::endl;
         std::cout << "TopWeightInput.at(0) = " << TopWeightInput.at(0) << std::endl;
 	std::cout << "ME_SFInput = " << ME_SFInput << std::endl;
+	std::cout << "EventWeightOutput = " << EventWeightOutput << std::endl;
 	std::cout << "FinalEventWeight = " << FinalEventWeight << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;	
 
 	if(!isnan(FinalEventWeight) && !isinf(FinalEventWeight) && (FinalEventWeight > 0)){return FinalEventWeight;}
-	else{std::cout << "Final event weight is either a nan, inf or 0." << std::endl; float One = 1.0; return One;}     
+	else{std::cout << "Final event weight is either a nan, inf or 0." << std::endl; double One = 1.0; return One;}     
 
   }};
 
