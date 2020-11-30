@@ -2985,7 +2985,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	////std::cout << "print 9" << std::endl;
 
-      	float PU_Weight_input;
+      	double PU_Weight_input;
 
       	switch(YearInt){
 
@@ -6523,7 +6523,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto EffBTaggedProduct{[](const doubles& EffBTagged){
+  auto ProductOperator_E_i_Function{[](const doubles& EffBTagged){
   
   	//std::cout << "print 126" << std::endl;
 /*
@@ -6553,7 +6553,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto EffNonBTaggedProduct{[](const doubles& EffNonBTagged){
+  auto ProductOperator_1_Minus_E_j_Function{[](const doubles& EffNonBTagged){
 
   	//std::cout << "print 127" << std::endl;
 
@@ -6583,7 +6583,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto EffBTaggedProductData{[](const doubles& EffBTagged, const doubles& CMSBTagSFInput){
+  auto ProductOperator_SFi_Times_Ei_Function{[](const doubles& EffBTagged, const doubles& CMSBTagSFInput){
 
   	//std::cout << "print 128" << std::endl;
 
@@ -6620,7 +6620,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  auto EffNonBTaggedProductData{[](const doubles& EffNonBTagged, const doubles& CMSNonBTagSFInput){
+  auto ProductOperator_1_Minus_SFj_Times_Ej_Function{[](const doubles& EffNonBTagged, const doubles& CMSNonBTagSFInput){
 
   	//std::cout << "print 129" << std::endl;
 
@@ -6661,27 +6661,27 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto ProbBTagMCFunction{[](const double& EffBTaggedProductInput, const double& EffNonBTaggedProductInput){
+  auto ProbBTagMCFunction{[](const double& ProductOperator_E_i_Input, const double& ProductOperator_1_Minus_E_j_Input){
 
   	//std::cout << "print 130" << std::endl;
 
 	//std::cout << "EffBTaggedProductInput = " << EffBTaggedProductInput << std::endl;
 	//std::cout << "EffNonBTaggedProductInput = " << EffNonBTaggedProductInput << std::endl;
 
-  	double MCProb = EffBTaggedProductInput * EffNonBTaggedProductInput; 
+	double MCProb = ProductOperator_E_i_Input * ProductOperator_1_Minus_E_j_Input;
   	return MCProb;
 
   }};
 
 
-  auto ProbBTagDataFunction{[](const double& EffBTaggedProductDataInput, const double& EffNonBTaggedProductDataInput){
+  auto ProbBTagDataFunction{[](const double& ProductOperator_SFi_Times_Ei_Input, const double& ProductOperator_1_Minus_SFj_Times_Ej_Input){
 
   	//std::cout << "print 131" << std::endl;
  
 	//std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
 	//std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
  
-  	double DataProb = EffBTaggedProductDataInput * EffNonBTaggedProductDataInput;
+  	double DataProb = ProductOperator_SFi_Times_Ei_Input * ProductOperator_1_Minus_SFj_Times_Ej_Input;
   	return DataProb;
   
   }};
@@ -6693,8 +6693,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	double BTagWeight = (ProbBTagData) / (ProbBTagMC);
 
-	//std::cout << "ProbBTagData = " << ProbBTagData << std::endl;
-	//std::cout << "ProbBTagMC = " << ProbBTagMC << std::endl;
+	std::cout << "ProbBTagData = " << ProbBTagData << std::endl;
+	std::cout << "ProbBTagMC = " << ProbBTagMC << std::endl;
 	
         if( !isnan(BTagWeight) && !isinf(BTagWeight) && BTagWeight != 0){return BTagWeight;}
 	else{throw std::logic_error("BTagWeight is either nan, infinity or zero"); /*double One = 1.0; return One;*/}
@@ -7043,34 +7043,37 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 144" << std::endl;
 
-  	floats Ones(4, 1.0);
+  	doubles Ones(4, 1.0);
+	doubles PSWeightInput_Doubles;
+
+	for(int i = 0; i < PSWeightInput.size(); i++){PSWeightInput_Doubles.push_back(PSWeightInput.at(i));}
 
 	switch(YearInt){
 
 		case 2016: return Ones;
 		case 2017: switch(ProcessInt){
-				case 0: return PSWeightInput; //tZq
-                        	case 31: return PSWeightInput; //ttbar (to hadronic)
-                        	case 32: return PSWeightInput; //ttbar (to semileptonic)
-                        	case 35: return PSWeightInput; //single top t-channel (top)
-                        	case 38: return PSWeightInput; //single top t-channel (antitop)
-                        	case 41: return PSWeightInput; //single top s-channel
-                        	case 71: return PSWeightInput; //single top (tbarW)
-                        	case 108: return PSWeightInput; //ttgamma
-                        	case 109: return PSWeightInput; //ttgamma (ext)
+				case 0: return PSWeightInput_Doubles; //tZq
+                        	case 31: return PSWeightInput_Doubles; //ttbar (to hadronic)
+                        	case 32: return PSWeightInput_Doubles; //ttbar (to semileptonic)
+                        	case 35: return PSWeightInput_Doubles; //single top t-channel (top)
+                        	case 38: return PSWeightInput_Doubles; //single top t-channel (antitop)
+                        	case 41: return PSWeightInput_Doubles; //single top s-channel
+                        	case 71: return PSWeightInput_Doubles; //single top (tbarW)
+                        	case 108: return PSWeightInput_Doubles; //ttgamma
+                        	case 109: return PSWeightInput_Doubles; //ttgamma (ext)
                         	default: return Ones;			    
 
 			}
 		case 2018: switch(ProcessInt){
-				case 0: return PSWeightInput; //tZq
-                                case 31: return PSWeightInput; //ttbar (to hadronic)
-                                case 32: return PSWeightInput; //ttbar (to semileptonic)
-                                case 35: return PSWeightInput; //single top t-channel (top)
-                                case 38: return PSWeightInput; //single top t-channel (antitop)
-                                case 41: return PSWeightInput; //single top s-channel
-                                case 71: return PSWeightInput; //single top (tbarW)
-                                case 108: return PSWeightInput; //ttgamma
-                                case 109: return PSWeightInput; //ttgamma (ext)
+				case 0: return PSWeightInput_Doubles; //tZq
+                                case 31: return PSWeightInput_Doubles; //ttbar (to hadronic)
+                                case 32: return PSWeightInput_Doubles; //ttbar (to semileptonic)
+                                case 35: return PSWeightInput_Doubles; //single top t-channel (top)
+                                case 38: return PSWeightInput_Doubles; //single top t-channel (antitop)
+                                case 41: return PSWeightInput_Doubles; //single top s-channel
+                                case 71: return PSWeightInput_Doubles; //single top (tbarW)
+                                case 108: return PSWeightInput_Doubles; //ttgamma
+                                case 109: return PSWeightInput_Doubles; //ttgamma (ext)
                                 default: return Ones;			
     
 			}
@@ -7085,35 +7088,35 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 145" << std::endl;
 
-	float PdfUncert;
+	double PdfUncert;
 
   	//For the up and down PDF uncertainties
   	
 	if(HessianOrMC == "Hessian"){
   		//For Hessian PDF sets
-  		float PdfUncert_Hessian_Squared;
+  		double PdfUncert_Hessian_Squared;
   	
   		for(unsigned int k = 1; k < nLHEPdfWeight; k++){PdfUncert_Hessian_Squared += pow((LHEPdfWeight.at(k) - LHEPdfWeight.at(0)), 2);}
 
-		float PdfUncert_Hessian = sqrt(PdfUncert_Hessian_Squared);
+		double PdfUncert_Hessian = sqrt(PdfUncert_Hessian_Squared);
 		PdfUncert = PdfUncert_Hessian;
 	}
 	else if(HessianOrMC == "MC"){
 		//For MC PDF sets
-		float SumOfLHEPdfWeights;
+		double SumOfLHEPdfWeights;
 	
 		for(unsigned int k = 1; k < nLHEPdfWeight; k++){SumOfLHEPdfWeights += LHEPdfWeight.at(k);}
 
-		float MeanPdfWeight = (1/nLHEPdfWeight) * SumOfLHEPdfWeights;	
-		float PartOf_PdfUncert_MC;
+		double MeanPdfWeight = (1/nLHEPdfWeight) * SumOfLHEPdfWeights;	
+		double PartOf_PdfUncert_MC;
 
 		for(unsigned int k = 1; k < nLHEPdfWeight; k++){PartOf_PdfUncert_MC += pow((LHEPdfWeight.at(k) - MeanPdfWeight), 2);}
 
-		float PdfUncert_MC = sqrt( ( 1/(nLHEPdfWeight-1) ) * PartOf_PdfUncert_MC ); 
+		double PdfUncert_MC = sqrt( ( 1/(nLHEPdfWeight-1) ) * PartOf_PdfUncert_MC ); 
 		PdfUncert = PdfUncert_MC;
 	}
 
-	float NominalPdfWeight = LHEPdfWeight.at(0);
+	double NominalPdfWeight = LHEPdfWeight.at(0);
 
 	switch(SystematicInt){
 		case 11: return NominalPdfWeight + PdfUncert;
@@ -7125,7 +7128,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   ints SummedWeights(14, 0);
 
-  auto ME_uncert_function{[&SummedWeights](const float& CalculatedPdfWeight, const floats& ReturnedPSWeight){
+  auto ME_uncert_function{[&SummedWeights](const double& CalculatedPdfWeight, const doubles& ReturnedPSWeight){
 
   	//std::cout << "print 146" << std::endl;
 
@@ -7150,7 +7153,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  auto GeneratorWeight{[&SummedWeights, &SystematicInt](const float& CalculatedPDFWeight, const floats& ReturnedPSWeight){
+  auto GeneratorWeight{[&SummedWeights, &SystematicInt](const double& CalculatedPDFWeight, const doubles& ReturnedPSWeight){
 
 	//std::cout << "print 147" << std::endl;
 
@@ -7329,17 +7332,17 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
   auto EventWeight{[&NormalisationFactorFunction, &ChannelInt, &SystematicInt, &ttbarCRInt]
-		    (const float& PUInput, 		         const double& BTagWeightInput, 	       const floats& ReturnedPSWeightInput, 
+		    (const double& PUInput, 		         const double& BTagWeightInput, 	       const doubles& ReturnedPSWeightInput, 
 		     const double& EGammaSF_egammaEffInput,      const double& EGammaSF_egammaEffRecoInput, 
 		     const double& EGammaSF_egammaEffSysInput,   const double& EGammaSF_egammaEffRecoSysInput, const double& CalculatedGeneratorWeightInput, 
-		     const double& ME_SFInput, 			 const doubles& TopWeightInput, 	       const float& CalculatedPDFWeightInput, 
+		     const double& ME_SFInput, 			 const doubles& TopWeightInput, 	       const double& CalculatedPDFWeightInput, 
 		     const double& MuonSFTest_IDInput, 		 const double& MuonSFTest_IsoInput, 	       const double& MuonSFTest_ID_sys_systInput, 
 		     const double& MuonSFTest_ID_sys_statInput,  const double& MuonSFTest_Iso_sys_systInput,   const double& MuonSFTest_Iso_sys_statInput){
 
 
 			//std::cout << "print 149" << std::endl;
 
-			float EventWeightOutput;
+			double EventWeightOutput;
 
 			switch(ChannelInt){
 				case 1: switch(SystematicInt){ 
@@ -7471,8 +7474,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		}
 
 
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+	std::cout << "EventWeightOutput * ME_SFInput = " << EventWeightOutput * ME_SFInput  << std::endl;
+	std::cout << "(EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput = " << (EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput  << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
 
-  	double FinalEventWeight = (EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput; 
+	double EventWeightNorm = EventWeightOutput/abs(EventWeightOutput);
+
+  	double FinalEventWeight = EventWeightNorm * ME_SFInput; 
 
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
@@ -7978,7 +7989,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //Turn on curves
   int NumBins = 40;
   float Weight = N_MET_LeptonTriggers_SelectionCriteria / N_SelectionCriteria;
-  auto TurnOnCurveWeight{[&Weight](const float& PU){float weight = PU * Weight; return weight;}};
+  auto TurnOnCurveWeight{[&Weight](const double& PU){float weight = PU * Weight; return weight;}};
 
   auto Weighted_dataframe = d_LeptonSelection.Define("weight", TurnOnCurveWeight, {"PU"});
 
@@ -8444,12 +8455,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   					   .Define("CMSNonBTagSF", CMSNonBTagSF, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"/*"BTAGEFF_nonbjet_pt_num", "BTAGEFF_nonbjet_eta_num", "BTAGEFF_nonbjet_Jet_btagCSVV2_num", "BTAGEFF_nonbjet_Jet_hadronFlavour_num"*/})
 					   .Define("EffBTagged", EffBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"})
 					   .Define("EffNonBTagged", EffNonBTagged_Function, {"TightSmearedJetsPt", "TightSmearedJetsEta", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsHadronFlavour"})
-					   .Define("EffBTaggedProduct", EffBTaggedProduct, {"EffBTagged"})
-					   .Define("EffNonBTaggedProduct", EffNonBTaggedProduct, {"EffNonBTagged"})
-					   .Define("EffBTaggedProductData", EffBTaggedProductData, {"EffBTagged", "CMSBTagSF"})
-                                           .Define("EffNonBTaggedProductData", EffNonBTaggedProductData, {"EffNonBTagged", "CMSNonBTagSF"})
-					   .Define("ProbBTagMC", ProbBTagMCFunction, {"EffBTaggedProduct", "EffNonBTaggedProduct"})
- 					   .Define("ProbBTagData", ProbBTagDataFunction, {"EffBTaggedProductData", "EffNonBTaggedProductData"})
+					   .Define("ProductOperator_E_i", ProductOperator_E_i_Function, {"EffBTagged"})
+					   .Define("ProductOperator_1_Minus_E_j", ProductOperator_1_Minus_E_j_Function, {"EffNonBTagged"})
+					   .Define("ProductOperator_SFi_Times_Ei", ProductOperator_SFi_Times_Ei_Function, {"EffBTagged", "CMSBTagSF"})
+                                           .Define("ProductOperator_1_Minus_SFj_Times_Ej", ProductOperator_1_Minus_SFj_Times_Ej_Function, {"EffNonBTagged", "CMSNonBTagSF"})
+					   .Define("ProbBTagMC", ProbBTagMCFunction, {"ProductOperator_E_i", "ProductOperator_1_Minus_E_j"})
+ 					   .Define("ProbBTagData", ProbBTagDataFunction, {"ProductOperator_SFi_Times_Ei", "ProductOperator_1_Minus_SFj_Times_Ej"})
 					   .Define("BTagWeight", BTagWeightFunction, {"ProbBTagMC", "ProbBTagData"})
 					   .Define("EGammaSF_egammaEff", EGammaSF_egammaEff, {"TightLeptonsPt", "TightLeptonsEta"})
 					   .Define("EGammaSF_egammaEffSys", EGammaSF_egammaEff_Sys, {"TightLeptonsPt", "LeptonEta"})
