@@ -7324,8 +7324,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         
         //std::cout << "print 151" << std::endl;
 
+	double OutputNormFactor;
+
         switch(MCInt){
-                case 1: return linereader(ProcessInt+1, Year);
+                case 1: OutputNormFactor = linereader(ProcessInt+1, Year); return OutputNormFactor;
                 default: double one = 1.0; return one;
         }
   }};
@@ -7476,14 +7478,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
-	std::cout << "EventWeightOutput * ME_SFInput = " << EventWeightOutput * ME_SFInput  << std::endl;
+	std::cout << "EventWeightOutput * ME_SFInput = " << EventWeightOutput * ME_SFInput  << std::endl;	
+	std::cout << "(EventWeightOutput/abs(EventWeightOutput)) = " << (EventWeightOutput/abs(EventWeightOutput)) << std::endl; 
 	std::cout << "(EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput = " << (EventWeightOutput/abs(EventWeightOutput)) * ME_SFInput  << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
 
-	double EventWeightNorm = EventWeightOutput/abs(EventWeightOutput);
+	double GeneratorWeight = ME_SFInput * (EventWeightOutput/abs(EventWeightOutput));
 
-  	double FinalEventWeight = EventWeightNorm * ME_SFInput; 
+  	double FinalEventWeight = EventWeightOutput * GeneratorWeight; 
 
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
