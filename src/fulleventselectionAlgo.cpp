@@ -562,7 +562,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "MC"; break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll/*"}; HessianOrMC = "Hessian"; break;
+			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		}
 
@@ -592,7 +592,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_aMCatNLO_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZPlusJets_aMCatNLO_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M50/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M50_aMCatNLO_NanoAODv7/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                 }
                 
@@ -603,7 +603,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZPlusJets_aMCatNLO_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M50_ext/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M50_aMCatNLO_ext_NanoAODv7/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                 }
 
@@ -658,7 +658,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M10to50/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                 }
 
@@ -669,7 +669,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                 switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/DYJetsToLL_M10to50_ext/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                 }
 
@@ -867,7 +867,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_2l2nu_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -878,7 +878,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_madgraph_NanoAODv5/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -889,7 +889,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_madgraph_ext_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: break;
-                        case 2018: break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_madgraph_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -900,7 +900,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -911,7 +911,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -922,7 +922,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"//data/disk2/nanoAOD_2016/TTToSemileptonic_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -933,7 +933,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -944,7 +944,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_aMCatNLO_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -955,7 +955,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break; 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_aMCatNLO/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_aMCatNLO_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -978,7 +978,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1011,7 +1011,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_tbar_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_tbar/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1044,7 +1044,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_schannel_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_schannel_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_schannel/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_schannel_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1099,7 +1099,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TT_2l2nu_hdampUP/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampUP/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1110,7 +1110,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampUP_ext1_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: break;
-                        case 2018: break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampUP_ext_NanoAODv7"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
          
@@ -1132,7 +1132,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TT_2l2nu_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
          
@@ -1143,7 +1143,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_ext1_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: break;
-                        case 2018: break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN_ext1_NanoAODv7"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1154,7 +1154,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_ext2_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: break;
-                        case 2018: break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN_ext2_NanoAODv7"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1166,7 +1166,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_hdampUP/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1177,7 +1177,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1188,7 +1188,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_hdampUP/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1199,7 +1199,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1222,7 +1222,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdamp_up_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top_hdampup_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_hdampup/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_hdampup_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1233,7 +1233,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdamp_down_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top_hdampdown_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_hdampdown/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_hdampdown_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1244,7 +1244,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdamp_up_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_antitop_hdampup_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_hdampup/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_hdampup_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1255,7 +1255,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdamp_down_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_antitop_hdampdown_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_hdampdown/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_hdampdown_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1343,7 +1343,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tW_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tW/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tW/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1376,7 +1376,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tbarW_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tbarW/*"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tbarW/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tbarW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1409,7 +1409,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tHq_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/tHq_NanoAODv7/*"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/tHq/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/tHq_NanoAODv7/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1420,7 +1420,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_W_lept_Z_had/*"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_W_lept_Z_had/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_W_lept_Z_had_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 	
@@ -1431,7 +1431,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWll_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/tWZ_tWLL_NanoAODv5/*"}; break;
-                        case 2018: input_files =  {"/data/disk1/nanoAOD_2018/tWZ_tWLL_NanoAODv5/*"}; break;
+                        case 2018: input_files =  {"/data/disk1/nanoAOD_2018/tWZ_tWll_NanoAODv7/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1453,7 +1453,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu_ext/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2l2Nu_ext1_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1464,7 +1464,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Nu_ext2/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2l2Nu_ext2_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1475,7 +1475,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo2l2Q_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2L2Q/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2l2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1486,7 +1486,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo4l_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZTo4L_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1497,7 +1497,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1508,7 +1508,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTo1l1nuqq_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WW1lnuqq_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWToLNuQQ/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWTo1l1nuqq_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1530,7 +1530,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo2l2Q_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZTo2L2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo2L2Q/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo2l2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1541,7 +1541,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZTo3LNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo3LNu/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo3lNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1552,7 +1552,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo3LNu_ext/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo3lNu_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1564,7 +1564,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo1l1nu2Q_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZTo1l1Nu2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo1L1Nu2Q/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo1l1Nu2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1575,7 +1575,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTo2l2nu_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWTo2L2Nu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWTo2L2Nu/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWTo2l2Nu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1586,7 +1586,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWToLNuQQ/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWToLNuQQ/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWToLNuQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1608,7 +1608,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WGToLNuG_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WGToLNuG/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WGToLNuG_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1619,7 +1619,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZGToLLG/*"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG_NanoAODv7/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1630,7 +1630,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZGToLLG/*"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG/*"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG_ext_NanoAODv7/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1641,7 +1641,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWWTo4F_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWWTo4F/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWWTo4F_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1652,8 +1652,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break; 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWWTo4F_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWWTo4F/*"}; HessianOrMC = "Hessian"; break;
-                        default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
+                        case 2018: break;
+			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
@@ -1663,7 +1663,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWZ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWZTo4F_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWZTo4F/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWZ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1674,8 +1674,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break; 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWZTo4F_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWZTo4F/*"}; HessianOrMC = "Hessian"; break;
-                        default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
+                        case 2018: break;
+			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
@@ -1685,7 +1685,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZZ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZZ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZZ/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZZ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1696,8 +1696,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZZ_ext_NanoAODv7/*"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZZ/*"}; HessianOrMC = "Hessian"; break;
-                        default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
+                        case 2018: break;
+			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
@@ -1707,7 +1707,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZZ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZZ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZZ/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZZ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1718,8 +1718,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZZ_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZZ/*"}; HessianOrMC = "Hessian"; break;
-                        default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
+                        case 2018: break;
+			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
@@ -1729,7 +1729,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WPlusJets_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WJetsToLNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WJetsToLNu/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WPlusJets_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1751,7 +1751,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToLNu_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToLNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToLNu/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToLNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1773,7 +1773,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttWJetsToQQ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToQQ/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1784,7 +1784,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToLL_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLL/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLL_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1795,8 +1795,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToLL_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLL/*"}; HessianOrMC = "Hessian"; break;
-                        default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
+                        case 2018: break;
+			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
                  break;
@@ -1806,7 +1806,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToLLNuNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLLNuNu/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLLNuNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1839,7 +1839,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1850,7 +1850,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break; 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_ext/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1861,7 +1861,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHTobb_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttHTobb_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHTobb/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHTobb_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1872,7 +1872,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHTobb_ext_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHTobb/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHTobb_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -1883,7 +1883,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttHToNonbb_NanoAODv7/*"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHToNonbb/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHToNonbb_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
