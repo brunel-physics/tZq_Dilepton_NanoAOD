@@ -2394,6 +2394,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
         case 2017: switch(ProcessInt){ 
                    	case 0: PSWeightString = "PSWeight"; break; //tZq
+			case 28: PSWeightString = "PSWeight"; break; //ttbar (2l2nu)
 			case 31: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
 			case 32: PSWeightString = "PSWeight"; break; //ttbar (to hadronic ext)
 			case 33: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
@@ -2403,6 +2404,11 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			case 44: PSWeightString = "PSWeight"; break; //single top s-channel
 			case 71: PSWeightString = "PSWeight"; break; //single top (tW)
 			case 74: PSWeightString = "PSWeight"; break; //single top (tbarW)
+			case 90: PSWeightString = "PSWeight"; break; //WWTo2L2Nu
+			case 106: PSWeightString = "PSWeight"; break; //ttWToLNu
+                        case 107: PSWeightString = "PSWeight"; break; //ttWToLNu_ext
+			case 114: PSWeightString = "PSWeight"; break; //ttZToQQ
+                        case 115: PSWeightString = "PSWeight"; break; //ttZToQQ_ext
                         default: PSWeightString = "LeptonPt"; break;
                     }
 	
@@ -2411,6 +2417,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
         case 2018: switch(ProcessInt){ 
 			case 0: PSWeightString = "PSWeight"; break; //tZq
+			case 28: PSWeightString = "PSWeight"; break; //ttbar (2l2nu)
                         case 31: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
                         case 32: PSWeightString = "PSWeight"; break; //ttbar (to hadronic ext)
                         case 33: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
@@ -2420,6 +2427,11 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 44: PSWeightString = "PSWeight"; break; //single top s-channel
                         case 71: PSWeightString = "PSWeight"; break; //single top (tW)
                         case 74: PSWeightString = "PSWeight"; break; //single top (tbarW)
+			case 90: PSWeightString = "PSWeight"; break; //WWTo2L2Nu
+			case 106: PSWeightString = "PSWeight"; break; //ttWToLNu
+                        case 107: PSWeightString = "PSWeight"; break; //ttWToLNu_ext
+			case 114: PSWeightString = "PSWeight"; break; //ttZToQQ
+                        case 115: PSWeightString = "PSWeight"; break; //ttZToQQ_ext
                         default: PSWeightString = "LeptonPt"; break;
 
 		   }
@@ -7137,6 +7149,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		case 2016: return Ones;
 		case 2017: switch(ProcessInt){
                         	case 0: return PSWeightInput_Doubles; break; //tZq
+				case 28: return PSWeightInput_Doubles; break; //ttbar (2l2nu)
                         	case 31: return PSWeightInput_Doubles; break; //ttbar (to hadronic)
                         	case 32: return PSWeightInput_Doubles; break; //ttbar (to hadronic ext)
                         	case 33: return PSWeightInput_Doubles; break; //ttbar (to semileptonic)
@@ -7146,10 +7159,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                         	case 44: return PSWeightInput_Doubles; break; //single top s-channel
                         	case 71: return PSWeightInput_Doubles; break; //single top (tW)
                         	case 74: return PSWeightInput_Doubles; break; //single top (tbarW)
+				case 90: return PSWeightInput_Doubles; break; //WWTo2L2Nu
+				case 106: return PSWeightInput_Doubles; break; //ttWToLNu
+                                case 107: return PSWeightInput_Doubles; break; //ttWToLNu_ext
+				case 114: return PSWeightInput_Doubles; break; //ttZToQQ
+				case 115: return PSWeightInput_Doubles; break; //ttZToQQ_ext
 				default: return Ones;			    
 			}
 		case 2018: switch(ProcessInt){
 				case 0: return PSWeightInput_Doubles; break; //tZq
+				case 28: return PSWeightInput_Doubles; break; //ttbar (2l2nu)
                                 case 31: return PSWeightInput_Doubles; break; //ttbar (to hadronic)
                                 case 32: return PSWeightInput_Doubles; break; //ttbar (to hadronic ext)
                                 case 33: return PSWeightInput_Doubles; break; //ttbar (to semileptonic)
@@ -7159,6 +7178,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                 case 44: return PSWeightInput_Doubles; break; //single top s-channel
                                 case 71: return PSWeightInput_Doubles; break; //single top (tW)
                                 case 74: return PSWeightInput_Doubles; break; //single top (tbarW)
+				case 90: return PSWeightInput_Doubles; break; //WWTo2L2Nu
+				case 106: return PSWeightInput_Doubles; break; //ttWToLNu
+                                case 107: return PSWeightInput_Doubles; break; //ttWToLNu_ext
+				case 114: return PSWeightInput_Doubles; break; //ttZToQQ
+                                case 115: return PSWeightInput_Doubles; break; //ttZToQQ_ext
                                 default: return Ones;   
  
 			}
