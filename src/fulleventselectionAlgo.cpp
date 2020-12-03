@@ -5426,6 +5426,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		case 57: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp up)
                 case 58: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp down)
 		case 59: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp down (ext))
+		case 64: weight = sqrt( SF_top * SF_antitop); break; //ttbar_isr_UP
+		case 65: weight = sqrt( SF_top * SF_antitop); break; //ttbar_isr_DOWN
+		case 66: weight = sqrt( SF_top * SF_antitop); break; //ttbar_isr_DOWN_ext
+		case 67: weight = sqrt( SF_top * SF_antitop); break; //ttbar_fsr_UP
+		case 68: weight = sqrt( SF_top * SF_antitop); break; //ttbar_fsr_UP_ext
+		case 69: weight = sqrt( SF_top * SF_antitop); break; //ttbar_fsr_DOWN
+		case 70: weight = sqrt( SF_top * SF_antitop); break; //ttbar_fsr_DOWN_ext
 		default: doubles weight_vec(SF_top.size(), 1.0); weight = weight_vec; break;
 	}
  
