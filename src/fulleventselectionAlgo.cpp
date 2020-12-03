@@ -2395,13 +2395,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 2017: switch(ProcessInt){ 
                    	case 0: PSWeightString = "PSWeight"; break; //tZq
 			case 31: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
-			case 32: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
-                        case 35: PSWeightString = "PSWeight"; break; //single top t-channel (top)
-			case 38: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
-			case 41: PSWeightString = "PSWeight"; break; //single top s-channel
-			case 71: PSWeightString = "PSWeight"; break; //single top (tbarW)
-			case 108: PSWeightString = "PSWeight"; break; //ttgamma
-			case 109: PSWeightString = "PSWeight"; break; //ttgamma (ext)
+			case 32: PSWeightString = "PSWeight"; break; //ttbar (to hadronic ext)
+			case 33: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
+			case 34: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic ext)
+                        case 38: PSWeightString = "PSWeight"; break; //single top t-channel (top)
+			case 41: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
+			case 44: PSWeightString = "PSWeight"; break; //single top s-channel
+			case 71: PSWeightString = "PSWeight"; break; //single top (tW)
+			case 74: PSWeightString = "PSWeight"; break; //single top (tbarW)
                         default: PSWeightString = "LeptonPt"; break;
                     }
 	
@@ -2411,14 +2412,15 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 2018: switch(ProcessInt){ 
 			case 0: PSWeightString = "PSWeight"; break; //tZq
                         case 31: PSWeightString = "PSWeight"; break; //ttbar (to hadronic)
-                        case 32: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
-                        case 35: PSWeightString = "PSWeight"; break; //single top t-channel (top)
-                        case 38: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
-                        case 41: PSWeightString = "PSWeight"; break; //single top s-channel
-                        case 71: PSWeightString = "PSWeight"; break; //single top (tbarW)
-                        case 108: PSWeightString = "PSWeight"; break; //ttgamma
-                        case 109: PSWeightString = "PSWeight"; break; //ttgamma (ext)
-                        default: PSWeightString = "LeptonPt"; break;		    
+                        case 32: PSWeightString = "PSWeight"; break; //ttbar (to hadronic ext)
+                        case 33: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic)
+                        case 34: PSWeightString = "PSWeight"; break; //ttbar (to semileptonic ext)
+                        case 38: PSWeightString = "PSWeight"; break; //single top t-channel (top)
+                        case 41: PSWeightString = "PSWeight"; break; //single top t-channel (antitop)
+                        case 44: PSWeightString = "PSWeight"; break; //single top s-channel
+                        case 71: PSWeightString = "PSWeight"; break; //single top (tW)
+                        case 74: PSWeightString = "PSWeight"; break; //single top (tbarW)
+                        default: PSWeightString = "LeptonPt"; break;
 
 		   }
 
@@ -3526,7 +3528,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	//std::cout << "print 30" << std::endl;
 
-	if(ProcessInt == 112 || 113){
+	if(ProcessInt == 119 || 120){
 
 	  switch(ChannelInt){
 
@@ -5391,24 +5393,27 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		case 29: weight = sqrt( SF_top * SF_antitop); break; //ttbar_madgraph
 		case 30: weight = sqrt( SF_top * SF_antitop); break; //ttbar_madgraph_ext
 		case 31: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToHadronic
-		case 32: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToSemileptonic
-		case 33: weight = sqrt( SF_top * SF_antitop); break; //ttbar_atMCaNLO
-		case 34: weight = sqrt( SF_top * SF_antitop); break; //ttbar_inc
-		case 42: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampUP
-		case 43: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampUP_ext
-		case 44: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampDOWN
-		case 45: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampDOWN_ext
-		case 46: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampUP
-		case 47: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampUP_ext1
-		case 48: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampUP_ext2
-		case 49: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampDOWN
-                case 50: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampDOWN_ext1
-                case 51: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampDOWN_ext2
-		case 52: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to hadronic, hdamp up)
-		case 53: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to hadronic, hdamp down)
-		case 54: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp up)
-                case 55: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp down)
-		case 56: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp down (ext))
+		case 32: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToHadronic_ext
+		case 33: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToSemileptonic
+		case 34: weight = sqrt( SF_top * SF_antitop); break; //ttbar_TTToSemileptonic_ext
+		case 35: weight = sqrt( SF_top * SF_antitop); break; //ttbar_atMCaNLO
+		case 36: weight = sqrt( SF_top * SF_antitop); break; //ttbar_atMCaNLO_ext
+		case 37: weight = sqrt( SF_top * SF_antitop); break; //ttbar_inc
+		case 45: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampUP
+		case 46: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampUP_ext
+		case 47: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampDOWN
+		case 48: weight = sqrt( SF_top * SF_antitop); break; //ttbar_hdampDOWN_ext
+		case 49: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampUP
+		case 50: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampUP_ext1
+		case 51: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampUP_ext2
+		case 52: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampDOWN
+                case 53: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampDOWN_ext1
+                case 54: weight = sqrt( SF_top * SF_antitop); break; //TT_2l2nu_hdampDOWN_ext2
+		case 55: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to hadronic, hdamp up)
+		case 56: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to hadronic, hdamp down)
+		case 57: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp up)
+                case 58: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp down)
+		case 59: weight = sqrt( SF_top * SF_antitop); break; //ttbar (to semileptonic, hdamp down (ext))
 		default: doubles weight_vec(SF_top.size(), 1.0); weight = weight_vec; break;
 	}
  
@@ -7131,30 +7136,31 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		case 2016: return Ones;
 		case 2017: switch(ProcessInt){
-				case 0: return PSWeightInput_Doubles; //tZq
-                        	case 31: return PSWeightInput_Doubles; //ttbar (to hadronic)
-                        	case 32: return PSWeightInput_Doubles; //ttbar (to semileptonic)
-                        	case 35: return PSWeightInput_Doubles; //single top t-channel (top)
-                        	case 38: return PSWeightInput_Doubles; //single top t-channel (antitop)
-                        	case 41: return PSWeightInput_Doubles; //single top s-channel
-                        	case 71: return PSWeightInput_Doubles; //single top (tbarW)
-                        	case 108: return PSWeightInput_Doubles; //ttgamma
-                        	case 109: return PSWeightInput_Doubles; //ttgamma (ext)
-                        	default: return Ones;			    
-
+                        	case 0: return PSWeightInput_Doubles; break; //tZq
+                        	case 31: return PSWeightInput_Doubles; break; //ttbar (to hadronic)
+                        	case 32: return PSWeightInput_Doubles; break; //ttbar (to hadronic ext)
+                        	case 33: return PSWeightInput_Doubles; break; //ttbar (to semileptonic)
+                        	case 34: return PSWeightInput_Doubles; break; //ttbar (to semileptonic ext)
+                        	case 38: return PSWeightInput_Doubles; break; //single top t-channel (top)
+                        	case 41: return PSWeightInput_Doubles; break; //single top t-channel (antitop)
+                        	case 44: return PSWeightInput_Doubles; break; //single top s-channel
+                        	case 71: return PSWeightInput_Doubles; break; //single top (tW)
+                        	case 74: return PSWeightInput_Doubles; break; //single top (tbarW)
+				default: return Ones;			    
 			}
 		case 2018: switch(ProcessInt){
-				case 0: return PSWeightInput_Doubles; //tZq
-                                case 31: return PSWeightInput_Doubles; //ttbar (to hadronic)
-                                case 32: return PSWeightInput_Doubles; //ttbar (to semileptonic)
-                                case 35: return PSWeightInput_Doubles; //single top t-channel (top)
-                                case 38: return PSWeightInput_Doubles; //single top t-channel (antitop)
-                                case 41: return PSWeightInput_Doubles; //single top s-channel
-                                case 71: return PSWeightInput_Doubles; //single top (tbarW)
-                                case 108: return PSWeightInput_Doubles; //ttgamma
-                                case 109: return PSWeightInput_Doubles; //ttgamma (ext)
-                                default: return Ones;			
-    
+				case 0: return PSWeightInput_Doubles; break; //tZq
+                                case 31: return PSWeightInput_Doubles; break; //ttbar (to hadronic)
+                                case 32: return PSWeightInput_Doubles; break; //ttbar (to hadronic ext)
+                                case 33: return PSWeightInput_Doubles; break; //ttbar (to semileptonic)
+                                case 34: return PSWeightInput_Doubles; break; //ttbar (to semileptonic ext)
+                                case 38: return PSWeightInput_Doubles; break; //single top t-channel (top)
+                                case 41: return PSWeightInput_Doubles; break; //single top t-channel (antitop)
+                                case 44: return PSWeightInput_Doubles; break; //single top s-channel
+                                case 71: return PSWeightInput_Doubles; break; //single top (tW)
+                                case 74: return PSWeightInput_Doubles; break; //single top (tbarW)
+                                default: return Ones;   
+ 
 			}
 
 	}
@@ -7846,7 +7852,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
    switch(ProcessInt){
 
-	case 112: switch(YearInt){
+	case 119: switch(YearInt){
 
 			case 2016: MET_Triggers_Strings = {"HLT_MET200", 		    		"HLT_MET250",
 		        				   "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
@@ -7924,7 +7930,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		 break;
 
-	case 113: switch(YearInt){
+	case 120: switch(YearInt){
 
                         case 2016: MET_Triggers_Strings = {"HLT_MET200",                    		"HLT_MET250",
                                                            "HLT_PFMET120_PFMHT120_IDTight", 		"HLT_PFMET170_HBHECleaned",
@@ -8035,7 +8041,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   float LeptonSelection_EventWeight, MET_And_LeptonSelection_EventWeight, LeptonTriggersAndSelectionCriteria_EventWeight, MET_LeptonTriggers_SelectionCriteria_EventWeight;
 
   switch(ProcessInt){
-	case 112: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
+	case 119: LeptonSelection_EventWeight = *d_LeptonSelection.Sum("PU");
 	         MET_And_LeptonSelection_EventWeight = *d_MET_And_LeptonSelection.Sum("PU");
 	         LeptonTriggersAndSelectionCriteria_EventWeight = *d_LeptonTriggers_And_LeptonSelection.Sum("PU");
                  MET_LeptonTriggers_SelectionCriteria_EventWeight = *d_MET_LeptonTriggers_LeptonSelection.Sum("PU");
@@ -8128,7 +8134,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
 
 
-  if((ProcessInt == 112 || ProcessInt == 113) && SystematicInt == 0){
+  if((ProcessInt == 119 || ProcessInt == 120) && SystematicInt == 0){
 
   	std::string TurnOnCurvesOutput = "TurnOnCurves_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
@@ -8192,7 +8198,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                   << Eff_LowerUncert << '\n'
                   << std::endl; 
 
-  if(ProcessInt == 112 || ProcessInt == 113){return;}
+  if(ProcessInt == 119 || ProcessInt == 120){return;}
 
   //Calculating the trigger scale factors
   Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
