@@ -1264,7 +1264,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 64: Process = "ttbar_isr_UP";
 
 		 switch(YearInt){
-                        case 2016: input_files =  {"/data/disk2/nanoAOD_2016/TT_isr_UP_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files =  {"/data/disk3/nanoAOD_2016/TT_isr_UP_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -7755,7 +7755,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 100000);
+  auto d_Range = d.Range(0, 1000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
