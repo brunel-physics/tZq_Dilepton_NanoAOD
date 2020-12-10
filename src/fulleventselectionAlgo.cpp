@@ -4238,13 +4238,13 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			}
   			else if(sigmaJER == false && SF == false && up == true && down == false){
 
-        			float UpValue = Col6 - Col4;
+        			float UpValue = Col6;
         			AnswerVec.push_back(UpValue);
 
 			}
   			else if(sigmaJER == false && SF == false && up == false && down == true){
 	
-        			float DownValue = Col4 - Col5;
+        			float DownValue = Col5;
         			AnswerVec.push_back(DownValue);
 
   			}
@@ -7600,9 +7600,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
 
-	double GeneratorWeight = ME_SFInput * (EventWeightOutput/abs(EventWeightOutput));
+	double MadgraphGeneratorWeight = ME_SFInput * (EventWeightOutput/abs(EventWeightOutput));
 
-  	double FinalEventWeight = EventWeightOutput * GeneratorWeight; 
+  	double FinalEventWeight = EventWeightOutput * MadgraphGeneratorWeight; 
 
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
@@ -7755,7 +7755,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
-  auto d_Range = d.Range(0, 1000);
+  auto d_Range = d.Range(0, 100000);
 
   //Event cleaning
   auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
