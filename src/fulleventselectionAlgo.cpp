@@ -1871,9 +1871,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 119: Process = "TriggerSF_MC";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc/*.root"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"}; break;
-                        case 2018: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu/*.root"}; break;
+                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc_NanoAODv7/*.root"}; break;
+                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
+                        case 2018: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -8802,7 +8802,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1;
-  std::vector<int> Process_Selection = {/*112, 113, */0}; //112 for trigger SF MC, 113 for trigger SF data, 0 for tZq
+  int Process_Selection = 119; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
@@ -8813,12 +8813,10 @@ void fulleventselectionAlgo::fulleventselection(){
   int Channel_Selection = 1;
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
-  for(int i = 0; i < Process_Selection.size(); i++){
 
-  	tZq_NanoAOD_Output(MC_Selection, 	    Process_Selection.at(i), NPL_Selection,        SR_Selection,         SBR_Selection,             ZPlusJetsCR_Selection, 
-		           ttbarCR_Selection,       Year_Selection,          Systematic_Selection, Channel_Selection,    DoubleCountCheck_Selection);
+  tZq_NanoAOD_Output(MC_Selection,      Process_Selection, NPL_Selection,        SR_Selection,      SBR_Selection, ZPlusJetsCR_Selection, 
+		     ttbarCR_Selection, Year_Selection,    Systematic_Selection, Channel_Selection, DoubleCountCheck_Selection);
 
-  }
 
   //Obtaining the ratio for the NPL estimation
 
