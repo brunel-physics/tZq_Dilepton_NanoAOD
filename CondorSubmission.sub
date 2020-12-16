@@ -1,0 +1,7 @@
+Executable   = bin/fulleventselectionMain.exe
+Log          = Results/myexe.log
+universe     = vanilla
+Output       = Results/myexe.out
+Error        = Results/myexe.err
+Log          = Results/myexe.log
+Queue
