@@ -1,3 +1,3 @@
 #!/bin/sh
-/bin/mkdir Results
+mkdir Results
 condor_submit CondorSubmission.sub
