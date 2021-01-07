@@ -13,13 +13,6 @@ LIBRARY_PATH = 	-L$(shell root-config --libdir) \
                 -L/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/lib \
 
 LIBRARIES = 	$(shell root-config --libs) \
-		-lLHAPDF \
-		-lTMVA  \
-		-lz \
-		-lboost_system \
-		-lboost_filesystem \
-		-lboost_program_options \
-#		-lyaml-cpp \
 
 INCLUDE_PATH = 	-Iinclude  \
                 -isystem/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/include \
