@@ -3101,11 +3101,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto ElectronsFunction{[](const int targetID, const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand){
  
   	std::cout << "print 9" << std::endl;
-	std::cout << "Electron_pt.size() = " << Electron_pt.size() << std::endl;
-	std::cout << "Electron_eta.size() = " << Electron_eta.size() << std::endl;
-	std::cout << "Electron_cutBased.size() = " << Electron_cutBased.size() << std::endl;
-	std::cout << "Electron_isPFcand.size() = " << Electron_isPFcand.size() << std::endl;
-
   	return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && 
 		Electron_cutBased >= targetID && Electron_isPFcand);
 
@@ -3137,6 +3132,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 				
 				return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand).size() && MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
 			}
+			else{int VecSize = (Electron_pt.size() > pts.size()) ? Electron_pt.size() : pts.size();
+			     ints TightLeptonsFunction_ZeroOutput(VecSize, 0); 
+			     return TightLeptonsFunction_ZeroOutput;
+			}
 
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
@@ -3157,10 +3156,28 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		case 1: return Electron_input; 
 		case 2: return Muon_input;
 
-		case 3: for(int i = 0; i < Electron_input.size(); i++){Emu_vector_floats.push_back(Electron_input.at(i));}
-			for(int i = 0; i < Muon_input.size(); i++){Emu_vector_floats.push_back(Muon_input.at(i));}
-			return Emu_vector_floats;
-	
+		case 3: if(Electron_input.size() == 1 && Muon_input.size() == 1){
+
+				for(int i = 0; i < Electron_input.size(); i++){Emu_vector_floats.push_back(Electron_input.at(i));}
+				for(int i = 0; i < Muon_input.size(); i++){Emu_vector_floats.push_back(Muon_input.at(i));}
+
+				return Emu_vector_floats;
+
+			}
+			else{
+
+				int LeptonVariableFunctionFloats_size = (Electron_input.size() > Muon_input.size()) ? Electron_input.size() : Muon_input.size();
+
+				//std::cout << "LeptonVariableFunctionFloats_size = " << LeptonVariableFunctionFloats_size << std::endl;
+				//std::cout << "Electron_input.size() = " << Electron_input.size() << std::endl;
+				//std::cout << "Muon_input.size() = " << Muon_input.size() << std::endl;
+
+				floats LeptonVariableFunctionFloats_Zeroes(LeptonVariableFunctionFloats_size, 0);
+				return LeptonVariableFunctionFloats_Zeroes;
+
+			}
+
+
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
 	}
@@ -3215,8 +3232,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 									      const floats& etas,             const bools& ids,           const floats& isos){
 
   	std::cout << "print 15" << std::endl;
-	std::cout << "ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) = " << ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) << std::endl;
-	std::cout << "MuonsFunction(0.15, isPFs, pts, etas, ids, isos) = " << MuonsFunction(0.15, isPFs, pts, etas, ids, isos) << std::endl;
 
 	switch(ChannelInt){
 
@@ -3229,7 +3244,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 				return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) && MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
 			}
-			else{ints ElseOutput(Electron_pt.size(), 0); return ElseOutput;}
+			else{   int LooseLeptonsFunction_ElseVecSize = (Electron_pt.size() > pts.size()) ? Electron_pt.size() : pts.size();
+				ints ElseOutput(LooseLeptonsFunction_ElseVecSize, 0); 
+				return ElseOutput;
+			}
 
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
@@ -3255,7 +3273,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto LeadingVariable{[&ChannelInt](const floats& variable){
 
   	std::cout << "print 17" << std::endl;
-	std::cout << "variable.size() = " << variable.size() << std::endl;
 
 	if(variable.size() > 0){
 
@@ -3765,12 +3782,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto Electron_dxy_dz_Function{[&ChannelInt](const floats& Electron_dz, const floats& Electron_dxy, const float& LeadingLeptonPt, const float& SubleadingLeptonPt, const floats& LeptonEta){
 
-	std::cout << "inside Electron_dxy_dz_Function" << std::endl;
-	std::cout << "Electron_dz.size() = " << Electron_dz.size() << std::endl;
-	std::cout << "Electron_dxy.size() = " << Electron_dxy.size() << std::endl;
-	std::cout << "LeptonEta.size() = " << LeptonEta.size() << std::endl;
-
-	std::cout << "ChannelInt = " << ChannelInt << std::endl;
 
 	if(ChannelInt == 1){
 
@@ -3782,7 +3793,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         (abs(LeptonEta) > 1.566                  &&  abs(LeptonEta) < 3.0                && Electron_dz < 0.2 && Electron_dxy < 0.1); //endcaps
 
 	}
-	else{std::cout << "inside the else" << std::endl; return abs(LeptonEta) < 3.0;} 
+	else{return abs(LeptonEta) < 3.0;} 
 		
 
   }}; 
