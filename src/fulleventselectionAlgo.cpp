@@ -61,6 +61,8 @@ template<typename T>
 [[gnu::const]] T select(const T& a, const ints& mask)
 {
   std::cout << "print 200" << std::endl;
+  std::cout << "a.size() = " << a.size() << std::endl;
+  std::cout << "mask.size() = " << mask.size() << std::endl;
   return a[mask];
 }
 
@@ -3099,6 +3101,11 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto ElectronsFunction{[](const int targetID, const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand){
  
   	std::cout << "print 9" << std::endl;
+	std::cout << "Electron_pt.size() = " << Electron_pt.size() << std::endl;
+	std::cout << "Electron_eta.size() = " << Electron_eta.size() << std::endl;
+	std::cout << "Electron_cutBased.size() = " << Electron_cutBased.size() << std::endl;
+	std::cout << "Electron_isPFcand.size() = " << Electron_isPFcand.size() << std::endl;
+
   	return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && 
 		Electron_cutBased >= targetID && Electron_isPFcand);
 
@@ -3122,8 +3129,15 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	switch(ChannelInt){
 
   		case 1: return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
+
 		case 2: return MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
-		case 3: return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) || MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
+
+		case 3: if(ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand).size() == 1 &&
+			   MuonsFunction(0.25, isPFs, pts, etas, ids, isos).size() == 1){
+				
+				return ElectronsFunction(4, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand).size() && MuonsFunction(0.25, isPFs, pts, etas, ids, isos);
+			}
+
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
 	}
@@ -3201,12 +3215,22 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 									      const floats& etas,             const bools& ids,           const floats& isos){
 
   	std::cout << "print 15" << std::endl;
+	std::cout << "ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) = " << ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) << std::endl;
+	std::cout << "MuonsFunction(0.15, isPFs, pts, etas, ids, isos) = " << MuonsFunction(0.15, isPFs, pts, etas, ids, isos) << std::endl;
 
 	switch(ChannelInt){
 
   		case 1: return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand);
+
 		case 2: return MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
-		case 3: return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) || MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
+
+		case 3: if(ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand).size() == 1 && 
+			   MuonsFunction(0.15, isPFs, pts, etas, ids, isos).size() == 1){
+
+				return ElectronsFunction(1, Electron_pt, Electron_eta, Electron_cutBased, Electron_isPFcand) && MuonsFunction(0.15, isPFs, pts, etas, ids, isos);
+			}
+			else{ints ElseOutput(Electron_pt.size(), 0); return ElseOutput;}
+
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
 	}
@@ -8826,8 +8850,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 //Main function is here
 void fulleventselectionAlgo::fulleventselection(){
 
-  int MC_Selection = 1;
-  int Process_Selection = 120; 
+  int MC_Selection = 1; //0 for data, 1 for MC
+  int Process_Selection = 119; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
@@ -8835,7 +8859,7 @@ void fulleventselectionAlgo::fulleventselection(){
   int ttbarCR_Selection = 0;
   int Year_Selection = 2017;
   int Systematic_Selection = 0;
-  int Channel_Selection = 2; //1 for ee, 2 for mumu, 3 for emu
+  int Channel_Selection = 3; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
 
