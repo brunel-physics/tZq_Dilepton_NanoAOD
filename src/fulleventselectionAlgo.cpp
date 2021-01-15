@@ -1906,51 +1906,63 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		 }
 
+		  break;
+
 	case 122: Process = "Data_DoubleEGRunC";
 
-		switch(YearInt){
+		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016C/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017C/*"}; break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
-                 }
+                  }
+
+		  break;
 
         case 123: Process = "Data_DoubleEGRunD";
 
-		 switch(YearInt){
+		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016D/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017D/*"}; break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
-                 }
+                  }
+
+		  break;
 
 	case 124: Process = "Data_DoubleEGRunE";
 
-		switch(YearInt){
+		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016E/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017E/*"}; break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
-                 }
+                  }
+
+		  break;
 
 
 	case 125: Process = "Data_DoubleEGRunF";
 
-		 switch(YearInt){
+		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016F/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017F/*"}; break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
-                 }
+                  }
+
+		  break;
 
 	case 126: Process = "Data_DoubleEGRunG";
 
-		switch(YearInt){
+		  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016G/*"}; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
-                 }
+                  }
+
+		  break;
 
 
 	case 127: Process = "Data_DoubleEGRunH";
@@ -1960,7 +1972,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
-                 }
+                  }
+		
+		  break;
 
 	case 128: Process = "Data_DoubleMuonRunB";
 
@@ -1970,6 +1984,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"}; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		  }
+
+		  break;		
+
 	case 129: Process = "Data_DoubleMuonRunC";
 
                   switch(YearInt){
@@ -1978,6 +1995,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018C/*"}; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 130: Process = "Data_DoubleMuonRunD";
 
@@ -1988,6 +2007,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 132: Process = "Data_DoubleMuonRunE";
 
                   switch(YearInt){
@@ -1996,6 +2017,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 133: Process = "Data_DoubleMuonRunF";
 
@@ -2006,6 +2029,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 134: Process = "Data_DoubleMuonRunG";
 
                   switch(YearInt){
@@ -2014,6 +2039,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 135: Process = "Data_DoubleMuonRunH";
 
@@ -2024,6 +2051,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 136: Process = "Data_MuonEGRunB";
 
                   switch(YearInt){
@@ -2033,6 +2062,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 137: Process = "Data_MuonEGRunC";
 
                   switch(YearInt){
@@ -2041,6 +2072,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018C/*"}; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 	
 	case 138: Process = "Data_MuonEGRunD";
 
@@ -2051,6 +2084,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
         case 139: Process = "Data_MuonEGRunE";
 
                   switch(YearInt){
@@ -2059,6 +2094,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 140: Process = "Data_MuonEGRunF";
 
@@ -2069,6 +2106,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 141: Process = "Data_MuonEGRunG";
 
                   switch(YearInt){
@@ -2077,6 +2116,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 142: Process = "Data_MuonEGRunH";
 
@@ -2087,6 +2128,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 143: Process = "Data_SingleMuonRunB";
 
                   switch(YearInt){
@@ -2095,6 +2138,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 144: Process = "Data_SingleMuonRunC";
 
@@ -2105,6 +2150,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 145: Process = "Data_SingleMuonRunD";
 
                   switch(YearInt){
@@ -2113,6 +2160,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"}; break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 146: Process = "Data_SingleMuonRunE";
 
@@ -2123,6 +2172,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 147: Process = "Data_SingleMuonRunF";
 
                   switch(YearInt){
@@ -2131,6 +2182,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 148: Process = "Data_SingleMuonRunG";
 
@@ -2141,6 +2194,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 149: Process = "Data_SingleMuonRunH";
 
                   switch(YearInt){
@@ -2149,6 +2204,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
  
 	case 150: Process = "Data_SingleElectronRunB";
 
@@ -2159,6 +2216,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 151: Process = "Data_SingleElectronRunC";
 
                   switch(YearInt){
@@ -2167,6 +2226,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 152: Process = "Data_SingleElectronRunD";
 
@@ -2177,6 +2238,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 153: Process = "Data_SingleElectronRunE";
 
                   switch(YearInt){
@@ -2185,6 +2248,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 154: Process = "Data_SingleElectronRunF";
 
@@ -2195,6 +2260,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 155: Process = "Data_SingleElectronRunG";
 
                   switch(YearInt){
@@ -2203,6 +2270,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 156: Process = "Data_SingleElectronRunH";
 
@@ -2213,6 +2282,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 157: Process = "Data_EGRunB";
 
 		  switch(YearInt){ 
@@ -2221,6 +2292,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 	case 158: Process = "Data_EGRunC";
 
@@ -2231,6 +2304,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
 
+		  break;
+
 	case 159: Process = "Data_EGRunD";
 
                   switch(YearInt){
@@ -2239,6 +2314,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                   }
+
+		  break;
 
 
 	default: throw std::logic_error("Double check the value of ProcessInt."); break;
@@ -2447,7 +2524,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         
   }
 
-
+  std::cout << "before filter_function" << std::endl;
 
   //Lambda functions start here
   //Lambda function for the event cleaning
@@ -3168,9 +3245,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 				int LeptonVariableFunctionFloats_size = (Electron_input.size() > Muon_input.size()) ? Electron_input.size() : Muon_input.size();
 
-				//std::cout << "LeptonVariableFunctionFloats_size = " << LeptonVariableFunctionFloats_size << std::endl;
-				//std::cout << "Electron_input.size() = " << Electron_input.size() << std::endl;
-				//std::cout << "Muon_input.size() = " << Muon_input.size() << std::endl;
+				std::cout << "LeptonVariableFunctionFloats_size = " << LeptonVariableFunctionFloats_size << std::endl;
 
 				floats LeptonVariableFunctionFloats_Zeroes(LeptonVariableFunctionFloats_size, 0);
 				return LeptonVariableFunctionFloats_Zeroes;
@@ -3195,9 +3270,24 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                 case 1: return Electron_input;
                 case 2: return Muon_input;
 
-                case 3: for(int i = 0; i < Electron_input.size(); i++){Emu_vector_ints.push_back(Electron_input.at(i));}
-                        for(int i = 0; i < Muon_input.size(); i++){Emu_vector_ints.push_back(Muon_input.at(i));}
-                        return Emu_vector_ints;
+                case 3: if(Electron_input.size() == 1 && Muon_input.size() == 1){ 
+	
+				for(int i = 0; i < Electron_input.size(); i++){Emu_vector_ints.push_back(Electron_input.at(i));}
+                        	for(int i = 0; i < Muon_input.size(); i++){Emu_vector_ints.push_back(Muon_input.at(i));}
+                        	return Emu_vector_ints;
+
+			}
+			else{
+
+				int LeptonVariableFunctionInts_size = (Electron_input.size() > Muon_input.size()) ? Electron_input.size() : Muon_input.size();
+
+                                std::cout << "LeptonVariableFunctionInts_size = " << LeptonVariableFunctionInts_size << std::endl;
+
+                                ints LeptonVariableFunctionInts_Zeroes(LeptonVariableFunctionInts_size, 0);
+                                return LeptonVariableFunctionInts_Zeroes;
+
+
+			}
 
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
@@ -3217,9 +3307,23 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                 case 1: return Electron_input;
                 case 2: return Muon_input;
 
-                case 3: for(int i = 0; i < Electron_input.size(); i++){Emu_vector_chars.push_back(Electron_input.at(i));}
-                        for(int i = 0; i < Muon_input.size(); i++){Emu_vector_chars.push_back(Muon_input.at(i));}
-                        return Emu_vector_chars;
+                case 3: if(Electron_input.size() == 1 && Muon_input.size() == 1){
+
+				for(int i = 0; i < Electron_input.size(); i++){Emu_vector_chars.push_back(Electron_input.at(i));}
+                        	for(int i = 0; i < Muon_input.size(); i++){Emu_vector_chars.push_back(Muon_input.at(i));}
+                        	return Emu_vector_chars;
+
+			}
+			else{
+			
+				int LeptonVariableFunctionChars_size = (Electron_input.size() > Muon_input.size()) ? Electron_input.size() : Muon_input.size();
+
+                                std::cout << "LeptonVariableFunctionChars_size = " << LeptonVariableFunctionChars_size << std::endl;
+
+                                chars LeptonVariableFunctionChars_Zeroes(LeptonVariableFunctionChars_size, 0);
+                                return LeptonVariableFunctionChars_Zeroes;
+
+			}
 
 		default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
@@ -3246,6 +3350,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			}
 			else{   int LooseLeptonsFunction_ElseVecSize = (Electron_pt.size() > pts.size()) ? Electron_pt.size() : pts.size();
 				ints ElseOutput(LooseLeptonsFunction_ElseVecSize, 0); 
+				std::cout << "LooseLeptonsFunction_ElseVecSize = " << LooseLeptonsFunction_ElseVecSize << std::endl;
 				return ElseOutput;
 			}
 
@@ -7819,6 +7924,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
  std::vector<std::string> DoubleCountCheckStrings;
 
+
  if(Process == "Data_DoubleEGRunB"       || Process == "Data_DoubleEGRunC"       || Process == "Data_DoubleEGRunD"       || 
     Process == "Data_DoubleEGRunE"       || Process == "Data_DoubleEGRunF"       || Process == "Data_DoubleEGRunG"       || 
     Process == "Data_DoubleEGRunH"       || Process == "Data_DoubleMuonRunB"     || Process == "Data_DoubleMuonRunC"     || 
@@ -7832,16 +7938,63 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
     Process == "Data_SingleElectronRunD" || Process == "Data_SingleElectronRunE" || Process == "Data_SingleElectronRunF" ||
     Process == "Data_SingleElectronRunG" || Process == "Data_SingleElectronRunH"){
 
-	DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",              	 "HLT_Ele27_WPTight_Gsf",                     
-			           "HLT_Ele32_eta2p1_WPTight_Gsf",	 		 "HLT_Ele32_WPTight_Gsf_L1DoubleEG",          
-				   "HLT_Ele35_WPTight_Gsf",                     	 "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                   "HLT_IsoMu24",		                	 "HLT_IsoMu24_eta2p1",                        
-				   "HLT_IsoMu27",			        	 "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",       
-				   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", 	 "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
-                                   "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	 "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
-				   "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                   "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",     "event"};
+	switch(YearInt){
+
+		case 2016: DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",              	    "HLT_Ele27_WPTight_Gsf",                     
+			           		      "HLT_Ele32_eta2p1_WPTight_Gsf",	 		    "HLT_Ele32_WPTight_Gsf_L1DoubleEG",          
+				   		      "HLT_Ele35_WPTight_Gsf",                     	    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                   		      "HLT_IsoMu24",		                	    "HLT_IsoMu24_eta2p1",                        
+				   		      "HLT_IsoMu27",			        	    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",       
+				   		      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", 	    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                   		      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
+				   		      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                   		      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                   		      "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",     "event"};
+
+
+
+			   break;
+
+
+				//HLT_FullTrack_Multiplicity85 used just to fill the input for 2017, isn't actually used
+
+		case 2017: DoubleCountCheckStrings = {"HLT_FullTrack_Multiplicity85", 			     "HLT_FullTrack_Multiplicity85",
+                                                      "HLT_FullTrack_Multiplicity85", 			     "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
+                                                      "HLT_Ele35_WPTight_Gsf",                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                                      "HLT_FullTrack_Multiplicity85", 			     "HLT_FullTrack_Multiplicity85",
+                                                      "HLT_IsoMu27",                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",
+                                                      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",           "HLT_FullTrack_Multiplicity85",
+                                                      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",           "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",  "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                      "HLT_FullTrack_Multiplicity85",  			     "HLT_FullTrack_Multiplicity85",
+                                                      "HLT_FullTrack_Multiplicity85",  			     "event"};
+
+
+
+                           break;
+
+
+		case 2018: DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",                       "HLT_Ele27_WPTight_Gsf",
+                                                      "HLT_Ele32_eta2p1_WPTight_Gsf",                       "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
+                                                      "HLT_Ele35_WPTight_Gsf",                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                                      "HLT_IsoMu24",                                        "HLT_IsoMu24_eta2p1",
+                                                      "HLT_IsoMu27",                                        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",
+                                                      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+                                                      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                                      "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",     "event"};
+
+
+
+                           break;
+
+		default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018."); break;
+
+
+	}
+		
+
 
   }
  else{
@@ -8861,8 +9014,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 //Main function is here
 void fulleventselectionAlgo::fulleventselection(){
 
-  int MC_Selection = 1; //0 for data, 1 for MC
-  int Process_Selection = 119; 
+  int MC_Selection = 0; //0 for data, 1 for MC
+  int Process_Selection = 121; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
@@ -8870,8 +9023,8 @@ void fulleventselectionAlgo::fulleventselection(){
   int ttbarCR_Selection = 0;
   int Year_Selection = 2017;
   int Systematic_Selection = 0;
-  int Channel_Selection = 3; //1 for ee, 2 for mumu, 3 for emu
-  int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
+  int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
+  int DoubleCountCheck_Selection = 1; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
 
   tZq_NanoAOD_Output(MC_Selection,      Process_Selection, NPL_Selection,        SR_Selection,      SBR_Selection, ZPlusJetsCR_Selection, 
