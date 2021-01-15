@@ -7940,12 +7940,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	switch(YearInt){
 
+			//HLT_AK8PFJet360_TrimMass30 used just to fill the input for 2016, isn't actually used by the function
+
 		case 2016: DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",              	    "HLT_Ele27_WPTight_Gsf",                     
-			           		      "HLT_Ele32_eta2p1_WPTight_Gsf",	 		    "HLT_Ele32_WPTight_Gsf_L1DoubleEG",          
-				   		      "HLT_Ele35_WPTight_Gsf",                     	    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+			           		      "HLT_Ele32_eta2p1_WPTight_Gsf",	 		    "HLT_AK8PFJet360_TrimMass30",          
+				   		      "HLT_AK8PFJet360_TrimMass30",                         "HLT_AK8PFJet360_TrimMass30",
                                    		      "HLT_IsoMu24",		                	    "HLT_IsoMu24_eta2p1",                        
-				   		      "HLT_IsoMu27",			        	    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",       
-				   		      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", 	    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
+				   		      "HLT_AK8PFJet360_TrimMass30",			    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",       
+				   		      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", 	    "HLT_AK8PFJet360_TrimMass30",
                                    		      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
 				   		      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
                                    		      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
@@ -7956,7 +7958,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			   break;
 
 
-				//HLT_FullTrack_Multiplicity85 used just to fill the input for 2017, isn't actually used
+				//HLT_FullTrack_Multiplicity85 used just to fill the input for 2017, isn't actually used used by the function
 
 		case 2017: DoubleCountCheckStrings = {"HLT_FullTrack_Multiplicity85", 			     "HLT_FullTrack_Multiplicity85",
                                                       "HLT_FullTrack_Multiplicity85", 			     "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
@@ -7974,11 +7976,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                            break;
 
 
-		case 2018: DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",                       "HLT_Ele27_WPTight_Gsf",
-                                                      "HLT_Ele32_eta2p1_WPTight_Gsf",                       "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
-                                                      "HLT_Ele35_WPTight_Gsf",                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                                      "HLT_IsoMu24",                                        "HLT_IsoMu24_eta2p1",
-                                                      "HLT_IsoMu27",                                        "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",
+		case 2018: DoubleCountCheckStrings = {"HLT_FullTrack_Multiplicity85",                       "HLT_FullTrack_Multiplicity85",
+                                                      "HLT_FullTrack_Multiplicity85",                       "HLT_Ele32_WPTight_Gsf_L1DoubleEG",
+                                                      "HLT_FullTrack_Multiplicity85",                       "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                                      "HLT_IsoMu24",                                        "HLT_FullTrack_Multiplicity85",
+                                                      "HLT_FullTrack_Multiplicity85",                       "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",
                                                       "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",
                                                       "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
                                                       "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
@@ -9021,7 +9023,7 @@ void fulleventselectionAlgo::fulleventselection(){
   int SBR_Selection = 1;
   int ZPlusJetsCR_Selection = 0;
   int ttbarCR_Selection = 0;
-  int Year_Selection = 2017;
+  int Year_Selection = 2016;
   int Systematic_Selection = 0;
   int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 1; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
