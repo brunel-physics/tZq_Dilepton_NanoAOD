@@ -1901,7 +1901,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		 switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
-			case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"}; break;
+			case 2017: input_files = {"/data/disk0/nanoAOD_2017//DoubleEGRun2017B/*"}; break;
 			case 2018: break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		 }
@@ -2983,14 +2983,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 					}
 
 		case 1: switch(YearInt){//single muon
-                                   	case 2016: return (HLT_IsoMu24 <= 0 || HLT_IsoMu24_eta2p1 <= 0);
+                                   	case 2016: return HLT_IsoMu24 <= 0;/* || HLT_IsoMu24_eta2p1 <= 0);*/ //the commented out one is not in 2016
                                         case 2017: return (HLT_IsoMu27 <= 0);
                                         case 2018: return HLT_IsoMu24 <= 0;
                                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018."); break; 
                                    }
 
 		case 2: switch(YearInt){//double muon
-                                        case 2016: return (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0);
+                                        case 2016: return HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0;
                                         case 2017: return (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0);
                                         case 2018: return (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 <= 0);
 					default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018."); break;
@@ -3004,12 +3004,12 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                    }
 
 		case 4: switch(YearInt){//muon EG
-                                        case 2016: return (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
-                                            	   	  HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
-                                            		  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
-                                            		  HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || 
-                                            		  HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || 
-                                            		  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0);
+                                        case 2016: return //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || not in 2016 
+                                            	   	  //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || not in all 2016 runs 
+                                            		  //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || not in 2016 
+                                            		  HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0; //|| 
+                                            		  //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || not in 2016 
+                                            		  //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //not in 2016 run H
 
                                         case 2017: return (HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || 
                                             		   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 ||
@@ -3702,14 +3702,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	 			 	    HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0) //double electron 
 	 				    && 
 					   (HLT_IsoMu24 <= 0 || //single muon
-				 	    HLT_IsoMu24_eta2p1 <= 0 || //single muon
+				 	    //HLT_IsoMu24_eta2p1 <= 0 || //single muon //not in 2016
 	 			 	    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-	 			 	    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
-	 			 	    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-	 			 	    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-	 			 	    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+	 			 	    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon //not in 2016
+	 			 	    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
+	 			 	    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in all 2016 runs)
+	 			 	    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
 	 			 	    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-	 			 	    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
+	 			 	    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron (not in 2016)
 	 			 	    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
 				
 				case 2017: return
@@ -3753,9 +3753,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                 case 2016: return //single or double muon and not any of the others
 
 					   (HLT_IsoMu24 > 0 || //single muon
-         				    HLT_IsoMu24_eta2p1 > 0 || //single muon
+         				    HLT_IsoMu24_eta2p1 > 0 || //single muon //not in 2016
          				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || //double muon
-         				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //double muon
+         				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //double muon ..not in 2016
 
 					    &&
 
@@ -3763,11 +3763,11 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
          				   HLT_Ele27_WPTight_Gsf <= 0 || //single electron
          				   HLT_Ele32_eta2p1_WPTight_Gsf <= 0 || //single electron
          				   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron 
-         				   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-         				   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
-         				   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron
+         				   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
+         				   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in all 2016 runs)
+         				   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
          			           HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-         				   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
+         				   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron (not in 2016)
         				   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
 
                                 case 2017: return
@@ -3809,21 +3809,21 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                 case 2016: return 
 
 					   (HLT_IsoMu24 > 0 || //single muon
-         				    HLT_IsoMu24_eta2p1 > 0 || //single muon
+         				    HLT_IsoMu24_eta2p1 > 0 || //single muon //not in 2016
 	 				    HLT_Ele25_eta2p1_WPTight_Gsf > 0 || //single electron 
          				    HLT_Ele27_WPTight_Gsf > 0 || //single electron
          				    HLT_Ele32_eta2p1_WPTight_Gsf > 0 || //single electron
-	 				    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
-         				    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
-         				    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron
+	 				    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in 2016)
+         				    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in all 2016 runs)
+         				    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in 2016)
          				    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
-         				    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
+         				    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron (not in 2016)
          				    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0) //muon electron
 
          				    &&
 
          				   (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-          				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon
+          				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon //not in 2016
           				    HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron
 
                                 case 2017: return 
@@ -7945,13 +7945,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		case 2016: DoubleCountCheckStrings = {"HLT_Ele25_eta2p1_WPTight_Gsf",              	    "HLT_Ele27_WPTight_Gsf",                     
 			           		      "HLT_Ele32_eta2p1_WPTight_Gsf",	 		    "HLT_AK8PFJet360_TrimMass30",          
 				   		      "HLT_AK8PFJet360_TrimMass30",                         "HLT_AK8PFJet360_TrimMass30",
-                                   		      "HLT_IsoMu24",		                	    "HLT_IsoMu24_eta2p1",                        
+                                   		      "HLT_IsoMu24",		                	    "HLT_AK8PFJet360_TrimMass30",                        
 				   		      "HLT_AK8PFJet360_TrimMass30",			    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",       
-				   		      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8", 	    "HLT_AK8PFJet360_TrimMass30",
-                                   		      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 
-				   		      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
-                                   		      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
-                                   		      "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",     "event"};
+				   		      "HLT_AK8PFJet360_TrimMass30", 	                    "HLT_AK8PFJet360_TrimMass30",
+                                   		      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_AK8PFJet360_TrimMass30", 
+				   		      "HLT_AK8PFJet360_TrimMass30", 			    "HLT_AK8PFJet360_TrimMass30",
+                                   		      "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",    "HLT_AK8PFJet360_TrimMass30",
+                                   		      "HLT_AK8PFJet360_TrimMass30",     		    "event"};
 
 
 
@@ -8105,11 +8105,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
 							      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", 		    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
 							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",	    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-							      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
 							      "HLT_Ele25_eta2p1_WPTight_Gsf", 	     		    "HLT_Ele27_WPTight_Gsf",
 							      "HLT_Ele32_eta2p1_WPTight_Gsf",	     		    "HLT_IsoMu24",
 							      "HLT_IsoMu24_eta2p1",		     		    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-							      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+							      "HLT_AK8PFJet360_TrimMass30",                         "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
 							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "event"}; 
 
 
@@ -8183,11 +8183,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
                                                               "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                              "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
                                                               "HLT_Ele25_eta2p1_WPTight_Gsf",                       "HLT_Ele27_WPTight_Gsf",
                                                               "HLT_Ele32_eta2p1_WPTight_Gsf",                       "HLT_IsoMu24",
                                                               "HLT_IsoMu24_eta2p1",                                 "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                                              "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                                              "HLT_AK8PFJet360_TrimMass30",                         "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "event"};
 
 
@@ -9017,7 +9017,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 0; //0 for data, 1 for MC
-  int Process_Selection = 121; 
+  int Process_Selection = 129; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
