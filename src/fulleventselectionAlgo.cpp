@@ -2650,7 +2650,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 						if( GoldenJson_SplitChars_Output.at( (i+10)+j ) == ']' && GoldenJson_SplitChars_Output.at( (i+10)+(j+1) ) == ']'){
 
 							for(int k = (i+10); k < ((i+10)+(j+2)); k++){
-								std::cout << "GoldenJson_SplitChars_Output.at(k) = " << GoldenJson_SplitChars_Output.at(k) << std::endl;
 								EventsVector.push_back(GoldenJson_SplitChars_Output.at(k));
 							}
 
@@ -2711,7 +2710,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;	
 
-	for(int i = 0; i < EventsVector.size(); i++){std::cout << "EventsVector.at(i) = " << EventsVector.at(i) << std::endl;}
 
         if(BadRunsCheck2 == true){std::cout << "BadRunsCheck is true. BadRuns.size() = " << BadRuns.size() << std::endl; return 0;}
 	else if(GoodRunsCheck2 == true){return 0;}
@@ -3014,49 +3012,47 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
      
      bool RunNumAndEventsCheck = any_of(RunNumAndEvents.begin(), RunNumAndEvents.end(), [&InputRunNumber](int i){return i == InputRunNumber;});
 
-     std::cout << "RunNumAndEventsCheck = " << RunNumAndEventsCheck << std::endl;
-     std::cout << "RunNumAndEvents.size() = " << RunNumAndEvents.size() << std::endl;
-
-     for(int i = 0; i < RunNumAndEvents.size(); i++){std::cout << "RunNumAndEvents.at(i) = " << RunNumAndEvents.at(i) << std::endl;}
-
       switch(MCInt){
       
           case 0: if(RunNumAndEvents.size() == 0){return false;}
 		  else if(RunNumAndEventsCheck == true){
 
-				int RunNumAndEventsElement;
-
+				for(int i = 0; i < RunNumAndEvents.size(); i++){std::cout << "RunNumAndEvents.at(i) = " << RunNumAndEvents.at(i) << std::endl;}    
+			
+				std::cout << "InputRunNumber = " << InputRunNumber << std::endl;
+	
 				std::vector<int>::iterator it_RunNumAndEvents = std::find(RunNumAndEvents.begin(), RunNumAndEvents.end(), InputRunNumber);
 				int index_RunNumAndEvents = std::distance(RunNumAndEvents.begin(), it_RunNumAndEvents);
+				int DistToEnd = std::distance(it_RunNumAndEvents, RunNumAndEvents.end());
+
+				ints FinalRunNumAndEventsVec{};
+
+				std::cout << "index_RunNumAndEvents = " << index_RunNumAndEvents << std::endl;
+				std::cout << "DistToEnd = " << DistToEnd << std::endl;
+
+				for(int i = index_RunNumAndEvents; i < (index_RunNumAndEvents + DistToEnd); i++){FinalRunNumAndEventsVec.push_back(RunNumAndEvents.at(i));}
+
+				std::cout << "FinalRunNumAndEventsVec.size() = " << FinalRunNumAndEventsVec.size() << std::endl;
+
+				for(int i = 0; i < FinalRunNumAndEventsVec.size(); i++){std::cout << "FinalRunNumAndEventsVec.at(i) = " << FinalRunNumAndEventsVec.at(i) << std::endl;}
+					
+				for(int i = 0; i < FinalRunNumAndEventsVec.size()-2; i+=2){
+
+					if(luminosityBlock > FinalRunNumAndEventsVec.at(i+1) && luminosityBlock < FinalRunNumAndEventsVec.at(i+2)){
+
+						std::cout << "luminosityBlock of " << luminosityBlock << " is between " << FinalRunNumAndEventsVec.at(i+1) << " and " 
+							  << FinalRunNumAndEventsVec.at(i+2) << ". Returning true." << std::endl;
+
+						return true;
+					}
+					else{std::cout << "luminosityBlock of " << luminosityBlock << " is not between " << FinalRunNumAndEventsVec.at(i+1) << " and " 
+                                                       << FinalRunNumAndEventsVec.at(i+2) << ". Continuing." << std::endl; continue;}
+
+				}
 			
-                        	int MinLumi1 = RunNumAndEvents.at(index_RunNumAndEvents+1);
-                        	int MaxLumi1 = RunNumAndEvents.at(index_RunNumAndEvents+2);
-
-				std::cout << "MinLumi1 = " << MinLumi1 << std::endl;
-				std::cout << "MaxLumi1 = " << MaxLumi1 << std::endl;
-
-				if(RunNumAndEvents.size() == 3){
-                    
-		          		if(luminosityBlock > MinLumi1 && luminosityBlock < MaxLumi1){return InputRunNumber && luminosityBlock;}
-                        		else{return false;}
-
-				}
-				else if(RunNumAndEvents.size() == 5){
-
-					int MinLumi2 = RunNumAndEvents.at(RunNumAndEventsElement+3);
-                                	int MaxLumi2 = RunNumAndEvents.at(RunNumAndEventsElement+4);
-
-					std::cout << "MinLumi2 = " << MinLumi2 << std::endl;
-                                	std::cout << "MaxLumi2 = " << MaxLumi2 << std::endl;
-
-					if(luminosityBlock > MinLumi1 && luminosityBlock < MaxLumi1 &&
-					   luminosityBlock > MinLumi2 && luminosityBlock < MaxLumi2){return InputRunNumber && luminosityBlock;}
-                                        else{return false;}
-
-				}
-				else{std::cout << "RunNumAndEvents.size() = " << RunNumAndEvents.size() << std::endl;
-			  	     throw std::logic_error("RunNumAndEvents.size() is not 3 or 5");}
-
+				//throw std::logic_error("break");
+				std::cout << "returning false" << std::endl;
+				return false;	
 
                  }
                  else{return false;}
