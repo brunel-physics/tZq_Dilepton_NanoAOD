@@ -60,7 +60,7 @@ float Chi2_SBR;
 template<typename T>
 [[gnu::const]] T select(const T& a, const ints& mask)
 {
-  std::cout << "print 200" << std::endl;
+  //std::cout << "print 200" << std::endl;
   std::cout << "a.size() = " << a.size() << std::endl;
   std::cout << "mask.size() = " << mask.size() << std::endl;
   return a[mask];
@@ -69,21 +69,21 @@ template<typename T>
 template<typename T>
 [[gnu::const]] T select_floats(const T& a, const floats& mask)
 {
-  std::cout << "print 201" << std::endl;
+  //std::cout << "print 201" << std::endl;
   return a[mask];
 }
 
 template<typename T, typename U> //for the all equal function
 [[gnu::const]] bool all_equal(const T& t, const U& u)
 {
-  std::cout << "print 202" << std::endl;
+  //std::cout << "print 202" << std::endl;
   return t == u;
 }
 
 template<typename T, typename U, typename... Types>
 [[gnu::const]] bool all_equal(const T& t, const U& u, Types const&... args)
 {
-    std::cout << "print 203" << std::endl;
+    //std::cout << "print 203" << std::endl;
     return t == u && all_equal(u, args...);
 }
 
@@ -2535,7 +2535,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			  const bool& Flag_eeBadScFilter_Selection)-> bool{
 
 
-  	std::cout << "print 1" << std::endl;
+  	//std::cout << "print 1" << std::endl;
 
 	return  Flag_goodVertices_Selection > 0       	     || Flag_globalSuperTightHalo2016Filter_Selection > 0     || Flag_HBHENoiseFilter_Selection > 0 || 
 		Flag_HBHENoiseIsoFilter_Selection > 0 	     || Flag_EcalDeadCellTriggerPrimitiveFilter_Selection > 0 || Flag_BadPFMuonFilter_Selection > 0 || 
@@ -2544,8 +2544,17 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
+
   //Lambda functions for filtering data events using the golden json file. This is to remove events with bad lumisections.
-  auto GoldenJsonReader{[&YearInt](){
+  std::vector<std::string> GoldenJsonOutput{};
+  std::vector<char> GoldenJson_SplitChars_Output{};
+  std::vector<char> EventsVector{};
+  std::vector<int> RunNumAndEvents{};
+  std::vector<int> BadRuns{};
+  std::vector<int> GoodRuns{};
+
+  //Reading the golden json file and storing its contents into the vector GoldenJsonOutput
+  auto GoldenJsonReader{[&YearInt, &GoldenJsonOutput](){
 
 	std::cout << "print 2" << std::endl;
 
@@ -2563,72 +2572,95 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
    	std::ifstream myReadFile;
    	myReadFile.open(GoldenJsonFileName);
    	static char output[100];
-   	std::vector<std::string> GoldenJsonOutput{};
+   	//std::vector<std::string> GoldenJsonOutput{};
   
    	if (myReadFile.is_open()) { while (!myReadFile.eof()) {myReadFile >> output; GoldenJsonOutput.push_back(output);}}
 
   	myReadFile.close();
-  	return GoldenJsonOutput;
+	
+  	//return GoldenJsonOutput;
+	return 0;
 
   }};
 
 
-  auto GoldenJson_SplitChars{[&YearInt, &GoldenJsonReader](){
+  //Iterating over the contents of the GoldenJsonOutput vector to save each individual character as its own element in the vector GoldenJson_SplitChars_Output
+  auto GoldenJson_SplitChars{[&YearInt, &GoldenJsonReader, &GoldenJsonOutput, &GoldenJson_SplitChars_Output](){
 
 	std::cout << "print 3" << std::endl;
 
-  	std::vector<char> out{};
+	GoldenJsonReader();
 
-    	for(long unsigned int i = 0; i < (GoldenJsonReader()).size(); i++){
+  	//std::vector<char> out{};
 
-  		std::string element = GoldenJsonReader().at(i);
-  	  	for(long unsigned int j = 0; j < element.size(); j++){out.push_back(element.at(j));}
+    	for(long unsigned int i = 0; i < GoldenJsonOutput.size(); i++){
+
+  		std::string element = GoldenJsonOutput.at(i);
+  	  	for(long unsigned int j = 0; j < element.size(); j++){GoldenJson_SplitChars_Output.push_back(element.at(j));}
 
     	}
 
-    	return out;
+    	//return out;
+	return 0;
 
   }};
  
 
-  auto RunNumberCheck{[&YearInt, &GoldenJson_SplitChars](const unsigned int& InputRunNumber){
+  auto RunNumberCheck{[&GoodRuns, &YearInt, &GoldenJsonOutput, &GoldenJson_SplitChars, &GoldenJson_SplitChars_Output, &EventsVector, &BadRuns](const unsigned int& InputRunNumber){
 
 	std::cout << "print 4" << std::endl;
 
-  	std::vector<char> EventsVector{}; 
+	GoldenJson_SplitChars();
 
-  	for(long unsigned int i = 0; i < (GoldenJson_SplitChars()).size(); i++){
+	bool GoodRunsCheck = any_of(GoodRuns.begin(), GoodRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the GoodRuns vector
 
+	if(GoodRunsCheck == true){return 0;}
+	
+
+  	for(long unsigned int i = 0; i < GoldenJson_SplitChars_Output.size(); i++){
+		
 		unsigned int RunNumBeingRead;
 
- 		if(  GoldenJson_SplitChars().at(i+1) == '"' && (GoldenJson_SplitChars().at(i+2) == '2' || GoldenJson_SplitChars().at(i+2) == '3')  ){ 
+ 		if(  GoldenJson_SplitChars_Output.at(i+1) == '"' && (GoldenJson_SplitChars_Output.at(i+2) == '2' || GoldenJson_SplitChars_Output.at(i+2) == '3')  ){ 
 
-			int digit1 = GoldenJson_SplitChars().at(i+2) - '0'; 
-			int digit2 = GoldenJson_SplitChars().at(i+3) - '0'; 
-			int digit3 = GoldenJson_SplitChars().at(i+4) - '0'; 
-			int digit4 = GoldenJson_SplitChars().at(i+5) - '0'; 
-			int digit5 = GoldenJson_SplitChars().at(i+6) - '0'; 
-			int digit6 = GoldenJson_SplitChars().at(i+7) - '0';
+			std::cout << "inside if" << std::endl;
+
+			int digit1 = GoldenJson_SplitChars_Output.at(i+2) - '0';	
+			int digit2 = GoldenJson_SplitChars_Output.at(i+3) - '0';
+			int digit3 = GoldenJson_SplitChars_Output.at(i+4) - '0'; 
+			int digit4 = GoldenJson_SplitChars_Output.at(i+5) - '0';
+			int digit5 = GoldenJson_SplitChars_Output.at(i+6) - '0';
+			int digit6 = GoldenJson_SplitChars_Output.at(i+7) - '0';
 
 			int run = (digit1*100000) + (digit2*10000) + (digit3*1000) + (digit4*100) + (digit5*10) + digit6;
 			RunNumBeingRead = run;
 
 			if(run == InputRunNumber){
 
-				for(long unsigned int j = 2; j < (GoldenJson_SplitChars()).size(); j++){
+				std::cout << '\n' << std::endl;
+				std::cout << '\n' << std::endl;
+				std::cout << "run " << RunNumBeingRead << " is equal to the InputRunNumber of " << InputRunNumber << std::endl;
+				std::cout << '\n' << std::endl;
+				std::cout << '\n' << std::endl;
 
-					if(GoldenJson_SplitChars().at(i+10) == '[' && GoldenJson_SplitChars().at(i+11) == '['){	
+				for(long unsigned int j = 2; j < GoldenJson_SplitChars_Output.size(); j++){
 
-						if( GoldenJson_SplitChars().at( (i+10)+j ) == ']' && GoldenJson_SplitChars().at( (i+10)+(j+1) ) == ']'){
+					if(GoldenJson_SplitChars_Output.at(i+10) == '[' && GoldenJson_SplitChars_Output.at(i+11) == '['){	
 
-							for(int k = (i+10); k < ((i+10)+(j+2)); k++){EventsVector.push_back(GoldenJson_SplitChars().at(k));}
-							return EventsVector;	
+						if( GoldenJson_SplitChars_Output.at( (i+10)+j ) == ']' && GoldenJson_SplitChars_Output.at( (i+10)+(j+1) ) == ']'){
+
+							for(int k = (i+10); k < ((i+10)+(j+2)); k++){
+								std::cout << "GoldenJson_SplitChars_Output.at(k) = " << GoldenJson_SplitChars_Output.at(k) << std::endl;
+								EventsVector.push_back(GoldenJson_SplitChars_Output.at(k));
+							}
+
+							return 0;	
 											
 						}
-						else{std::cout << "GoldenJson_SplitChars().at((i+11)+j) and at (i+11)+(j+1) are not ']' " << std::endl; continue;}
+						else{continue;}
 
 					}
-					else{std::cout << "GoldenJson_SplitChars().at(i+10) is not '[' " << std::endl; continue;}
+					else{continue;}
 
 				}	
 
@@ -2636,8 +2668,23 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			else{continue;}
 
 		}
-		else{std::cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << std::endl;}
+		else if(i == GoldenJson_SplitChars_Output.size() - 1){
 
+                        std::cout << "i = " << i << std::endl;
+
+                        bool BadRunsCheck = any_of(BadRuns.begin(), BadRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the BadRuns vector
+
+                        if(BadRunsCheck == true){std::cout << "BadRunsCheck is true. BadRuns.size() = " << BadRuns.size() << std::endl; return 0;}
+                        else{
+                                std::cout << "No matches. Adding " << InputRunNumber << " to the BadRuns vector." << std::endl;
+                                BadRuns.push_back(InputRunNumber);
+				return 0; 
+
+			}
+
+		}
+		else{std::cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << std::endl;
+		     continue;}
 
    	}
 
@@ -2645,312 +2692,379 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
 
-  auto ReturnRunNumAndEventRanges{[&YearInt, &RunNumberCheck](const unsigned int& InputRunNumber){
+  //Function to save the event numbers that match the run to the RunNumAndEvents vector
+  auto ReturnRunNumAndEventRanges{[&GoodRuns, &YearInt, &RunNumberCheck, &RunNumAndEvents, &GoldenJson_SplitChars_Output, &GoldenJsonOutput, &EventsVector, &BadRuns](const unsigned int& InputRunNumber){
 
 	std::cout << "print 5" << std::endl;
 
-   	std::vector<int> RunNumAndEvents{};
-  	RunNumAndEvents.push_back(InputRunNumber);
-   	std::vector<char> Runs = RunNumberCheck(InputRunNumber);
+	RunNumberCheck(InputRunNumber);
 
-   	for(long unsigned int i = 0; i < Runs.size(); i++){
+	bool BadRunsCheck2 = any_of(BadRuns.begin(), BadRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the BadRuns vector
 
- 		if(Runs.at(i) == ']' && Runs.at(i+1) == ']'){break;}
-		else if( isdigit(Runs.at(i)) || Runs.at(i) == ',' || Runs.at(i) == ' ' || Runs.at(i) == ']'){continue;}
- 		else if( (Runs.at(i) == '[' && Runs.at(i+1) == '[') || (Runs.at(i) == '[' && isdigit(Runs.at(i+1))) ){
+	bool GoodRunsCheck2 = any_of(GoodRuns.begin(), GoodRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the GoodRuns vector
 
-			if(  isdigit( Runs.at(i+1) ) && //For the min value being a 4 digit number
-      	     	     	     isdigit( Runs.at(i+2) ) &&
-      	     	     	     isdigit( Runs.at(i+3) ) && 
-		     	     isdigit( Runs.at(i+4) ) &&
-      	     	     	     Runs.at(i+5) == ','){
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << "inside ReturnRunNumAndEventRanges" << std::endl;
+	std::cout << "BadRunsCheck2 = " << BadRunsCheck2  << std::endl;
+	std::cout << "GoodRunsCheck2 = " << GoodRunsCheck2 << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;	
 
-			     	int Min_Digit1 = Runs.at(i+1) - '0';
-				int Min_Digit2 = Runs.at(i+2) - '0';
-				int Min_Digit3 = Runs.at(i+3) - '0';
-				int Min_Digit4 = Runs.at(i+4) - '0';
+	for(int i = 0; i < EventsVector.size(); i++){std::cout << "EventsVector.at(i) = " << EventsVector.at(i) << std::endl;}
 
-				int EventNumber_Min = (Min_Digit1*1000) + (Min_Digit2*100) + (Min_Digit3*10) + Min_Digit4;
-				RunNumAndEvents.push_back(EventNumber_Min);
+        if(BadRunsCheck2 == true){std::cout << "BadRunsCheck is true. BadRuns.size() = " << BadRuns.size() << std::endl; return 0;}
+	else if(GoodRunsCheck2 == true){return 0;}
+	else{
+ 
+		std::cout << "inside the else for RunNumCheck" << std::endl;
 
-				if(isdigit( Runs.at(i+6) ) &&
-                           	   isdigit( Runs.at(i+7) ) &&
-                           	   isdigit( Runs.at(i+8) ) &&
-                           	   isdigit( Runs.at(i+9) ) &&
-                           	   Runs.at(i+10) == ']' ){ //For the min value being a 4 digit number and the max value being a 4 digit number
-                                   
-                                        int Max_Digit1 = Runs.at(i+6) - '0';
-                                        int Max_Digit2 = Runs.at(i+7) - '0';
-                                        int Max_Digit3 = Runs.at(i+8) - '0';
-                                        int Max_Digit4 = Runs.at(i+9) - '0';
+		GoodRuns.push_back(InputRunNumber);
 
-                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
+  		RunNumAndEvents.push_back(InputRunNumber);
+   		std::vector<char> Runs = EventsVector;
 
+   		for(long unsigned int i = 0; i < Runs.size(); i++){
 
-                                }
-				else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 3 digit number
-      	   	   	        	isdigit( Runs.at(i+7) ) &&
-      	   	   	        	isdigit( Runs.at(i+8) ) &&
-      	   	   	        	Runs.at(i+9) == ']'){
+ 			if(Runs.at(i) == ']' && Runs.at(i+1) == ']'){break;}
+			else if( isdigit(Runs.at(i)) || Runs.at(i) == ',' || Runs.at(i) == ' ' || Runs.at(i) == ']'){continue;}
+ 			else if( (Runs.at(i) == '[' && Runs.at(i+1) == '[') || (Runs.at(i) == '[' && isdigit(Runs.at(i+1))) ){
 
-						int Max_Digit1 = Runs.at(i+6) - '0';
-        					int Max_Digit2 = Runs.at(i+7) - '0';
-        					int Max_Digit3 = Runs.at(i+8) - '0';
-	
-						int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
-        					RunNumAndEvents.push_back(EventNumber_Max);
-		
-				}
-				else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 2 digit number 
-         				isdigit( Runs.at(i+7) ) &&
-         				Runs.at(i+8) == ']' ){
+				if(  isdigit( Runs.at(i+1) ) && //For the min value being a 4 digit number
+      	     	     	     	     isdigit( Runs.at(i+2) ) &&
+      	     	     	     	     isdigit( Runs.at(i+3) ) && 
+		     	     	     isdigit( Runs.at(i+4) ) &&
+      	     	     	     	     Runs.at(i+5) == ','){
 
-						int Max_Digit1 = Runs.at(i+6) - '0';
-                				int Max_Digit2 = Runs.at(i+7) - '0';
-
-                				int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                				RunNumAndEvents.push_back(EventNumber_Max);
-
-				}
-				else if(isdigit( Runs.at(i+6) ) &&
-                                	Runs.at(i+7) == ']' ){ //For the min value being a 4 digit number and the max value being a 1 digit number
-
-                                        	int Max_Digit1 = Runs.at(i+6) - '0';
-
-                                        	int EventNumber_Max = Max_Digit1;
-                                        	RunNumAndEvents.push_back(EventNumber_Max);
-
-                        	}
-                       		else{std::cout << "error" << std::endl;}
-
- 			}	
- 			else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 3 digit number
-      	     	     		  isdigit( Runs.at(i+2) ) &&
-      	     	     		  isdigit( Runs.at(i+3) ) && 
-      	     	     		  Runs.at(i+4) == ','){
-
-					int Min_Digit1 = Runs.at(i+1) - '0';
+			     		int Min_Digit1 = Runs.at(i+1) - '0';
 					int Min_Digit2 = Runs.at(i+2) - '0';
 					int Min_Digit3 = Runs.at(i+3) - '0';
+					int Min_Digit4 = Runs.at(i+4) - '0';
 
-					int EventNumber_Min = (Min_Digit1*100) + (Min_Digit2*10) + Min_Digit3;
+					int EventNumber_Min = (Min_Digit1*1000) + (Min_Digit2*100) + (Min_Digit3*10) + Min_Digit4;
 					RunNumAndEvents.push_back(EventNumber_Min);
 
-					if(isdigit( Runs.at(i+5) ) &&
-                           		   isdigit( Runs.at(i+6) ) &&
-                           		   isdigit( Runs.at(i+7) ) &&
-                           		   isdigit( Runs.at(i+8) ) &&
-                           		   Runs.at(i+9) == ']' ){ //For the min value being a 3 digit number and the max value being a 4 digit number
+					if(isdigit( Runs.at(i+6) ) &&
+                           	   	isdigit( Runs.at(i+7) ) &&
+                           	   	isdigit( Runs.at(i+8) ) &&
+                           	   	isdigit( Runs.at(i+9) ) &&
+                           	   	Runs.at(i+10) == ']' ){ //For the min value being a 4 digit number and the max value being a 4 digit number
                                    
-
-                                        	int Max_Digit1 = Runs.at(i+5) - '0';
-                                        	int Max_Digit2 = Runs.at(i+6) - '0';
-                                        	int Max_Digit3 = Runs.at(i+7) - '0';
-                                        	int Max_Digit4 = Runs.at(i+8) - '0';
+                                        	int Max_Digit1 = Runs.at(i+6) - '0';
+                                        	int Max_Digit2 = Runs.at(i+7) - '0';
+                                        	int Max_Digit3 = Runs.at(i+8) - '0';
+                                        	int Max_Digit4 = Runs.at(i+9) - '0';
 
                                         	int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
-
                                         	RunNumAndEvents.push_back(EventNumber_Max);
 
 
                                 	}
-					else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 3 digit number
-      	   	   	        		isdigit( Runs.at(i+6) ) &&
+					else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 3 digit number
       	   	   	        		isdigit( Runs.at(i+7) ) &&
-      	   	   	        		Runs.at(i+8) == ']'){
+      	   	   	        		isdigit( Runs.at(i+8) ) &&
+      	   	   	        		Runs.at(i+9) == ']'){
 
-							int Max_Digit1 = Runs.at(i+5) - '0';
-        						int Max_Digit2 = Runs.at(i+6) - '0';
-        						int Max_Digit3 = Runs.at(i+7) - '0';
+							int Max_Digit1 = Runs.at(i+6) - '0';
+        						int Max_Digit2 = Runs.at(i+7) - '0';
+        						int Max_Digit3 = Runs.at(i+8) - '0';
 	
 							int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
         						RunNumAndEvents.push_back(EventNumber_Max);
 		
 					}
-					else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 2 digit number 
-         					isdigit( Runs.at(i+6) ) &&
-         					Runs.at(i+7) == ']' ){
+					else if(isdigit( Runs.at(i+6) ) && //For the min value being a 4 digit number and the max value being a 2 digit number 
+         					isdigit( Runs.at(i+7) ) &&
+         					Runs.at(i+8) == ']' ){
 
-							int Max_Digit1 = Runs.at(i+5) - '0';
-                					int Max_Digit2 = Runs.at(i+6) - '0';
+							int Max_Digit1 = Runs.at(i+6) - '0';
+                					int Max_Digit2 = Runs.at(i+7) - '0';
 
                 					int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
                 					RunNumAndEvents.push_back(EventNumber_Max);
 
 					}
-					else if(isdigit( Runs.at(i+5) ) &&
-                                		Runs.at(i+6) == ']' ){ //For the min value being a 3 digit number and the max value being a 1 digit number
+					else if(isdigit( Runs.at(i+6) ) &&
+                                		Runs.at(i+7) == ']' ){ //For the min value being a 4 digit number and the max value being a 1 digit number
 
-                                        		int Max_Digit1 = Runs.at(i+5) - '0';
+                                        		int Max_Digit1 = Runs.at(i+6) - '0';
 
                                         		int EventNumber_Max = Max_Digit1;
                                         		RunNumAndEvents.push_back(EventNumber_Max);
 
                         		}
-                      			else{std::cout << "error" << std::endl;}
+                       			else{std::cout << "error" << std::endl;}
 
- 				}
- 				else if(isdigit( Runs.at(i+1) ) && //For the min value being a 2 digit number
-         				isdigit( Runs.at(i+2) ) &&
-         				Runs.at(i+3) == ',' ){
+ 				}	
+ 				else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 3 digit number
+      	     	     			  isdigit( Runs.at(i+2) ) &&
+      	     	     		  	  isdigit( Runs.at(i+3) ) && 
+      	     	     		  	  Runs.at(i+4) == ','){
 
 						int Min_Digit1 = Runs.at(i+1) - '0';
-        					int Min_Digit2 = Runs.at(i+2) - '0';
+						int Min_Digit2 = Runs.at(i+2) - '0';
+						int Min_Digit3 = Runs.at(i+3) - '0';
 
-        					int EventNumber_Min = (Min_Digit1*10) + Min_Digit2;
-        					RunNumAndEvents.push_back(EventNumber_Min);
+						int EventNumber_Min = (Min_Digit1*100) + (Min_Digit2*10) + Min_Digit3;
+						RunNumAndEvents.push_back(EventNumber_Min);
 
-						if(isdigit( Runs.at(i+4) ) &&
-                                   		   isdigit( Runs.at(i+5) ) &&
-				   		   isdigit( Runs.at(i+6) ) &&
-                                   		   isdigit( Runs.at(i+7) ) &&
-                                   		   Runs.at(i+8) == ']' ){ //For the min value being a 2 digit number and the max value being a 4 digit number
+						if(isdigit( Runs.at(i+5) ) &&
+                           		   	   isdigit( Runs.at(i+6) ) &&
+                           		   	   isdigit( Runs.at(i+7) ) &&
+                           		           isdigit( Runs.at(i+8) ) &&
+                           		           Runs.at(i+9) == ']' ){ //For the min value being a 3 digit number and the max value being a 4 digit number
+                                   
+                                        		int Max_Digit1 = Runs.at(i+5) - '0';
+                                        		int Max_Digit2 = Runs.at(i+6) - '0';
+                                        		int Max_Digit3 = Runs.at(i+7) - '0';
+                                        		int Max_Digit4 = Runs.at(i+8) - '0';
 
+                                        		int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) + Max_Digit4;
 
-                                        		int Max_Digit1 = Runs.at(i+4) - '0';
-                                        		int Max_Digit2 = Runs.at(i+5) - '0';
-							int Max_Digit3 = Runs.at(i+6) - '0';
-                                        		int Max_Digit4 = Runs.at(i+7) - '0';
-
-                                        		int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
                                         		RunNumAndEvents.push_back(EventNumber_Max);
 
                                 		}
-						else if(isdigit( Runs.at(i+4) ) && //For the min value being a 2 digit number and the max value being a 3 digit nummber
-           	   	   	   		 	isdigit( Runs.at(i+5) ) &&
-           	   	   	   			isdigit( Runs.at(i+6) ) &&
-           	   	   	   			Runs.at(i+7) == ']'){
+						else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 3 digit number
+      	   	   	        			isdigit( Runs.at(i+6) ) &&
+      	   	   	        			isdigit( Runs.at(i+7) ) &&
+      	   	   	        			Runs.at(i+8) == ']'){
 
-                						int Max_Digit1 = Runs.at(i+4) - '0';
-                						int Max_Digit2 = Runs.at(i+5) - '0';
-                						int Max_Digit3 = Runs.at(i+6) - '0';
+								int Max_Digit1 = Runs.at(i+5) - '0';
+        							int Max_Digit2 = Runs.at(i+6) - '0';
+        							int Max_Digit3 = Runs.at(i+7) - '0';
+	
+								int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+        							RunNumAndEvents.push_back(EventNumber_Max);
+		
+						}
+						else if(isdigit( Runs.at(i+5) ) && //For the min value being a 3 digit number and the max value being a 2 digit number 
+         						isdigit( Runs.at(i+6) ) &&
+         						Runs.at(i+7) == ']' ){
 
-                						int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+								int Max_Digit1 = Runs.at(i+5) - '0';
+                						int Max_Digit2 = Runs.at(i+6) - '0';
+
+                						int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
                 						RunNumAndEvents.push_back(EventNumber_Max);
 
-        					}
-        					else if(isdigit( Runs.at(i+4) ) &&
-                					isdigit( Runs.at(i+5) ) &&
-                					Runs.at(i+6) == ']' ){ //For the min value being a 2 digit number and the max value being a 2 digit number
+						}
+						else if(isdigit( Runs.at(i+5) ) &&
+                                			Runs.at(i+6) == ']' ){ //For the min value being a 3 digit number and the max value being a 1 digit number
 
-                        					int Max_Digit1 = Runs.at(i+4) - '0';
-                        					int Max_Digit2 = Runs.at(i+5) - '0';
-
-                        					int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                        					RunNumAndEvents.push_back(EventNumber_Max);
-
-        					}
-						else if(isdigit( Runs.at(i+4) ) &&
-                                        		Runs.at(i+5) == ']' ){ //For the min value being a 2 digit number and the max value being a 1 digit number
-
-                                        			int Max_Digit1 = Runs.at(i+4) - '0';
+                                        			int Max_Digit1 = Runs.at(i+5) - '0';
 
                                         			int EventNumber_Max = Max_Digit1;
                                         			RunNumAndEvents.push_back(EventNumber_Max);
 
-                                		}
-						else{std::cout << "error" <<  "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
+                        			}
+                      				else{std::cout << "error" << std::endl;}
 
-   		}
-		else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 1 digit number
-      	     	  	  Runs.at(i+2) == ',' &&
-		  	  isdigit(Runs.at(i+3)) ){
+ 					}
+ 					else if(isdigit( Runs.at(i+1) ) && //For the min value being a 2 digit number
+         					isdigit( Runs.at(i+2) ) &&
+         					Runs.at(i+3) == ',' ){
 
-			  	int Min_Digit1 = Runs.at(i+1) - '0';	
+							int Min_Digit1 = Runs.at(i+1) - '0';
+        						int Min_Digit2 = Runs.at(i+2) - '0';
 
-				int EventNumber_Min = Min_Digit1;
-				RunNumAndEvents.push_back(EventNumber_Min);
+        						int EventNumber_Min = (Min_Digit1*10) + Min_Digit2;
+        						RunNumAndEvents.push_back(EventNumber_Min);
 
-				if(isdigit( Runs.at(i+3) ) &&
-                           	   isdigit( Runs.at(i+4) ) &&
-                           	   isdigit( Runs.at(i+5) ) &&
-                           	   isdigit( Runs.at(i+6) ) &&
-                          	   Runs.at(i+7) == ']' ){ //For the min value being a 1 digit number and the max value being a 4 digit number
+							if(isdigit( Runs.at(i+4) ) &&
+                                   		   	isdigit( Runs.at(i+5) ) &&
+				   		   	isdigit( Runs.at(i+6) ) &&
+                                   		   	isdigit( Runs.at(i+7) ) &&
+                                   		   	Runs.at(i+8) == ']' ){ //For the min value being a 2 digit number and the max value being a 4 digit number
+
+
+                                        			int Max_Digit1 = Runs.at(i+4) - '0';
+                                        			int Max_Digit2 = Runs.at(i+5) - '0';
+								int Max_Digit3 = Runs.at(i+6) - '0';
+                                        			int Max_Digit4 = Runs.at(i+7) - '0';
+
+                                        			int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
+                                        			RunNumAndEvents.push_back(EventNumber_Max);
+
+                                			}
+							else if(isdigit( Runs.at(i+4) ) && //For the min value being a 2 digit number and the max value being a 3 digit nummber
+           	   	   	   		 		isdigit( Runs.at(i+5) ) &&
+           	   	   	   				isdigit( Runs.at(i+6) ) &&
+           	   	   	   				Runs.at(i+7) == ']'){
+
+                							int Max_Digit1 = Runs.at(i+4) - '0';
+                							int Max_Digit2 = Runs.at(i+5) - '0';
+                							int Max_Digit3 = Runs.at(i+6) - '0';
+
+                							int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+                							RunNumAndEvents.push_back(EventNumber_Max);
+
+        						}
+        						else if(isdigit( Runs.at(i+4) ) &&
+                						isdigit( Runs.at(i+5) ) &&
+                						Runs.at(i+6) == ']' ){ //For the min value being a 2 digit number and the max value being a 2 digit number
+
+                        						int Max_Digit1 = Runs.at(i+4) - '0';
+                        						int Max_Digit2 = Runs.at(i+5) - '0';
+
+                        						int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
+                        						RunNumAndEvents.push_back(EventNumber_Max);
+
+        						}
+							else if(isdigit( Runs.at(i+4) ) &&
+                                        			Runs.at(i+5) == ']' ){ //For the min value being a 2 digit number and the max value being a 1 digit number
+
+                                        				int Max_Digit1 = Runs.at(i+4) - '0';
+
+                                        				int EventNumber_Max = Max_Digit1;
+                                        				RunNumAndEvents.push_back(EventNumber_Max);
+
+                                			}
+							else{std::cout << "error" <<  "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
+
+   			}
+			else if(  isdigit( Runs.at(i+1) ) && //For the min value being a 1 digit number
+      	     	  		  Runs.at(i+2) == ',' &&
+		  	  	  isdigit(Runs.at(i+3)) ){
+
+			  		int Min_Digit1 = Runs.at(i+1) - '0';	
+
+					int EventNumber_Min = Min_Digit1;
+					RunNumAndEvents.push_back(EventNumber_Min);
+
+					if(isdigit( Runs.at(i+3) ) &&
+                           	   	   isdigit( Runs.at(i+4) ) &&
+                           	   	   isdigit( Runs.at(i+5) ) &&
+                           	           isdigit( Runs.at(i+6) ) &&
+                          	   	   Runs.at(i+7) == ']' ){ //For the min value being a 1 digit number and the max value being a 4 digit number
                                    
-                                   	int Max_Digit1 = Runs.at(i+3) - '0';
-                                        int Max_Digit2 = Runs.at(i+4) - '0';
-                                        int Max_Digit3 = Runs.at(i+5) - '0';
-                                        int Max_Digit4 = Runs.at(i+6) - '0';
+                                   		int Max_Digit1 = Runs.at(i+3) - '0';
+                                        	int Max_Digit2 = Runs.at(i+4) - '0';
+                                        	int Max_Digit3 = Runs.at(i+5) - '0';
+                                        	int Max_Digit4 = Runs.at(i+6) - '0';
 
-                                        int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
-                                        RunNumAndEvents.push_back(EventNumber_Max);
-
-
-                                }
-				else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 3 digit number
-      	   	   	        	isdigit( Runs.at(i+4) ) &&
-      	   	   	        	isdigit( Runs.at(i+5) ) &&
-      	   	   	        	Runs.at(i+6) == ']'){
-
-						int Max_Digit1 = Runs.at(i+3) - '0';
-        					int Max_Digit2 = Runs.at(i+4) - '0';
-        					int Max_Digit3 = Runs.at(i+5) - '0';
-	
-						int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
-        					RunNumAndEvents.push_back(EventNumber_Max);
-		
-				}
-				else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 2 digit number 
-         				isdigit( Runs.at(i+4) ) &&
-         				Runs.at(i+5) == ']' ){
-
-						int Max_Digit1 = Runs.at(i+3) - '0';
-                				int Max_Digit2 = Runs.at(i+4) - '0';
-
-                				int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
-                				RunNumAndEvents.push_back(EventNumber_Max);
-
-				}
-				else if(isdigit( Runs.at(i+3) ) &&
-                                	Runs.at(i+4) == ']' ){ //For the min value being a 1 digit number and the max value being a 1 digit number
-
-                                        	int Max_Digit1 = Runs.at(i+3) - '0';
-
-                                        	int EventNumber_Max = Max_Digit1;
+                                        	int EventNumber_Max = (Max_Digit1*1000) + (Max_Digit2*100) + (Max_Digit3*10) * Max_Digit4;
                                         	RunNumAndEvents.push_back(EventNumber_Max);
 
-                        	}
-                       		else{std::cout << "error" << std::endl;}
+                                	}
+					else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 3 digit number
+      	   	   	        		isdigit( Runs.at(i+4) ) &&
+      	   	   	        		isdigit( Runs.at(i+5) ) &&
+      	   	   	        		Runs.at(i+6) == ']'){
 
- 			}	
-			else{std::cout << "INSIDE THE ELSE STATEMENT" << '\n' << "Runs.at(i) = " << Runs.at(i) << '\n' << "Runs.at(i+1) = " << Runs.at(i+1) << '\n' << "Runs.at(i+2) = " << Runs.at(i+2) << std::endl;}
+							int Max_Digit1 = Runs.at(i+3) - '0';
+        						int Max_Digit2 = Runs.at(i+4) - '0';
+        						int Max_Digit3 = Runs.at(i+5) - '0';
+	
+							int EventNumber_Max = (Max_Digit1*100) + (Max_Digit2*10) + Max_Digit3;
+        						RunNumAndEvents.push_back(EventNumber_Max);
+		
+					}
+					else if(isdigit( Runs.at(i+3) ) && //For the min value being a 1 digit number and the max value being a 2 digit number 
+         					isdigit( Runs.at(i+4) ) &&
+         					Runs.at(i+5) == ']' ){
+
+							int Max_Digit1 = Runs.at(i+3) - '0';
+                					int Max_Digit2 = Runs.at(i+4) - '0';
+
+                					int EventNumber_Max = (Max_Digit1*10) + Max_Digit2;
+                					RunNumAndEvents.push_back(EventNumber_Max);
+
+					}
+					else if(isdigit( Runs.at(i+3) ) &&
+                                		Runs.at(i+4) == ']' ){ //For the min value being a 1 digit number and the max value being a 1 digit number
+
+                                        		int Max_Digit1 = Runs.at(i+3) - '0';
+
+                                        		int EventNumber_Max = Max_Digit1;
+                                        		RunNumAndEvents.push_back(EventNumber_Max);
+
+                        		}
+                       			else{std::cout << "error" << std::endl;}
+
+ 				}	
+				else{std::cout << "INSIDE THE ELSE STATEMENT." << std::endl;}
 
 
-	}	 
+		}	 
 
 
-    }
+    	}
+
+   }
 
 
-    return RunNumAndEvents;
-
+    EventsVector.clear();
+    return 0;
 
   }};
 
 
  
-  auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges, &MCInt](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
+  auto RunAndLumiFilterFunction{[&ReturnRunNumAndEventRanges, &MCInt, &RunNumAndEvents, &BadRuns, &GoodRuns](const unsigned int& InputRunNumber, const unsigned int& luminosityBlock){
 
-      std::cout << "print 6" << std::endl;	
+     std::cout << "print 6" << std::endl;	
+
+     bool BadRunsCheck3 = any_of(BadRuns.begin(), BadRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the BadRuns vector
+
+     if(BadRunsCheck3 == true){std::cout << "InputRunNumber = " << InputRunNumber << " BadRunsCheck is true. BadRuns.size() = " << BadRuns.size() << std::endl; return false;}
+
+     bool GoodRunsCheck3 = any_of(GoodRuns.begin(), GoodRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the GoodRuns vector
+
+     if(GoodRunsCheck3 == false){ReturnRunNumAndEventRanges(InputRunNumber);}
+     
+     bool RunNumAndEventsCheck = any_of(RunNumAndEvents.begin(), RunNumAndEvents.end(), [&InputRunNumber](int i){return i == InputRunNumber;});
+
+     std::cout << "RunNumAndEventsCheck = " << RunNumAndEventsCheck << std::endl;
+     std::cout << "RunNumAndEvents.size() = " << RunNumAndEvents.size() << std::endl;
+
+     for(int i = 0; i < RunNumAndEvents.size(); i++){std::cout << "RunNumAndEvents.at(i) = " << RunNumAndEvents.at(i) << std::endl;}
 
       switch(MCInt){
       
-          case 0: if( InputRunNumber == ReturnRunNumAndEventRanges(InputRunNumber).at(0) ){
-                  	for(long unsigned int i = 1; i < ReturnRunNumAndEventRanges(InputRunNumber).size(); i+=2){
+          case 0: if(RunNumAndEvents.size() == 0){return false;}
+		  else if(RunNumAndEventsCheck == true){
 
-                        	int MinLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i);
-                        	int MaxLumi = ReturnRunNumAndEventRanges(InputRunNumber).at(i+1);
+				int RunNumAndEventsElement;
 
-                        	if(luminosityBlock > MinLumi && luminosityBlock < MaxLumi){return InputRunNumber && luminosityBlock;}
-                        	else{continue;}
+				std::vector<int>::iterator it_RunNumAndEvents = std::find(RunNumAndEvents.begin(), RunNumAndEvents.end(), InputRunNumber);
+				int index_RunNumAndEvents = std::distance(RunNumAndEvents.begin(), it_RunNumAndEvents);
+			
+                        	int MinLumi1 = RunNumAndEvents.at(index_RunNumAndEvents+1);
+                        	int MaxLumi1 = RunNumAndEvents.at(index_RunNumAndEvents+2);
 
-                    	}
+				std::cout << "MinLumi1 = " << MinLumi1 << std::endl;
+				std::cout << "MaxLumi1 = " << MaxLumi1 << std::endl;
+
+				if(RunNumAndEvents.size() == 3){
+                    
+		          		if(luminosityBlock > MinLumi1 && luminosityBlock < MaxLumi1){return InputRunNumber && luminosityBlock;}
+                        		else{return false;}
+
+				}
+				else if(RunNumAndEvents.size() == 5){
+
+					int MinLumi2 = RunNumAndEvents.at(RunNumAndEventsElement+3);
+                                	int MaxLumi2 = RunNumAndEvents.at(RunNumAndEventsElement+4);
+
+					std::cout << "MinLumi2 = " << MinLumi2 << std::endl;
+                                	std::cout << "MaxLumi2 = " << MaxLumi2 << std::endl;
+
+					if(luminosityBlock > MinLumi1 && luminosityBlock < MaxLumi1 &&
+					   luminosityBlock > MinLumi2 && luminosityBlock < MaxLumi2){return InputRunNumber && luminosityBlock;}
+                                        else{return false;}
+
+				}
+				else{std::cout << "RunNumAndEvents.size() = " << RunNumAndEvents.size() << std::endl;
+			  	     throw std::logic_error("RunNumAndEvents.size() is not 3 or 5");}
+
 
                  }
                  else{return false;}
+
+
+		 break;
               
-          case 1: return  InputRunNumber && luminosityBlock;
+          case 1: return  InputRunNumber && luminosityBlock; break;
               
       }
 
@@ -2971,7 +3085,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 					 	 const bool& HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL){
 
 
-	std::cout << "print 7" << std::endl;
+	//std::cout << "print 7" << std::endl;
 
 	switch(TriggerType){
 
@@ -3051,7 +3165,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 										  const ULong64_t& event){
 
 
-	std::cout << "print 8" << std::endl;
+	//std::cout << "print 8" << std::endl;
 
 	bool Single_E = DoubleCountCheckLeptonTriggers(0, 
 				       		      HLT_Ele25_eta2p1_WPTight_Gsf, 			    HLT_Ele27_WPTight_Gsf, 
@@ -3157,7 +3271,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   //Lambda function for the pile up modelling
   auto PU_function{[&puReweight_2016, &puReweight_2016_part1, &puReweight_2016_part2, &puReweight_2017, &puReweight_2018, &YearInt](int PV_npvs_input){
 
-  	//std::cout << "print 9" << std::endl;
+  	////std::cout << "print 9" << std::endl;
 
       	double PU_Weight_input;
 
@@ -3177,7 +3291,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   //Lambda functions for the electron selection
   auto ElectronsFunction{[](const int targetID, const floats& Electron_pt, const floats& Electron_eta, const ints& Electron_cutBased, const bools& Electron_isPFcand){
  
-  	std::cout << "print 9" << std::endl;
+  	//std::cout << "print 9" << std::endl;
   	return (Electron_pt > MinElectronPt && (abs(Electron_eta) < MaxTrackerEta && (abs(Electron_eta) < 1.442 || abs(Electron_eta) > 1.566) ) && 
 		Electron_cutBased >= targetID && Electron_isPFcand);
 
@@ -3185,7 +3299,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto MuonsFunction{[](const float target_iso, const bools& isPFs, const floats& Muon_pt, const floats& Muon_eta, const bools& ids, const floats& isos){
 
-  	std::cout << "print 10" << std::endl;
+  	//std::cout << "print 10" << std::endl;
   	return (isPFs && Muon_pt > MinMuonPt && abs(Muon_eta) < MaxTrackerEta && ids && isos <= target_iso);
 
   }};
@@ -3196,7 +3310,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 									      const bools& Electron_isPFcand, const bools& isPFs,         const floats& pts, 
 									      const floats& etas,             const bools& ids,           const floats& isos){
 
-  	std::cout << "print 11" << std::endl;
+  	//std::cout << "print 11" << std::endl;
 
 	switch(ChannelInt){
 
@@ -3224,7 +3338,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto LeptonVariableFunctionFloats{[&ChannelInt](const floats& Electron_input, const floats& Muon_input){
 
-	std::cout << "print 12" << std::endl; 
+	//std::cout << "print 12" << std::endl; 
 
 	floats Emu_vector_floats{};
 
@@ -3261,7 +3375,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto LeptonVariableFunctionInts{[&ChannelInt](const ints& Electron_input, const ints& Muon_input){
 
-        std::cout << "print 13" << std::endl;
+        //std::cout << "print 13" << std::endl;
 
 	ints Emu_vector_ints{};
 
@@ -3298,7 +3412,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto LeptonVariableFunctionChars{[&ChannelInt](const chars& Electron_input, const chars& Muon_input){
 
-        std::cout << "print 14" << std::endl;
+        //std::cout << "print 14" << std::endl;
 
 	chars Emu_vector_chars{};
 
@@ -3335,7 +3449,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 									      const bools& Electron_isPFcand, const bools& isPFs,         const floats& pts, 
 									      const floats& etas,             const bools& ids,           const floats& isos){
 
-  	std::cout << "print 15" << std::endl;
+  	//std::cout << "print 15" << std::endl;
 
 	switch(ChannelInt){
 
@@ -3362,7 +3476,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto OppositeSign{[&ChannelInt](const ints& charges){
 
-  	std::cout << "print 16" << std::endl;
+  	//std::cout << "print 16" << std::endl;
 
 	return charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
 
@@ -3370,14 +3484,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto SameSign{[&ChannelInt](const ints& charges){
 
-  	std::cout << "print 14" << std::endl;
+  	//std::cout << "print 14" << std::endl;
 	return charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
 
   }};
 
   auto LeadingVariable{[&ChannelInt](const floats& variable){
 
-  	std::cout << "print 17" << std::endl;
+  	//std::cout << "print 17" << std::endl;
 
 	if(variable.size() > 0){
 
@@ -3403,7 +3517,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto SubleadingVariable{[&ChannelInt](const floats& variable){
 
-  	std::cout << "print 18" << std::endl;
+  	//std::cout << "print 18" << std::endl;
 
   	if(variable.size() == 0){float zero = 0.0; return zero;}
   	else{
@@ -3440,7 +3554,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto ThirdLeadingVariable{[](const floats& variable){
 
-  	std::cout << "print 19" << std::endl;
+  	//std::cout << "print 19" << std::endl;
 
   	if(variable.size() > 2){
 
@@ -3486,7 +3600,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto FourthLeadingVariable{[](const floats& variable){
 
-  	std::cout << "print 20" << std::endl;
+  	//std::cout << "print 20" << std::endl;
 
   	if(variable.size() > 3){
 
@@ -3578,7 +3692,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 						     const ULong64_t& event){
 
 
-	std::cout << "print 29" << std::endl;
+	//std::cout << "print 29" << std::endl;
 
 	switch(ProcessInt){
 
@@ -3687,7 +3801,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   ){
 
-	std::cout << "print 30" << std::endl;
+	//std::cout << "print 30" << std::endl;
 
 	if(ProcessInt == 119 || 120){
 
@@ -3910,7 +4024,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			       const float& SubleadingLeptonPt,  const floats& LeptonEta,          const ints& Electron_dxy_dz,
 			       const floats& tight_lepton_pts,   const floats& loose_lepton_pts){
 
-  	std::cout << "print 31" << std::endl;
+  	//std::cout << "print 31" << std::endl;
 
 	const bool lepton_cut{tight_lepton_pts.size() == 2 && tight_lepton_pts.size() == loose_lepton_pts.size()};
   	bool lead_pt_cut{false};
@@ -3945,7 +4059,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
  
   auto OppositeSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
-  	std::cout << "print 32" << std::endl;
+  	//std::cout << "print 32" << std::endl;
 	bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   	bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
 
@@ -3955,7 +4069,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto OppositeSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
-  	std::cout << "print 33" << std::endl;
+  	//std::cout << "print 33" << std::endl;
 
 	bool OppositeSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) != signbit(charges.at(1)) : false;
   	bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});
@@ -3967,7 +4081,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto SameSignNonPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
   
-  	std::cout << "print 34" << std::endl;
+  	//std::cout << "print 34" << std::endl;
 
 	bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;  
   	bool LeptonNonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i != 1;});
@@ -3978,7 +4092,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto SameSignPrompt{[](const ints& charges, const chars& Lepton_genPartFlav){
 
-  	std::cout << "print 35" << std::endl;  
+  	//std::cout << "print 35" << std::endl;  
 
 	bool SameSignChargeCheck = charges.size() == 2 ? signbit(charges.at(0)) == signbit(charges.at(1)) : false;
   	bool LeptonPromptCheck = all_of(Lepton_genPartFlav.begin(), Lepton_genPartFlav.end(), [](int i){return i == 1;});  
@@ -3991,7 +4105,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto inv_mass{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms)
    {
 
-	std::cout << "print 36" << std::endl;
+	//std::cout << "print 36" << std::endl;
 
 /*	std::cout << "pts.size() = " << pts.size() << std::endl;
 	std::cout << "etas.size() = " << etas.size() << std::endl;
@@ -4017,7 +4131,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto RecoZ{[](const float& LeadingleptonPt,    const float& LeadingleptonEta,    const float& LeadingleptonPhi,    const float& LeadingleptonMass,
 		const float& SubleadingleptonPt, const float& SubleadingleptonEta, const float& SubleadingleptonPhi, const float& SubleadingleptonMass){
 
-  	std::cout << "print 37" << std::endl;
+  	//std::cout << "print 37" << std::endl;
 
   	TLorentzVector ZBoson = {};
   	TLorentzVector LeadingLepton = {};
@@ -4035,7 +4149,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   
   auto TLorentzVectorVariable{[](const int& VariableChoice, const TLorentzVector& object){
 
-  	std::cout << "print 38" << std::endl;
+  	//std::cout << "print 38" << std::endl;
 
   	doubles vec{};
 	
@@ -4052,29 +4166,29 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   }};
 
   auto TLorentzVectorVariablePt{[&TLorentzVectorVariable](const TLorentzVector& object){
-	std::cout << "print 158" << std::endl; 
+	//std::cout << "print 158" << std::endl; 
 	return TLorentzVectorVariable(1, object);
   }};
   
   auto TLorentzVectorVariablePhi{[&TLorentzVectorVariable](const TLorentzVector& object){
-	std::cout << "print 159" << std::endl; 
+	//std::cout << "print 159" << std::endl; 
 	return TLorentzVectorVariable(2, object);
   }};
 
   auto TLorentzVectorVariableEta{[&TLorentzVectorVariable](const TLorentzVector& object){
-	std::cout << "print 160" << std::endl;
+	//std::cout << "print 160" << std::endl;
 	return TLorentzVectorVariable(3, object);
   }};
   
   auto TLorentzVectorVariableMass{[&TLorentzVectorVariable](const TLorentzVector& object){
-	std::cout << "print 161" << std::endl; 
+	//std::cout << "print 161" << std::endl; 
 	return TLorentzVectorVariable(4, object);
   }};
 
 
   auto deltaRcheck_float{[](const float& Object1_eta, const float& Object1_phi, const float& Object2_eta, const float& Object2_phi){
 
-  	std::cout << "print 41" << std::endl;
+  	//std::cout << "print 41" << std::endl;
 
   	float dR = sqrt(pow(Object1_eta - Object2_eta, 2) + pow(Object1_phi - Object2_phi, 2));
   	return dR;
@@ -4084,7 +4198,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto DeltaPhi_floatandfloat{[](const float& Object1_phi, const float& Object2_phi){
 
-  	std::cout << "print 42" << std::endl;
+  	//std::cout << "print 42" << std::endl;
 
   	double dPhi = abs(Object1_phi - Object2_phi);
   	return dPhi;
@@ -4093,7 +4207,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto LeptonFourMomentumFunction{[](const floats& Muon_pt, const floats& Muon_eta, const floats& Muon_phi, const floats& Muon_mass){
   
-  	std::cout << "print 43" << std::endl;
+  	//std::cout << "print 43" << std::endl;
 
   	TLorentzVector Muon4Mo{};
   
@@ -4110,7 +4224,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto RochesterCorrections_testscript2{[](const int& YearInteger, const int& MonteCarloInt, const ints& MuonCharge, const floats& MuonPt,
 					   const floats& MuonEta, const floats& MuonPhi, const ints& Muon_genPartIdx, const ints& Muon_nTrackerLayers){
 
-	std::cout << "print 44" << std::endl;
+	//std::cout << "print 44" << std::endl;
 
 	std::string RoccoTextFile;
 
@@ -4171,7 +4285,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto RochCorrVec_Function{[&MCInt, &YearInt, &RochesterCorrections_testscript2](const ints& MuonCharge,      const floats& MuonPt,           const floats& MuonEta, 
 									          const floats& MuonPhi,       const ints& Muon_genPartIdx,    const ints& Muon_nTrackerLayers){
 
-  	std::cout << "print 45" << std::endl;
+  	//std::cout << "print 45" << std::endl;
 
   	floats CorrectionFactor = RochesterCorrections_testscript2(YearInt, MCInt, MuonCharge, MuonPt, MuonEta, MuonPhi, Muon_genPartIdx, Muon_nTrackerLayers);
   	return CorrectionFactor;
@@ -4182,7 +4296,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto RochCorrVec_Function_data{[&YearInt, &RochesterCorrections_testscript2, &MCInt](const ints& MuonCharge, const floats& MuonPt,        const floats& MuonEta,
 						   			               const floats& MuonPhi,  const ints& DummyColumnInts, const ints& Muon_nTrackerLayers){
 
-  	std::cout << "print 46" << std::endl;
+  	//std::cout << "print 46" << std::endl;
 
   	floats CorrectionFactor = RochesterCorrections_testscript2(YearInt, MCInt, MuonCharge, MuonPt, MuonEta, MuonPhi, DummyColumnInts, Muon_nTrackerLayers);
   	return CorrectionFactor;
@@ -4191,7 +4305,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto RochCorrMuon4Mo{[&ChannelInt](const TLorentzVector& Muon4Mo, const floats& RochCorrVec){
 
-  	std::cout << "print 47" << std::endl;
+  	//std::cout << "print 47" << std::endl;
 
   	TLorentzVector NewVec{};
 
@@ -4213,7 +4327,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto TLorentzVector_float{[](const int& VariableOption, const TLorentzVector& object){
   
-  	std::cout << "print 48" << std::endl;
+  	//std::cout << "print 48" << std::endl;
 
   	floats vec{};
 
@@ -4247,7 +4361,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto z_mass_cut{[](const float& z_mass) {
 
-  	std::cout << "print 49" << std::endl;
+  	//std::cout << "print 49" << std::endl;
 
   	return abs(z_mass - Z_MASS) < Z_MASS_CUT;
 
@@ -4257,7 +4371,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto RowReader2{[&FileNameJetSmear, &YearInt](const int& LineSpecified, const bool& sigmaJER, const bool& SF, const bool& up, 
 					        const bool& down, const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt) { 
 
-  	std::cout << "print 50" << std::endl;
+  	//std::cout << "print 50" << std::endl;
 
   	float Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11;
  
@@ -4427,7 +4541,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   auto linecounter{[&FileNameJetSmear, &YearInt](const bool& sigmaJER, const bool& SF, const bool& up, const bool& down){ 
 
-  	std::cout << "print 51" << std::endl;
+  	//std::cout << "print 51" << std::endl;
 
    	int number_of_lines = 0;
    	std::string line;
@@ -4501,7 +4615,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   auto RowReader3{[&RowReader2, &linecounter](const bool& SigmaJER,  const bool& JetSmearScaleFactor, const bool& Up, const bool& Down,
 					      const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  	std::cout << "print 52" << std::endl;
+  	//std::cout << "print 52" << std::endl;
 
   	int k;
 
@@ -4543,7 +4657,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
  auto sigma_JER{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  std::cout << "print 53" << std::endl;
+  //std::cout << "print 53" << std::endl;
 
   bool SigmaJER = true;
   bool JetSmearScaleFactor = false;
@@ -4557,7 +4671,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  std::cout << "print 54" << std::endl;
+  //std::cout << "print 54" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -4571,7 +4685,7 @@ auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,con
 
 auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
 
-  std::cout << "print 55" << std::endl;
+  //std::cout << "print 55" << std::endl;
 
   bool SigmaJER = false;
   bool JetSmearScaleFactor = false;
@@ -4586,7 +4700,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto SJER_Nominal_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  	std::cout << "print 53" << std::endl;
+  	//std::cout << "print 53" << std::endl;
 
   	bool SigmaJER = false;
   	bool JetSmearScaleFactor = true;
@@ -4599,7 +4713,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto SJER_Up_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  	std::cout << "print 54" << std::endl;
+  	//std::cout << "print 54" << std::endl;
 
   	bool SigmaJER = false;
   	bool JetSmearScaleFactor = false;
@@ -4612,7 +4726,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto SJER_Down_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
 
-  	std::cout << "print 55" << std::endl;
+  	//std::cout << "print 55" << std::endl;
 
   	bool SigmaJER = false;
   	bool JetSmearScaleFactor = false;
@@ -4626,7 +4740,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MaxComparison{[](const float& sJER_nominal){
 
-  	std::cout << "print 56" << std::endl;
+  	//std::cout << "print 56" << std::endl;
 
  	float MaximumFloats = sqrt(sJER_nominal*sJER_nominal - 1);
 
@@ -4639,7 +4753,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto JetSmearingFunction_HybridMethod{[&MaxComparison](const floats& pT, const floats& eta, const floats& phi, const floats& pT_ptcl, const floats& eta_ptcl, 
 							 const floats& phi_ptcl, const float& sJER_nominal, const float& sigma_JER_input, const ints& Jet_genJetIdx){
 
-  	std::cout << "print 57" << std::endl;
+  	//std::cout << "print 57" << std::endl;
 
   	floats cJER_vec{};
 
@@ -4685,7 +4799,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ApplyCJER{[](const floats& JetPt, const floats& JetEta, const floats& JetPhi, const floats& JetMass, const floats& cJER, const unsigned int& nJet){
 
-  	std::cout << "print 58" << std::endl;
+  	//std::cout << "print 58" << std::endl;
 
   	std::vector<TLorentzVector> OutputVec{};
 
@@ -4709,7 +4823,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
 
-  	std::cout << "print 59" << std::endl;
+  	//std::cout << "print 59" << std::endl;
 
   	floats NewPtVec = {};
 
@@ -4727,7 +4841,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
 
-  	std::cout << "print 60" << std::endl;
+  	//std::cout << "print 60" << std::endl;
 
  	floats NewPhiVec{};
 
@@ -4746,7 +4860,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  
   auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
 
-  	std::cout << "print 61" << std::endl;
+  	//std::cout << "print 61" << std::endl;
 
  	floats NewEtaVec = {};
 
@@ -4765,7 +4879,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
 
-  	std::cout << "print 62" << std::endl;
+  	//std::cout << "print 62" << std::endl;
 
  	floats NewMassVec = {};
 
@@ -4783,7 +4897,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto SumSquared2LeadingJets_pT{[](const float& LeadingJetPt, const float& SubleadingJetPt){
 
-  	std::cout << "print 63" << std::endl;
+  	//std::cout << "print 63" << std::endl;
 
   	double SumSquaredPt = pow(LeadingJetPt + SubleadingJetPt, 2);
   	return SumSquaredPt;
@@ -4793,7 +4907,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto JetSum{[](const float& LeadingJet, const float& SubleadingJet, const float& ThirdJet, const float& FourthJet){
 
-  	std::cout << "print 64" << std::endl;
+  	//std::cout << "print 64" << std::endl;
 
   	float JetSumOutput = LeadingJet + SubleadingJet + ThirdJet + FourthJet;
   	return JetSumOutput;
@@ -4810,7 +4924,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto deltaRcheck_floats{[&deltaR](const floats& Object1_eta, const floats& Object1_phi, const floats& Object2_eta, const floats& Object2_phi) {
 
-  	std::cout << "print 65" << std::endl;
+  	//std::cout << "print 65" << std::endl;
 
   	floats min_dRs{};
 
@@ -4832,7 +4946,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto HT{[](const float& Pt){
  
-  	std::cout << "print 66" << std::endl;
+  	//std::cout << "print 66" << std::endl;
 
   	float HTOutput = abs(Pt);
   	return HTOutput;
@@ -4841,7 +4955,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto TotJetHT{[](const float& LeadingJetHT, const float& SubleadingJetHT, const float& ThirdJetHT, const float& FourthJetHT){
   
-  	std::cout << "print 67" << std::endl;
+  	//std::cout << "print 67" << std::endl;
 
   	float TotJetHTOutput = LeadingJetHT + SubleadingJetHT + ThirdJetHT + FourthJetHT;
   	return TotJetHTOutput;
@@ -4850,7 +4964,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto TotLepHT{[](const float& LeadingLeptonHT, const float& SubleadingLeptonHT){
 
-  	std::cout << "print 68" << std::endl;
+  	//std::cout << "print 68" << std::endl;
 
   	float TotLepHTOutput = LeadingLeptonHT + SubleadingLeptonHT;
   	return TotLepHTOutput;
@@ -4860,7 +4974,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto TotHTOverTotpT{[](const float& TotHT, const float& TotpT){
 
-  	std::cout << "print 69" << std::endl;
+  	//std::cout << "print 69" << std::endl;
 
   	float TotHTOverTotpTOutput = TotHT / TotpT;
   	return TotHTOverTotpTOutput;
@@ -4870,7 +4984,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto LepSum{[](const float& LeadingLep, const float& SubleadingLep){
 
-  	std::cout << "print 70" << std::endl;
+  	//std::cout << "print 70" << std::endl;
 
   	float LepSumOutput = LeadingLep + SubleadingLep;
   	return LepSumOutput;
@@ -4883,7 +4997,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		    	  const float& LeadingJetPhi,  const float& SubleadingJetPhi,  const float& ThirdJetPhi,  const float& FourthJetPhi,
 			  const float& LeadingJetMass, const float& SubleadingJetMass, const float& ThirdJetMass, const float& FourthJetMass){
 
-  	std::cout << "print 71" << std::endl;
+  	//std::cout << "print 71" << std::endl;
 
   	TLorentzVector Jet1 = {};
   	TLorentzVector Jet2 = {};
@@ -4906,7 +5020,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			const float& LeadingJetPhi,  const float& SubleadingJetPhi,  const float& ThirdJetPhi,
 			const float& LeadingJetMass, const float& SubleadingJetMass, const float& ThirdJetMass){
   
-  	std::cout << "print 72" << std::endl;
+  	//std::cout << "print 72" << std::endl;
 
   	TLorentzVector Jet1 = {};
   	TLorentzVector Jet2 = {};
@@ -4924,7 +5038,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto tight_jets_function{[&YearInt](const floats& Jet_pt_Selection, const floats& Jet_eta_Selection, const ints& Jet_jetId_Selection, const floats& dRJet_lep){
 
-  	std::cout << "print 73" << std::endl;
+  	//std::cout << "print 73" << std::endl;
 
   	int JetId;
 
@@ -4942,7 +5056,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto jet_selection_function{[](const ints& tight_jets) {
 
-  	std::cout << "print 74" << std::endl;
+  	//std::cout << "print 74" << std::endl;
 
   	auto njet{count_if(tight_jets.begin(), tight_jets.end(), [](int i) { return i; })};
   	return njet >= 4 && njet <= 6;
@@ -4951,7 +5065,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto bjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
      
-        std::cout << "print 75" << std::endl;
+        //std::cout << "print 75" << std::endl;
 	return /*tight_jets &&*/ (btags > 0.8838f) && (etas < MaxTrackerEta);
   
   }};
@@ -4959,7 +5073,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto numberofbjets{[](const ints& bjets) {
 
-	std::cout << "print 76" << std::endl;
+	//std::cout << "print 76" << std::endl;
         const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
         return nbjet;
 
@@ -4967,14 +5081,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto BTAGEFF_bjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_hadronFlavour) {
 
-	std::cout << "print 77" << std::endl;
+	//std::cout << "print 77" << std::endl;
 	return abs(Jet_hadronFlavour) == 0 && btags > 0.8838f && abs(etas) < MaxTrackerEta;
 	
   }};
 
   auto BTAGEFF_nonbjet_id_WP{[](const ints& tight_jets, const floats& btags, const floats& etas, const ints& Jet_hadronFlavour){
 
-  	std::cout << "print 81" << std::endl;
+  	//std::cout << "print 81" << std::endl;
     	return (abs(Jet_hadronFlavour) == 1 || abs(Jet_hadronFlavour) == 2) && btags > 0 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4982,7 +5096,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto BTAGEFF_bjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_hadronFlavour) {
 
-  	std::cout << "print 82" << std::endl;
+  	//std::cout << "print 82" << std::endl;
 	return abs(Jet_hadronFlavour) == 0 && abs(etas) < MaxTrackerEta;
 
   }};
@@ -4990,14 +5104,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
  auto BTAGEFF_nonbjet_id{[](const ints& tight_jets, const floats& etas, const ints& Jet_hadronFlavour){
 	
-	std::cout << "print 86" << std::endl;
+	//std::cout << "print 86" << std::endl;
 	return (abs(Jet_hadronFlavour) == 1 || abs(Jet_hadronFlavour) == 2) && abs(etas) < MaxTrackerEta;
 
   }};
 
   auto bjet_cut{[](const ints& bjets) {
 
-        std::cout << "print 87" << std::endl;
+        //std::cout << "print 87" << std::endl;
 
         const auto nbjet{std::count_if(bjets.begin(), bjets.end(), [](int i) { return i; })};
         return nbjet >= 1 && nbjet <= 2;
@@ -5006,7 +5120,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto find_lead_mask{[](const ints& mask, const floats& vals) {
   
-  	std::cout << "print 88" << std::endl;
+  	//std::cout << "print 88" << std::endl;
 
   	const auto masked_vals{mask * vals};
   	const auto max_idx{boost::numeric_cast<size_t>(std::distance(masked_vals.begin(), max_element(masked_vals.begin(), masked_vals.end())))};
@@ -5018,7 +5132,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto WPair{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
-        std::cout << "print 89" << std::endl;
+        //std::cout << "print 89" << std::endl;
 
         double w_reco_mass{std::numeric_limits<double>::infinity()};
         size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -5065,7 +5179,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto WPairJet1{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
-	std::cout << "print 90" << std::endl;
+	//std::cout << "print 90" << std::endl;
 
         double w_reco_mass{std::numeric_limits<double>::infinity()};
         size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -5112,7 +5226,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto WPairJet2{[](const floats& pts, const floats& etas, const floats& phis, const floats& ms, const ints& tight_jets, const ints& lead_bjet) {
 
-	std::cout << "print 91" << std::endl;
+	//std::cout << "print 91" << std::endl;
 
         double w_reco_mass{std::numeric_limits<double>::infinity()};
         size_t jet_index_1{std::numeric_limits<size_t>::max()};
@@ -5160,7 +5274,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto deltaRcheck_W_function{[](const doubles& Object1_phi_Selection, const doubles& Object1_eta_Selection,
 				 const doubles& Object2_eta_Selection, const doubles& Object2_phi_Selection){
 
-  	std::cout << "print 93" << std::endl;
+  	//std::cout << "print 93" << std::endl;
 
   	doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   	return dR;
@@ -5170,7 +5284,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto DeltaPhi_function2{[](const doubles& Object1_phi_Selection, const doubles& Object2_phi_Selection){
 
-  	std::cout << "print 94" << std::endl;
+  	//std::cout << "print 94" << std::endl;
 
   	doubles dPhi = abs(Object1_phi_Selection - Object2_phi_Selection);
   	return dPhi;
@@ -5181,7 +5295,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto deltaRcheck_W_function2{[](const doubles& Object1_phi_Selection, const doubles& Object1_eta_Selection,
 				  const float& Object2_eta_Selection,   const float& Object2_phi_Selection){
  
-  	std::cout << "print 95" << std::endl;
+  	//std::cout << "print 95" << std::endl;
 
   	doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   	return dR;
@@ -5190,7 +5304,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto DeltaPhi_doublesandfloat{[](const doubles& Object1_phi, const float& Object2_phi){
 
-  	std::cout << "print 96" << std::endl;
+  	//std::cout << "print 96" << std::endl;
 
   	doubles dPhi = abs(Object1_phi - Object2_phi);
   	return dPhi;
@@ -5199,7 +5313,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto HT_double{[](const doubles& Pt){
 
-  	std::cout << "print 97" << std::endl;
+  	//std::cout << "print 97" << std::endl;
 
   	doubles HT_Output = abs(Pt);
   	return HT_Output;
@@ -5208,7 +5322,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto RecoWHT{[](const floats& RecoWPt){
 
-  	std::cout << "print 98" << std::endl;
+  	//std::cout << "print 98" << std::endl;
 
   	floats RecoWHTOutput = abs(RecoWPt);
   	return RecoWHTOutput;
@@ -5217,7 +5331,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto TransverseWMass{[](const double& dPhi_j1j2, const doubles& WPairJet1Pt, const doubles& WPairJet2Pt){
 
-  	std::cout << "print 99" << std::endl;
+  	//std::cout << "print 99" << std::endl;
 
   	doubles mtW = sqrt(2 * WPairJet1Pt * WPairJet2Pt * (1 - cos(dPhi_j1j2)) );
   	return mtW;
@@ -5227,7 +5341,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto w_mass_cut{[&ZPlusJetsCRInt](const float& w_mass, const float& MET_sumEt) {
 	
-  	std::cout << "print 100" << std::endl;
+  	//std::cout << "print 100" << std::endl;
       
   	switch(ZPlusJetsCRInt){
       
@@ -5241,7 +5355,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto WLorentzVector{[](const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass, const ints& w_reco_jets){
 
-  	std::cout << "print 101" << std::endl;
+  	//std::cout << "print 101" << std::endl;
 
   	const auto nRecoWBosons{std::count_if(w_reco_jets.begin(), w_reco_jets.end(), [](int i) { return i; })};
   	auto RecoW = TLorentzVector{};
@@ -5271,7 +5385,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto bjet_variable{[](const floats& Jet_variable, const ints& nJet, const ints& lead_bjet){
 
-  	std::cout << "print 102" << std::endl;
+  	//std::cout << "print 102" << std::endl;
 
   	floats vec{};
 
@@ -5289,7 +5403,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto BLorentzVector{[](const floats& bjet_pt, const floats& bjet_eta, const floats& bjet_phi, const floats& bjet_mass){
 
-  	std::cout << "print 103" << std::endl;
+  	//std::cout << "print 103" << std::endl;
 
   	auto BJets = TLorentzVector{};
 
@@ -5309,7 +5423,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto top_reconstruction_function{[](const floats& bjets_pt,  const floats& bjets_eta,  const floats& bjets_phi,  const floats& bjets_mass,
 				      const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass ){
 
-  	std::cout << "print 104" << std::endl;
+  	//std::cout << "print 104" << std::endl;
   	auto reco_top = TLorentzVector{}; 
   	auto BJets = TLorentzVector{};
   	auto RecoW = TLorentzVector{};
@@ -5350,7 +5464,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto deltaRcheck_Top_function{[](const doubles& Object1_phi_Selection, const doubles& Object1_eta_Selection,
 				   const float& Object2_eta_Selection,   const float& Object2_phi_Selection){
 
-  	std::cout << "print 106" << std::endl;
+  	//std::cout << "print 106" << std::endl;
 
   	doubles dR = sqrt(pow(Object1_eta_Selection - Object2_eta_Selection, 2) + pow(Object1_phi_Selection - Object2_phi_Selection, 2));
   	return dR;
@@ -5360,7 +5474,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto deltaRcheck_WTop_function{[](const floats& Object1_phi_Selection,  const floats& Object1_eta_Selection,
 				    const doubles& Object2_eta_Selection, const doubles& Object2_phi_Selection){
 
-  	std::cout << "print 107" << std::endl;
+  	//std::cout << "print 107" << std::endl;
 
   	doubles dR_vec{};
 
@@ -5378,7 +5492,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto MinDeltaR{[](const ints& nJet, const doubles& RecoZPhi, const doubles& RecoZEta, const floats& Jet_Phi_Selection, const floats& Jet_eta_Selection){
 
-  	std::cout << "print 108" << std::endl;
+  	//std::cout << "print 108" << std::endl;
 
     	doubles output_vec;
 	double Output;  
@@ -5405,7 +5519,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MinDeltaPhi{[](const ints& nJet, const doubles& RecoZPhi, const floats& Jet_Phi_Selection){
 
-  	std::cout << "print 109" << std::endl;
+  	//std::cout << "print 109" << std::endl;
 
   	double output;
   	doubles output_vec{};
@@ -5433,7 +5547,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto dR_Lepton_LeadingBJet_Function{[](const floats& bjeteta, const float& LeptonEta, const floats& bjetphi, const float& LeptonPhi){
 
-  	std::cout << "print 110" << std::endl;
+  	//std::cout << "print 110" << std::endl;
 
   	doubles DeltaR = sqrt(pow(LeptonPhi - bjetphi, 2) + pow(LeptonEta - bjeteta, 2));
   	return DeltaR;
@@ -5443,7 +5557,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto DeltaPhi_Lepton_BJet{[](const floats& Jet_phi_Selection, const float& LeptonPhi){
 
-  	std::cout << "print 111" << std::endl;
+  	//std::cout << "print 111" << std::endl;
 
   	doubles DeltaPhi = abs(LeptonPhi - Jet_phi_Selection);
   	return DeltaPhi;
@@ -5453,7 +5567,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MET_function{[](const floats& MET_input){
 
-  	std::cout << "print 112" << std::endl;
+  	//std::cout << "print 112" << std::endl;
   	return MET_input;
   
   }};
@@ -5461,7 +5575,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto BJetOutputDiscriminantFunction{[](const float& JetPt, const floats& Jet_btagCSVV2, const ints& tight_jets, const floats& Jet_eta_Selection){
 
-  	std::cout << "print 112" << std::endl;
+  	//std::cout << "print 112" << std::endl;
   	return JetPt && (Jet_btagCSVV2  > 0.8838) /*&& tight_jets */&& (abs(Jet_eta_Selection) < MaxTrackerEta);
 
   }};
@@ -5469,7 +5583,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto DeltaPhi_function4{[](const floats& Object1_phi, const doubles& Object2_phi){
 
-  	std::cout << "print 113" << std::endl;
+  	//std::cout << "print 113" << std::endl;
 
  	doubles dPhi_vec{};
 
@@ -5487,7 +5601,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto TotalVariable_System{[](const doubles& RecoZInput, const floats& RecoWInput, const doubles& TopInput, const float& TotLepInput, const float& TotJetInput){
 
-  	std::cout << "print 114" << std::endl;
+  	//std::cout << "print 114" << std::endl;
 
   	doubles TotalSystemOutput = RecoZInput + RecoWInput.at(0) + TopInput + TotLepInput + TotJetInput;
   	return TotalSystemOutput;
@@ -5497,7 +5611,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto inv_mass_doubles{[](const doubles& pts, const doubles& etas, const doubles& phis, const doubles& ms){
 
-	std::cout << "print 115" << std::endl;
+	//std::cout << "print 115" << std::endl;
 /*
 	std::cout << "pts.size() = " << pts.size() << std::endl;
         std::cout << "etas.size() = " << etas.size() << std::endl;
@@ -5527,7 +5641,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto UnweightedTopPt{[](const doubles& pts){
 
-	std::cout << "print 116" << std::endl;
+	//std::cout << "print 116" << std::endl;
         return pts;
 
   }};
@@ -5535,14 +5649,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto TopReweighting_topquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const floats& GenPart_pt){
 
-  	std::cout << "print 117" << std::endl;
+  	//std::cout << "print 117" << std::endl;
 	return GenPart_pdgId == 6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
 
   }};
 
   auto TopReweighting_antitopquark{[](const ints& GenPart_pdgId, const ints& GenPart_statusFlags, const floats& GenPart_pt){
 		
-	std::cout << "print 118" << std::endl;
+	//std::cout << "print 118" << std::endl;
 	return GenPart_pdgId == -6 && GenPart_statusFlags == 13 && GenPart_pt > 0; 
 
   }};
@@ -5550,7 +5664,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto TopReweighting_weight{[&ProcessInt](const ints& TopReweighting_topquark_input, const ints& TopReweighting_antitopquark_input){
 
-	std::cout << "print 119" << std::endl;
+	//std::cout << "print 119" << std::endl;
 
 	doubles SF_top = exp(-0.0615-(0.00005* TopReweighting_topquark_input) );
 	doubles SF_antitop = exp(-0.0615-(0.00005* TopReweighting_antitopquark_input) );
@@ -5600,7 +5714,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto TotHTOverTotpT_doubles{[](const doubles& TotHT, const doubles& TotpT){
 
-  	std::cout << "print 120" << std::endl;
+  	//std::cout << "print 120" << std::endl;
 
   	floats TotHTOverTotpTOutput = TotHT / TotpT;
   	return TotHTOverTotpTOutput;
@@ -5610,7 +5724,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto CMSBTagSF_Function{[&SystematicInt](const floats& pts, const floats etas, const floats CSVv2Discr, bool BTagOrNot, const ints& Jet_hadronFlavour){
 
-  	std::cout << "print 121" << std::endl;
+  	//std::cout << "print 121" << std::endl;
 
   	doubles ResultVector{};
 
@@ -6671,7 +6785,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto CMSBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_hadronFlavour){
 
- 	std::cout << "print 122" << std::endl;
+ 	//std::cout << "print 122" << std::endl;
 
 /* 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
@@ -6697,14 +6811,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto nonbjet_id{[](const ints& tight_jets, const floats& btags, const floats& etas) {
 
-  	std::cout << "print 123" << std::endl;
+  	//std::cout << "print 123" << std::endl;
   	return /*tight_jets && */(btags >= 0) && (etas < MaxTrackerEta);
 
   }};
 
   auto CMSNonBTagSF{[&CMSBTagSF_Function](const floats& pts, const floats etas, const floats CSVv2Discr, const ints& Jet_hadronFlavour){
 
- 	std::cout << "print 124" << std::endl;
+ 	//std::cout << "print 124" << std::endl;
 /*
  	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
@@ -6731,7 +6845,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto EffBTaggedFunction{[&h_bjet, &h_nonbjet](
 			   const int& HistOption, const floats& pts, const floats& etas, const floats& CSVv2Discr, const ints& JetFlav){
 
-  	std::cout << "print 125" << std::endl;
+  	//std::cout << "print 125" << std::endl;
 
   	doubles BTaggedEff{};
 
@@ -6785,7 +6899,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ProductOperator_E_i_Function{[](const doubles& EffBTagged){
   
-  	std::cout << "print 126" << std::endl;
+  	//std::cout << "print 126" << std::endl;
 /*
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;
@@ -6815,7 +6929,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ProductOperator_1_Minus_E_j_Function{[](const doubles& EffNonBTagged){
 
-  	std::cout << "print 127" << std::endl;
+  	//std::cout << "print 127" << std::endl;
 
 //	std::cout << '\n' << std::endl;
 //        std::cout << '\n' << std::endl;
@@ -6845,7 +6959,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ProductOperator_SFi_Times_Ei_Function{[](const doubles& EffBTagged, const doubles& CMSBTagSFInput){
 
-  	std::cout << "print 128" << std::endl;
+  	//std::cout << "print 128" << std::endl;
 
 	if(EffBTagged.size() != CMSBTagSFInput.size()){
                 std::cout << "EffBTagged = " << EffBTagged << std::endl;
@@ -6882,7 +6996,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ProductOperator_1_Minus_SFj_Times_Ej_Function{[](const doubles& EffNonBTagged, const doubles& CMSNonBTagSFInput){
 
-  	std::cout << "print 129" << std::endl;
+  	//std::cout << "print 129" << std::endl;
 
   	double initial = 1;
 
@@ -6923,7 +7037,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ProbBTagMCFunction{[](const double& ProductOperator_E_i_Input, const double& ProductOperator_1_Minus_E_j_Input){
 
-  	std::cout << "print 130" << std::endl;
+  	//std::cout << "print 130" << std::endl;
 
 	//std::cout << "EffBTaggedProductInput = " << EffBTaggedProductInput << std::endl;
 	//std::cout << "EffNonBTaggedProductInput = " << EffNonBTaggedProductInput << std::endl;
@@ -6936,7 +7050,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ProbBTagDataFunction{[](const double& ProductOperator_SFi_Times_Ei_Input, const double& ProductOperator_1_Minus_SFj_Times_Ej_Input){
 
-  	std::cout << "print 131" << std::endl;
+  	//std::cout << "print 131" << std::endl;
  
 	//std::cout << "EffBTaggedProductDataInput = " << EffBTaggedProductDataInput << std::endl;
 	//std::cout << "EffNonBTaggedProductDataInput = " << EffNonBTaggedProductDataInput << std::endl;
@@ -6949,7 +7063,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto BTagWeightFunction{[](const double& ProbBTagMC, const double& ProbBTagData){
 
-  	std::cout << "print 131" << std::endl;
+  	//std::cout << "print 131" << std::endl;
 
 	double BTagWeight = (ProbBTagData) / (ProbBTagMC);
 
@@ -6971,7 +7085,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		     ](const int& YearInput, const std::string& type, const floats& pt, const floats& SuperClusterEta){
 
 
-  	std::cout << "print 132" << std::endl;
+  	//std::cout << "print 132" << std::endl;
 
    	doubles OutputVector{};
    	doubles OutputVectorFinal{};
@@ -7046,21 +7160,21 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto EGammaSF_egammaEff{[&YearInt, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  	std::cout << "print 133" << std::endl;
+  	//std::cout << "print 133" << std::endl;
   	return EGammaFunction(YearInt, "EGammaEff", Electron_pt_Selection, SuperClusterEta);
 
   }};
 
   auto EGammaSF_egammaEff_Sys{[&YearInt, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  	std::cout << "print 134" << std::endl;
+  	//std::cout << "print 134" << std::endl;
   	return EGammaFunction(YearInt, "EGammaEffSys", Electron_pt_Selection, SuperClusterEta);
 
   }};
 
   auto EGammaSF_egammaEffReco{[&YearInt, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  	std::cout << "print 135" << std::endl;
+  	//std::cout << "print 135" << std::endl;
   	return EGammaFunction(YearInt, "EGammaEffReco", Electron_pt_Selection, SuperClusterEta);
 
   }};
@@ -7068,7 +7182,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto EGammaSF_egammaEffReco_Sys{[&YearInt, &EGammaFunction](const floats& Electron_pt_Selection, const floats& SuperClusterEta){
 
-  	std::cout << "print 136" << std::endl;
+  	//std::cout << "print 136" << std::endl;
   	return EGammaFunction(YearInt, "EGammaEffRecoSys", Electron_pt_Selection, SuperClusterEta);
 
   }};
@@ -7081,7 +7195,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	       &histo_RunsABCD_ID_2018_syst,       &histo_RunsABCD_ISO_2018_stat, &histo_RunsABCD_ISO_2018_syst
               ](const std::string& type, const int& YearInt, const std::string& UpOrDown, const floats& pt, const floats& eta){
 
-  	std::cout << "print 137" << std::endl;
+  	//std::cout << "print 137" << std::endl;
 
   	floats AbsEta = abs(eta);
   	float lumiRunBCDEF = 19713.888;
@@ -7229,21 +7343,21 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MuonSFTest_ID{[&MuonSF, &YearInt](const floats& pt, const floats& eta){
 
-  	std::cout << "print 138" << std::endl;
+  	//std::cout << "print 138" << std::endl;
   	return MuonSF("ID", YearInt, " ", pt, eta);
   
   }};
 
   auto MuonSFTest_Iso{[&MuonSF, &YearInt](const floats& pt, const floats& eta){
 
-  	std::cout << "print 139" << std::endl;
+  	//std::cout << "print 139" << std::endl;
   	return MuonSF("Iso", YearInt, " ", pt, eta);
     
   }};
 
   auto MuonSFTest_ID_sys_syst{[&MuonSF, &YearInt](const floats& pt, const floats& eta){
   
-  	std::cout << "print 140" << std::endl;
+  	//std::cout << "print 140" << std::endl;
 
 	switch(YearInt){
 		case 2016: return MuonSF("ID sys", YearInt, "Up", pt, eta);
@@ -7257,7 +7371,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MuonSFTest_ID_sys_stat{[&MuonSF, &YearInt](const floats& pt, const floats& eta){
 
-  	std::cout << "print 141" << std::endl;
+  	//std::cout << "print 141" << std::endl;
 
 	switch(YearInt){
 		case 2016: return MuonSF("ID sys", YearInt, "Down", pt, eta);
@@ -7271,7 +7385,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MuonSFTest_Iso_sys_syst{[&MuonSF, &YearInt](const floats& pt, const floats& eta){
 
-  	std::cout << "print 142" << std::endl;
+  	//std::cout << "print 142" << std::endl;
 
 	switch(YearInt){
 		case 2016: return MuonSF("Iso sys", YearInt, "Up", pt, eta);
@@ -7285,7 +7399,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto MuonSFTest_Iso_sys_stat{[&MuonSF, &YearInt](const floats& pt, const floats& eta){
 
-  	std::cout << "print 143" << std::endl;
+  	//std::cout << "print 143" << std::endl;
 
 	switch(YearInt){
 		case 2016: return MuonSF("Iso sys", YearInt, "Down", pt, eta);
@@ -7301,7 +7415,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto PSWeightFunction{[&YearInt, &ProcessInt](const floats& PSWeightInput){
 
-  	std::cout << "print 144" << std::endl;
+  	//std::cout << "print 144" << std::endl;
 
   	doubles Ones(4, 1.0);
 	doubles PSWeightInput_Doubles;
@@ -7359,7 +7473,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   
   auto PDFWeight{[&SystematicInt, &HessianOrMC](const floats& LHEPdfWeight, const unsigned int& nLHEPdfWeight){
 
-  	std::cout << "print 145" << std::endl;
+  	//std::cout << "print 145" << std::endl;
 
 	double PdfUncert;
 
@@ -7403,7 +7517,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ME_uncert_function{[&SummedWeights](const double& CalculatedPdfWeight, const doubles& ReturnedPSWeight){
 
-  	std::cout << "print 146" << std::endl;
+  	//std::cout << "print 146" << std::endl;
 
   	CalculatedPdfWeight >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++; //pdf weight
 
@@ -7428,7 +7542,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto GeneratorWeight{[&SummedWeights, &SystematicInt](const double& CalculatedPDFWeight, const doubles& ReturnedPSWeight){
 
-	std::cout << "print 147" << std::endl;
+	//std::cout << "print 147" << std::endl;
 
 
 	int TotalNumPositive = SummedWeights[0] + SummedWeights[2] + SummedWeights[4] + SummedWeights[6] + SummedWeights[8] + SummedWeights[10] + SummedWeights[12];
@@ -7482,7 +7596,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto OriginalMetFunction{[&SystematicInt](const floats& MET_sumEt, const floats& MET_phi){
 
-	std::cout << "print 163" << std::endl; 
+	//std::cout << "print 163" << std::endl; 
 
 	std::vector<TLorentzVector> OriginalMET{};
 	TLorentzVector OriginalMET_Element{};
@@ -7501,7 +7615,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto ScaledMetFunction{[&SystematicInt](std::vector<TLorentzVector> OriginalMET, const floats& MET_sumEt, const floats& MET_phi, const floats& MET_MetUnclustEnUpDeltaX,  const floats& MET_MetUnclustEnUpDeltaY){
 
-	std::cout << "print 164" << std::endl;
+	//std::cout << "print 164" << std::endl;
 
 	std::vector<TLorentzVector> ScaledMET{};
 	TLorentzVector ScaledMET_Element{};
@@ -7545,7 +7659,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto UnsmearedJetTLorentzVectorFunction{[](const floats& Jet_pt, const floats& Jet_phi, const floats& Jet_eta, const floats& Jet_mass){
 
 
-	std::cout << "print 165" << std::endl;
+	//std::cout << "print 165" << std::endl;
 
   	std::vector<TLorentzVector> UnsmearedJetVector{};
 	TLorentzVector UnsmearedJetVector_Element{};	
@@ -7562,7 +7676,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto METUncertFunction{[&SystematicInt](std::vector<TLorentzVector> OriginalMET,           std::vector<TLorentzVector> SmearedJet4Momentum, 
 				          std::vector<TLorentzVector> UnsmearedJet4Momentum){
 
-  	std::cout << "print 148" << std::endl;
+  	//std::cout << "print 148" << std::endl;
 
 	std::vector<TLorentzVector> NewMetVector{};
 
@@ -7577,7 +7691,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto linereader{[&Year](const int& LineNumber, const std::string YearChoice){
         
-        std::cout << "print 150" << std::endl;
+        //std::cout << "print 150" << std::endl;
         using namespace std;
         
         std::string NormFileString = "src/Normalisation/NormalisationFactors_" + YearChoice + ".txt";
@@ -7595,7 +7709,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto NormalisationFactorFunction{[&Year, &ProcessInt, &MCInt, &linereader](){
         
-        std::cout << "print 151" << std::endl;
+        //std::cout << "print 151" << std::endl;
 
 	double OutputNormFactor;
 
@@ -7615,7 +7729,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		     const double& MuonSFTest_ID_sys_statInput,  const double& MuonSFTest_Iso_sys_systInput,   const double& MuonSFTest_Iso_sys_statInput){
 
 
-			std::cout << "print 149" << std::endl;
+			//std::cout << "print 149" << std::endl;
 
 			double EventWeightOutput;
 
@@ -7791,7 +7905,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto Chi2Function{[&ProcessInt, &CutRanges, &SBRInt, &SystematicInt, &W_stddev, &Top_stddev](const float& w_mass, const float& Top_Mass){
 
-  	std::cout << "print 152" << std::endl;
+  	//std::cout << "print 152" << std::endl;
 	
   	float FiveSigmaW = 5*W_stddev;
 
@@ -7826,7 +7940,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto Chi2Cut{[&SBRInt, &SRInt, &MCInt](const float& Chi2){	
 
-  	std::cout << "print 153" << std::endl;
+  	//std::cout << "print 153" << std::endl;
 
 	switch(MCInt){
 		case 0: switch(SBRInt){
@@ -7849,7 +7963,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto linereader_TriggerSF{[&Channel, &Year](const int& LineNumber, const std::string& InputTriggerSF_File){
 
-  	std::cout << "print 154" << std::endl;
+  	//std::cout << "print 154" << std::endl;
 
   	std::string TriggerSF_TextFiles;
 
@@ -7874,7 +7988,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto linecounter_TriggerSF{[&Channel, &Year](const std::string& InputTriggerSF_File){
 
-  	std::cout << "print 155" << std::endl;
+  	//std::cout << "print 155" << std::endl;
 
    	std::string TriggerSF_TextFiles;
 
@@ -7894,7 +8008,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   auto textfilereader2_TriggerSF{[&linecounter_TriggerSF, &linereader_TriggerSF](const std::string& InputTriggerSF_File){
 
-   std::cout << "print 156" << std::endl;
+   //std::cout << "print 156" << std::endl;
 
   	int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File);
    	std::vector<double> Value;
@@ -9077,7 +9191,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
   	auto linereader_NPL{[&Channel_String, &Year_String, &SR_String, &SBR_String, &NPL_TextFile](const int& LineNumber, const std::string SampleInput){
 
-  		std::cout << "print 190" << std::endl;
+  		//std::cout << "print 190" << std::endl;
 
    		NPL_TextFile = "NPLInfo_" + SampleInput + "_Nominal_" + Channel_String + "__" + SR_String + "_" + SBR_String + "___" + Year_String + ".txt";
 
@@ -9097,7 +9211,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
   	auto linecounter_NPL{[&NPL_TextFile](const std::string& SampleInput){
 
-  		std::cout << "print 191" << std::endl;
+  		//std::cout << "print 191" << std::endl;
 
    		int number_of_lines = 0;
    		std::string line;
@@ -9111,7 +9225,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
   	auto textfilereader2_NPL{[&NPL_TextFile, &linecounter_NPL, &linereader_NPL](const std::string& SampleInput){
 
-   	std::cout << "print 192" << std::endl;
+   	//std::cout << "print 192" << std::endl;
 
   		int NumberOfLines = linecounter_NPL(NPL_TextFile);
    		std::vector<double> Value;
