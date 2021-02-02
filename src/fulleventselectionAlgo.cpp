@@ -2618,12 +2618,28 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	
 
   	for(long unsigned int i = 0; i < GoldenJson_SplitChars_Output.size(); i++){
-		
+	
+		 if(i == (GoldenJson_SplitChars_Output.size() - 1)){
+
+                        std::cout << "i is equal to GoldenJson_SplitChars_Output.size() - 1. i =  " << i  
+				  << " GoldenJson_SplitChars_Output.size() = " << GoldenJson_SplitChars_Output.size() << std::endl;
+
+                        bool BadRunsCheck = any_of(BadRuns.begin(), BadRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the BadRuns vector
+          
+                        if(BadRunsCheck == true){std::cout << "BadRunsCheck is true. BadRuns.size() = " << BadRuns.size() << std::endl; return 0;}
+                        else{
+                                std::cout << "No matches. Adding " << InputRunNumber << " to the BadRuns vector." << std::endl;
+                                BadRuns.push_back(InputRunNumber);
+                                return 0;
+
+                        }
+    
+                }
+
+	
 		unsigned int RunNumBeingRead;
 
  		if(  GoldenJson_SplitChars_Output.at(i+1) == '"' && (GoldenJson_SplitChars_Output.at(i+2) == '2' || GoldenJson_SplitChars_Output.at(i+2) == '3')  ){ 
-
-			std::cout << "inside if" << std::endl;
 
 			int digit1 = GoldenJson_SplitChars_Output.at(i+2) - '0';	
 			int digit2 = GoldenJson_SplitChars_Output.at(i+3) - '0';
@@ -2667,23 +2683,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			else{continue;}
 
 		}
-		else if(i == GoldenJson_SplitChars_Output.size() - 1){
-
-                        std::cout << "i = " << i << std::endl;
-
-                        bool BadRunsCheck = any_of(BadRuns.begin(), BadRuns.end(), [&InputRunNumber](int i){return i == InputRunNumber;}); //check to see if the input run number is already in the BadRuns vector
-
-                        if(BadRunsCheck == true){std::cout << "BadRunsCheck is true. BadRuns.size() = " << BadRuns.size() << std::endl; return 0;}
-                        else{
-                                std::cout << "No matches. Adding " << InputRunNumber << " to the BadRuns vector." << std::endl;
-                                BadRuns.push_back(InputRunNumber);
-				return 0; 
-
-			}
-
-		}
 		else{std::cout << "The run number of " << RunNumBeingRead << " does not match the input run number of " << InputRunNumber << std::endl;
 		     continue;}
+
 
    	}
 
@@ -3017,7 +3019,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
           case 0: if(RunNumAndEvents.size() == 0){return false;}
 		  else if(RunNumAndEventsCheck == true){
 
-				for(int i = 0; i < RunNumAndEvents.size(); i++){std::cout << "RunNumAndEvents.at(i) = " << RunNumAndEvents.at(i) << std::endl;}    
+//				for(int i = 0; i < RunNumAndEvents.size(); i++){std::cout << "RunNumAndEvents.at(i) = " << RunNumAndEvents.at(i) << std::endl;}    
 			
 				std::cout << "InputRunNumber = " << InputRunNumber << std::endl;
 	
@@ -3032,9 +3034,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 				for(int i = index_RunNumAndEvents; i < (index_RunNumAndEvents + DistToEnd); i++){FinalRunNumAndEventsVec.push_back(RunNumAndEvents.at(i));}
 
-				std::cout << "FinalRunNumAndEventsVec.size() = " << FinalRunNumAndEventsVec.size() << std::endl;
+//				std::cout << "FinalRunNumAndEventsVec.size() = " << FinalRunNumAndEventsVec.size() << std::endl;
 
-				for(int i = 0; i < FinalRunNumAndEventsVec.size(); i++){std::cout << "FinalRunNumAndEventsVec.at(i) = " << FinalRunNumAndEventsVec.at(i) << std::endl;}
+//				for(int i = 0; i < FinalRunNumAndEventsVec.size(); i++){std::cout << "FinalRunNumAndEventsVec.at(i) = " << FinalRunNumAndEventsVec.at(i) << std::endl;}
 					
 				for(int i = 0; i < FinalRunNumAndEventsVec.size()-2; i+=2){
 
@@ -8019,7 +8021,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
   //Input file selection
-  //EnableImplicitMT(); //to enable multithreading
+  EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
   
   //auto d_Range = d.Range(0, 1000000);
