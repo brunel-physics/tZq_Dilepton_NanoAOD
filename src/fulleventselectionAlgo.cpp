@@ -7522,29 +7522,21 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  int N_all;
-  int N_positive;
-  int N_negative;
-
-  float gen_weightSF = N_all / (N_positive - N_negative); 
+  float SumOfSigns_GenWeight;
+  float SumOfGenWeights;
+  float gen_weightSF;
 
   auto GeneratorWeight{[&MCInt, &SystematicInt, &gen_weightSF](const float& InputGenWeight){
 
 	std::cout << "print 147" << std::endl;
 
 	float CalculatedGenWeight;
-	int sign_genWeight;
-	float gen_weight;
 
         switch(MCInt){
 
 		case 0: CalculatedGenWeight = 1; break;
 		
-		case 1: sign_genWeight = (InputGenWeight < 0) ? -1 : 1; 
-
-			gen_weight = InputGenWeight/(sign_genWeight);
-
-			CalculatedGenWeight = gen_weight * gen_weightSF;
+		case 1: CalculatedGenWeight = gen_weightSF;
 
 			break;
 
@@ -7552,11 +7544,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	}
 
-	std::cout << "sign_genWeight = " << sign_genWeight << std::endl;
-	std::cout << "InputGenWeight" << std::endl;
 	std::cout << "CalculatedGenWeight = " << CalculatedGenWeight << std::endl;
 	return CalculatedGenWeight;
 
+  }};
+
+  auto GeneratorWeightFilterFunction{[](const float& InputGenWeight){
+
+	if(InputGenWeight > 0){return true;}
+	else{return false;}
+	
   }};
 
 
@@ -8005,18 +8002,36 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   if(MCInt == 1){
 
-  	N_all = *( d.Filter("genWeight").Count() );
-  	N_positive = *( d.Filter("genWeight > 0").Count() );
- 	N_negative = *( d.Filter("genWeight < 0").Count() );
-  
+        auto h_GenWeights = d.Filter("genWeight").Histo1D("genWeight");
+
+  	int GenWeight_nEntries = h_GenWeights->GetEntries();
+
+  	for(int i = 0; i < GenWeight_nEntries; i++){
+
+        	SumOfSigns_GenWeight += abs(h_GenWeights->GetXaxis()->GetBinCenter(h_GenWeights->GetBinContent(i)));
+        	SumOfGenWeights += h_GenWeights->GetXaxis()->GetBinCenter(h_GenWeights->GetBinContent(i));
+
+        	std::cout << '\n' << std::endl;
+        	std::cout << '\n' << std::endl;
+       	 	std::cout << "SumOfSigns_GenWeight = " << SumOfSigns_GenWeight << std::endl;
+        	std::cout << "SumOfGenWeights = " << SumOfGenWeights << std::endl;
+        	std::cout << '\n' << std::endl;
+        	std::cout << '\n' << std::endl;
+
+  	}
+
+  	float gen_weightSF = SumOfSigns_GenWeight / SumOfGenWeights;
+
   	std::cout << '\n' << std::endl;
   	std::cout << '\n' << std::endl;
-  	std::cout << "N_all = " << N_all << std::endl;
-  	std::cout << "N_positive = " << N_positive << std::endl;
-  	std::cout << "N_negative = " << N_negative << std::endl;
+  	std::cout << "SumOfSigns_GenWeight = " << SumOfSigns_GenWeight << std::endl;
+  	std::cout << "SumOfGenWeights = " << SumOfGenWeights << std::endl;
+  	std::cout << "gen_weightSF = " << gen_weightSF << std::endl;
   	std::cout << '\n' << std::endl;
   	std::cout << '\n' << std::endl;
+
   }
+  else{gen_weightSF = 1;}
 
   //auto d_Range = d.Range(0, 10000);
 
@@ -9123,7 +9138,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1; //0 for data, 1 for MC
-  int Process_Selection = 119; 
+  int Process_Selection = 0; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
@@ -9131,7 +9146,7 @@ void fulleventselectionAlgo::fulleventselection(){
   int ttbarCR_Selection = 0;
   int Year_Selection = 2017;
   int Systematic_Selection = 0;
-  int Channel_Selection = 2; //1 for ee, 2 for mumu, 3 for emu
+  int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
 
