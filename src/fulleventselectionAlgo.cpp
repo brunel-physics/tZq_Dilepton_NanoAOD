@@ -7521,59 +7521,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  ints SummedWeights(14, 0);
-  int TotalNumPositive;
-  int TotalNumNegative;
-
-  auto ME_uncert_function{[&SummedWeights, &SystematicInt](const double& CalculatedPdfWeight, const doubles& ReturnedPSWeight){
-
-  	std::cout << "print 146" << std::endl;
-
-  	CalculatedPdfWeight >= 0.0 ? SummedWeights[0]++ : SummedWeights[1]++; //pdf weight
-
-   	ReturnedPSWeight.at(1) >= 0.0 ? SummedWeights[2]++ : SummedWeights[3]++; //fsr down
-  	ReturnedPSWeight.at(0) >= 0.0 ? SummedWeights[4]++ : SummedWeights[5]++; //isr down
-  	(ReturnedPSWeight.at(1) * ReturnedPSWeight.at(0)) >= 0.0 ? SummedWeights[6]++ : SummedWeights[7]++; //both isr and fsr down
-  	ReturnedPSWeight.at(3) >= 0.0 ? SummedWeights[8]++ : SummedWeights[9]++; //fsr up
-  	ReturnedPSWeight.at(2) >= 0.0 ? SummedWeights[10]++ : SummedWeights[11]++; //isr up
-  	(ReturnedPSWeight.at(3) * ReturnedPSWeight.at(2)) >= 0.0 ? SummedWeights[12]++ : SummedWeights[13]++; //both isr and fsr up
-
-	int TotalNumPositive;
-	int TotalNumNegative;
-
-	switch(SystematicInt){
-
-		case 0: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //nominal
-		case 1: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //PU scale up
-		case 2: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //PU scale down
-		case 3: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //btag scale up
-		case 4: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //btag scale down
-		case 5: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //jet smearing scale up
-		case 6: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //jet smearing scale down
-		case 7: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //jet resolution scale up
-		case 8: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //jet resolution scale down 
-		case 9: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //lepton efficiencies scale up
-		case 10: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //lepton efficiencies scale down
-		case 11: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //PDF scale up
-		case 12: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //PDF scale down
-		case 13: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //ME scale up
-		case 14: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //ME scale down
-		case 15: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //MET scale up
-		case 16: TotalNumPositive = SummedWeights[0]; TotalNumNegative = SummedWeights[1]; break; //MET scale down
-		case 17: TotalNumPositive = SummedWeights[10]; TotalNumNegative = SummedWeights[11]; break; //isr scale up
-		case 18: TotalNumPositive = SummedWeights[4]; TotalNumNegative = SummedWeights[5]; break; //isr scale down
-		case 19: TotalNumPositive = SummedWeights[8]; TotalNumNegative = SummedWeights[9]; break; //fsr scale up
-		case 20: TotalNumPositive = SummedWeights[2]; TotalNumNegative = SummedWeights[3]; break; //fsr scale down
-		default: throw std::logic_error("SystematicInt must be between 0 and 20"); break;
-
-	}
-		
-		
-  	double ME_SF = (TotalNumPositive + TotalNumNegative) / (TotalNumPositive - TotalNumNegative);
- 	return ME_SF;
-
-  }};
-
 
   int N_all;
   int N_positive;
@@ -7743,7 +7690,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		    (const double& PUInput, 		         const double& BTagWeightInput, 	       const doubles& ReturnedPSWeightInput, 
 		     const double& EGammaSF_egammaEffInput,      const double& EGammaSF_egammaEffRecoInput, 
 		     const double& EGammaSF_egammaEffSysInput,   const double& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, 
-		     const double& ME_SFInput, 			 const doubles& TopWeightInput, 	       const double& CalculatedPDFWeightInput, 
+		     const doubles& TopWeightInput, 	         const double& CalculatedPDFWeightInput, 
 		     const double& MuonSFTest_IDInput, 		 const double& MuonSFTest_IsoInput, 	       const double& MuonSFTest_ID_sys_systInput, 
 		     const double& MuonSFTest_ID_sys_statInput,  const double& MuonSFTest_Iso_sys_systInput,   const double& MuonSFTest_Iso_sys_statInput){
 
@@ -7882,9 +7829,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		}
 
 
-
-  	double FinalEventWeight = EventWeightOutput; 
-
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << "PUInput = " << PUInput << std::endl;
@@ -7896,13 +7840,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         std::cout << "EGammaSF_egammaEffRecoInput = " << EGammaSF_egammaEffRecoInput << std::endl;
         std::cout << "CalculatedGeneratorWeightInput = " << CalculatedGeneratorWeightInput << std::endl;
         std::cout << "TopWeightInput.at(0) = " << TopWeightInput.at(0) << std::endl;
-	std::cout << "ME_SFInput = " << ME_SFInput << std::endl;
 	std::cout << "EventWeightOutput = " << EventWeightOutput << std::endl;
-	std::cout << "FinalEventWeight = " << FinalEventWeight << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;	
 
-	if(!isnan(FinalEventWeight) && !isinf(FinalEventWeight) && (FinalEventWeight > 0)){return FinalEventWeight;}
+	if(!isnan(EventWeightOutput) && !isinf(EventWeightOutput) && (EventWeightOutput > 0)){return EventWeightOutput;}
 	else{std::cout << "Final event weight is either a nan, inf or 0." << std::endl; double One = 1.0; return One;}     
 
   }};
@@ -8949,7 +8891,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                            .Define("MuonSFTest_Iso_sys_stat", MuonSFTest_Iso_sys_stat, {"LeptonPt_RochCorr", "LeptonEta_RochCorr"})
 					   .Define("ReturnedPSWeight", PSWeightFunction, {PSWeightString})
 					   .Define("CalculatedPDFWeight", PDFWeight, {"LHEPdfWeight", "nLHEPdfWeight"})
-					   .Define("ME_SF", ME_uncert_function, {"CalculatedPDFWeight", "ReturnedPSWeight"})
 					   .Define("CalculatedGeneratorWeight", GeneratorWeight, {GeneratorWeightString})
 					   .Define("OriginalMET", OriginalMetFunction, {"MET_sumEt", "MET_phi"})
 					   .Define("ScaledMET", ScaledMetFunction, {"OriginalMET", "MET_sumEt", "MET_phi", "MET_MetUnclustEnUpDeltaX", "MET_MetUnclustEnUpDeltaY"})
@@ -8957,7 +8898,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					   .Define("newMET", METUncertFunction, {"ScaledMET", "SmearedJet4Momentum", "UnsmearedJet4Momentum"})
 					   .Define("EventWeight", EventWeight, {"PU", "BTagWeight", "ReturnedPSWeight", "EGammaSF_egammaEff", 
 										"EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", 
-										"CalculatedGeneratorWeight", "ME_SF", "TopWeight", "CalculatedPDFWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
+										"CalculatedGeneratorWeight", "TopWeight", "CalculatedPDFWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
 										"MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", 
 										"MuonSFTest_Iso_sys_stat"});
 								      
@@ -9087,7 +9028,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
            	   ColName != "CalculatedPDFWeight"     && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
            	   ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
-           	   ColName != "ME_SF"                   &&
               	   ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     && 
            	   ColName != "WPairJet2"               && ColName != "RecoW"                     && ColName != "BJets"                         && 
            	   ColName != "RecoTop"                 && ColName != "MinDeltaR"                     &&
