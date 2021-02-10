@@ -8051,10 +8051,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	std::cout << '\n' << std::endl;
   }
 
-  auto d_Range = d.Range(0, 10000);
+  //auto d_Range = d.Range(0, 10000);
 
   //Event cleaning
-  auto d_EventCleaning = d_Range.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
+  auto d_EventCleaning = d.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
 						    "Flag_HBHENoiseIsoFilter",        "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter",
                                                     "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter",                 "Flag_eeBadScFilter"}, "Event cleaning filter");
 
@@ -9158,7 +9158,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1; //0 for data, 1 for MC
-  int Process_Selection = 0; 
+  int Process_Selection = 119; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
@@ -9166,7 +9166,7 @@ void fulleventselectionAlgo::fulleventselection(){
   int ttbarCR_Selection = 0;
   int Year_Selection = 2017;
   int Systematic_Selection = 0;
-  int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
+  int Channel_Selection = 2; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
 
@@ -9353,6 +9353,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
 
 }
+
 
 
 
