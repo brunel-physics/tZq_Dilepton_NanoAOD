@@ -7549,11 +7549,21 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto GeneratorWeightFilterFunction{[](const float& InputGenWeight){
+  auto GeneratorWeightFilterFunction{[&MCInt](const float& InputGenWeight){
 
-	if(InputGenWeight > 0){return true;}
-	else{return false;}
+	switch(MCInt){
+
+		case 0: return true; break;
+
+		case 1: if(InputGenWeight > 0){return true;}
+			else{return false;}
+
+			break;
+
+		default: throw std::logic_error("ERROR: MCInt must be 0 or 1"); break;
 	
+	}
+
   }};
 
 
@@ -8035,8 +8045,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   //auto d_Range = d.Range(0, 10000);
 
+  //Filtering events with a postive genWeight
+  auto d_GenWeightFilter = d.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
+
   //Event cleaning
-  auto d_EventCleaning = d.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
+  auto d_EventCleaning = d_GenWeightFilter.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
 						    "Flag_HBHENoiseIsoFilter",        "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter",
                                                     "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter",                 "Flag_eeBadScFilter"}, "Event cleaning filter");
 
@@ -9146,7 +9159,7 @@ void fulleventselectionAlgo::fulleventselection(){
   int ttbarCR_Selection = 0;
   int Year_Selection = 2017;
   int Systematic_Selection = 0;
-  int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
+  int Channel_Selection = 2; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
 
