@@ -149,33 +149,32 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 
 
 
-float N_SelectionCriteria_MC;
-float N_MET_And_LeptonSelection_MC; 
-float N_LeptonTriggersAndSelectionCriteria_MC;
-float N_MET_LeptonTriggers_SelectionCriteria_MC;
-float Eff_MC;
-float Eff_MET_LeptonTriggers_SelectionCriteria_MC;
-float Eff_LeptonTriggers_SelectionCriteria_MC;
-float Eff_MET_SelectionCriteria_MC;
-float Alpha_MC;
-float Eff_UpperUncert_MC;
-float Eff_LowerUncert_MC;
+double N_SelectionCriteria_MC;
+double N_MET_And_LeptonSelection_MC; 
+double N_LeptonTriggersAndSelectionCriteria_MC;
+double N_MET_LeptonTriggers_SelectionCriteria_MC;
+double Eff_MC;
+double Eff_MET_LeptonTriggers_SelectionCriteria_MC;
+double Eff_LeptonTriggers_SelectionCriteria_MC;
+double Eff_MET_SelectionCriteria_MC;
+double Alpha_MC;
+double Eff_UpperUncert_MC;
+double Eff_LowerUncert_MC;
 
+double N_SelectionCriteria_DATA; 
+double N_MET_And_LeptonSelection_DATA; 
+double N_LeptonTriggersAndSelectionCriteria_DATA; 
+double N_MET_LeptonTriggers_SelectionCriteria_DATA; 
+double Eff_DATA; 
+double Eff_MET_LeptonTriggers_SelectionCriteria_DATA;
+double Eff_LeptonTriggers_SelectionCriteria_DATA; 
+double Eff_MET_SelectionCriteria_DATA; 
+double Alpha_DATA; 
+double Eff_UpperUncert_DATA; 
+double Eff_LowerUncert_DATA; 
 
-float N_SelectionCriteria_DATA; 
-float N_MET_And_LeptonSelection_DATA; 
-float N_LeptonTriggersAndSelectionCriteria_DATA; 
-float N_MET_LeptonTriggers_SelectionCriteria_DATA; 
-float Eff_DATA; 
-float Eff_MET_LeptonTriggers_SelectionCriteria_DATA;
-float Eff_LeptonTriggers_SelectionCriteria_DATA; 
-float Eff_MET_SelectionCriteria_DATA; 
-float Alpha_DATA; 
-float Eff_UpperUncert_DATA; 
-float Eff_LowerUncert_DATA; 
-
-float TrigSF;
-float TrigSF_Uncert;
+double TrigSF;
+double TrigSF_Uncert;
 
 
 void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const int& NPLInt,     const int& SRInt,          const int& SBRInt, 
@@ -8594,8 +8593,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
 
   //Uncertainties in the trigger scale factors
-  float TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
-  float TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
+  double TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
+  double TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
 
 
   TrigSF_Uncert = 0.0;
