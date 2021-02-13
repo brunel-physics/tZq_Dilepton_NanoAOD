@@ -7977,6 +7977,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	if(InputTriggerSF_File == "Data"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
         else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";} 
+	else if(InputTriggerSF_File == "tZq"){TriggerSF_TextFiles = "TriggerSF_FinalSFAndUncerts_tZq_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
    	else{throw std::logic_error("Please choose an appropriate input text file for trigger SFs");}
 
    	int number_of_lines = 0;
@@ -8569,37 +8570,73 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::ofstream TriggerSFValues;
   TriggerSFValues.open(TriggerSFValuesFile.c_str());
 
-  TriggerSFValues << N_SelectionCriteria << '\n'
-                  << N_MET_And_SelectionCriteria << '\n'
-		  << N_LeptonTriggersAndSelectionCriteria << '\n'
-                  << N_MET_LeptonTriggers_SelectionCriteria << '\n'
-                  << Eff << '\n'
-                  << Alpha << '\n'
-                  << Eff_UpperUncert << '\n'
-                  << Eff_LowerUncert << '\n'
-                  << std::endl; 
+  if(ProcessInt == 119 || ProcessInt == 120){
 
-  if(ProcessInt == 119 || ProcessInt == 120){return;}
+  	TriggerSFValues << N_SelectionCriteria << '\n'
+                  	<< N_MET_And_SelectionCriteria << '\n'
+		  	<< N_LeptonTriggersAndSelectionCriteria << '\n'
+                  	<< N_MET_LeptonTriggers_SelectionCriteria << '\n'
+                  	<< Eff << '\n'
+                  	<< Alpha << '\n'
+                  	<< Eff_UpperUncert << '\n'
+                  	<< Eff_LowerUncert << '\n'
+                  	<< std::endl; 
+
+  	return;
+
+  }
+
+  double TrigSF_UpperUncert; double TrigSF_LowerUncert; 
 
   //Calculating the trigger scale factors
-  Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
-  Eff_UpperUncert_DATA = ( textfilereader2_TriggerSF("Data") ).at(6);
-  Eff_LowerUncert_DATA = ( textfilereader2_TriggerSF("Data") ).at(7);
+  if(ProcessInt == 0 && SystematicInt == 0 && NPLInt == 0 && SRInt == 1 && SBRInt == 1 && ZPlusJetsCRInt == 0 && ttbarCRInt == 0){
 
-  Eff_MC = ( textfilereader2_TriggerSF("MC") ).at(4);
-  Eff_UpperUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(6);
-  Eff_LowerUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(7);
+  	Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
+  	Eff_UpperUncert_DATA = ( textfilereader2_TriggerSF("Data") ).at(6);
+  	Eff_LowerUncert_DATA = ( textfilereader2_TriggerSF("Data") ).at(7);
 
-  TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
+  	Eff_MC = ( textfilereader2_TriggerSF("MC") ).at(4);
+  	Eff_UpperUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(6);
+  	Eff_LowerUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(7);
 
-  //Uncertainties in the trigger scale factors
-  double TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
-  double TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
+  	TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
+
+  	//Uncertainties in the trigger scale factors
+  	TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
+  	TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
+
+  	TrigSF_Uncert = 0.0;
+
+  	if(TrigSF_UpperUncert > TrigSF_LowerUncert){TrigSF_Uncert = TrigSF_UpperUncert;}
+  	else{TrigSF_Uncert = TrigSF_LowerUncert;}
+
+	std::string TriggerSFValueAndUncertsFile = "TriggerSF_FinalSFAndUncerts_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
+
+  	std::ofstream TriggerSFValueAndUncerts;
+  	TriggerSFValueAndUncerts.open(TriggerSFValueAndUncertsFile.c_str());
+
+	TriggerSFValueAndUncerts << "TrigSF = " << TrigSF << '\n'
+				 << "TrigSF_UpperUncert = " << TrigSF_UpperUncert << '\n'
+				 << "TrigSF_LowerUncert = " << TrigSF_LowerUncert << '\n' 
+				 << std::endl; 
 
 
-  TrigSF_Uncert = 0.0;
-  if (TrigSF_UpperUncert > TrigSF_LowerUncert){TrigSF_Uncert = TrigSF_UpperUncert;}
-  else{TrigSF_Uncert = TrigSF_LowerUncert;}
+  }
+
+  TrigSF = ( textfilereader2_TriggerSF("tZq") ).at(0);
+  TrigSF_UpperUncert = ( textfilereader2_TriggerSF("tZq") ).at(1);
+  TrigSF_LowerUncert = ( textfilereader2_TriggerSF("tZq") ).at(2);
+
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << "TrigSF = " << TrigSF << std::endl;
+  std::cout << "TrigSF_UpperUncert = " << TrigSF << std::endl;
+  std::cout << "TrigSF_LowerUncert = " << TrigSF << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
 
 
   //Z boson candidate reconstruction
