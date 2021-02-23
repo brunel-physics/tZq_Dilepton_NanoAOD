@@ -122,6 +122,9 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
 
   h_MC->SetAxisRange(0.5, 1.5, "Y");
   h_MC->GetYaxis()->SetTitleSize(0.05);
+  h_MC->GetXaxis()->SetLabelSize(0);
+
+  //if(VariableName == "Eta"){h_MC->SetAxisRange(-3.0, 3.0, "X");}
 
   h_MC->Draw();
   h_Data->Draw("SAME");
@@ -175,6 +178,8 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
   rp->GetXaxis()->SetTitle(xaxis_name.c_str());
   rp->SetMinimum(0.0);
   rp->SetMaximum(2.0);
+  rp->SetLineColor(4);
+  rp->SetMarkerColor(4);
   rp->Draw();
   c1->Update();
 
