@@ -42,6 +42,35 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
 
   if(year == "2016"){
 
+	NanoAOD_MCEff_ee = 0.970543; NanoAOD_MCEff_mumu = 0.976452; NanoAOD_MCEff_emu = 0;
+        NanoAOD_MCEff_UpUncert_ee = 0.008; NanoAOD_MCEff_UpUncert_mumu = 0.004; NanoAOD_MCEff_UpUncert_emu = 0;
+        NanoAOD_MCEff_DownUncert_ee = -0.008; NanoAOD_MCEff_DownUncert_mumu = -0.004; NanoAOD_MCEff_DownUncert_emu = 0;
+
+        NanoAOD_DataEff_ee = 0.972363; NanoAOD_DataEff_mumu = 0.959516; NanoAOD_DataEff_emu = 0;
+        NanoAOD_DataEff_UpUncert_ee = 0.003; NanoAOD_DataEff_UpUncert_mumu = 0.007; NanoAOD_DataEff_UpUncert_emu = 0;
+        NanoAOD_DataEff_DownUncert_ee = -0.002; NanoAOD_DataEff_DownUncert_mumu = -0.001; NanoAOD_DataEff_DownUncert_emu = 0;
+
+        NanoAOD_Alpha_ee = 0.999999; NanoAOD_Alpha_mumu = 0.999999; NanoAOD_Alpha_emu = 0;
+
+        NanoAOD_TriggerSF_ee = 1.00187; NanoAOD_TriggerSF_mumu = 0.982655; NanoAOD_TriggerSF_emu = 0;
+        NanoAOD_TriggerSF_UpUncert_ee = 0.003; NanoAOD_TriggerSF_UpUncert_mumu = 0.001; NanoAOD_TriggerSF_UpUncert_emu = 0;
+        NanoAOD_TriggerSF_DownUncert_ee = -0.0010; NanoAOD_TriggerSF_DownUncert_mumu = -0.001; NanoAOD_TriggerSF_DownUncert_emu = 0;
+
+
+        MiniAOD_MCEff_ee = 0.988; MiniAOD_MCEff_mumu = 0.992; MiniAOD_MCEff_emu = 0.977;
+        MiniAOD_MCEff_UpUncert_ee = 0.001; MiniAOD_MCEff_UpUncert_mumu = 0.001; MiniAOD_MCEff_UpUncert_emu = 0.005;
+        MiniAOD_MCEff_DownUncert_ee = -0.001; MiniAOD_MCEff_DownUncert_mumu = -0.001; MiniAOD_MCEff_DownUncert_emu = -0.005;
+
+        MiniAOD_DataEff_ee = 0.976; MiniAOD_DataEff_mumu = 0.985; MiniAOD_DataEff_emu = 0.964;
+        MiniAOD_DataEff_UpUncert_ee = 0.001; MiniAOD_DataEff_UpUncert_mumu = 0.001; MiniAOD_DataEff_UpUncert_emu = 0.011;
+        MiniAOD_DataEff_DownUncert_ee = -0.001; MiniAOD_DataEff_DownUncert_mumu = -0.001; MiniAOD_DataEff_DownUncert_emu = -0.011;
+
+        MiniAOD_Alpha_ee = 0.99890; MiniAOD_Alpha_mumu = 1.00151; MiniAOD_Alpha_emu = 0.98775;
+
+        MiniAOD_TriggerSF_ee = 0.987; MiniAOD_TriggerSF_mumu = 0.993; MiniAOD_TriggerSF_emu = 0.987;
+        MiniAOD_TriggerSF_UpUncert_ee = 0.001; MiniAOD_TriggerSF_UpUncert_mumu = 0.000; MiniAOD_TriggerSF_UpUncert_emu = 0.007;
+        MiniAOD_TriggerSF_DownUncert_ee = -0.001; MiniAOD_TriggerSF_DownUncert_mumu = -0.000; MiniAOD_TriggerSF_DownUncert_emu = -0.007;
+
 
   }
   else if(year == "2017"){
@@ -72,8 +101,8 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
         MiniAOD_Alpha_ee = 0.99695; MiniAOD_Alpha_mumu = 0.99982; MiniAOD_Alpha_emu = 0.99144;
 
         MiniAOD_TriggerSF_ee = 0.93106; MiniAOD_TriggerSF_mumu = 0.97170; MiniAOD_TriggerSF_emu = 0.95350;
-        MiniAOD_TriggerSF_UpUncert_ee = 0.00263; MiniAOD_TriggerSF_UpUncert_mumu = 0.00028; MiniAOD_TriggerSF_UpUncert_emu = 0.00562;
-        MiniAOD_TriggerSF_DownUncert_ee = 0.00263; MiniAOD_TriggerSF_DownUncert_mumu = 0.00028; MiniAOD_TriggerSF_DownUncert_emu = 0.00562;
+        MiniAOD_TriggerSF_UpUncert_ee = 0.001; MiniAOD_TriggerSF_UpUncert_mumu = 0.001; MiniAOD_TriggerSF_UpUncert_emu = 0.001;
+        MiniAOD_TriggerSF_DownUncert_ee = 0.001; MiniAOD_TriggerSF_DownUncert_mumu = 0.001; MiniAOD_TriggerSF_DownUncert_emu = 0.001;
 
 
   }
@@ -263,7 +292,7 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
 
 void TriggerSFComparison_MiniAndNanoAOD(){
 
-  //TriggerSFComparison_MiniAndNanoAOD2("2016");
+    TriggerSFComparison_MiniAndNanoAOD2("2016");
     TriggerSFComparison_MiniAndNanoAOD2("2017");
   
 }
