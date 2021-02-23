@@ -8,6 +8,7 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
 
   std::string ChannelString;
   std::string ChannelStringSymbol;
+  std::string VariableString;
   std::string xaxis_name;
   std::string GraphTitle;
   std::string MC_File_String;
@@ -28,8 +29,8 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
 
   if(VariableName != "Pt" && VariableName != "Eta"){throw std::logic_error("ERROR: VariableName must be Pt or Eta");}
 
-  if(VariableName == "Pt"){xaxis_name = "p_{T} [GeV]";}
-  else{xaxis_name = "#eta";}
+  if(VariableName == "Pt"){xaxis_name = "p_{T} [GeV]"; VariableString = "p_{T}";}
+  else{xaxis_name = "#eta"; VariableString = "#eta";}
 
   switch(YearInt){
 
@@ -57,8 +58,8 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
 
   if(WhichLepton != "Leading" && WhichLepton != "Subleading"){throw std::logic_error("ERROR: WhichLepton must be Leading or Subleading");}
 
-  if(WhichLepton == "Leading"){GraphTitle = "Leading lepton " + xaxis_name + " (" + ChannelStringSymbol + ", " + YearString + ")";}
-  else{GraphTitle = "Subleading lepton " + xaxis_name + " (" + ChannelStringSymbol + ", " + YearString + ")";}
+  if(WhichLepton == "Leading"){GraphTitle = "Leading lepton " + VariableString + " (" + ChannelStringSymbol + ", " + YearString + ")";}
+  else{GraphTitle = "Subleading lepton " + VariableString + " (" + ChannelStringSymbol + ", " + YearString + ")";}
 
 
   TFile *MCFile = TFile::Open(MC_File_String.c_str(), "READ");
@@ -108,7 +109,6 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
   pad->SetTicky(0);
   pad->Draw();
   pad->cd();
-  gPad->BuildLegend();
 
   h_MC->SetMarkerColor(2); //kRed
   h_MC->SetLineColor(2);
@@ -128,6 +128,21 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
 
   h_MC->Draw();
   h_Data->Draw("SAME");
+
+  TLegend *l = gPad->BuildLegend();
+  TList *p = l->GetListOfPrimitives();
+
+  TIter next(p);
+  TObject *obj;
+  TLegendEntry *le;
+  int i = 0;
+
+  while ((obj = next())) {
+     le = (TLegendEntry*)obj;
+     i++;
+     if (i==1) le->SetLabel("MC");
+     if (i==2) le->SetLabel("Data");
+  }
 
   TPaveText* ptext1 = new TPaveText(0.1, 1.0, 0.6, 0.94, "NDCCBR");
   TText *t1=ptext1->AddText(GraphTitle.c_str());
