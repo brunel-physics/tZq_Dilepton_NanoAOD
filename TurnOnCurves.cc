@@ -111,15 +111,20 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
   gPad->BuildLegend();
 
   h_MC->SetMarkerColor(2); //kRed
-  h_MC->SetMarkerStyle(20);
+  h_MC->SetLineColor(2);
+  h_MC->SetMarkerStyle(2);
   h_MC->SetMarkerSize(1.0);
   h_MC->GetYaxis()->SetTitle("Efficiency");
   h_Data->SetMarkerColor(1); //kBlack
-  h_Data->SetMarkerStyle(20);
+  h_Data->SetLineColor(1);
+  h_Data->SetMarkerStyle(2);
   h_Data->SetMarkerSize(1.0);
 
-  h_MC->Draw("HIST");
-  h_Data->Draw("HIST PSAME");
+  h_MC->SetAxisRange(0.5, 1.5, "Y");
+  h_MC->GetYaxis()->SetTitleSize(0.05);
+
+  h_MC->Draw();
+  h_Data->Draw("SAME");
 
 
   TPaveText* ptext1 = new TPaveText(0.1, 1.0, 0.6, 0.94, "NDCCBR");
@@ -168,8 +173,8 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
   rp->GetYaxis()->SetTitleOffset(L / W * 3.);
   rp->GetYaxis()->CenterTitle();
   rp->GetXaxis()->SetTitle(xaxis_name.c_str());
-  rp->SetMinimum(0.5);
-  rp->SetMaximum(1.5);
+  rp->SetMinimum(0.0);
+  rp->SetMaximum(2.0);
   rp->Draw();
   c1->Update();
 
