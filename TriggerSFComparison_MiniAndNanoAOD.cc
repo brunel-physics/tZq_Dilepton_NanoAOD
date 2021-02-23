@@ -37,8 +37,8 @@ float MiniAOD_TriggerSF_DownUncert_ee, MiniAOD_TriggerSF_DownUncert_mumu, MiniAO
 
 void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
 
-  const int n = 3;
-  double Channels[] = {1, 2, 3};
+  const int n = 2;
+  double Channels[] = {1, 2/*, 3*/};
 
   if(year == "2016"){
 
@@ -109,37 +109,37 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
   else{std::cout << "ERROR: year must be 2016 or 2017" << std::endl;}
 
 
-  double NanoAOD_YValues_MCEff[] = {NanoAOD_MCEff_ee, NanoAOD_MCEff_mumu, NanoAOD_MCEff_emu};
-  double NanoAOD_YValues_ErrorsDown_MCEff[] = {NanoAOD_MCEff_DownUncert_ee, NanoAOD_MCEff_DownUncert_mumu, NanoAOD_MCEff_DownUncert_emu};
-  double NanoAOD_YValues_ErrorsUp_MCEff[] = {NanoAOD_MCEff_UpUncert_ee, NanoAOD_MCEff_UpUncert_mumu, NanoAOD_MCEff_UpUncert_emu};
+  double NanoAOD_YValues_MCEff[] = {NanoAOD_MCEff_ee, NanoAOD_MCEff_mumu/*, NanoAOD_MCEff_emu*/};
+  double NanoAOD_YValues_ErrorsDown_MCEff[] = {NanoAOD_MCEff_DownUncert_ee, NanoAOD_MCEff_DownUncert_mumu/*, NanoAOD_MCEff_DownUncert_emu*/};
+  double NanoAOD_YValues_ErrorsUp_MCEff[] = {NanoAOD_MCEff_UpUncert_ee, NanoAOD_MCEff_UpUncert_mumu/*, NanoAOD_MCEff_UpUncert_emu*/};
 
-  double MiniAOD_YValues_MCEff[] = {MiniAOD_MCEff_ee, MiniAOD_MCEff_mumu, MiniAOD_MCEff_emu};
-  double MiniAOD_YValues_ErrorsDown_MCEff[] = {MiniAOD_MCEff_DownUncert_ee, MiniAOD_MCEff_DownUncert_mumu, MiniAOD_MCEff_DownUncert_emu};
-  double MiniAOD_YValues_ErrorsUp_MCEff[] = {MiniAOD_MCEff_UpUncert_ee, MiniAOD_MCEff_UpUncert_mumu, MiniAOD_MCEff_UpUncert_emu};
+  double MiniAOD_YValues_MCEff[] = {MiniAOD_MCEff_ee, MiniAOD_MCEff_mumu/*, MiniAOD_MCEff_emu*/};
+  double MiniAOD_YValues_ErrorsDown_MCEff[] = {MiniAOD_MCEff_DownUncert_ee, MiniAOD_MCEff_DownUncert_mumu/*, MiniAOD_MCEff_DownUncert_emu*/};
+  double MiniAOD_YValues_ErrorsUp_MCEff[] = {MiniAOD_MCEff_UpUncert_ee, MiniAOD_MCEff_UpUncert_mumu/*, MiniAOD_MCEff_UpUncert_emu*/};
 
-  double NanoAOD_YValues_DataEff[] = {NanoAOD_DataEff_ee, NanoAOD_DataEff_mumu, NanoAOD_DataEff_emu};
-  double NanoAOD_YValues_ErrorsDown_DataEff[] = {NanoAOD_DataEff_DownUncert_ee, NanoAOD_DataEff_DownUncert_mumu, NanoAOD_DataEff_DownUncert_emu};
-  double NanoAOD_YValues_ErrorsUp_DataEff[] = {NanoAOD_DataEff_UpUncert_ee, NanoAOD_DataEff_UpUncert_mumu, NanoAOD_DataEff_UpUncert_emu};
+  double NanoAOD_YValues_DataEff[] = {NanoAOD_DataEff_ee, NanoAOD_DataEff_mumu/*, NanoAOD_DataEff_emu*/};
+  double NanoAOD_YValues_ErrorsDown_DataEff[] = {NanoAOD_DataEff_DownUncert_ee, NanoAOD_DataEff_DownUncert_mumu/*, NanoAOD_DataEff_DownUncert_emu*/};
+  double NanoAOD_YValues_ErrorsUp_DataEff[] = {NanoAOD_DataEff_UpUncert_ee, NanoAOD_DataEff_UpUncert_mumu/*, NanoAOD_DataEff_UpUncert_emu*/};
 
-  double MiniAOD_YValues_DataEff[] = {MiniAOD_DataEff_ee, MiniAOD_DataEff_mumu, MiniAOD_DataEff_emu};
-  double MiniAOD_YValues_ErrorsDown_DataEff[] = {MiniAOD_DataEff_DownUncert_ee, MiniAOD_DataEff_DownUncert_mumu, MiniAOD_DataEff_DownUncert_emu};
-  double MiniAOD_YValues_ErrorsUp_DataEff[] = {MiniAOD_DataEff_UpUncert_ee, MiniAOD_DataEff_UpUncert_mumu, MiniAOD_DataEff_UpUncert_emu};
+  double MiniAOD_YValues_DataEff[] = {MiniAOD_DataEff_ee, MiniAOD_DataEff_mumu/*, MiniAOD_DataEff_emu*/};
+  double MiniAOD_YValues_ErrorsDown_DataEff[] = {MiniAOD_DataEff_DownUncert_ee, MiniAOD_DataEff_DownUncert_mumu/*, MiniAOD_DataEff_DownUncert_emu*/};
+  double MiniAOD_YValues_ErrorsUp_DataEff[] = {MiniAOD_DataEff_UpUncert_ee, MiniAOD_DataEff_UpUncert_mumu/*, MiniAOD_DataEff_UpUncert_emu*/};
   
-  double NanoAOD_YValues_Sf[] = {NanoAOD_TriggerSF_ee, NanoAOD_TriggerSF_mumu, NanoAOD_TriggerSF_emu};
-  double NanoAOD_YValues_ErrorsDown_Sf[] = {NanoAOD_TriggerSF_DownUncert_ee, NanoAOD_TriggerSF_DownUncert_mumu, NanoAOD_TriggerSF_DownUncert_emu};
-  double NanoAOD_YValues_ErrorsUp_Sf[] = {NanoAOD_TriggerSF_UpUncert_ee, NanoAOD_TriggerSF_UpUncert_mumu, NanoAOD_TriggerSF_UpUncert_emu};
+  double NanoAOD_YValues_Sf[] = {NanoAOD_TriggerSF_ee, NanoAOD_TriggerSF_mumu/*, NanoAOD_TriggerSF_emu*/};
+  double NanoAOD_YValues_ErrorsDown_Sf[] = {NanoAOD_TriggerSF_DownUncert_ee, NanoAOD_TriggerSF_DownUncert_mumu/*, NanoAOD_TriggerSF_DownUncert_emu*/};
+  double NanoAOD_YValues_ErrorsUp_Sf[] = {NanoAOD_TriggerSF_UpUncert_ee, NanoAOD_TriggerSF_UpUncert_mumu/*, NanoAOD_TriggerSF_UpUncert_emu*/};
 
-  double MiniAOD_YValues_Sf[] = {MiniAOD_TriggerSF_ee, MiniAOD_TriggerSF_mumu, MiniAOD_TriggerSF_emu};
-  double MiniAOD_YValues_ErrorsDown_Sf[] = {MiniAOD_TriggerSF_DownUncert_ee, MiniAOD_TriggerSF_DownUncert_mumu, MiniAOD_TriggerSF_DownUncert_emu};
-  double MiniAOD_YValues_ErrorsUp_Sf[] = {MiniAOD_TriggerSF_UpUncert_ee, MiniAOD_TriggerSF_UpUncert_mumu, MiniAOD_TriggerSF_UpUncert_emu};
+  double MiniAOD_YValues_Sf[] = {MiniAOD_TriggerSF_ee, MiniAOD_TriggerSF_mumu/*, MiniAOD_TriggerSF_emu*/};
+  double MiniAOD_YValues_ErrorsDown_Sf[] = {MiniAOD_TriggerSF_DownUncert_ee, MiniAOD_TriggerSF_DownUncert_mumu/*, MiniAOD_TriggerSF_DownUncert_emu*/};
+  double MiniAOD_YValues_ErrorsUp_Sf[] = {MiniAOD_TriggerSF_UpUncert_ee, MiniAOD_TriggerSF_UpUncert_mumu/*, MiniAOD_TriggerSF_UpUncert_emu*/};
 
-  double NanoAOD_YValues_Alpha[] = {NanoAOD_Alpha_ee, NanoAOD_Alpha_mumu, NanoAOD_Alpha_emu};
-  double NanoAOD_YValues_ErrorsDown_Alpha[] = {0, 0, 0};
-  double NanoAOD_YValues_ErrorsUp_Alpha[] = {0, 0, 0};
+  double NanoAOD_YValues_Alpha[] = {NanoAOD_Alpha_ee, NanoAOD_Alpha_mumu/*, NanoAOD_Alpha_emu*/};
+  double NanoAOD_YValues_ErrorsDown_Alpha[] = {0, 0/*, 0*/};
+  double NanoAOD_YValues_ErrorsUp_Alpha[] = {0, 0/*, 0*/};
 
-  double MiniAOD_YValues_Alpha[] = {MiniAOD_Alpha_ee, MiniAOD_Alpha_mumu, MiniAOD_Alpha_emu};
-  double MiniAOD_YValues_ErrorsDown_Alpha[] = {0, 0, 0};
-  double MiniAOD_YValues_ErrorsUp_Alpha[] = {0, 0, 0};
+  double MiniAOD_YValues_Alpha[] = {MiniAOD_Alpha_ee, MiniAOD_Alpha_mumu/*, MiniAOD_Alpha_emu*/};
+  double MiniAOD_YValues_ErrorsDown_Alpha[] = {0, 0/*, 0*/};
+  double MiniAOD_YValues_ErrorsUp_Alpha[] = {0, 0/*, 0*/};
 
 
   TGraphAsymmErrors* h_NanoAOD_MCEff = new TGraphAsymmErrors(n, Channels, NanoAOD_YValues_MCEff, 0, 0, NanoAOD_YValues_ErrorsDown_MCEff, NanoAOD_YValues_ErrorsUp_MCEff);
@@ -167,8 +167,9 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
   gr->GetXaxis()->SetTitle("Channel");
   gr->GetXaxis()->SetTitleOffset(1.5);
   gr->GetXaxis()->SetBinLabel(1, "ee");
-  gr->GetXaxis()->SetBinLabel(50, "mumu");
-  gr->GetXaxis()->SetBinLabel(100, "emu");
+  gr->GetXaxis()->SetBinLabel(100, "mumu");
+  //gr->GetXaxis()->SetBinLabel(50, "mumu");
+  //gr->GetXaxis()->SetBinLabel(100, "emu");
 
   gr->Draw("AP");
   c1->BuildLegend();
@@ -203,8 +204,9 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
   gr2->GetXaxis()->SetTitle("Channel");
   gr2->GetXaxis()->SetTitleOffset(1.5);
   gr2->GetXaxis()->SetBinLabel(1, "ee");
-  gr2->GetXaxis()->SetBinLabel(50, "mumu");
-  gr2->GetXaxis()->SetBinLabel(100, "emu");
+  gr2->GetXaxis()->SetBinLabel(100, "mumu");
+  //gr2->GetXaxis()->SetBinLabel(50, "mumu");
+  //gr2->GetXaxis()->SetBinLabel(100, "emu");
   gr2->Draw("AP");
 
   c2->BuildLegend(0.2,0.2,0.5,0.4);
@@ -238,8 +240,9 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
   gr3->GetXaxis()->SetTitle("Channel");
   gr3->GetXaxis()->SetTitleOffset(1.5);
   gr3->GetXaxis()->SetBinLabel(1, "ee");
-  gr3->GetXaxis()->SetBinLabel(50, "mumu");
-  gr3->GetXaxis()->SetBinLabel(100, "emu");
+  gr3->GetXaxis()->SetBinLabel(100, "mumu");
+  //gr3->GetXaxis()->SetBinLabel(50, "mumu");
+  //gr3->GetXaxis()->SetBinLabel(100, "emu");
 
   gr3->Draw("AP");
   c3->BuildLegend(0.6,0.1, 0.9,0.3);
@@ -274,8 +277,9 @@ void TriggerSFComparison_MiniAndNanoAOD2(const std::string& year){
   gr4->GetXaxis()->SetTitle("Channel");
   gr4->GetXaxis()->SetTitleOffset(1.5);
   gr4->GetXaxis()->SetBinLabel(1, "ee");
-  gr4->GetXaxis()->SetBinLabel(50, "mumu");
-  gr4->GetXaxis()->SetBinLabel(100, "emu");
+  gr4->GetXaxis()->SetBinLabel(100, "mumu");
+  //gr4->GetXaxis()->SetBinLabel(50, "mumu");
+  //gr4->GetXaxis()->SetBinLabel(100, "emu");
 
   gr4->Draw("AP");
   c4->BuildLegend();
