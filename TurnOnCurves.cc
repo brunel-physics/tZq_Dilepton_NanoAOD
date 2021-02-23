@@ -28,7 +28,7 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
 
   if(VariableName != "Pt" && VariableName != "Eta"){throw std::logic_error("ERROR: VariableName must be Pt or Eta");}
 
-  if(VariableName == "Pt"){xaxis_name = "p_{T}";}
+  if(VariableName == "Pt"){xaxis_name = "p_{T} [GeV]";}
   else{xaxis_name = "#eta";}
 
   switch(YearInt){
@@ -129,14 +129,13 @@ void TurnOnCurvesProducer(const int& YearInt, const int& ChannelInt, const strin
   h_MC->Draw();
   h_Data->Draw("SAME");
 
-
   TPaveText* ptext1 = new TPaveText(0.1, 1.0, 0.6, 0.94, "NDCCBR");
   TText *t1=ptext1->AddText(GraphTitle.c_str());
   ptext1->SetFillStyle(0);
   ptext1->SetBorderSize(0);
   ptext1->Draw();
-
-  TPaveText* ptext3 = new TPaveText(0.7, 1.0, 0.95, 0.7, "NDCCBR");
+				//0.7 1.0 0.95 0.7
+  TPaveText* ptext3 = new TPaveText(0.7, 0.95, 1.0,  1.0, "NDCCBR");
   TText *t3=ptext3->AddText("CMS Work in progress");
   t3->SetTextFont(52);
   ptext3->SetFillStyle(0);
