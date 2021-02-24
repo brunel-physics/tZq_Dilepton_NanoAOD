@@ -553,7 +553,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	case 0: SampleType = "data";
 		JetMassInput = "Jet_mass"; JetPtInput = "Jet_pt"; JetEtaInput = "Jet_eta"; JetPhiInput = "Jet_phi"; 
-		GeneratorWeightString = " ";
+		GeneratorWeightString = "CaloMET_pt"; //input is not used for the function for data, so have put anything here
 		break;
 
 	case 1: SampleType = "MC";
@@ -2528,7 +2528,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         
   }
 
-  std::cout << "before filter_function" << std::endl;
 
   //Lambda functions start here
   //Lambda function for the event cleaning
@@ -3826,12 +3825,12 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 					   (HLT_IsoMu24 <= 0 || //single muon
 				 	    //HLT_IsoMu24_eta2p1 <= 0 || //single muon //not in 2016
 	 			 	    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-	 			 	    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon //not in 2016
-	 			 	    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
-	 			 	    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in all 2016 runs)
-	 			 	    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
+	 			 	    //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon //not in 2016
+	 			 	    //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
+	 			 	    //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in all 2016 runs)
+	 			 	    //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
 	 			 	    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-	 			 	    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron (not in 2016)
+	 			 	    //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron (not in 2016)
 	 			 	    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
 				
 				case 2017: return
@@ -3875,9 +3874,10 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                 case 2016: return //single or double muon and not any of the others
 
 					   (HLT_IsoMu24 > 0 || //single muon
-         				    HLT_IsoMu24_eta2p1 > 0 || //single muon //not in 2016
-         				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 || //double muon
-         				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //double muon ..not in 2016
+         				    //HLT_IsoMu24_eta2p1 > 0 || //single muon //not in 2016
+         				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ > 0 //double muon
+         				    //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 > 0) //double muon ..not in 2016
+					    )
 
 					    &&
 
@@ -3885,11 +3885,11 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
          				   HLT_Ele27_WPTight_Gsf <= 0 || //single electron
          				   HLT_Ele32_eta2p1_WPTight_Gsf <= 0 || //single electron
          				   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //double electron 
-         				   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
-         				   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in all 2016 runs)
-         				   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
+         				   //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
+         				   //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in all 2016 runs)
+         				   //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ <= 0 || //muon electron (not in 2016)
          			           HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron
-         				   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron (not in 2016)
+         				   //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0 || //muon electron (not in 2016)
         				   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL <= 0); //muon electron
 
                                 case 2017: return
@@ -3931,21 +3931,21 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                                 case 2016: return 
 
 					   (HLT_IsoMu24 > 0 || //single muon
-         				    HLT_IsoMu24_eta2p1 > 0 || //single muon //not in 2016
+         				    //HLT_IsoMu24_eta2p1 > 0 || //single muon //not in 2016
 	 				    HLT_Ele25_eta2p1_WPTight_Gsf > 0 || //single electron 
          				    HLT_Ele27_WPTight_Gsf > 0 || //single electron
          				    HLT_Ele32_eta2p1_WPTight_Gsf > 0 || //single electron
-	 				    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in 2016)
-         				    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in all 2016 runs)
-         				    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in 2016)
+	 				    //HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in 2016)
+         				    //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in all 2016 runs)
+         				    //HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ > 0 || //muon electron (not in 2016)
          				    HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron
-         				    HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron (not in 2016)
+         				    //HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0 || //muon electron (not in 2016)
          				    HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL > 0) //muon electron
 
          				    &&
 
          				   (HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ <= 0 || //double muon
-          				    HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon //not in 2016
+          				    //HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8 <= 0 || //double muon //not in 2016
           				    HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ <= 0); //double electron
 
                                 case 2017: return 
@@ -7951,7 +7951,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	std::string TriggerSF_TextFiles;
 
    	if(InputTriggerSF_File == "Data"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
-   	else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
+   	else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_MC_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
+	else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSF_FinalSFAndUncerts_tZq_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
    	else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
 
 
@@ -7976,7 +7977,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
    	std::string TriggerSF_TextFiles;
 
 	if(InputTriggerSF_File == "Data"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
-        else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";} 
+        else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_MC_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";} 
 	else if(InputTriggerSF_File == "tZq"){TriggerSF_TextFiles = "TriggerSF_FinalSFAndUncerts_tZq_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
    	else{throw std::logic_error("Please choose an appropriate input text file for trigger SFs");}
 
@@ -8021,24 +8022,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
         	SumOfSigns_GenWeight += abs(h_GenWeights->GetXaxis()->GetBinCenter(h_GenWeights->GetBinContent(i)));
         	SumOfGenWeights += h_GenWeights->GetXaxis()->GetBinCenter(h_GenWeights->GetBinContent(i));
 
-        	std::cout << '\n' << std::endl;
-        	std::cout << '\n' << std::endl;
-       	 	std::cout << "SumOfSigns_GenWeight = " << SumOfSigns_GenWeight << std::endl;
-        	std::cout << "SumOfGenWeights = " << SumOfGenWeights << std::endl;
-        	std::cout << '\n' << std::endl;
-        	std::cout << '\n' << std::endl;
-
   	}
 
   	float gen_weightSF = SumOfSigns_GenWeight / SumOfGenWeights;
-
-  	std::cout << '\n' << std::endl;
-  	std::cout << '\n' << std::endl;
-  	std::cout << "SumOfSigns_GenWeight = " << SumOfSigns_GenWeight << std::endl;
-  	std::cout << "SumOfGenWeights = " << SumOfGenWeights << std::endl;
-  	std::cout << "gen_weightSF = " << gen_weightSF << std::endl;
-  	std::cout << '\n' << std::endl;
-  	std::cout << '\n' << std::endl;
 
   }
   else{gen_weightSF = 1;}
@@ -8214,7 +8200,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFile.c_str());
+  //auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFile.c_str());
 
 
   //Calculating the trigger scale factors
@@ -8238,12 +8224,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 				   Lepton_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
 							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-							      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", 		    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
+							      "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ", 		    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
 							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",	    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-							      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+							      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
 							      "HLT_Ele25_eta2p1_WPTight_Gsf", 	     		    "HLT_Ele27_WPTight_Gsf",
 							      "HLT_Ele32_eta2p1_WPTight_Gsf",	     		    "HLT_IsoMu24",
-							      "HLT_IsoMu24_eta2p1",		     		    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",	    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
 							      "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
 							      "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ", 	    "event"}; 
 
@@ -8318,13 +8304,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 				  Lepton_Triggers_Strings = {"HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                              "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",
-                                                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
-                                                              "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                              "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",                "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+                                                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
                                                               "HLT_Ele25_eta2p1_WPTight_Gsf",                       "HLT_Ele27_WPTight_Gsf",
                                                               "HLT_Ele32_eta2p1_WPTight_Gsf",                       "HLT_IsoMu24",
-                                                              "HLT_IsoMu24_eta2p1",                                 "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
-                                                              "HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",    "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
+                                                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+                                                              "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",
                                                               "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",          "event"};
 
 
@@ -8544,33 +8530,29 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	TurnOnCurvesFile->Close();
 
-  }
 
-
-  std::string TriggerSFValuesFileWithNames = "TriggerSFValues_WithNames" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+         std::string TriggerSFValuesFileWithNames = "TriggerSFValues_WithNames" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                              SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  std::ofstream TriggerSFValuesWithNames;
-  TriggerSFValuesWithNames.open(TriggerSFValuesFileWithNames.c_str());
+        std::ofstream TriggerSFValuesWithNames;
+        TriggerSFValuesWithNames.open(TriggerSFValuesFileWithNames.c_str());
 
-  TriggerSFValuesWithNames << "N_SelectionCriteria = " << N_SelectionCriteria << '\n'
-		           << "N_MET_And_SelectionCriteria = " << N_MET_And_SelectionCriteria << '\n'
-			   << "N_LeptonTriggersAndSelectionCriteria = " << N_LeptonTriggersAndSelectionCriteria << '\n'
-		           << "N_MET_LeptonTriggers_SelectionCriteria = " << N_MET_LeptonTriggers_SelectionCriteria << '\n'
-		           << "Eff = " << Eff << '\n'
-                           << "Alpha = " << Alpha << '\n'
-                           << "Eff_UpperUncert = " << Eff_UpperUncert << '\n'
-		           << "Eff_LowerUncert = " << Eff_LowerUncert << '\n'
-   		           << std::endl;
+  	TriggerSFValuesWithNames << "N_SelectionCriteria = " << N_SelectionCriteria << '\n'
+		                 << "N_MET_And_SelectionCriteria = " << N_MET_And_SelectionCriteria << '\n'
+			         << "N_LeptonTriggersAndSelectionCriteria = " << N_LeptonTriggersAndSelectionCriteria << '\n'
+		                 << "N_MET_LeptonTriggers_SelectionCriteria = " << N_MET_LeptonTriggers_SelectionCriteria << '\n'
+		                 << "Eff = " << Eff << '\n'
+                                 << "Alpha = " << Alpha << '\n'
+                                 << "Eff_UpperUncert = " << Eff_UpperUncert << '\n'
+		                 << "Eff_LowerUncert = " << Eff_LowerUncert << '\n'
+   		                 << std::endl;
 
 
-  std::string TriggerSFValuesFile = "TriggerSFValues" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+  	std::string TriggerSFValuesFile = "TriggerSFValues" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                      SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  std::ofstream TriggerSFValues;
-  TriggerSFValues.open(TriggerSFValuesFile.c_str());
-
-  if(ProcessInt == 119 || ProcessInt == 120){
+  	std::ofstream TriggerSFValues;
+  	TriggerSFValues.open(TriggerSFValuesFile.c_str());
 
   	TriggerSFValues << N_SelectionCriteria << '\n'
                   	<< N_MET_And_SelectionCriteria << '\n'
@@ -8669,7 +8651,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string ZCandidateRecoFile = "ZCandidateReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
   
-  auto Snapshot_ZCandidateReco = d_ZCandidateReco.Snapshot("Events", ZCandidateRecoFile.c_str());
+  //auto Snapshot_ZCandidateReco = d_ZCandidateReco.Snapshot("Events", ZCandidateRecoFile.c_str());
 
   //Jet selection
   auto d_JetSelection = d_ZCandidateReco.Define("sJER_Nominal", SJER_Nominal_Function, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
@@ -8741,7 +8723,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string JetSelectionFile = "JetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                  SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
   
-  auto Snapshot_JetSelection = d_JetSelection.Snapshot("Events", JetSelectionFile.c_str());
+  //auto Snapshot_JetSelection = d_JetSelection.Snapshot("Events", JetSelectionFile.c_str());
 
 
   //B jet selection
@@ -8769,7 +8751,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string BJetSelectionFile = "BJetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                  SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_BJetSelection = d_BJetSelection.Snapshot("Events", BJetSelectionFile.c_str());
+  //auto Snapshot_BJetSelection = d_BJetSelection.Snapshot("Events", BJetSelectionFile.c_str());
 
 
   //For the b-tagging efficiencies
@@ -8880,7 +8862,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string WCandRecoFile = "WCandReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                               SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_WCandReco = d_WCandReco.Snapshot("Events", WCandRecoFile.c_str());
+  //auto Snapshot_WCandReco = d_WCandReco.Snapshot("Events", WCandRecoFile.c_str());
 
 
   //Reconstructing the top quark candidate
@@ -8948,7 +8930,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string TopCandRecoFile = "TopCandReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                 SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_TopCandReco = d_TopCandReco.Snapshot("Events", TopCandRecoFile.c_str());
+  //auto Snapshot_TopCandReco = d_TopCandReco.Snapshot("Events", TopCandRecoFile.c_str());
 
 
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
@@ -8996,7 +8978,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string EventWeightFile = "EventWeight_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                 SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_EventWeight = d_EventWeightDefines.Snapshot("Events", EventWeightFile.c_str());
+  //auto Snapshot_EventWeight = d_EventWeightDefines.Snapshot("Events", EventWeightFile.c_str());
 
   if(ProcessInt == 0 && SystematicInt == 0){
 
@@ -9091,8 +9073,43 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
 
   auto d_Blinded = d_Blinding.Define("AfterChi2Cut", Chi2Cut, {"chi2"}).Filter(Chi2Cut, {"chi2"});
-  auto colNames = d_Blinding.GetDefinedColumnNames();
-  const auto N_Columns = colNames.size();
+
+  //Cut flow report
+  auto allCutsReport = d.Report();
+  std::ofstream CutFlowReport;
+  std::string CutFlowReportString = "CutFlowReport_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                    SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt"; 
+
+  CutFlowReport.open(CutFlowReportString.c_str());
+
+  for(auto&& cutInfo: allCutsReport){
+        CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
+  }
+
+
+
+  //Saving info needed for NPL estimation
+  if( (Process == "tZq"                     || Process == "tHq"                     || Process == "ttbarV_ttWJetsToLNu" || Process == "ttbarV_ttWJetsToLNu_ext" ||
+       Process == "ttbarV_ttWJetsToQQ"      || Process == "ttbarV_ttZToLL"          || Process == "ttbarV_ttZToLLNuNu"  || Process == "ttbarV_ttZToLLNuNu_ext"  ||
+       Process == "ttbarV_ttZToLLNuNu_ext2" || Process == "ttbarV_ttZToLLNuNu_ext3" || Process == "ttbarV_ttZToQQ"      || Process == "ttbarV_ttZToQQ_ext"      ||
+       Process == "VV_WZTo3lNu"             || Process == "VV_WZTo1l1Nu2Q") && Systematic == "Nominal"){
+
+        auto h_OS_MC = d_Blinded.Histo1D("OppositeSignNonPrompt", "EventWeight");
+        auto h_SS_MC = d_Blinded.Histo1D("SameSignNonPrompt", "EventWeight");
+        int N_0S_MC = h_OS_MC->GetEntries();
+        int N_SS_MC = h_SS_MC->GetEntries();
+
+        std::ofstream NPLInfoFile;
+        std::string NPLInfoString = "NPLInfo_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                    SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
+
+        NPLInfoFile.open(NPLInfoString.c_str());
+        NPLInfoFile << N_0S_MC << std::endl;
+        NPLInfoFile << N_SS_MC << std::endl;
+
+  }
+ 
+  //Saving weighted histograms to an output root file
 
   std::string OutRootFileStart;
 
@@ -9101,6 +9118,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   std::string OutRootFile = OutRootFileStart + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                             SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
+
+  auto Snapshot_WeightedHistos = d_Blinded.Snapshot("Events", OutRootFile.c_str());
+
+
+  /*
+  auto colNames = d_Blinding.GetDefinedColumnNames();
+  const auto N_Columns = colNames.size();
 
   TFile * output = new TFile(OutRootFile.c_str(), "RECREATE");
   output->cd();
@@ -9143,42 +9167,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }
 
+
   output->Close();	
 
-
-  //Cut flow report
-  auto allCutsReport = d.Report();
-  std::ofstream CutFlowReport;
-  std::string CutFlowReportString = "CutFlowReport_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                    SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt"; 
-
-  CutFlowReport.open(CutFlowReportString.c_str());
-
-  for(auto&& cutInfo: allCutsReport){
-  	CutFlowReport << cutInfo.GetName() << '\t' << cutInfo.GetAll() << '\t' << cutInfo.GetPass() << '\t' << cutInfo.GetEff() << " %" << std::endl;
-  }
-
-
-  if( (Process == "tZq"                     || Process == "tHq"                     || Process == "ttbarV_ttWJetsToLNu" || Process == "ttbarV_ttWJetsToLNu_ext" || 
-       Process == "ttbarV_ttWJetsToQQ"      || Process == "ttbarV_ttZToLL"          || Process == "ttbarV_ttZToLLNuNu"  || Process == "ttbarV_ttZToLLNuNu_ext"  || 
-       Process == "ttbarV_ttZToLLNuNu_ext2" || Process == "ttbarV_ttZToLLNuNu_ext3" || Process == "ttbarV_ttZToQQ"	|| Process == "ttbarV_ttZToQQ_ext"      || 
-       Process == "VV_WZTo3lNu"	            || Process == "VV_WZTo1l1Nu2Q") && Systematic == "Nominal"){
-
-	auto h_OS_MC = d_Blinded.Histo1D("OppositeSignNonPrompt", "EventWeight");
-	auto h_SS_MC = d_Blinded.Histo1D("SameSignNonPrompt", "EventWeight"); 
-	int N_0S_MC = h_OS_MC->GetEntries();
-	int N_SS_MC = h_SS_MC->GetEntries(); 
-
-	std::ofstream NPLInfoFile;
-	std::string NPLInfoString = "NPLInfo_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                    SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
-
-	NPLInfoFile.open(NPLInfoString.c_str());
-	NPLInfoFile << N_0S_MC << std::endl;
-	NPLInfoFile << N_SS_MC << std::endl;
-
-  }
-
+*/
 
 }
 
@@ -9195,7 +9187,7 @@ void fulleventselectionAlgo::fulleventselection(){
   int ttbarCR_Selection = 0;
   int Year_Selection = 2017;
   int Systematic_Selection = 0;
-  int Channel_Selection = 2; //1 for ee, 2 for mumu, 3 for emu
+  int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
 
 
