@@ -7521,19 +7521,19 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  float SumOfSigns_GenWeight;
-  float SumOfGenWeights;
-  float gen_weightSF;
+  double SumOfSigns_GenWeight;
+  double SumOfGenWeights;
+  double gen_weightSF;
 
   auto GeneratorWeight{[&MCInt, &SystematicInt, &gen_weightSF](const float& InputGenWeight){
 
 	std::cout << "print 147" << std::endl;
 
-	float CalculatedGenWeight;
+	double CalculatedGenWeight;
 
         switch(MCInt){
 
-		case 0: CalculatedGenWeight = 1; break;
+		case 0: CalculatedGenWeight = 1.0; break;
 		
 		case 1: CalculatedGenWeight = gen_weightSF;
 
@@ -7695,7 +7695,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto EventWeight{[&NormalisationFactorFunction, &ChannelInt, &SystematicInt, &ttbarCRInt]
 		    (const double& PUInput, 		         const double& BTagWeightInput, 	       const doubles& ReturnedPSWeightInput, 
 		     const double& EGammaSF_egammaEffInput,      const double& EGammaSF_egammaEffRecoInput, 
-		     const double& EGammaSF_egammaEffSysInput,   const double& EGammaSF_egammaEffRecoSysInput, const float& CalculatedGeneratorWeightInput, 
+		     const double& EGammaSF_egammaEffSysInput,   const double& EGammaSF_egammaEffRecoSysInput, const double& CalculatedGeneratorWeightInput, 
 		     const doubles& TopWeightInput, 	         const double& CalculatedPDFWeightInput, 
 		     const double& MuonSFTest_IDInput, 		 const double& MuonSFTest_IsoInput, 	       const double& MuonSFTest_ID_sys_systInput, 
 		     const double& MuonSFTest_ID_sys_statInput,  const double& MuonSFTest_Iso_sys_systInput,   const double& MuonSFTest_Iso_sys_statInput){
@@ -8024,7 +8024,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	}
 
-  	float gen_weightSF = SumOfSigns_GenWeight / SumOfGenWeights;
+  	double gen_weightSF = SumOfSigns_GenWeight / SumOfGenWeights;
 
   }
   else{gen_weightSF = 1;}
