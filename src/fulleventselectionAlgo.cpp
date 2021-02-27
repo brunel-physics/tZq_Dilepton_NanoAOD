@@ -5431,6 +5431,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				      const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass ){
 
   	std::cout << "print 104" << std::endl;
+
+	if(bjets_pt.size() != 1){
+		std::cout << "bjets_pt.size() = " << bjets_pt.size() << std::endl;
+		throw std::logic_error("bjets_pt.size() is not 1.");
+	}
+
   	auto reco_top = TLorentzVector{}; 
   	auto BJets = TLorentzVector{};
   	auto RecoW = TLorentzVector{};
@@ -7952,8 +7958,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
    	if(InputTriggerSF_File == "Data"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_DATA_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
    	else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSFValuesTriggerSF_MC_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
-	else if(InputTriggerSF_File == "MC"){TriggerSF_TextFiles = "TriggerSF_FinalSFAndUncerts_tZq_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
-   	else{std::cout << "please choose an appropriate input text file for trigger SFs" << std::endl;}
+	else if(InputTriggerSF_File == "tZq"){TriggerSF_TextFiles = "TriggerSF_FinalSFAndUncerts_tZq_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
+   	else{throw std::logic_error("Please choose an appropriate input text file for trigger SFs");}
 
 
   	using namespace std;
@@ -8029,10 +8035,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
   else{gen_weightSF = 1;}
 
-  //auto d_Range = d.Range(0, 10000);
+  auto d_Range = d.Range(0, 10000);
 
   //Filtering events with a postive genWeight
-  auto d_GenWeightFilter = d.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
+  auto d_GenWeightFilter = d_Range.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
 
   //Event cleaning
   auto d_EventCleaning = d_GenWeightFilter.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -8600,7 +8606,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	TriggerSFValueAndUncerts << "TrigSF = " << TrigSF << '\n'
 				 << "TrigSF_UpperUncert = " << TrigSF_UpperUncert << '\n'
-				 << "TrigSF_LowerUncert = " << TrigSF_LowerUncert << '\n' 
+				 << "TrigSF_LowerUncert = " << TrigSF_LowerUncert << '\n'
+				 << "TrigSF_Uncert = " << TrigSF_Uncert << '\n' 
 				 << std::endl; 
 
 
@@ -8610,12 +8617,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   TrigSF_UpperUncert = ( textfilereader2_TriggerSF("tZq") ).at(1);
   TrigSF_LowerUncert = ( textfilereader2_TriggerSF("tZq") ).at(2);
 
+  if(TrigSF == 0){throw std::logic_error("TrigSF is 0");}
+
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
   std::cout << "TrigSF = " << TrigSF << std::endl;
   std::cout << "TrigSF_UpperUncert = " << TrigSF << std::endl;
   std::cout << "TrigSF_LowerUncert = " << TrigSF << std::endl;
+  std::cout << "TrigSF_Uncert = " << TrigSF_Uncert << std::endl;
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
