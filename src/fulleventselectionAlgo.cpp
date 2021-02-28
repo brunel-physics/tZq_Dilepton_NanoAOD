@@ -8028,7 +8028,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //EnableImplicitMT(); //to enable multithreading
   RDataFrame d("Events", input_files); //accessing the events TTree of the input file
 
-  if(MCInt == 1){
+  if(  (YearInt == 2016 && (ProcessInt == 5 || ProcessInt == 6 || ProcessInt == 9 || ProcessInt == 29 || ProcessInt == 30 || ProcessInt == 77 || ProcessInt == 79) ) ||
+       (YearInt == 2017 && (ProcessInt == 77 || ProcessInt == 79 || ProcessInt == 93 || ProcessInt == 104 || ProcessInt == 105) ) ||
+       (YearInt == 2018 && (ProcessInt == 0 || ProcessInt == 9 || ProcessInt == 10 || ProcessInt == 77 || ProcessInt == 79 || ProcessInt == 93 || ProcessInt == 104))){
 
         auto h_GenWeights = d.Filter("genWeight").Histo1D("genWeight");
 
