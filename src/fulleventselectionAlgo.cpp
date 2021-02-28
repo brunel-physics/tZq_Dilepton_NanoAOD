@@ -7971,7 +7971,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
    	file >> line;
 
   	double Value = atof(line.c_str());
-   	return Value;
+   	
+	return Value;
 
   }};
 
@@ -7987,6 +7988,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	else if(InputTriggerSF_File == "tZq"){TriggerSF_TextFiles = "TriggerSF_FinalSFAndUncerts_tZq_Nominal_" + Channel + "__SR_SBR___" + Year + ".txt";}
    	else{throw std::logic_error("Please choose an appropriate input text file for trigger SFs");}
 
+	std::cout << "InputTriggerSF_File = " << InputTriggerSF_File << std::endl;
+        std::cout<< "TriggerSF_TextFiles = " << TriggerSF_TextFiles << std::endl;
+
    	int number_of_lines = 0;
    	std::string line;
    	std::ifstream myfile(TriggerSF_TextFiles.c_str());
@@ -8000,13 +8004,20 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto textfilereader2_TriggerSF{[&linecounter_TriggerSF, &linereader_TriggerSF](const std::string& InputTriggerSF_File){
 
    std::cout << "print 156" << std::endl;
+   std::cout << "InputTriggerSF_File = " << InputTriggerSF_File << std::endl;
 
   	int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File);
    	std::vector<double> Value;
 
+	std::cout << "NumberOfLines = " << NumberOfLines << std::endl;
+
    	for(int i = 1; i < NumberOfLines+1; i++){
         	Value.push_back(linereader_TriggerSF(i, InputTriggerSF_File));
    	}
+
+	for(int i = 0; i < Value.size(); i++){
+	std::cout << "Value.at(i) = " << Value.at(i) << std::endl;
+	}
 
    	return Value;
 
@@ -8030,12 +8041,22 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	}
 
-  	double gen_weightSF = SumOfSigns_GenWeight / SumOfGenWeights;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << '\n' << std::endl;
+	std::cout << "SumOfSigns_GenWeight = " << SumOfSigns_GenWeight << std::endl;
+	std::cout << "SumOfGenWeights = " << SumOfGenWeights << std::endl;
+	std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+        std::cout << '\n' << std::endl;
+
+  	gen_weightSF = SumOfSigns_GenWeight / SumOfGenWeights;
+	std::cout << "gen_weightSF = " << gen_weightSF << std::endl;
 
   }
   else{gen_weightSF = 1;}
 
-  auto d_Range = d.Range(0, 10000);
+  auto d_Range = d.Range(0, 100000);
 
   //Filtering events with a postive genWeight
   auto d_GenWeightFilter = d_Range.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
@@ -8587,11 +8608,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	Eff_UpperUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(6);
   	Eff_LowerUncert_MC = ( textfilereader2_TriggerSF("MC") ).at(7);
 
-  	TrigSF = Eff_DATA/(Eff_MC + 1.0e-06);
+  	double Trig_SF = Eff_DATA/(Eff_MC + 1.0e-06);
 
   	//Uncertainties in the trigger scale factors
-  	TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - TrigSF;
-  	TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - TrigSF;
+  	TrigSF_UpperUncert = ((Eff_DATA + Eff_UpperUncert_DATA) / (Eff_MC - Eff_LowerUncert_MC + 1.0e-06)) - Trig_SF;
+  	TrigSF_LowerUncert = ((Eff_DATA + Eff_LowerUncert_DATA)/ (Eff_MC - Eff_UpperUncert_MC + 1.0e-06)) - Trig_SF;
 
   	TrigSF_Uncert = 0.0;
 
@@ -8604,20 +8625,26 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	std::ofstream TriggerSFValueAndUncerts;
   	TriggerSFValueAndUncerts.open(TriggerSFValueAndUncertsFile.c_str());
 
-	TriggerSFValueAndUncerts << "TrigSF = " << TrigSF << '\n'
+	TriggerSFValueAndUncerts << "Trig_SF = " << Trig_SF << '\n'
 				 << "TrigSF_UpperUncert = " << TrigSF_UpperUncert << '\n'
 				 << "TrigSF_LowerUncert = " << TrigSF_LowerUncert << '\n'
 				 << "TrigSF_Uncert = " << TrigSF_Uncert << '\n' 
 				 << std::endl; 
 
 
+	TrigSF = Trig_SF;
+
   }
 
-  TrigSF = ( textfilereader2_TriggerSF("tZq") ).at(0);
-  TrigSF_UpperUncert = ( textfilereader2_TriggerSF("tZq") ).at(1);
-  TrigSF_LowerUncert = ( textfilereader2_TriggerSF("tZq") ).at(2);
+  if(ProcessInt != 0){
+  	TrigSF = ( textfilereader2_TriggerSF("tZq") ).at(0);
+  	TrigSF_UpperUncert = ( textfilereader2_TriggerSF("tZq") ).at(1);
+  	TrigSF_LowerUncert = ( textfilereader2_TriggerSF("tZq") ).at(2);
+  }
 
   if(TrigSF == 0){throw std::logic_error("TrigSF is 0");}
+  if(TrigSF_UpperUncert == 0){throw std::logic_error("TrigSF_UpperUncert is 0");}
+  if(TrigSF_LowerUncert == 0){throw std::logic_error("TrigSF_LowerUncert is 0");}
 
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
