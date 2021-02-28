@@ -5427,15 +5427,20 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto top_reconstruction_function{[](const floats& bjets_pt,  const floats& bjets_eta,  const floats& bjets_phi,  const floats& bjets_mass,
+  auto top_reconstruction_function{[](const floats& bjets_pt, const floats& bjets_eta, const floats& bjets_phi, const floats& bjets_mass,
 				      const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass ){
 
   	std::cout << "print 104" << std::endl;
 
-	if(bjets_pt.size() != 1){
-		std::cout << "bjets_pt.size() = " << bjets_pt.size() << std::endl;
-		throw std::logic_error("bjets_pt.size() is not 1.");
+	float leadingbjetpt; float leadingbjeteta; float leadingbjetphi; float leadingbjetmass;
+
+	if(bjets_pt.size() > 1){
+		leadingbjetpt = (bjets_pt.at(0) > bjets_pt.at(1)) ? bjets_pt.at(0) : bjets_pt.at(1);
+		leadingbjeteta = (bjets_eta.at(0) > bjets_eta.at(1)) ? bjets_eta.at(0) : bjets_eta.at(1);
+		leadingbjetphi = (bjets_phi.at(0) > bjets_phi.at(1)) ? bjets_phi.at(0) : bjets_phi.at(1);
+		leadingbjetmass = (bjets_mass.at(0) > bjets_mass.at(1)) ? bjets_mass.at(0) : bjets_mass.at(1);
 	}
+	else{leadingbjetpt = bjets_pt.at(0); leadingbjeteta = bjets_eta.at(0); leadingbjetphi = bjets_phi.at(0); leadingbjetmass = bjets_mass.at(0);}
 
   	auto reco_top = TLorentzVector{}; 
   	auto BJets = TLorentzVector{};
@@ -5445,11 +5450,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	size_t index_1{std::numeric_limits<size_t>::max()};
   	const size_t num{w_pair_pt.size()};
 
-	if(num <= 0 || bjets_pt.size() == 0){reco_top.SetPtEtaPhiM(0, 0, 0, 0); return reco_top;}
-
   	for(unsigned int i = 0; i < num; i++){
 
-  		BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
+		std::cout << "i = " << i << std::endl;
+
+  		BJets.SetPtEtaPhiM(leadingbjetpt, leadingbjeteta, leadingbjetphi, leadingbjetmass);
   		RecoW.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
 		
   		const double reco_mass = (RecoW + BJets).M(); 
@@ -5464,7 +5469,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	}
 
 
-  	BJets.SetPtEtaPhiM(bjets_pt.at(0), bjets_eta.at(0), bjets_phi.at(0), bjets_mass.at(0));
+  	BJets.SetPtEtaPhiM(leadingbjetpt, leadingbjeteta, leadingbjetphi, leadingbjetmass);
   	RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
   	reco_top = RecoW + BJets;	
 
@@ -7554,20 +7559,18 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto GeneratorWeightFilterFunction{[&MCInt](const float& InputGenWeight){
+  auto GeneratorWeightFilterFunction{[&YearInt, &ProcessInt](const float& InputGenWeight){
 
-	switch(MCInt){
+	if(  (YearInt == 2016 && (ProcessInt == 5 || ProcessInt == 6 || ProcessInt == 9 || ProcessInt == 29 || ProcessInt == 30 || ProcessInt == 77 || ProcessInt == 79) ) ||
+       (YearInt == 2017 && (ProcessInt == 77 || ProcessInt == 79 || ProcessInt == 93 || ProcessInt == 104 || ProcessInt == 105) ) ||
+       (YearInt == 2018 && (ProcessInt == 0 || ProcessInt == 9 || ProcessInt == 10 || ProcessInt == 77 || ProcessInt == 79 || ProcessInt == 93 || ProcessInt == 104))){
 
-		case 0: return true; break;
 
-		case 1: if(InputGenWeight > 0){return true;}
-			else{return false;}
+		if(InputGenWeight > 0){return true;}
+		else{return false;}
 
-			break;
-
-		default: throw std::logic_error("ERROR: MCInt must be 0 or 1"); break;
-	
 	}
+	else{return true;}
 
   }};
 
@@ -8767,6 +8770,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   //B jet selection
   auto d_BJetSelection = d_JetSelection.Define("bjets", bjet_id, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta"})
+				       .Define("bjets_pt", select<floats>, {"TightSmearedJetsPt", "bjets"})
+				       .Define("bjets_eta", select<floats>, {"TightSmearedJetsEta", "bjets"})
+				       .Define("bjets_phi", select<floats>, {"TightSmearedJetsPhi", "bjets"})
+				       .Define("bjets_mass", select<floats>, {"TightSmearedJetsMass", "bjets"})
                                        .Define("nbjets", numberofbjets, {"bjets"})
                                        .Define("BTAGEFF_bjet_id_WP", BTAGEFF_bjet_id_WP, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsHadronFlavour"})
 				       .Define("BTAGEFF_nonbjet_id_WP", BTAGEFF_nonbjet_id_WP, {"tight_jets", "TightSmearedJetsBTagCSVV2", "TightSmearedJetsEta", "TightSmearedJetsHadronFlavour"})
@@ -8907,13 +8914,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   //Reconstructing the top quark candidate
   auto d_TopCandReco = d_WCandReco.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
 				  .Define("TightSmearedJetsNumber", NumberOfSmearedTightJetsFunction, {"tight_jets"})
-				  .Define("bjetmass", bjet_variable, {"TightSmearedJetsMass", "TightSmearedJetsNumber", "lead_bjet"})
-				  .Define("bjetpt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "lead_bjet"})
-			          .Define("bjeteta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "lead_bjet"})
-				  .Define("bjetphi", bjet_variable, {"TightSmearedJetsPhi", "TightSmearedJetsNumber", "lead_bjet"})
-				  .Define("BJets", BLorentzVector, {"bjetpt", "bjeteta", "bjetphi", "bjetmass"})
-				  .Define("RecoTop", top_reconstruction_function, {"bjetpt", "bjeteta", "bjetphi", "bjetmass", 	
-										   "w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass"})
+				  .Define("SmearedLeadingBJetMass", bjet_variable, {"TightSmearedJetsMass", "TightSmearedJetsNumber", "lead_bjet"})
+				  .Define("SmearedLeadingBJetPt", bjet_variable, {"TightSmearedJetsPt", "TightSmearedJetsNumber", "lead_bjet"})
+			          .Define("SmearedLeadingBJetEta", bjet_variable, {"TightSmearedJetsEta", "TightSmearedJetsNumber", "lead_bjet"})
+				  .Define("SmearedLeadingBJetPhi", bjet_variable, {"TightSmearedJetsPhi", "TightSmearedJetsNumber", "lead_bjet"})
+				  .Define("SmearedLeadingBJet", BLorentzVector, {"SmearedLeadingBJetPt", "SmearedLeadingBJetEta", "SmearedLeadingBJetPhi", "SmearedLeadingBJetMass"})
+				  .Define("RecoTop", top_reconstruction_function, {"bjets_pt", "bjets_eta", "bjets_phi", "bjets_mass", "w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass"})
 			          .Define("Top_Pt", TLorentzVectorVariablePt, {"RecoTop"})
 			          .Define("Top_Eta", TLorentzVectorVariableEta, {"RecoTop"})
 			          .Define("Top_Phi", TLorentzVectorVariablePhi, {"RecoTop"})
@@ -8936,8 +8942,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                   .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 				  .Define("MinDeltaR", MinDeltaR, {"TightSmearedJetsNumber", "RecoZPhi", "RecoZEta", "TightSmearedJetsPhi", "TightSmearedJetsEta"})
 				  .Define("MinDeltaPhi", MinDeltaPhi, {"TightSmearedJetsNumber", "RecoZPhi", "TightSmearedJetsPhi"})
-				  .Define("dR_LeadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "LeadingLeptonEta", "bjetphi", "LeadingLeptonPhi"})
-			          .Define("dR_SubleadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"bjeteta", "SubleadingLeptonEta", "bjetphi", "SubleadingLeptonPhi"})
+				  .Define("dR_LeadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"SmearedLeadingBJetEta", "LeadingLeptonEta", "SmearedLeadingBJetPhi", "LeadingLeptonPhi"})
+			          .Define("dR_SubleadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"SmearedLeadingBJetEta", "SubleadingLeptonEta", "SmearedLeadingBJetPhi", "SubleadingLeptonPhi"})
 				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "LeadingLeptonPhi"})
                                   .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "SubleadingLeptonPhi"})		
 				  .Define("MET", MET_function, {"MET_sumEt"})
