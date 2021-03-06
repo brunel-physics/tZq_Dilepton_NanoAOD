@@ -8062,10 +8062,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
   else{gen_weightSF = 1;}
 
-  auto d_Range = d.Range(0, 1000);
+  //auto d_Range = d.Range(0, 1000);
 
   //Filtering events with a postive genWeight
-  auto d_GenWeightFilter = d_Range.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
+  auto d_GenWeightFilter = d.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
 
   //Event cleaning
   auto d_EventCleaning = d_GenWeightFilter.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
