@@ -7935,12 +7935,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	switch(MCInt){
 		case 0: switch(SBRInt){
 				case 1: return Chi2_SR < Chi2 && Chi2 < Chi2_SBR; break;
-				default: return !isinf(Chi2); break;
+				default: return !isnan(Chi2); break;
 			}
 
 	 		switch(SRInt){
 				case 1: return Chi2 < Chi2_SR; break;
-				default: return !isinf(Chi2); break;
+				default: return !isnan(Chi2); break;
 	  		}
 
 			break;
