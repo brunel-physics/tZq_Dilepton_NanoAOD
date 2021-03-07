@@ -5452,8 +5452,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	for(unsigned int i = 0; i < num; i++){
 
-		std::cout << "i = " << i << std::endl;
-
   		BJets.SetPtEtaPhiM(leadingbjetpt, leadingbjeteta, leadingbjetphi, leadingbjetmass);
   		RecoW.SetPtEtaPhiM(w_pair_pt.at(i), w_pair_eta.at(i), w_pair_phi.at(i), w_mass);
 		
@@ -7947,7 +7945,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 			break;
 
-		case 1: return !isinf(Chi2);
+		case 1: std::cout << "Chi2 = " << Chi2 << std::endl; return !isnan(Chi2);
 
 	}
 
@@ -8011,16 +8009,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   	int NumberOfLines = linecounter_TriggerSF(InputTriggerSF_File);
    	std::vector<double> Value;
 
-	std::cout << "NumberOfLines = " << NumberOfLines << std::endl;
-
    	for(int i = 1; i < NumberOfLines+1; i++){
-		std::cout << "linereader_TriggerSF(i, InputTriggerSF_File) = " << linereader_TriggerSF(i, InputTriggerSF_File) << std::endl;
         	Value.push_back(linereader_TriggerSF(i, InputTriggerSF_File));
    	}
-
-	for(int i = 0; i < Value.size(); i++){
-	std::cout << "Value.at(i) = " << Value.at(i) << std::endl;
-	}
 
    	return Value;
 
@@ -8230,10 +8221,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 							  "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta", "Electron_dxy_dz", 
 						          "TightLeptonsPt", "LooseLeptonsPt"}, "lepton cut");
 
-  std::string LeptonSelectionFile = "LeptonSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-
-  //auto Snapshot_LeptonSelection = d_LeptonSelection.Snapshot("Events", LeptonSelectionFile.c_str());
 
 
   //Calculating the trigger scale factors
@@ -8637,17 +8624,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
 
 
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << "TrigSF = " << TrigSF << std::endl;
-  std::cout << "TrigSF_UpperUncert = " << TrigSF << std::endl;
-  std::cout << "TrigSF_LowerUncert = " << TrigSF << std::endl;
-  std::cout << "TrigSF_Uncert = " << TrigSF_Uncert << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-
 
   //Z boson candidate reconstruction
   auto d_ZCandidateReco = d_LeptonSelection.Define("LeptonGenPartFlav", LeptonVariableFunctionChars, {"Electron_genPartFlav", "Muon_genPartFlav"})
@@ -8676,10 +8652,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                            .Filter(z_mass_cut, {"z_mass"}, "Z mass cut");
 
 
-  std::string ZCandidateRecoFile = "ZCandidateReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                    SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-  
-  //auto Snapshot_ZCandidateReco = d_ZCandidateReco.Snapshot("Events", ZCandidateRecoFile.c_str());
 
   //Jet selection
   auto d_JetSelection = d_ZCandidateReco.Define("sJER_Nominal", SJER_Nominal_Function, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
@@ -8748,10 +8720,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("JetPhiSum", JetSum, {"LeadingJetPhi", "SubleadingJetPhi", "ThirdJetPhi", "FourthJetPhi"})
                                         .Filter(jet_selection_function, {"tight_jets"}, "jet cut");
 
-  std::string JetSelectionFile = "JetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                 SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-  
-  //auto Snapshot_JetSelection = d_JetSelection.Snapshot("Events", JetSelectionFile.c_str());
 
 
   //B jet selection
@@ -8780,10 +8748,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				       .Filter(bjet_cut, {"bjets"}, "b jet cut (ee channel)");
 			 
 
-  std::string BJetSelectionFile = "BJetSelection_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                 SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-
-  //auto Snapshot_BJetSelection = d_BJetSelection.Snapshot("Events", BJetSelectionFile.c_str());
 
 
   //For the b-tagging efficiencies
@@ -8891,10 +8855,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				    .Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut");
 
    
-  std::string WCandRecoFile = "WCandReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                              SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-
-  //auto Snapshot_WCandReco = d_WCandReco.Snapshot("Events", WCandRecoFile.c_str());
 
 
   //Reconstructing the top quark candidate
@@ -8961,7 +8921,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   std::string TopCandRecoFile = "TopCandReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                 SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  //auto Snapshot_TopCandReco = d_TopCandReco.Snapshot("Events", TopCandRecoFile.c_str());
 
 
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
@@ -9006,10 +8965,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 								      
 
 
-  std::string EventWeightFile = "EventWeight_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-
-  //auto Snapshot_EventWeight = d_EventWeightDefines.Snapshot("Events", EventWeightFile.c_str());
 
   if(ProcessInt == 0 && SystematicInt == 0){
 
@@ -9153,56 +9108,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto Snapshot_WeightedHistos = d_Blinded.Snapshot("Events", OutRootFile.c_str());
 
 
-  /*
-  auto colNames = d_Blinding.GetDefinedColumnNames();
-  const auto N_Columns = colNames.size();
-
-  TFile * output = new TFile(OutRootFile.c_str(), "RECREATE");
-  output->cd();
-
-  ROOT::RDF::RResultPtr<TH1D> histo[N_Columns] = {};
-
-
-  for(long unsigned int i = 0; i < N_Columns; i++){
-
-  	auto ColName = colNames.at(i);
-
-	if(ColName != "LeptonFourMomentum" && ColName != "newMET" && ColName != "MuonFourMomentum_RochCorr" && ColName != "OriginalMET" && ColName != "ScaledMET" && ColName != "UnsmearedJet4Momentum"){
-
-		if(ColName != "PU"                      && ColName != "BTagWeight"                && ColName != "ReturnedPSWeight"              &&
-           	   ColName != "CalculatedPDFWeight"     && ColName != "EGammaSF_egammaEff"        && ColName != "EGammaSF_egammaEffReco"        &&
-           	   ColName != "EGammaSF_egammaEffSys"   && ColName != "EGammaSF_egammaEffRecoSys" && ColName != "CalculatedGeneratorWeight"     &&
-              	   ColName != "RecoZ"                   && ColName != "SmearedJet4Momentum"       && ColName != "WPairJet1"                     && 
-           	   ColName != "WPairJet2"               && ColName != "RecoW"                     && ColName != "BJets"                         && 
-           	   ColName != "RecoTop"                 && ColName != "MinDeltaR"                     &&
-           	   ColName != "MinDeltaPhi"             && ColName != "newMET"                    && ColName != "EventWeight"){
-
-           		std::cout << "ColName = " << ColName << std::endl;
-
-                	histo[i] = d_Blinded.Histo1D(ColName.c_str(), "EventWeight");
-                	histo[i]->Write();
-                        
-        	}
- 		else if(ColName  == "PU"                      || ColName == "BTagWeight"                || ColName == "ReturnedPSWeight"          ||
-                	ColName  == "CalculatedPDFWeight"     || ColName == "EGammaSF_egammaEff"        || ColName == "EGammaSF_egammaEffReco"    ||
-                	ColName  == "EGammaSF_egammaEffSys"   || ColName == "EGammaSF_egammaEffRecoSys" || ColName == "CalculatedGeneratorWeight" ||
-                	ColName  == "ME_SF"                   || ColName == "EventWeight" ){
-
-                	histo[i] = d_Blinded.Histo1D(ColName.c_str());
-                	histo[i]->Write();
-
-        	}		
-        	else{continue;}
-
-  	}
-
-  }
-
-
-  output->Close();	
-
-*/
-
 }
 
 
@@ -9210,7 +9115,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1; //0 for data, 1 for MC
-  int Process_Selection = 0; 
+  int Process_Selection = 96; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
