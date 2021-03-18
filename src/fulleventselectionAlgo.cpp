@@ -9115,7 +9115,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 void fulleventselectionAlgo::fulleventselection(){
 
   int MC_Selection = 1; //0 for data, 1 for MC
-  int Process_Selection = 96; 
+  int Process_Selection = 4; 
   int NPL_Selection = 0;
   int SR_Selection = 1;
   int SBR_Selection = 1;
