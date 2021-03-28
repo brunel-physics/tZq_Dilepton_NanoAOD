@@ -15,8 +15,8 @@
 #include <fstream>
 #include <random>
 #include <TRandom3.h>
-#include "../tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR.cc"
-#include "../tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR.h"
+#include "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR.cc"
+#include "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR.h"
 #include "tZq_Dilepton_Analysis.h"
 #include "TCanvas.h"
 
