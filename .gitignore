@@ -1,3 +1,11 @@
-*.d
-*.o
+*.pyc
+.*.swp
+*~
 *.so
+*.root
+*.o
+*.d
+*.save*
+bin/
+lib/
+obj/
