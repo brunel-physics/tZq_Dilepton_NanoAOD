@@ -9,12 +9,14 @@ class fulleventselectionAlgo/* : public edm::EDAnalyzer*/
   //Constructor
   fulleventselectionAlgo();
   ~fulleventselectionAlgo();
-  
+
+  void parseCommandLineArguements(int argc, char* argv[]); 
   void fulleventselection();
 
   //private:
   //edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
 
+  int Year_Selection_;
 
 };
 

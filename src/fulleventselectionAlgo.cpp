@@ -1,33 +1,70 @@
+#include "fulleventselectionAlgo.hpp"
+#include "RoccoR.hpp"
+
 #include "ROOT/RDataFrame.hxx"
 #include "ROOT/RVec.hxx"
 #include "TH1D.h"
-#include <boost/numeric/conversion/cast.hpp>
-#include <boost/algorithm/string.hpp>
+#include <TFile.h>
+#include "TEfficiency.h"
+#include "TLorentzVector.h"
+#include <TRandom3.h>
+#include "TCanvas.h"
+
 #include <vector>
 #include <iterator>
 #include <string>
 #include <algorithm>
-#include <TFile.h>
-#include "TEfficiency.h"
-#include "TLorentzVector.h"
 #include <iostream>
 #include <fstream>
 #include <random>
-#include <TRandom3.h>
-#include "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR.cc"
-#include "../ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR.h"
-#include "fulleventselectionAlgo.hpp"
-#include "TCanvas.h"
-
-fulleventselectionAlgo::fulleventselectionAlgo(){
 
 
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/program_options.hpp>
+#include <boost/algorithm/string.hpp>
+
+fulleventselectionAlgo::fulleventselectionAlgo()
+    : Year_Selection_{} // No default value set as it currently is required to be set by the user
+//    , anotherVariable_{defaultValue}
+
+{}
+
+fulleventselectionAlgo::~fulleventselectionAlgo() {}
+
+void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
+
+    gErrorIgnoreLevel = kInfo;
+    // Set up environment a little.
+    std::cerr << std::setprecision(6) << std::fixed;
+    std::cout << std::setprecision(6) << std::fixed;
+
+    namespace po = boost::program_options;
+    po::options_description desc("Options");
+    desc.add_options()("help,h", "Print this message.")(
+        "year,y",
+        po::value<int>(&Year_Selection_)->required(), // No default value, has to be explicitly set by the user
+//        po::value<int>(&Year_Selection_)->defaultValue(2018), // Has a default value if user does not specify
+        "Year selection. Either 2016, 2017, or 2018.");
+
+    po::variables_map vm;
+
+    try {
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if (vm.count("help")) {
+            std::cout << desc;
+            std::exit(0);
+        }
+
+        po::notify(vm);
+    }
+    catch (const std::logic_error& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        std::cerr << "Use -h or --help for help." << std::endl;
+        std::exit(1);
+    }
 }
 
-
-fulleventselectionAlgo::~fulleventselectionAlgo()
-{
-}
 
 
 using namespace ROOT; // RDataFrame's namespace
@@ -9126,7 +9163,6 @@ void fulleventselectionAlgo::fulleventselection(){
   int SBR_Selection = 1;
   int ZPlusJetsCR_Selection = 0;
   int ttbarCR_Selection = 0;
-  int Year_Selection = 2018;
   int Systematic_Selection = 0;
   int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
@@ -9139,14 +9175,14 @@ void fulleventselectionAlgo::fulleventselection(){
   int SBR_Selection = argv[4]; 
   int ZPlusJetsCR_Selection = argv[5];
   int ttbarCR_Selection = argv[6];
-  int Year_Selection = argv[7];
+  int Year_Selection_ = argv[7];
   int Systematic_Selection = argv[8];
   int Channel_Selection = argv[9]; //1 for ee, 2 for mumu, 3 for emu
   int DoubleCountCheck_Selection = argv[10]; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples 
 */
 
   tZq_NanoAOD_Output(MC_Selection,      Process_Selection, NPL_Selection,        SR_Selection,      SBR_Selection, ZPlusJetsCR_Selection, 
-		     ttbarCR_Selection, Year_Selection,    Systematic_Selection, Channel_Selection, DoubleCountCheck_Selection);
+		     ttbarCR_Selection, Year_Selection_,    Systematic_Selection, Channel_Selection, DoubleCountCheck_Selection);
 
 
   //Obtaining the ratio for the NPL estimation
@@ -9158,7 +9194,7 @@ void fulleventselectionAlgo::fulleventselection(){
   	std::string SR_String;
   	std::string SBR_String;
 
-  	switch(Year_Selection){
+  	switch(Year_Selection_){
 
 		case 2016: Year_String == "2016"; break;
 		case 2017: Year_String == "2016"; break;
@@ -9248,7 +9284,7 @@ void fulleventselectionAlgo::fulleventselection(){
         float NPL_Ratio_Denominator_WZ;
 		
 
-	switch(Year_Selection){
+	switch(Year_Selection_){
 		case 2016: NPL_Ratio_Numerator_ttW = textfilereader2_NPL("ttbarV_ttWJetsToLNu").at(0) + textfilereader2_NPL("ttbarV_ttWJetsToLNu_ext2").at(0) + 
 					             textfilereader2_NPL("ttbarV_ttWJetsToQQ").at(0);
 
