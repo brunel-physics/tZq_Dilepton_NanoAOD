@@ -13,6 +13,9 @@ LIBRARY_PATH = 	-L$(shell root-config --libdir) \
                 -L/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/lib \
 
 LIBRARIES = 	$(shell root-config --libs) \
+		-lboost_system \
+		-lboost_filesystem \
+		-lboost_program_options \
 
 INCLUDE_PATH = 	-Iinclude  \
                 -isystem/cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/include \
