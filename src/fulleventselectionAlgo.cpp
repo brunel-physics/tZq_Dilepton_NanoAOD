@@ -23,8 +23,19 @@
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
 
+
 fulleventselectionAlgo::fulleventselectionAlgo()
-    : Year_Selection_{} // No default value set as it currently is required to be set by the user
+    : MC_Selection_{},
+    Year_Selection_{}, // No default value set as it currently is required to be set by the user
+    Process_Selection_{},
+    NPL_Selection_{},
+    SR_Selection_{},
+    SBR_Selection_{},
+    ZPlusJetsCR_Selection_{},
+    ttbarCR_Selection_{},
+    Systematic_Selection_{},
+    Channel_Selection_{},
+    DoubleCountCheck_Selection_{} 
 //    , anotherVariable_{defaultValue}
 
 {}
@@ -40,11 +51,41 @@ void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
 
     namespace po = boost::program_options;
     po::options_description desc("Options");
-    desc.add_options()("help,h", "Print this message.")(
+  
+   desc.add_options()("help,h", "Print this message.")(
+        "MC,mc",
+        po::value<int>(&MC_Selection_)->required(),
+        "MC selection (e.g. 0 is data, 1 is MC)")(
         "year,y",
         po::value<int>(&Year_Selection_)->required(), // No default value, has to be explicitly set by the user
-//        po::value<int>(&Year_Selection_)->defaultValue(2018), // Has a default value if user does not specify
-        "Year selection. Either 2016, 2017, or 2018.");
+        "Year selection. Either 2016, 2017, or 2018.")(
+        "process,p",
+	po::value<int>(&Process_Selection_)->required(),
+	"Process selection (e.g. 0 is tZq)")(
+        "NPL,npl",
+        po::value<int>(&NPL_Selection_)->required(),
+        "NPL selection (e.g. 0 is for not the NPL run, 1 is for the NPL run)")(
+        "SR,sr",
+        po::value<int>(&SR_Selection_)->required(), // No default value, has to be explicitly set by the user
+        "Signal region. Set SR_Selection to 1 for results in the signal region.")(
+        "SBR,sbr",
+        po::value<int>(&SBR_Selection_)->required(),
+        "Side band region selection. Set both SR and SBR equal to 1 for results in the side band region.")(
+        "ZPlusJetsCR,zjcr",
+        po::value<int>(&ZPlusJetsCR_Selection_)->required(),
+        "Z+jets control region selection. Set to 1 for results in the z+jets control region, otherwise set to 0.")(
+        "ttbarCR,ttcr",
+        po::value<int>(&ttbarCR_Selection_)->required(),
+        "ttbar control region selection. Set to 1 for results in the ttbar control region, otherwise set to 0.")(
+        "systematic, sys",
+        po::value<int>(&Systematic_Selection_)->required(),
+        "Systematic selection. 0 = nominal run")(
+        "channel, chan",
+        po::value<int>(&Channel_Selection_)->required(),
+        "Channel selection. ee channel = 1, mumu channel = 2, emu channel = 3")(
+        "DoubleCountCheck,dcc",
+        po::value<int>(&DoubleCountCheck_Selection_)->required(),
+        "Set to 1 when running over the single or double lepton datasets.");
 
     po::variables_map vm;
 
@@ -218,10 +259,19 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 	const int& ZPlusJetsCRInt,  const int& ttbarCRInt,  const int& YearInt,    const int& SystematicInt,  const int& ChannelInt, 
 			const int& DoubleCountCheckInt){
 
+  std::cout << "MCInt = " << MCInt << std::endl;
   std::cout << "YearInt = " << YearInt << std::endl; 
   std::cout << "ProcessInt = " << ProcessInt << std::endl;
-  std::cout << "ChannelInt = " << ChannelInt << std::endl; 
- 
+  std::cout << "NPLInt = " << NPLInt << std::endl;
+  std::cout << "SRInt = " << SRInt << std::endl;
+  std::cout << "SBRInt = " << SBRInt << std::endl;
+  std::cout << "ZPlusJetsCRInt = " << ZPlusJetsCRInt << std::endl;
+  std::cout << "ttbarCRInt = " << ttbarCRInt << std::endl;
+  std::cout << "SystematicInt = " << SystematicInt << std::endl;
+  std::cout << "ChannelInt = " << ChannelInt << std::endl;
+  std::cout << "DoubleCountCheckInt = " << DoubleCountCheckInt << std::endl;
+
+
   ROOT::RDF::RResultPtr<TH2D> h_bjet_num;
   ROOT::RDF::RResultPtr<TH2D> h_bjet_denom;
   ROOT::RDF::RResultPtr<TH2D> h_nonbjet_num;
@@ -9155,39 +9205,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 //Main function is here
 void fulleventselectionAlgo::fulleventselection(){
 
-
-  int MC_Selection = 1; //0 for data, 1 for MC
-  int Process_Selection = 118; 
-  int NPL_Selection = 0;
-  int SR_Selection = 1;
-  int SBR_Selection = 1;
-  int ZPlusJetsCR_Selection = 0;
-  int ttbarCR_Selection = 0;
-  int Systematic_Selection = 0;
-  int Channel_Selection = 1; //1 for ee, 2 for mumu, 3 for emu
-  int DoubleCountCheck_Selection = 0; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples
-
-/*
-  int MC_Selection = argv[0]; //0 for data, 1 for MC
-  int Process_Selection = argv[1]; 
-  int NPL_Selection = argv[2];
-  int SR_Selection = argv[3];
-  int SBR_Selection = argv[4]; 
-  int ZPlusJetsCR_Selection = argv[5];
-  int ttbarCR_Selection = argv[6];
-  int Year_Selection_ = argv[7];
-  int Systematic_Selection = argv[8];
-  int Channel_Selection = argv[9]; //1 for ee, 2 for mumu, 3 for emu
-  int DoubleCountCheck_Selection = argv[10]; //set this to 1 when running over double electron, double muon, single electron, single muon or MuonEG samples 
-*/
-
-  tZq_NanoAOD_Output(MC_Selection,      Process_Selection, NPL_Selection,        SR_Selection,      SBR_Selection, ZPlusJetsCR_Selection, 
-		     ttbarCR_Selection, Year_Selection_,    Systematic_Selection, Channel_Selection, DoubleCountCheck_Selection);
+  tZq_NanoAOD_Output(MC_Selection_,      Process_Selection_, NPL_Selection_,        SR_Selection_,      SBR_Selection_, ZPlusJetsCR_Selection_, 
+		     ttbarCR_Selection_, Year_Selection_,    Systematic_Selection_, Channel_Selection_, DoubleCountCheck_Selection_);
 
 
   //Obtaining the ratio for the NPL estimation
 
-  if(NPL_Selection == 1){
+  if(NPL_Selection_ == 1){
 
   	std::string Year_String;
   	std::string Channel_String;
@@ -9202,7 +9226,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
   	}
 
-  	switch(Channel_Selection){
+  	switch(Channel_Selection_){
 
 		case 1: Channel_String == "ee"; break;
 		case 2: Channel_String == "mumu"; break;
@@ -9210,13 +9234,13 @@ void fulleventselectionAlgo::fulleventselection(){
 
   	}
 
-  	switch(SR_Selection){
+  	switch(SR_Selection_){
 
 		case 0: SR_String == "SR"; 
 		case 1: SR_String == "";
   	}
 
-  	switch(SBR_Selection){
+  	switch(SBR_Selection_){
 
         	case 0: SBR_String == "SBR";
         	case 1: SBR_String == "";
