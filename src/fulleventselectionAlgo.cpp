@@ -53,7 +53,7 @@ void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
     po::options_description desc("Options");
   
    desc.add_options()("help,h", "Print this message.")(
-        "MC,mc",
+        "mc",
         po::value<int>(&MC_Selection_)->required(),
         "MC selection (e.g. 0 is data, 1 is MC)")(
         "year,y",
@@ -62,28 +62,28 @@ void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
         "process,p",
 	po::value<int>(&Process_Selection_)->required(),
 	"Process selection (e.g. 0 is tZq)")(
-        "NPL,npl",
+        "npl",
         po::value<int>(&NPL_Selection_)->required(),
         "NPL selection (e.g. 0 is for not the NPL run, 1 is for the NPL run)")(
-        "SR,sr",
+        "sr",
         po::value<int>(&SR_Selection_)->required(), // No default value, has to be explicitly set by the user
         "Signal region. Set SR_Selection to 1 for results in the signal region.")(
-        "SBR,sbr",
+        "sbr",
         po::value<int>(&SBR_Selection_)->required(),
         "Side band region selection. Set both SR and SBR equal to 1 for results in the side band region.")(
-        "ZPlusJetsCR,zjcr",
+        "zjcr",
         po::value<int>(&ZPlusJetsCR_Selection_)->required(),
         "Z+jets control region selection. Set to 1 for results in the z+jets control region, otherwise set to 0.")(
-        "ttbarCR,ttcr",
+        "ttcr",
         po::value<int>(&ttbarCR_Selection_)->required(),
         "ttbar control region selection. Set to 1 for results in the ttbar control region, otherwise set to 0.")(
-        "systematic, sys",
+        "sys",
         po::value<int>(&Systematic_Selection_)->required(),
         "Systematic selection. 0 = nominal run")(
-        "channel, chan",
+        "channel",
         po::value<int>(&Channel_Selection_)->required(),
         "Channel selection. ee channel = 1, mumu channel = 2, emu channel = 3")(
-        "DoubleCountCheck,dcc",
+        "dcc",
         po::value<int>(&DoubleCountCheck_Selection_)->required(),
         "Set to 1 when running over the single or double lepton datasets.");
 
