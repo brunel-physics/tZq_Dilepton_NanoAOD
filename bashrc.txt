@@ -1,0 +1,33 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+
+# User specific aliases and functions
+getnano () {
+        dasgoclient -query="file dataset=$1" | xargs -n 1 -P 1 -I {} xrdcp root://xrootd-cms.infn.it/{} .
+}
+
+
+workenv (){
+LCGRS="LCG_95 x86_64-slc6-gcc8-opt"
+export LCGR=`echo $LCGRS | sed 's. ./.'`
+
+. /cvmfs/sft.cern.ch/lcg/contrib/clang/7.0.0/x86_64-slc6/setup.sh
+. /cvmfs/sft.cern.ch/lcg/views/setupViews.sh $LCGRS
+unset CXX
+}
+
+source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh
+
+#source /cvmfs/cms.cern.ch/cmsset_default.sh
+#source /cvmfs/grid.cern.ch/etc/profile.d/setup-cvmfs-ui.sh
+#export SCRAM_ARCH=slc7_amd64_gcc630
+
+alias cmsproxy='voms-proxy-init -voms cms'
+alias cmsinit='source /cvmfs/cms.cern.ch/cmsset_default.sh'
+alias cmsproxynew='/usr/bin/voms-proxy-init3 --voms cms'
+alias cmsproxycert='voms-proxy-init --voms cms -cert ~/.globus/myCertificate2021.p12'
