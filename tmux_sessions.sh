@@ -142,6 +142,18 @@ for i in ${!ProcessNamesArray[@]}; do
 
                 then tmux new -d -s ZPlusJets_PtBinned_400To650_ext2_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 24 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
 
+	elif [ ${ProcessNamesArray[$i]} = "ZPlusJets_PtBinned_650ToInf" ]
+
+                then tmux new -d -s ZPlusJets_PtBinned_650ToInf_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 25 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+
+	elif [ ${ProcessNamesArray[$i]} = "ZPlusJets_PtBinned_650ToInf_ext1" ]
+
+                then tmux new -d -s ZPlusJets_PtBinned_650ToInf_ext1_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 26 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+
+	elif [ ${ProcessNamesArray[$i]} = "ZPlusJets_PtBinned_650ToInf_ext2" ]
+
+                then tmux new -d -s ZPlusJets_PtBinned_650ToInf_ext2_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 27 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+
 	else 
 		echo "ERROR: Check ProcessNamesArray for " ${ProcessNamesArray[$i]}
 		break 
