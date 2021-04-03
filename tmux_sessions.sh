@@ -51,7 +51,7 @@ SystematicNamesArray=("_Nominal"                       "_PU_ScaleUp"            
 
 ChannelArray=("_ee" "_mumu" "_emu")
 
-YearArray=("_2016" "_2017" "_2018")
+YearArray=("2016" "2017" "2018")
 
 #Nominal runs
 
@@ -59,11 +59,11 @@ YearArray=("_2016" "_2017" "_2018")
 
 for i in ${!ProcessNamesArray[@]}; do
 
-	tmux_string="${ProcessNamesArray[i]}${SystematicNamesArray[0]}${ChannelArray[1]}${YearArray[0]}"
+	tmux_string="${ProcessNamesArray[i]}${SystematicNamesArray[0]}${ChannelArray[1]}_${YearArray[0]}"
 	
 	echo $tmux_string
 
-	tmux new -d -s $tmux_string 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p '$i' --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+	tmux new -d -s $tmux_string 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p '$i' --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 60'
 
 done
 
