@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ProcessNamesArray=("tZq"                                "tZq_scaleup"                           "tZq_scaledown"
+ProcessNamesArray=("tZq"				"tZq_scaleup"                           "tZq_scaledown")
+: '
                    "ZPlusJets_M50_aMCatNLO"             "ZPlusJets_M50_aMCatNLO_ext"            "ZPlusJets_M50_Madgraph"
                    "ZPlusJets_M50_Madgraph_ext"         "ZPlusJets_M10To50_aMCatNLO"            "ZPlusJets_M10To50_aMCatNLO_ext"
                    "ZPlusJets_M10To50_Madgraph"         "ZPlusJets_M10To50_Madgraph_ext"        "ZPlusJets_PtBinned_0To50"
@@ -39,13 +40,18 @@ ProcessNamesArray=("tZq"                                "tZq_scaleup"           
 		   "ttbarV_ttZToLLNuNu"			"ttbarV_ttZToLLNuNu_ext"		"ttbarV_ttZToLLNuNu_ext2"
 		   "ttbarV_ttZToQQ"			"ttbarV_ttZToQQ_ext"			"ttbarV_ttHTobb"
 		   "ttbarV_ttHTobb_ext"			"ttbarV_ttHToNonbb")
+'
 
+SystematicNamesArray=("_Nominal"                       "_PU_ScaleUp"             "_PU_ScaleDown"           "_BTag_ScaleUp"              "_BTag_ScaleDown" 
+		      "_JetSmearing_ScaleUp"           "_JetSmearing_ScaleDown"  "_JetResolution_ScaleUp"  "_JetResolution_ScaleDown"   "_LeptonEfficiencies_ScaleUp"
+		      "_LeptonEfficiencies_ScaleDown"  "_PDF_ScaleUp"  		 "_PDF_ScaleDown"	   "_ME_Up"			"_ME_Down"
+		      "_MET_Up"			       "_MET_Down"		 "_isr_up"		   "_isr_down"			"_fsr_up"
+		      "_fsr_down")
+	
 
-SystematicNamesArray=("_nominal")
+ChannelArray=("_ee" "_mumu" "_emu")
 
-ChannelArray=("_mumu")
-
-YearArray=("_2016")
+YearArray=("_2016" "_2017" "_2018")
 
 #Nominal runs
 
@@ -53,11 +59,11 @@ YearArray=("_2016")
 
 for i in ${!ProcessNamesArray[@]}; do
 
-	tmux_string="${ProcessNamesArray[i]}$SystematicNamesArray$ChannelArray$YearArray"
+	tmux_string="${ProcessNamesArray[i]}${SystematicNamesArray[0]}${ChannelArray[1]}${YearArray[0]}"
 	
 	echo $tmux_string
 
-	tmux new -d -s $tmux_string 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 'i' --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+	tmux new -d -s $tmux_string 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p '$i' --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
 
 done
 
