@@ -154,6 +154,18 @@ for i in ${!ProcessNamesArray[@]}; do
 
                 then tmux new -d -s ZPlusJets_PtBinned_650ToInf_ext2_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 27 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
 
+	elif [ ${ProcessNamesArray[$i]} = "ttbar_2l2nu" ]
+
+                then tmux new -d -s ttbar_2l2nu_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 28 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+
+	elif [ ${ProcessNamesArray[$i]} = "ttbar_madgraph" ]
+
+                then tmux new -d -s ttbar_madgraph_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 29 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+
+	elif [ ${ProcessNamesArray[$i]} = "ttbar_madgraph_ext" ]
+
+                then tmux new -d -s ttbar_madgraph_ext_nominal 'source ~/.bashrc; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 30 --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 2 --dcc 0; sleep 30'
+
 	else 
 		echo "ERROR: Check ProcessNamesArray for " ${ProcessNamesArray[$i]}
 		break 
