@@ -53,7 +53,7 @@ void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
     po::options_description desc("Options");
   
    desc.add_options()("help,h", "Print this message.")(
-        "mc",
+        "mc, m",
         po::value<int>(&MC_Selection_)->required(),
         "MC selection (e.g. 0 is data, 1 is MC)")(
         "year,y",
@@ -62,28 +62,28 @@ void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
         "process,p",
 	po::value<int>(&Process_Selection_)->required(),
 	"Process selection (e.g. 0 is tZq)")(
-        "npl",
+        "npl, n",
         po::value<int>(&NPL_Selection_)->required(),
         "NPL selection (e.g. 0 is for not the NPL run, 1 is for the NPL run)")(
-        "sr",
+        "sr, S",
         po::value<int>(&SR_Selection_)->required(), // No default value, has to be explicitly set by the user
         "Signal region. Set SR_Selection to 1 for results in the signal region.")(
-        "sbr",
+        "sbr, s",
         po::value<int>(&SBR_Selection_)->required(),
         "Side band region selection. Set both SR and SBR equal to 1 for results in the side band region.")(
-        "zjcr",
+        "zjcr, z",
         po::value<int>(&ZPlusJetsCR_Selection_)->required(),
         "Z+jets control region selection. Set to 1 for results in the z+jets control region, otherwise set to 0.")(
-        "ttcr",
+        "ttcr, t",
         po::value<int>(&ttbarCR_Selection_)->required(),
         "ttbar control region selection. Set to 1 for results in the ttbar control region, otherwise set to 0.")(
-        "sys",
+        "sys, u",
         po::value<int>(&Systematic_Selection_)->required(),
         "Systematic selection. 0 = nominal run")(
-        "channel",
+        "channel, c",
         po::value<int>(&Channel_Selection_)->required(),
         "Channel selection. ee channel = 1, mumu channel = 2, emu channel = 3")(
-        "dcc",
+        "dcc, d",
         po::value<int>(&DoubleCountCheck_Selection_)->required(),
         "Set to 1 when running over the single or double lepton datasets.");
 
@@ -5440,8 +5440,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto w_mass_cut{[&ZPlusJetsCRInt](const float& w_mass, const float& MET_sumEt) {
 	
   	//std::cout << "print 100" << std::endl;
-      
-  	switch(ZPlusJetsCRInt){
+	
+	switch(ZPlusJetsCRInt){
       
     		case 0: return ( abs(w_mass - W_MASS) < W_MASS_CUT ); break;
     		case 1: return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50); break;
@@ -8023,22 +8023,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	//std::cout << "print 153" << std::endl;
 
-	switch(MCInt){
-		case 0: switch(SBRInt){
-				case 1: return Chi2_SR < Chi2 && Chi2 < Chi2_SBR; break;
-				default: return !isnan(Chi2); break;
-			}
-
-	 		switch(SRInt){
-				case 1: return Chi2 < Chi2_SR; break;
-				default: return !isnan(Chi2); break;
-	  		}
-
-			break;
-
-		case 1: std::cout << "Chi2 = " << Chi2 << std::endl; return !isnan(Chi2);
-
+	 switch(SBRInt){
+	 	case 1: return Chi2_SR < Chi2 && Chi2 < Chi2_SBR; break;
+		default: return !isnan(Chi2); break;
+	 }
+	
+	switch(SRInt){
+		case 1: return Chi2 < Chi2_SR; break;
+		default: return !isnan(Chi2); break;
 	}
+
 
   }};
 
