@@ -130,10 +130,10 @@ constexpr float Z_MASS{91.1876f};
 constexpr float Z_MASS_CUT{20.f}; 
 constexpr float W_MASS = 80.385f;
 constexpr float W_MASS_CUT = 20.f;
-constexpr float TOP_MASS = 173.3;
-float Chi2_SR;
-float Chi2_SBR;
+constexpr float TOP_MASS = 172.6;
 
+float Chi2_SR; 
+float Chi2_SBR;
 
 template<typename T>
 [[gnu::const]] T select(const T& a, const ints& mask)
@@ -4461,7 +4461,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	//std::cout << "print 49" << std::endl;
 
-  	return abs(z_mass - Z_MASS) < Z_MASS_CUT;
+  	return !isinf(z_mass);//abs(z_mass - Z_MASS) < Z_MASS_CUT;
 
   }};
 
@@ -5443,8 +5443,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	
 	switch(ZPlusJetsCRInt){
       
-    		case 0: return ( abs(w_mass - W_MASS) < W_MASS_CUT ); break;
-    		case 1: return abs(w_mass - W_MASS) > W_MASS_CUT && (MET_sumEt < 50); break;
+    		case 0: return !isinf(w_mass); break; //( abs(w_mass - W_MASS) < W_MASS_CUT ); break;
+    		case 1: return !isinf(w_mass) && (MET_sumEt < 50); break;
       
         }
 
@@ -8019,9 +8019,79 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
-  auto Chi2Cut{[&SBRInt, &SRInt, &MCInt](const float& Chi2){	
+
+  auto linereader_Chi2{[&Channel, &Year](const int& LineNumber, const std::string& InputTriggerChi2_File){
+
+        //std::cout << "print 154" << std::endl;
+
+        std::string Chi2TextFile;
+
+        if(InputTriggerChi2_File == "Chi2"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR_SBR___" + Year + ".txt";}
+        else{throw std::logic_error("Please choose an appropriate input text file for the chi2 line reader function");}
+
+
+        using namespace std;
+
+        fstream file(Chi2TextFile.c_str());
+        GotoLine(file, LineNumber);
+
+        std::string line;
+        file >> line;
+
+        double Value = atof(line.c_str());
+
+        return Value;
+
+  }};
+
+
+
+
+  auto linecounter_Chi2{[&Channel, &Year](const std::string& InputTriggerChi2_File){
+
+        //std::cout << "print 155" << std::endl;
+
+        std::string Chi2TextFile;
+
+	if(InputTriggerChi2_File == "Chi2"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR_SBR___" + Year + ".txt";}
+        else{throw std::logic_error("Please choose an appropriate input text file for the chi2 line reader function");}
+
+        int number_of_lines = 0;
+        std::string line;
+        std::ifstream myfile(Chi2TextFile.c_str());
+
+        while (getline(myfile, line))
+                ++number_of_lines;
+                return number_of_lines;
+
+  }}; 
+
+  auto textfilereader2_Chi2{[&linecounter_Chi2, &linereader_Chi2](const std::string& InputTriggerChi2_File){
+
+   //std::cout << "print 156" << std::endl;
+
+        int NumberOfLines = linecounter_Chi2(InputTriggerChi2_File);
+        std::vector<double> Value;
+
+        for(int i = 1; i < NumberOfLines+1; i++){
+                Value.push_back(linereader_Chi2(i, InputTriggerChi2_File));
+        }
+
+        return Value;
+
+  }};
+
+
+  auto Chi2Cut{[&SBRInt, &SRInt, &MCInt, &ChannelInt, &textfilereader2_Chi2](const float& Chi2){	
 
   	//std::cout << "print 153" << std::endl;
+
+	Chi2_SR = textfilereader2_Chi2("Chi2").at(0);
+        Chi2_SBR = textfilereader2_Chi2("Chi2").at(1);
+
+	std::cout << "Chi2_SR = " << Chi2_SR << std::endl;
+        std::cout << "Chi2_SBR = " << Chi2_SBR << std::endl;
+
 
 	 switch(SBRInt){
 	 	case 1: return Chi2_SR < Chi2 && Chi2 < Chi2_SBR; break;
@@ -8138,10 +8208,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
   else{gen_weightSF = 1;}
 
-  //auto d_Range = d.Range(0, 1000);
+  auto d_Range = d.Range(0, 100000);
 
   //Filtering events with a postive genWeight
-  auto d_GenWeightFilter = d.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
+  auto d_GenWeightFilter = d_Range.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
 
   //Event cleaning
   auto d_EventCleaning = d_GenWeightFilter.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
@@ -9138,8 +9208,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  
         Chi2Range.open(Chi2Range_string.c_str());
 
-        Chi2Range << "Chi2_SR: " << Chi2_SR << '\n'
-                  << "Chi2_SBR: " << Chi2_SBR << std::endl;
+        Chi2Range << Chi2_SR << '\n'
+                  << Chi2_SBR << std::endl;
 
   }
 
