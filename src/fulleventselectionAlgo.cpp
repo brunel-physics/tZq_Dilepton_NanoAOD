@@ -301,6 +301,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string GeneratorWeightString; 
   std::vector<std::string> LeptonGenPartFlavStrings;
   std::vector<std::string> RochCorrVecStrings;
+  std::vector<std::string> JetSmearingStrings;
 
   std::string JetMassInput;
   std::string JetPtInput;
@@ -638,6 +639,34 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::cout << "MCInt = " << MCInt << std::endl;
 
   //Setting the SampleType, Channel, Process, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, Year and Systematic strings for the output file names
+  switch(SystematicInt){
+
+        case 0: Systematic = "Nominal"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 1: Systematic = "PU_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 2: Systematic = "PU_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 3: Systematic = "BTag_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 4: Systematic = "BTag_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 5: Systematic = "JetSmearing_ScaleUp"; SJER = "sJER_up"; SIGMAJER = "sigma_JER"; break;
+        case 6: Systematic = "JetSmearing_ScaleDown"; SJER = "sJER_down"; SIGMAJER = "sigma_JER"; break;
+        case 7: Systematic = "JetResolution_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER_up"; break;
+        case 8: Systematic = "JetResolution_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER_down"; break;
+        case 9: Systematic = "LeptonEfficiencies_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 10: Systematic = "LeptonEfficiencies_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 11: Systematic = "PDF_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 12: Systematic = "PDF_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 13: Systematic = "ME_Up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 14: Systematic = "ME_Down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 15: Systematic = "MET_Up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 16: Systematic = "MET_Down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 17: Systematic = "isr_up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 18: Systematic = "isr_down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 19: Systematic = "fsr_up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 20: Systematic = "fsr_down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        default: std::cout << "ERROR: SystematicInt must be between 1 and 20." << std::endl; break;
+
+  } 
+  
+
   switch(MCInt){
 
 	case 0: SampleType = "data";
@@ -645,6 +674,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		GeneratorWeightString = "CaloMET_pt"; //input is not used for the function for data, so have put anything here
 		LeptonGenPartFlavStrings = {"Electron_cleanmask", "Electron_cleanmask"}; //just a random char RDataFrame to use for data, since it won't be used 
 		RochCorrVecStrings = {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "Muon_charge", "Muon_nTrackerLayers"};
+		JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_pt", "Jet_eta", "Jet_phi", SJER, SIGMAJER, "nJet"}; //repeated variables aren't used anyway since a correction factor of 1 is applied for data
 		break;
 
 	case 1: SampleType = "MC";
@@ -652,6 +682,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		GeneratorWeightString = "genWeight";
 		LeptonGenPartFlavStrings = {"Electron_genPartFlav", "Muon_genPartFlav"};
 		RochCorrVecStrings = {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "Muon_genPartIdx", "Muon_nTrackerLayers"};
+		JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
 		break;
 
   }
@@ -2536,33 +2567,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	default: std::cout << "ERROR: Year must be 2016, 2017 or 2018." << std::endl;	
 		 break;
-
-  }
-
-  switch(SystematicInt){
-
-	case 0: Systematic = "Nominal"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-	case 1: Systematic = "PU_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-	case 2: Systematic = "PU_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-	case 3: Systematic = "BTag_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-	case 4: Systematic = "BTag_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 5: Systematic = "JetSmearing_ScaleUp"; SJER = "sJER_up"; SIGMAJER = "sigma_JER"; break;
-        case 6: Systematic = "JetSmearing_ScaleDown"; SJER = "sJER_down"; SIGMAJER = "sigma_JER"; break;
-        case 7: Systematic = "JetResolution_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER_up"; break;
-        case 8: Systematic = "JetResolution_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER_down"; break;
-        case 9: Systematic = "LeptonEfficiencies_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 10: Systematic = "LeptonEfficiencies_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 11: Systematic = "PDF_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 12: Systematic = "PDF_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 13: Systematic = "ME_Up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 14: Systematic = "ME_Down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 15: Systematic = "MET_Up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 16: Systematic = "MET_Down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 17: Systematic = "isr_up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 18: Systematic = "isr_down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 19: Systematic = "fsr_up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 20: Systematic = "fsr_down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-	default: std::cout << "ERROR: SystematicInt must be between 1 and 20." << std::endl; break;
 
   }
 
@@ -4854,8 +4858,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto JetSmearingFunction_HybridMethod{[&MaxComparison](const floats& pT, const floats& eta, const floats& phi, const floats& pT_ptcl, const floats& eta_ptcl, 
-							 const floats& phi_ptcl, const float& sJER_nominal, const float& sigma_JER_input, const ints& Jet_genJetIdx){
+  auto JetSmearingFunction_HybridMethod{[&MaxComparison, &MCInt](const floats& pT, const floats& eta, const floats& phi, const floats& pT_ptcl, const floats& eta_ptcl, 
+							         const floats& phi_ptcl, const float& sJER_nominal, const float& sigma_JER_input, const ints& Jet_genJetIdx){
 
   	//std::cout << "print 57" << std::endl;
 
@@ -4863,35 +4867,43 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	for(long unsigned int i = 0; i < pT.size(); i++){
 
-		float cJER_Scaling;
-		float N = gRandom->Gaus(0, sigma_JER_input);
-        	float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
+		switch(MCInt){
 
-  		if(Jet_genJetIdx.at(i) != -1){
+			case 0: cJER_vec.push_back(1.0); break;
+			default:
 
-			long unsigned int j = Jet_genJetIdx.at(i);
+				float cJER_Scaling;
+				float N = gRandom->Gaus(0, sigma_JER_input);
+        			float cJER_Stochastic = 1.0 + ( N * MaxComparison(sJER_nominal) );
 
-				if( j < pT_ptcl.size() ){
+  				if(Jet_genJetIdx.at(i) != -1){
 
-					double dphi = phi.at(i) - phi_ptcl.at(j);
-        				double deta = eta.at(i) - eta_ptcl.at(j);
-        				double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
-        				const double RCone = 0.4;
+					long unsigned int j = Jet_genJetIdx.at(i);
 
- 					if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER_input * pT.at(i)) && (deltaR == RCone / 2) ){
+					if( j < pT_ptcl.size() ){
 
-						cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
-						cJER_vec.push_back(cJER_Scaling);
+						double dphi = phi.at(i) - phi_ptcl.at(j);
+        					double deta = eta.at(i) - eta_ptcl.at(j);
+        					double deltaR = sqrt( pow(dphi, 2) + pow(deta, 2) );
+        					const double RCone = 0.4;
+
+ 						if( (abs(pT.at(i) - pT_ptcl.at(j)) < 3 * sigma_JER_input * pT.at(i)) && (deltaR == RCone / 2) ){
+
+							cJER_Scaling = 1 + ( (sJER_nominal - 1) * ( (pT.at(i) - pT_ptcl.at(j)) / pT.at(i) ) );
+							cJER_vec.push_back(cJER_Scaling);
 		
+						}
+						else{cJER_vec.push_back(cJER_Stochastic);}
+
 					}
 					else{cJER_vec.push_back(cJER_Stochastic);}
 
-				}
-				else{cJER_vec.push_back(cJER_Stochastic);}
+  				}
+  				else{cJER_vec.push_back(cJER_Stochastic);}
 
-  		}
-  		else{cJER_vec.push_back(cJER_Stochastic);}
+				break;
 
+			}
 
   	}
 
@@ -8830,7 +8842,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                       		        .Define("sigma_JER", sigma_JER, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 			                .Define("sigma_JER_up", sigma_JER_up, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
 					.Define("sigma_JER_down", sigma_JER_down, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
-                      			.Define("cJER", JetSmearingFunction_HybridMethod, {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"})
+                      			.Define("cJER", JetSmearingFunction_HybridMethod, {JetSmearingStrings})
                       		        .Define("SmearedJet4Momentum", ApplyCJER, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
                       			.Define("SmearedJetPt", GetSmearedJetPt, {"SmearedJet4Momentum", "Jet_pt"})
                       			.Define("SmearedJetPhi", GetSmearedJetPhi, {"SmearedJet4Momentum", "Jet_phi"})
