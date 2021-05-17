@@ -139,8 +139,6 @@ template<typename T>
 [[gnu::const]] T select(const T& a, const ints& mask)
 {
   std::cout << "print 200" << std::endl;
-  std::cout << "a.size() = " << a.size() << std::endl;
-  std::cout << "mask.size() = " << mask.size() << std::endl;
   return a[mask];
 }
 
@@ -2045,7 +2043,25 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		 switch(YearInt){
 			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
-			case 2017: input_files = {"/data/disk0/nanoAOD_2017//DoubleEGRun2017B/*"}; break;
+			case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"}; break;
+	/*			   input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/0C9C5536-0A0C-D649-A75C-3936F52B6DC2.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/6D81A3DC-9230-9642-8225-AB51C27A7B32.root",
+					          "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/BC88D5A3-69A7-6047-9FBB-B6503EBA227B.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/123AFF13-A79B-8143-B882-5E4FCF05F76C.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/7090EB25-8D24-9E47-B6AE-E87826CC5113.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/D0332D8D-4965-9744-8451-F6F2F50C5A21.root",
+					          "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/144F9352-91C0-5F4A-B50C-9E3F1CC93BA2.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/7E053964-3BD9-C842-8B18-00718B358F11.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/D6B0C491-1EB1-D240-91BD-9252BCA9A204.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/1DA551BC-A038-9E48-8C24-E2514FB1DAB3.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/7FA11F92-D644-C54E-A67D-6A29AD34BB2C.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/D76277B0-C97F-0243-B6F7-EB4098306949.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/4508CC6F-666B-0143-8C9B-63D6758119FB.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/822A2295-CEBA-D847-8E45-3D2BBF0850F9.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/DB20E550-5180-2345-92AA-A8E19F6183A0.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/45D89C0E-759A-504D-B572-1DFAE9D63EE3.root",
+					  	  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/8B140014-3892-294F-B091-78BBDC212F74.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/DF1314E4-44F5-7740-AD71-769582F5C2B1.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/45FF655E-D03A-4F4C-A75E-F8FA3884B915.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/91210E8F-EE8B-D14C-9FED-F84A55F0DF9D.root", 
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/E5DFF3A3-9E41-A948-AC3D-A6B7464AEAE9.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/48BCF089-C46D-344E-B03D-6324E605B77A.root",  
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/929CE12A-5F32-C940-A55A-2408339CB427.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/E8DE7141-80AC-7044-90F1-CAB6C48529EF.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/48FBA89B-D751-1046-8C71-B78C25AB6CA9.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/996EE61C-1D07-6D4B-80D3-B82CB45E60C8.root", 
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/F8ED821E-3761-A34A-84A8-51F8F015C2C8.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/4D14CF13-12E7-EB4E-A336-29F2D9B83576.root",  
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/A0780D08-CEFE-614E-8E73-E22E5DCAEB8B.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/FC0F0BE5-5D07-9C4A-B1FB-EDE0BCE0B842.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/58856A58-060A-5D4D-B013-184F2ADA9701.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/A29E4FAC-6794-3848-9972-7AA51C34F1DD.root",
+						  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/5C196D4E-4330-164C-84DF-69FA504DEEF6.root",  "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/A9515A09-8B9C-B349-B2A3-FA755FBECDA7.root"}; break;
+*/
 			case 2018: break;
 			default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
 		 }
@@ -5566,6 +5582,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				      const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass ){
 
   	std::cout << "print 104" << std::endl;
+	std::cout << "bjets_pt.size() = " << bjets_pt.size() << std::endl;
+        std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
 
 	float leadingbjetpt; float leadingbjeteta; float leadingbjetphi; float leadingbjetmass;
 
@@ -5592,6 +5610,18 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		
   		const double reco_mass = (RecoW + BJets).M(); 
 
+		std::cout << "TOP_MASS = " << TOP_MASS << std::endl;
+		std::cout << "reco_mass = " << reco_mass << std::endl;
+		std::cout << "top_reco_mass = " << std::endl;
+		std::cout << "w_pair_pt.at(i) = " << w_pair_pt.at(i) << std::endl;
+		std::cout << "w_pair_eta.at(i) = " << w_pair_eta.at(i) << std::endl;
+		std::cout << "w_pair_phi.at(i) = " << w_pair_phi.at(i) << std::endl;
+		std::cout << "w_mass = " << w_mass << std::endl;
+		std::cout << "leadingbjetpt = " << leadingbjetpt << std::endl;
+		std::cout << "leadingbjeteta = " << leadingbjeteta << std::endl;
+		std::cout << "leadingbjetphi = " << leadingbjetphi << std::endl;
+		std::cout << "leadingbjetmass = " << leadingbjetmass << std::endl;
+
   		if(abs(TOP_MASS - reco_mass) < abs(TOP_MASS - top_reco_mass)){
 
 	  		top_reco_mass = reco_mass;
@@ -5601,6 +5631,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	}
 
+
+	std::cout << "index_1 = " << index_1 << std::endl;
 
   	BJets.SetPtEtaPhiM(leadingbjetpt, leadingbjeteta, leadingbjetphi, leadingbjetmass);
   	RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
@@ -8009,6 +8041,80 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 					break;
 
+					case 3: switch(SystematicInt){ 
+						
+							case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * 
+								(TrigSF += TrigSF_Uncert) * CalculatedPDFWeightInput * EGammaSF_egammaEffSysInput * 
+								EGammaSF_egammaEffRecoSysInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+
+							break;
+
+                        				case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF -= TrigSF_Uncert) * 
+					  		 	 CalculatedPDFWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput *
+						         	 EGammaSF_egammaEffSysInput * EGammaSF_egammaEffRecoSysInput * CalculatedGeneratorWeightInput * 
+							 	 TopWeightInput.at(0);
+
+							 break;
+				
+							case 11: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
+							  	 CalculatedPDFWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput *
+							 	 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+                        
+							 break;
+
+							case 12: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
+						         		     CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * 
+									     MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput *
+									     CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+				
+							 break;
+
+							case 13: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF *
+                                                          	 ReturnedPSWeightInput.at(2) * ReturnedPSWeightInput.at(3) * CalculatedPDFWeightInput *
+                                                                 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput *								      CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+
+							 break;
+
+							case 14: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF *
+                                                                 ReturnedPSWeightInput.at(1) * ReturnedPSWeightInput.at(4) * CalculatedPDFWeightInput *
+                                                                 EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+
+                                                         break;
+
+							case 17: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * ReturnedPSWeightInput.at(2) * 
+							         CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * 
+							         TopWeightInput.at(0);
+
+							 break;
+
+                        				case 18: EventWeightOutput =  PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
+							         ReturnedPSWeightInput.at(0) * 
+							         CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+
+							 break;
+
+                        				case 19: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * ReturnedPSWeightInput.at(3) * 
+							 	 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput  
+							 	 * TopWeightInput.at(0);
+
+							 break;
+
+                        				case 20: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * ReturnedPSWeightInput.at(1) * 
+							 	 CalculatedPDFWeightInput * EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput  
+							         * TopWeightInput.at(0);
+
+							 break;
+
+							default: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * TrigSF * 
+							 	 CalculatedPDFWeightInput * 
+							         EGammaSF_egammaEffInput * EGammaSF_egammaEffRecoInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+					
+							 break;		
+  
+					}
+
+					break; 
+
 					default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
 
 		}
@@ -8264,7 +8370,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
   else{gen_weightSF = 1;}
 
-  auto d_Range = d.Range(0, 10000);
+  auto d_Range = d.Range(0, 100000);
 
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
@@ -9043,6 +9149,14 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   h_nonbjet->Write();
   BTagEffPlots->Close();
 
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << "before d_WCandReco" << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+
 
   //Reconstrucing the W boson candidate
   auto d_WCandReco = d_BJetSelection.Define("lead_bjet", find_lead_mask, {"bjets", "TightSmearedJetsPt"})
@@ -9095,7 +9209,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				    .Filter(w_mass_cut, {"w_mass", "MET_sumEt"}, "W mass cut");
 
    
-
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << "after d_WCandReco" << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
 
   //Reconstructing the top quark candidate
   auto d_TopCandReco = d_WCandReco.Define("RecoW", WLorentzVector, {"w_pair_pt", "w_pair_eta", "w_pair_phi", "w_mass", "w_reco_jets"})
@@ -9158,9 +9278,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                   .Define("TopWeight", TopReweighting_weight, {"TopReweighting_topquark", "TopReweighting_antitopquark"});
 
 
-  std::string TopCandRecoFile = "TopCandReco_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
-
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << "after d_TopCandReco" << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
 
 
   auto d_EventWeightDefines = d_TopCandReco.Define("TotalHT_System", TotalVariable_System, {"RecoZHT", "RecoWHT", "Top_HT", "TotLepHT", "TotJetHT"})
@@ -9203,6 +9327,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 										"MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", 
 										"MuonSFTest_Iso_sys_stat"});
 								      
+
+
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << "after event weight defines" << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
+  std::cout << '\n' << std::endl;
 
 
 
