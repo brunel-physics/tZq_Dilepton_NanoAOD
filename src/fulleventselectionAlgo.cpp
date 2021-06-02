@@ -702,7 +702,16 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 0: Process = "tZq"; 
 
 		switch(YearInt){
-			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+			//case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+			case 2016: input_files = {
+			  
+			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root", 
+			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/168E8DBD-B154-194D-A075-F0AF477DD992.root", 
+			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/26EA0BC1-0327-B640-9321-AB13F3390366.root"}; 
+
+			HessianOrMC = "Hessian"; 
+			break;
+
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -4968,6 +4977,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
     		float JetEta_new = JetEta.at(i) * cJER.at(0);
     		float JetPhi_new = JetPhi.at(i) * cJER.at(0);
     		float JetMass_new = JetMass.at(i) * cJER.at(0);
+		
+		std::cout << '\n' << std::endl;
+		std::cout << '\n' << std::endl;
+		std::cout << '\n' << std::endl;
+		std::cout << "JetEta.at(i) = " << JetEta.at(i) << std::endl;
+		std::cout << "cJER.at(0) = " << cJER.at(0) << std::endl;
+		std::cout << "JetEta_new = " << JetEta_new << std::endl;
+		std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
 
     		JetFourMomentum_New.SetPtEtaPhiM(JetPt_new, JetEta_new, JetPhi_new, JetMass_new);
     		OutputVec.push_back(JetFourMomentum_New);
@@ -5026,6 +5045,20 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
         	float NewEta = (SmearedJet4Momentum.at(i)).Eta();
         	//float NewEta = JetEta.at(i);
+
+		std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
+		std::cout << "NewEta = " << NewEta << std::endl;
+		std::cout << "SmearedJet4Momentum.size() = " << SmearedJet4Momentum.size() << std::endl;
+		std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
+
+		if(abs(NewEta) == 99999997952.000000){
+			throw std::logic_error("abs(NewEta) == 99999997952.000000");
+		}
+
 		NewEtaVec.push_back(NewEta);
 
  	}
@@ -5585,9 +5618,15 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << "bjets_pt.size() = " << bjets_pt.size() << std::endl;
         std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
 
+	std::cout << "bjets_eta.at(0) = " << bjets_eta.at(0) << std::endl;
+
 	float leadingbjetpt; float leadingbjeteta; float leadingbjetphi; float leadingbjetmass;
 
 	if(bjets_pt.size() > 1){
+		
+		std::cout << "bjets_eta.at(0) = " << bjets_eta.at(0) << std::endl;
+		std::cout << "bjets_eta.at(1) = " << bjets_eta.at(1) << std::endl;
+
 		leadingbjetpt = (bjets_pt.at(0) > bjets_pt.at(1)) ? bjets_pt.at(0) : bjets_pt.at(1);
 		leadingbjeteta = (bjets_eta.at(0) > bjets_eta.at(1)) ? bjets_eta.at(0) : bjets_eta.at(1);
 		leadingbjetphi = (bjets_phi.at(0) > bjets_phi.at(1)) ? bjets_phi.at(0) : bjets_phi.at(1);
@@ -5610,6 +5649,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		
   		const double reco_mass = (RecoW + BJets).M(); 
 
+		std::cout << '\n' << std::endl;
+		std::cout << '\n' << std::endl;
+		std::cout << '\n' << std::endl;
 		std::cout << "TOP_MASS = " << TOP_MASS << std::endl;
 		std::cout << "reco_mass = " << reco_mass << std::endl;
 		std::cout << "top_reco_mass = " << std::endl;
@@ -5621,6 +5663,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		std::cout << "leadingbjeteta = " << leadingbjeteta << std::endl;
 		std::cout << "leadingbjetphi = " << leadingbjetphi << std::endl;
 		std::cout << "leadingbjetmass = " << leadingbjetmass << std::endl;
+		std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
+                std::cout << '\n' << std::endl;
 
   		if(abs(TOP_MASS - reco_mass) < abs(TOP_MASS - top_reco_mass)){
 
