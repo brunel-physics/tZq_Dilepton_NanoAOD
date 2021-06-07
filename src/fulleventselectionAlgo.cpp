@@ -9571,8 +9571,8 @@ void fulleventselectionAlgo::fulleventselection(){
   	switch(Year_Selection_){
 
 		case 2016: Year_String == "2016"; break;
-		case 2017: Year_String == "2016"; break;
-		case 2018: Year_String == "2016"; break;
+		case 2017: Year_String == "2017"; break;
+		case 2018: Year_String == "2017"; break;
 
   	}
 
