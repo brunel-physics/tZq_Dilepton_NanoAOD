@@ -1,0 +1,9 @@
+N_SelectionCriteria = 270081
+N_MET_And_SelectionCriteria = 270383
+N_LeptonTriggersAndSelectionCriteria = 258206
+N_MET_LeptonTriggers_SelectionCriteria = 258206
+Eff = 0.956032
+Alpha = 1.00112
+Eff_UpperUncert = 0.000731646
+Eff_LowerUncert = 0.00140667
+

@@ -1,0 +1,4 @@
+TrigSF = 0.982484
+TrigSF_UpperUncert = 0.000751926
+TrigSF_LowerUncert = 0.00144552
+
