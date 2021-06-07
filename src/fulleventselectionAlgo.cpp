@@ -7,7 +7,8 @@
 #include <TFile.h>
 #include "TEfficiency.h"
 #include "TLorentzVector.h"
-#include "LorentzVector.h"
+//#include "LorentzVector.h"
+#include "Math/Vector4D.h"
 #include <TRandom3.h>
 #include "TCanvas.h"
 
@@ -706,7 +707,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			//case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			case 2016: input_files = {
 			  
-			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root", 
+			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root"/*, 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/168E8DBD-B154-194D-A075-F0AF477DD992.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/26EA0BC1-0327-B640-9321-AB13F3390366.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/437EF991-798D-A54E-8D17-0134D7A9A93E.root", 
@@ -731,7 +732,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/DB975E6B-8998-F349-A3A1-9A0D3EC0D050.root",
                          "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/DC644FAC-2E26-A840-83E7-F76E28C17C94.root",
                          "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/E4BFCFAD-0C83-AC48-8C65-E8EEB8FD2F3C.root",
-                         "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/F546F02D-E164-8541-86B6-086ECBC3C4D1.root"}; 
+                         "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/F546F02D-E164-8541-86B6-086ECBC3C4D1.root"*/}; 
 
 			HessianOrMC = "Hessian"; 
 			break;
@@ -5012,7 +5013,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                 std::cout << '\n' << std::endl;
                 std::cout << '\n' << std::endl;
 
-    		JetFourMomentum_New.SetPtEtaPhiM(JetPt_new, JetEta_new, JetPhi_new, JetMass_new);
+    		JetFourMomentum_New.SetPt(JetPt_new);
+		JetFourMomentum_New.SetEta(JetEta_new);
+		JetFourMomentum_New.SetPhi(JetPhi_new);
+		JetFourMomentum_New.SetM(JetMass_new);
     		OutputVec.push_back(JetFourMomentum_New);
 
   	}
@@ -8439,7 +8443,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }
   else{gen_weightSF = 1;}
 
-  auto d_Range = d.Range(0, 100000);
+  //auto d_Range = d.Range(0, 100000);
 
   std::cout << '\n' << std::endl;
   std::cout << '\n' << std::endl;
@@ -8452,7 +8456,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
   //Filtering events with a postive genWeight
-  auto d_GenWeightFilter = d_Range.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
+  auto d_GenWeightFilter = d.Filter(GeneratorWeightFilterFunction, {GeneratorWeightString});
 
   //Event cleaning
   auto d_EventCleaning = d_GenWeightFilter.Filter(filter_function, {"Flag_goodVertices",              "Flag_globalSuperTightHalo2016Filter",     "Flag_HBHENoiseFilter", 
