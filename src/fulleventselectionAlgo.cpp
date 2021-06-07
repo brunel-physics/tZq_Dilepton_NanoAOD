@@ -4991,11 +4991,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	std::cout << "print 58" << std::endl;
 
-  	std::vector<TLorentzVector> OutputVec{};
+  	std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> OutputVec{};
 
   	for(unsigned int i = 0; i < nJet; i++){
 
-    		TLorentzVector JetFourMomentum_New{};
+    		ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> JetFourMomentum_New{};
     		float JetPt_new = JetPt.at(i) * cJER.at(0);
     		float JetEta_new = JetEta.at(i) * cJER.at(0);
     		float JetPhi_new = JetPhi.at(i) * cJER.at(0);
@@ -5021,7 +5021,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto GetSmearedJetPt{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPt){
+  auto GetSmearedJetPt{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetPt){
 
   	std::cout << "print 59" << std::endl;
 
@@ -5039,7 +5039,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto GetSmearedJetPhi{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetPhi){
+  auto GetSmearedJetPhi{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetPhi){
 
   	std::cout << "print 60" << std::endl;
 
@@ -5058,7 +5058,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
  
-  auto GetSmearedJetEta{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetEta){
+  auto GetSmearedJetEta{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetEta){
 
   	std::cout << "print 61" << std::endl;
 
@@ -5091,7 +5091,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto GetSmearedJetMass{[](std::vector<TLorentzVector> SmearedJet4Momentum, const floats& JetMass){
+  auto GetSmearedJetMass{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetMass){
 
   	std::cout << "print 62" << std::endl;
 
