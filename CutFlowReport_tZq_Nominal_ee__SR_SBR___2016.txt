@@ -1,0 +1,7 @@
+Event cleaning filter	533000	533000	100 %
+GoldenJson filter	533000	533000	100 %
+lepton cut	533000	6318	1.18537 %
+Z mass cut	6318	6318	100 %
+jet cut	6318	1883	29.8037 %
+b jet cut (ee channel)	1883	877	46.5746 %
+W mass cut	877	877	100 %
