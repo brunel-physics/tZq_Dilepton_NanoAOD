@@ -707,7 +707,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			//case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			case 2016: input_files = {
 			  
-			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root"/*, 
+			 "eos/cms/store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root"/*, 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/168E8DBD-B154-194D-A075-F0AF477DD992.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/26EA0BC1-0327-B640-9321-AB13F3390366.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/437EF991-798D-A54E-8D17-0134D7A9A93E.root", 
