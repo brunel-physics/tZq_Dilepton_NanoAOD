@@ -707,9 +707,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			//case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			case 2016: input_files = {
 			  
-			 "eos/cms/store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root"/*, 
-			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/168E8DBD-B154-194D-A075-F0AF477DD992.root", 
-			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/26EA0BC1-0327-B640-9321-AB13F3390366.root", 
+			 "/eos/cms/store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/0E20324C-E5A5-F946-ACD9-E4B6262DF98F.root"/*, 
+			 "/eos/cms/store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/168E8DBD-B154-194D-A075-F0AF477DD992.root", 
+			 "/eos/cms/store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/26EA0BC1-0327-B640-9321-AB13F3390366.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/437EF991-798D-A54E-8D17-0134D7A9A93E.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/4C98E473-8F77-CE4C-9BD3-EAEFAD0EDEE4.root", 
 			 "root://cms-xrd-global.cern.ch///store/mc/RunIISummer16NanoAODv7/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/260000/4EAEBC27-AA3A-A444-8FC1-CE13C05EC366.root",
@@ -5003,16 +5003,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
     		float JetPhi_new = JetPhi.at(i) * cJER.at(0);
     		float JetMass_new = JetMass.at(i) * cJER.at(0);
 		
-		std::cout << '\n' << std::endl;
-		std::cout << '\n' << std::endl;
-		std::cout << '\n' << std::endl;
-		std::cout << "JetEta.at(i) = " << JetEta.at(i) << std::endl;
-		std::cout << "cJER.at(0) = " << cJER.at(0) << std::endl;
-		std::cout << "JetEta_new = " << JetEta_new << std::endl;
-		std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-
     		JetFourMomentum_New.SetPt(JetPt_new);
 		JetFourMomentum_New.SetEta(JetEta_new);
 		JetFourMomentum_New.SetPhi(JetPhi_new);
@@ -5072,21 +5062,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  	for(long unsigned int i = 0; i < JetEta.size(); i++){
 
         	float NewEta = (SmearedJet4Momentum.at(i)).Eta();
-        	//float NewEta = JetEta.at(i);
-
-		std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-		std::cout << "NewEta = " << NewEta << std::endl;
-		std::cout << "SmearedJet4Momentum.size() = " << SmearedJet4Momentum.size() << std::endl;
-		std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-
-		if(abs(NewEta) == 99999997952.000000){
-			throw std::logic_error("abs(NewEta) == 99999997952.000000");
-		}
-
 		NewEtaVec.push_back(NewEta);
 
  	}
@@ -5367,10 +5342,24 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                 continue;
                         }
 
-                        auto jet1{TLorentzVector{}};
-                        auto jet2{TLorentzVector{}};
-                        jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
-                        jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+                        //auto jet1{TLorentzVector{}};
+                        //auto jet2{TLorentzVector{}};
+                        //jet1.SetPtEtaPhiM(pts.at(i), etas.at(i), phis.at(i), ms.at(i));
+                        //jet2.SetPtEtaPhiM(pts.at(j), etas.at(j), phis.at(j), ms.at(j));
+
+			ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> jet1{};
+			ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> jet2{};
+	
+			jet1.SetPt(pts.at(i));
+			jet1.SetEta(etas.at(i));
+			jet1.SetPhi(phis.at(i));
+			jet1.SetM(ms.at(i));
+
+			jet2.SetPt(pts.at(j));
+                        jet2.SetEta(etas.at(j));
+                        jet2.SetPhi(phis.at(j));
+                        jet2.SetM(ms.at(j));
+
 
                         if (const double reco_mass{(jet1 + jet2).M()}; std::abs(W_MASS - reco_mass) < std::abs(W_MASS - w_reco_mass))
                         {
@@ -5643,18 +5632,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 				      const floats& w_pair_pt, const floats& w_pair_eta, const floats& w_pair_phi, const float& w_mass ){
 
   	std::cout << "print 104" << std::endl;
-	std::cout << "bjets_pt.size() = " << bjets_pt.size() << std::endl;
-        std::cout << "w_pair_pt.size() = " << w_pair_pt.size() << std::endl;
-
-	std::cout << "bjets_eta.at(0) = " << bjets_eta.at(0) << std::endl;
 
 	float leadingbjetpt; float leadingbjeteta; float leadingbjetphi; float leadingbjetmass;
 
 	if(bjets_pt.size() > 1){
 		
-		std::cout << "bjets_eta.at(0) = " << bjets_eta.at(0) << std::endl;
-		std::cout << "bjets_eta.at(1) = " << bjets_eta.at(1) << std::endl;
-
 		leadingbjetpt = (bjets_pt.at(0) > bjets_pt.at(1)) ? bjets_pt.at(0) : bjets_pt.at(1);
 		leadingbjeteta = (bjets_eta.at(0) > bjets_eta.at(1)) ? bjets_eta.at(0) : bjets_eta.at(1);
 		leadingbjetphi = (bjets_phi.at(0) > bjets_phi.at(1)) ? bjets_phi.at(0) : bjets_phi.at(1);
@@ -5677,24 +5659,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		
   		const double reco_mass = (RecoW + BJets).M(); 
 
-		std::cout << '\n' << std::endl;
-		std::cout << '\n' << std::endl;
-		std::cout << '\n' << std::endl;
-		std::cout << "TOP_MASS = " << TOP_MASS << std::endl;
-		std::cout << "reco_mass = " << reco_mass << std::endl;
-		std::cout << "top_reco_mass = " << std::endl;
-		std::cout << "w_pair_pt.at(i) = " << w_pair_pt.at(i) << std::endl;
-		std::cout << "w_pair_eta.at(i) = " << w_pair_eta.at(i) << std::endl;
-		std::cout << "w_pair_phi.at(i) = " << w_pair_phi.at(i) << std::endl;
-		std::cout << "w_mass = " << w_mass << std::endl;
-		std::cout << "leadingbjetpt = " << leadingbjetpt << std::endl;
-		std::cout << "leadingbjeteta = " << leadingbjeteta << std::endl;
-		std::cout << "leadingbjetphi = " << leadingbjetphi << std::endl;
-		std::cout << "leadingbjetmass = " << leadingbjetmass << std::endl;
-		std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-                std::cout << '\n' << std::endl;
-
   		if(abs(TOP_MASS - reco_mass) < abs(TOP_MASS - top_reco_mass)){
 
 	  		top_reco_mass = reco_mass;
@@ -5704,8 +5668,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	}
 
-
-	std::cout << "index_1 = " << index_1 << std::endl;
 
   	BJets.SetPtEtaPhiM(leadingbjetpt, leadingbjeteta, leadingbjetphi, leadingbjetmass);
   	RecoW.SetPtEtaPhiM(w_pair_pt.at(index_1), w_pair_eta.at(index_1), w_pair_phi.at(index_1), w_mass);
@@ -7904,14 +7866,43 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto METUncertFunction{[&SystematicInt](std::vector<TLorentzVector> OriginalMET,           std::vector<TLorentzVector> SmearedJet4Momentum, 
+  auto METUncertFunction{[&SystematicInt](std::vector<TLorentzVector> OriginalMET, std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > > SmearedJet4Momentum, 
 				          std::vector<TLorentzVector> UnsmearedJet4Momentum){
 
   	std::cout << "print 148" << std::endl;
 
 	std::vector<TLorentzVector> NewMetVector{};
 
-	for(int i = 0; i < SmearedJet4Momentum.size(); i++){NewMetVector.push_back(OriginalMET.at(0) + SmearedJet4Momentum.at(i) - UnsmearedJet4Momentum.at(i));}
+	for(int i = 0; i < SmearedJet4Momentum.size(); i++){
+
+		//NewMetVector.push_back(OriginalMET.at(0) + SmearedJet4Momentum.at(i) - UnsmearedJet4Momentum.at(i));
+
+		TLorentzVector FinalVec{};
+
+		double OriginalMET_Pt = OriginalMET.at(0).Pt();	
+		double OriginalMET_Eta = OriginalMET.at(0).Eta();
+		double OriginalMET_Phi = OriginalMET.at(0).Phi();
+		double OriginalMET_M = OriginalMET.at(0).M();		
+
+		double SmearedJet4Momentum_Pt = SmearedJet4Momentum.at(i).Pt();
+		double SmearedJet4Momentum_Eta = SmearedJet4Momentum.at(i).Eta();
+		double SmearedJet4Momentum_Phi = SmearedJet4Momentum.at(i).Phi();
+		double SmearedJet4Momentum_M = SmearedJet4Momentum.at(i).M();
+
+		double UnsmearedJet4Momentum_Pt = UnsmearedJet4Momentum.at(i).Pt();
+                double UnsmearedJet4Momentum_Eta = UnsmearedJet4Momentum.at(i).Eta();
+                double UnsmearedJet4Momentum_Phi = UnsmearedJet4Momentum.at(i).Phi();
+                double UnsmearedJet4Momentum_M = UnsmearedJet4Momentum.at(i).M();
+
+		FinalVec.SetPtEtaPhiM(OriginalMET_Pt + SmearedJet4Momentum_Pt - UnsmearedJet4Momentum_Pt, 
+				      OriginalMET_Eta + SmearedJet4Momentum_Eta - UnsmearedJet4Momentum_Eta, 
+				      OriginalMET_Phi + SmearedJet4Momentum_Phi - UnsmearedJet4Momentum_Phi, 
+				      OriginalMET_M + SmearedJet4Momentum_M - UnsmearedJet4Momentum_M);
+
+		NewMetVector.push_back(FinalVec);
+
+
+	}
 	
 	return NewMetVector;
 
@@ -8237,7 +8228,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 						case 1: //returning chi2 values only for when w_mass is within 5 sigma of the known W mass 
   							if(w_mass > LowerBound && w_mass < UpperBound){ CutRanges.push_back(chi2); return chi2;}	
 							else{
-								std::cout << "w_mass is not within 5 sigma of the mean W mass value (ee)" << std::endl;
 								float out = 999.0;
                 						return out;
 							}
@@ -8261,8 +8251,9 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
         std::string Chi2TextFile;
 
-        if(InputTriggerChi2_File == "Chi2"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR_SBR___" + Year + ".txt";}
-        else{throw std::logic_error("Please choose an appropriate input text file for the chi2 line reader function");}
+        if(InputTriggerChi2_File == "Chi2_SBR"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR_SBR___" + Year + ".txt";}
+        else if(InputTriggerChi2_File == "Chi2_SR"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR____" + Year + ".txt";}
+	else{throw std::logic_error("Please choose an appropriate input text file for the chi2 line reader function");}
 
 
         using namespace std;
@@ -8288,7 +8279,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
         std::string Chi2TextFile;
 
-	if(InputTriggerChi2_File == "Chi2"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR_SBR___" + Year + ".txt";}
+	if(InputTriggerChi2_File == "Chi2_SBR"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR_SBR___" + Year + ".txt";}
+        else if(InputTriggerChi2_File == "Chi2_SR"){Chi2TextFile = "Chi2Range_tZq_Nominal_"  + Channel + "__SR____" + Year + ".txt";}
         else{throw std::logic_error("Please choose an appropriate input text file for the chi2 line reader function");}
 
         int number_of_lines = 0;
@@ -8321,11 +8313,16 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	std::cout << "print 153" << std::endl;
 
-	Chi2_SR = textfilereader2_Chi2("Chi2").at(0);
-        Chi2_SBR = textfilereader2_Chi2("Chi2").at(1);
+	std::string Chi2String;
 
-	std::cout << "Chi2_SR = " << Chi2_SR << std::endl;
-        std::cout << "Chi2_SBR = " << Chi2_SBR << std::endl;
+	if(SBRInt == 1 && SRInt == 1){Chi2String = "Chi2_SBR";}
+	else if(SRInt == 1){Chi2String = "Chi2_SR";}
+	else{throw std::logic_error("Please choose Chi2_SBR or Chi2_SR as the Chi2 string");}
+
+	Chi2_SR = textfilereader2_Chi2(Chi2String).at(0);
+        Chi2_SBR = textfilereader2_Chi2(Chi2String).at(1);
+
+	std::cout << "Chi2_SBR = " << Chi2_SBR << std::endl;
 
 
 	 switch(SBRInt){
@@ -8444,14 +8441,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   else{gen_weightSF = 1;}
 
   //auto d_Range = d.Range(0, 100000);
-
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << "GeneratorWeightString = " << GeneratorWeightString << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
 
 
 
@@ -8581,7 +8570,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	default: throw std::logic_error("NPLInt must be 0 or 1");
  }
 
- std::cout << "before lepton selection" << std::endl;
 
  //Lepton selection
  auto d_LeptonSelection = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
@@ -8623,8 +8611,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 							  "LeadingLeptonPt", "SubleadingLeptonPt", "LeptonEta", "Electron_dxy_dz", 
 						          "TightLeptonsPt", "LooseLeptonsPt"}, "lepton cut");
 
-
-  std::cout << "after lepton selection" << std::endl;
 
 
   //Calculating the trigger scale factors
@@ -8990,14 +8976,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
    //Calculating the trigger scale factors
 	
-   std::cout << '\n' << std::endl;
-   std::cout << '\n' << std::endl;
-   std::cout << '\n' << std::endl;
-   std::cout << "before Eff_DATA" << std::endl;
-   std::cout << '\n' << std::endl;
-   std::cout << '\n' << std::endl;
-   std::cout << '\n' << std::endl;
-
 
    Eff_DATA = ( textfilereader2_TriggerSF("Data") ).at(4);
 
@@ -9039,7 +9017,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }
 
-  std::cout << "before z" << std::endl;
 
   //Z boson candidate reconstruction
   auto d_ZCandidateReco = d_LeptonSelection.Define("LeptonGenPartFlav", LeptonVariableFunctionChars, {LeptonGenPartFlavStrings})
@@ -9066,8 +9043,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                            .Define("z_mass", inv_mass, {"LeptonPt_RochCorr", "LeptonEta_RochCorr", "LeptonPhi_RochCorr", "LeptonMass_RochCorr"})
                                            .Filter(z_mass_cut, {"z_mass"}, "Z mass cut");
 
-
-  std::cout << "after z" << std::endl;
 
 
   //Jet selection
@@ -9138,7 +9113,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Filter(jet_selection_function, {"tight_jets"}, "jet cut");
 
 
-  std::cout << "after jet" << std::endl;
 
 
   //B jet selection
@@ -9221,14 +9195,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   h_bjet->Write();
   h_nonbjet->Write();
   BTagEffPlots->Close();
-
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << "before d_WCandReco" << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
 
 
   //Reconstrucing the W boson candidate
@@ -9402,14 +9368,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 								      
 
 
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << "after event weight defines" << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-  std::cout << '\n' << std::endl;
-
 
 
   if(ProcessInt == 0 && SystematicInt == 0){
@@ -9462,6 +9420,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	int NumberOfSimulatedEvents = *( d_Blinding.Filter("chi2 != 999.0").Count() );	
 	int OneSigmaOfNumEvents = NumberOfSimulatedEvents * 0.68;
+
+	std::cout << "NumberOfSimulatedEvents = " << std::endl;
 			
 	auto histo_chi2 = d_Blinding.Histo1D("chi2");
 	TAxis *xaxis = histo_chi2->GetXaxis();
@@ -9486,12 +9446,17 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	}
 
-	std::cout << "before MaxElement" << std::endl;
 
-	//for Chi2_SBR
-	auto MaxElement = std::max_element(CutRanges.begin(), CutRanges.end());
-	auto DistToMax = std::distance(CutRanges.begin(), MaxElement);
-	Chi2_SBR = CutRanges.at(DistToMax);
+	if(SBRInt == 1){
+
+		//for Chi2_SBR
+		auto MaxElement = std::max_element(CutRanges.begin(), CutRanges.end());
+		auto DistToMax = std::distance(CutRanges.begin(), MaxElement);
+		Chi2_SBR = CutRanges.at(DistToMax);
+
+	}
+	else{Chi2_SBR = 999;}
+
 
 	std::ofstream Chi2Range;      
 	std::string Chi2Range_string = "Chi2Range_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
@@ -9520,6 +9485,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
+  std::cout << "before NPL estimation" << std::endl;
+
   //Saving info needed for NPL estimation
   if( (Process == "tZq"                     || Process == "tHq"                     || Process == "ttbarV_ttWJetsToLNu" || Process == "ttbarV_ttWJetsToLNu_ext" ||
        Process == "ttbarV_ttWJetsToQQ"      || Process == "ttbarV_ttZToLL"          || Process == "ttbarV_ttZToLLNuNu"  || Process == "ttbarV_ttZToLLNuNu_ext"  ||
@@ -9528,19 +9495,22 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
         auto h_OS_MC = d_Blinded.Histo1D("OppositeSignNonPrompt", "EventWeight");
         auto h_SS_MC = d_Blinded.Histo1D("SameSignNonPrompt", "EventWeight");
-        int N_0S_MC = h_OS_MC->GetEntries();
+        int N_OS_MC = h_OS_MC->GetEntries();
         int N_SS_MC = h_SS_MC->GetEntries();
+
 
         std::ofstream NPLInfoFile;
         std::string NPLInfoString = "NPLInfo_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
         NPLInfoFile.open(NPLInfoString.c_str());
-        NPLInfoFile << N_0S_MC << std::endl;
+        NPLInfoFile << N_OS_MC << std::endl;
         NPLInfoFile << N_SS_MC << std::endl;
 
   }
  
+  std::cout << "after NPL estimation" << std::endl;
+
   //Saving weighted histograms to an output root file
 
   std::string OutRootFileStart;
