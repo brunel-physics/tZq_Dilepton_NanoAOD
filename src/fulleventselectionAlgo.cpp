@@ -792,7 +792,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 5: Process = "ZPlusJets_M50_Madgraph";
 
 		switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_madgraph_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/260000/017F5826-2321-C34C-9525-2EE901E65759.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -803,7 +803,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 6: Process = "ZPlusJets_M50_Madgraph_ext";
 
 		switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M50_madgraph_ext_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/110000/0510AD3C-A266-9544-B816-CACA36F1916F.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -814,7 +814,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 7: Process = "ZPlusJets_M10To50_aMCatNLO";
 
 		switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_aMCatNLO/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/009EE310-B237-9144-82AD-3B2803052252.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -825,7 +825,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 8: Process = "ZPlusJets_M10To50_aMCatNLO_ext";
 
 		switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10ToM50_aMCatNLO_ext/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/100000/15EC8A29-92DD-A745-9937-D8EFE260842E.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -836,7 +836,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 9: Process = "ZPlusJets_M10To50_Madgraph";
 
 		switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/16F6957C-D504-AA40-A39F-9474E9DB5624.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -858,7 +858,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 11: Process = "ZPlusJets_PtBinned_0To50";
 
 		switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_0To50_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Zpt-0To50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/0D09FDA9-0E30-8F48-A7D1-D0F773FA9B46.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -869,7 +869,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 12: Process = "ZPlusJets_PtBinned_50To100";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_50To100_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-50To100_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/3EFF2D00-F55E-8C45-B639-7FA559B8C4D7.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -880,7 +880,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 13: Process = "ZPlusJets_PtBinned_50To100_ext";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_50To100_ext_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-50To100_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext3-v1/100000/18B04A36-DEC4-AC42-BB3F-1E555E79F7EA.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -891,7 +891,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 14: Process = "ZPlusJets_PtBinned_100To250";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/F4E17A0F-152A-354E-83D5-4B7A70B8A0EF.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -902,7 +902,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 15: Process = "ZPlusJets_PtBinned_100To250_ext1";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext1_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/270000/105CAC3F-3E82-4241-85F8-CDE4F7B3AB29.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -913,7 +913,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 16: Process = "ZPlusJets_PtBinned_100To250_ext2";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext2_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/110000/45843B65-56F8-4945-972E-E214BA28B30B.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -924,7 +924,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 17: Process = "ZPlusJets_PtBinned_100To250_ext5";
 		
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_100To250_ext5_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext5-v1/100000/0C980725-F588-FA4A-BF1A-7EEBE28AFFCA.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -935,7 +935,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 18: Process = "ZPlusJets_PtBinned_250To400";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/2A33AB33-35B8-C346-A9DE-2628837EF30B.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -946,7 +946,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 19: Process = "ZPlusJets_PtBinned_250To400_ext1";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext1_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/110000/0F8CCDCC-D084-C54E-9366-36C303578119.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -957,7 +957,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 20: Process = "ZPlusJets_PtBinned_250To400_ext2";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext2_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/100000/6EED1E55-57C7-E84E-83B5-90316B1B44D0.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -968,7 +968,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 21: Process = "ZPlusJets_PtBinned_250To400_ext5";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_250To400_ext5_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext5-v1/110000/1F970774-A88E-3140-8D99-8E0361538C88.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -979,7 +979,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 22: Process = "ZPlusJets_PtBinned_400To650";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-400To650_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/60000/250302DB-1A8B-FC48-A61E-8C6ABA009713.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -990,7 +990,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 23: Process = "ZPlusJets_PtBinned_400To650_ext1";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_ext1_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-400To650_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/110000/8119E85C-282D-1048-839F-CFEF073E33CF.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -1001,7 +1001,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 24: Process = "ZPlusJets_PtBinned_400To650_ext2";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_400To650_ext2_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-400To650_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/120000/B4CAAC7D-0EF0-704D-91C9-DA8251B25457.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -1012,7 +1012,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 25: Process = "ZPlusJets_PtBinned_650ToInf";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-650ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/70000/931385D5-0024-BA4B-AC6D-2795E6E4B764.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -1023,7 +1023,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 26: Process = "ZPlusJets_PtBinned_650ToInf_ext1";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext1_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-650ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/270000/1157E251-214C-7648-990C-F7FB5CF2D79F.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -1034,7 +1034,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 27: Process = "ZPlusJets_PtBinned_650ToInf_ext2";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_PtBinned_650ToInf_ext2_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/DYJetsToLL_Pt-650ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/270000/3F54C647-2570-2B4C-AD89-AF6C1EAEA851.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
                         case 2018: break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
