@@ -1521,7 +1521,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         case 71: Process = "SingleTop_tW";
 
 		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+ //                       case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+
+			case 2016: input_files = {"/eos/cms/store/mc/RunIISummer16NanoAODv7/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/NANOAODSIM/PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/100000/7E7952A4-C85D-074B-9AEB-ED145327A527.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -2053,7 +2055,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc_NanoAODv7/*.root"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
-                        case 2018: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
+                        case 2018: input_files = {"/data/disk1/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
                         default: std::cout << "Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
                  }
 
@@ -2076,7 +2078,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 121: Process = "Data_DoubleEGRunB";
 
 		 switch(YearInt){
-			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
+			//case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
+			case 2016: input_files = {"root://cmsxrootd.fnal.gov///store/data/Run2017B/DoubleEG/NANOAOD/Nano14Dec2018-v1/10000/0C9C5536-0A0C-D649-A75C-3936F52B6DC2.root"}; break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"}; break;
 	/*			   input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/0C9C5536-0A0C-D649-A75C-3936F52B6DC2.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/6D81A3DC-9230-9642-8225-AB51C27A7B32.root",
 					          "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/BC88D5A3-69A7-6047-9FBB-B6503EBA227B.root", "/data/disk0/nanoAOD_2017/DoubleEGRun2017B/123AFF13-A79B-8143-B882-5E4FCF05F76C.root",
@@ -8363,7 +8366,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 		}
 
-/*
+
 	std::cout << '\n' << std::endl;
 	std::cout << '\n' << std::endl;
 	std::cout << "PUInput = " << PUInput << std::endl;
@@ -8378,11 +8381,260 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << "EventWeightOutput = " << EventWeightOutput << std::endl;
 	std::cout << '\n' << std::endl;
         std::cout << '\n' << std::endl;	
-*/
+
 	if(!isnan(EventWeightOutput) && !isinf(EventWeightOutput) && (EventWeightOutput > 0)){return EventWeightOutput;}
 	else{std::cout << "Final event weight is either a nan, inf or 0." << std::endl; double One = 1.0; return One;}     
 
   }};
+
+
+
+  auto OverallNormalisationFunction{[&NormalisationFactorFunction, &ChannelInt, &SystematicInt, &ttbarCRInt]
+		    		    (const double& PUInput, 		         const double& BTagWeightInput, 	       const doubles& ReturnedPSWeightInput, 
+		     		     const double& EGammaSF_egammaEffInput,      const double& EGammaSF_egammaEffRecoInput, 
+		     		     const double& EGammaSF_egammaEffSysInput,   const double& EGammaSF_egammaEffRecoSysInput, const double& CalculatedGeneratorWeightInput, 
+		     		     const doubles& TopWeightInput, 	         const double& CalculatedPDFWeightInput, 
+		                     const double& MuonSFTest_IDInput, 		 const double& MuonSFTest_IsoInput, 	       const double& MuonSFTest_ID_sys_systInput, 
+		                     const double& MuonSFTest_ID_sys_statInput,  const double& MuonSFTest_Iso_sys_systInput,   const double& MuonSFTest_Iso_sys_statInput){
+
+
+			//std::cout << "print 149" << std::endl;
+
+			double OverallNormalisationOutput;
+
+			switch(ChannelInt){
+				case 1: switch(SystematicInt){ 
+						case 9: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + 
+							(TrigSF += TrigSF_Uncert) + CalculatedPDFWeightInput + EGammaSF_egammaEffSysInput + 
+							EGammaSF_egammaEffRecoSysInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							break;
+
+                        			case 10: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + (TrigSF -= TrigSF_Uncert) + 
+					  		 CalculatedPDFWeightInput + 
+						         EGammaSF_egammaEffSysInput + EGammaSF_egammaEffRecoSysInput + CalculatedGeneratorWeightInput + 
+							 TopWeightInput.at(0);
+
+							 break;
+				
+						case 11: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 CalculatedPDFWeightInput + 
+							 EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+                        
+							 break;
+
+						case 12: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+						         		     CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + 
+									     CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+				
+							 break;
+
+						case 13: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+                                                         (ReturnedPSWeightInput.at(2) + ReturnedPSWeightInput.at(3)) + CalculatedPDFWeightInput +
+                                                         EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+						case 14: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+                                                         (ReturnedPSWeightInput.at(1) * ReturnedPSWeightInput.at(4)) + CalculatedPDFWeightInput +
+                                                         EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+                                                         break;
+
+						case 17: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + ReturnedPSWeightInput.at(2) + 
+							 CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + 
+							 TopWeightInput.at(0);
+
+							 break;
+
+                        			case 18: OverallNormalisationOutput =  PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 ReturnedPSWeightInput.at(0) + 
+							 CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+                        			case 19: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + ReturnedPSWeightInput.at(3) + 
+							 CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput  
+							 + TopWeightInput.at(0);
+
+							 break;
+
+                        			case 20: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + ReturnedPSWeightInput.at(1) + 
+							 CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput  
+							 + TopWeightInput.at(0);
+
+							 break;
+
+						default: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 CalculatedPDFWeightInput + 
+							 EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+					
+							 break;		
+
+					}
+ 
+					break;
+ 
+				case 2: switch(SystematicInt){
+						case 9: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + (TrigSF += TrigSF_Uncert) + 
+							CalculatedPDFWeightInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + 
+							CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							break;
+
+                        			case 10: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + (TrigSF -= TrigSF_Uncert) + 
+							 CalculatedPDFWeightInput + 
+							 MuonSFTest_ID_sys_statInput + MuonSFTest_Iso_sys_statInput + CalculatedGeneratorWeightInput + 
+							 TopWeightInput.at(0);
+				
+							 break;
+
+						case 11: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 CalculatedPDFWeightInput + 
+							 MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+                        			case 12: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+						         CalculatedPDFWeightInput + 
+							 MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+	
+
+						case 13: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+                                                         CalculatedPDFWeightInput + (ReturnedPSWeightInput.at(2) * ReturnedPSWeightInput.at(3)) +
+                                                         MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+						case 14: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+                                                         CalculatedPDFWeightInput + (ReturnedPSWeightInput.at(1) * ReturnedPSWeightInput.at(4)) +
+                                                         MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+                                                         break;
+
+                        			case 17: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 ReturnedPSWeightInput.at(2) + 
+							 CalculatedPDFWeightInput + MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + 
+							 TopWeightInput.at(0);
+
+							 break;
+
+						case 18: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+							 ReturnedPSWeightInput.at(0) + 
+							 CalculatedPDFWeightInput + MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + 
+						         TopWeightInput.at(0);
+
+							 break; 
+
+                        			case 19: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 ReturnedPSWeightInput.at(3) + 
+							 CalculatedPDFWeightInput + MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + 
+							 TopWeightInput.at(0);
+
+							 break;
+
+                        			case 20: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 ReturnedPSWeightInput.at(1) + 
+							 CalculatedPDFWeightInput + MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + 
+							 TopWeightInput.at(0);
+
+							 break;
+
+                        			default: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 CalculatedPDFWeightInput + 
+							 MuonSFTest_IDInput + MuonSFTest_IsoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+					}
+
+					break;
+
+					case 3: switch(SystematicInt){ 
+						
+							case 9: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + 
+								(TrigSF += TrigSF_Uncert) + CalculatedPDFWeightInput + EGammaSF_egammaEffSysInput + 
+								EGammaSF_egammaEffRecoSysInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+
+							break;
+
+                        				case 10: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + (TrigSF -= TrigSF_Uncert) + 
+					  		 	 CalculatedPDFWeightInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput +
+						         	 EGammaSF_egammaEffSysInput + EGammaSF_egammaEffRecoSysInput + CalculatedGeneratorWeightInput + 
+							 	 TopWeightInput.at(0);
+
+							 break;
+				
+							case 11: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							  	 CalculatedPDFWeightInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput +
+							 	 EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+                        
+							 break;
+
+							case 12: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+						         		     CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput +
+									     MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput +
+									     CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+				
+							 break;
+
+							case 13: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+                                                          	 (ReturnedPSWeightInput.at(2) * ReturnedPSWeightInput.at(3)) + CalculatedPDFWeightInput +
+                                                                 EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput 								    + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+							case 14: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF +
+                                                                 (ReturnedPSWeightInput.at(1) * ReturnedPSWeightInput.at(4)) + CalculatedPDFWeightInput +
+                                                                 EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+                                                         break;
+
+							case 17: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + ReturnedPSWeightInput.at(2) + 
+							         CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput + 
+							         TopWeightInput.at(0);
+
+							 break;
+
+                        				case 18: OverallNormalisationOutput =  PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							         ReturnedPSWeightInput.at(0) + 
+							         CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+
+							 break;
+
+                        				case 19: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + ReturnedPSWeightInput.at(3) + 
+							 	 CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput  
+							 	 + TopWeightInput.at(0);
+
+							 break;
+
+                        				case 20: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + ReturnedPSWeightInput.at(1) + 
+							 	 CalculatedPDFWeightInput + EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput  
+							         + TopWeightInput.at(0);
+
+							 break;
+
+							default: OverallNormalisationOutput = PUInput + NormalisationFactorFunction() + BTagWeightInput + TrigSF + 
+							 	 CalculatedPDFWeightInput + 
+							         EGammaSF_egammaEffInput + EGammaSF_egammaEffRecoInput + MuonSFTest_ID_sys_systInput + MuonSFTest_Iso_sys_systInput + CalculatedGeneratorWeightInput + TopWeightInput.at(0);
+					
+							 break;		
+  
+					}
+
+					break; 
+
+					default: throw std::logic_error("ChannelInt must be 1 (for ee), 2 (for mumu) or 3 (for emu)."); break;
+
+		}
+
+	if(!isnan(OverallNormalisationOutput) && !isinf(OverallNormalisationOutput) && (OverallNormalisationOutput > 0)){return OverallNormalisationOutput;}
+	else{std::cout << "Overall normalisation is either a nan, inf or 0." << std::endl; double One = 1.0; return One;}     
+
+  }}; 
+
 
 
 
@@ -8631,7 +8883,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                                     "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter",                 "Flag_eeBadScFilter"}, "Event cleaning filter");
 
  //Filtering events using the golden json file (for data not MC)
- auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
+ //auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
  std::vector<std::string> DoubleCountCheckStrings;
 
@@ -8727,7 +8979,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  }
 
  //Preventing the double-counting of events in the single and double lepton datasets
- auto d_DoubleCountCheck = d_GoldenJson.Filter(DoubleCountCheck_EventFunction, DoubleCountCheckStrings); 
+ auto d_DoubleCountCheck = d_EventCleaning.Filter(DoubleCountCheck_EventFunction, DoubleCountCheckStrings); 
 
  if(DoubleCountCheckInt == 1){
 
@@ -8750,7 +9002,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
  //Lepton selection
- auto d_LeptonSelection = d_GoldenJson.Define("PU", PU_function, {"PV_npvs"})
+ auto d_LeptonSelection = d_EventCleaning.Define("PU", PU_function, {"PV_npvs"})
                                       .Define("TightLeptons", TightLeptonsFunction, {"Electron_pt", "Electron_eta", "Electron_cutBased", "Electron_isPFcand",
                                                    				     "Muon_isPFcand", "Muon_pt", "Muon_eta", "Muon_tightId", "Muon_pfRelIso04_all"})
 				      .Define("LeptonPt", LeptonVariableFunctionFloats, {"Electron_pt", "Muon_pt"})
@@ -9542,7 +9794,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 										"EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", 
 										"CalculatedGeneratorWeight", "TopWeight", "CalculatedPDFWeight", "MuonSFTest_ID", "MuonSFTest_Iso", 
 										"MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst", 
-										"MuonSFTest_Iso_sys_stat"});
+										"MuonSFTest_Iso_sys_stat"})
+					   .Define("OverallNormalisation", OverallNormalisationFunction, {"PU", "BTagWeight", "ReturnedPSWeight", "EGammaSF_egammaEff",
+                                                                                "EGammaSF_egammaEffReco", "EGammaSF_egammaEffSys", "EGammaSF_egammaEffRecoSys", 
+                                                                                "CalculatedGeneratorWeight", "TopWeight", "CalculatedPDFWeight", "MuonSFTest_ID", "MuonSFTest_Iso",
+                                                                                "MuonSFTest_ID_sys_syst", "MuonSFTest_ID_sys_stat", "MuonSFTest_Iso_sys_syst",
+                                                                                "MuonSFTest_Iso_sys_stat"});
 								      
 
 
