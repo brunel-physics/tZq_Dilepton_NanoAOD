@@ -57,16 +57,15 @@ YearArray=("2016" "2017" "2018")
 
 for i in ${!ProcessNamesArray[@]}; do
 
-	tmux_string_nominal_ee_2017="${ProcessNamesArray[i]}${SystematicNamesArray[0]}${ChannelArray[0]}_${YearArray[1]}"
+	tmux_string_nominal_ee_2016="${ProcessNamesArray[i]}${SystematicNamesArray[0]}${ChannelArray[0]}_${YearArray[0]}"
 
-        j=$(($i + 1))
+	j=$(($i + 1))
 
-        echo './bin/fulleventselectionMain.exe --mc 1 -y 2016 -p '$j' --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 1 --dcc 0'
+	echo './bin/fulleventselectionMain.exe --mc 1 -y 2016 -p '$j' --npl 0 --sr 1 --sbr 1 --zjcr 0 --ttcr 0 --sys 0 --channel 1 --dcc 0'
 
-        tmux new -d -s $tmux_string_nominal_ee_2017 'source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2017 -p '$j' --npl 0 --sr 1 --sbr 0 --zjcr 0 --ttcr 0 --sys 0 --channel 1 --dcc 0; sleep 86400'
+	tmux new -d -s $tmux_string_nominal_ee_2016 'source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p '$j' --npl 0 --sr 1 --sbr 0 --zjcr 0 --ttcr 0 --sys 0 --channel 1 --dcc 0; sleep 86400'
 
-        sleep 180
-		
+	sleep 180
 
 done
 
