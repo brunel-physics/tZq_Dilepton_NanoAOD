@@ -95,12 +95,16 @@ for i in ${!ProcessNamesArray[@]}; do
 	tmux_string="${ProcessNamesArray[i]}"
 
 	mkdir $tmux_string
+	cd $tmux_string
 	
 	echo ' '
 	echo $tmux_string
  	echo ${SampleStrings[i]}
+	pwd
 	echo ' '	
 
 	tmux new -d -s $tmux_string 'source ~/.bashrc; source /cvmfs/cms.cern.ch/cmsset_default.sh; getnano '${SampleStrings[i]}'; sleep 86400'
+	
+	cd ..
 
 done
