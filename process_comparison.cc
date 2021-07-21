@@ -11,10 +11,10 @@ using namespace ROOT; // RDataFrame's namespace
 using namespace std;
 
 
-void process_comparison_plotter(const TString& year, const TString& variable_name, const TString& channel, const TString& xaxis_name, const TString& systematic, const TString& region, const TString& GraphTitle){
+void process_comparison_plotter(const string& year, const string& variable_name, const string& channel, const string& xaxis_name, const string& systematic, const string& region, const string& GraphTitle){
 
   RDataFrame d_tZq("Events", "tZq_Combined.root");
-  //RDataFrame d_ZPlusJets("Events", "ZPlusJets_Combined.root");
+  RDataFrame d_ZPlusJets("Events", "ZPlusJets_Combined.root");
   RDataFrame d_ttbar("Events", "ttbar_Combined.root");
   RDataFrame d_SingleTop("Events", "SingleTop_Combined.root");
   RDataFrame d_VV("Events", "VV_Combined.root");
@@ -25,23 +25,23 @@ void process_comparison_plotter(const TString& year, const TString& variable_nam
 
   //Applying the event weight to the histograms
   std::cout << "print 1" << std::endl;
-  auto h_tZq = d_tZq.Histo1D({variable_name}, "EventWeight");
+  auto h_tZq = d_tZq.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 2" << std::endl;
-  //auto h_ZPlusJets = d_ZPlusJets.Histo1D({variable_name}, "EventWeight");
+  //auto h_ZPlusJets = d_ZPlusJets.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 3" << std::endl;
-  auto h_ttbar = d_ttbar.Histo1D({variable_name}, "EventWeight");
+  auto h_ttbar = d_ttbar.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 4" << std::endl;
-  //auto h_SingleTop = d_SingleTop.Histo1D({variable_name}, "EventWeight");
+  //auto h_SingleTop = d_SingleTop.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 5" << std::endl;
-  auto h_VV = d_VV.Histo1D({variable_name}, "EventWeight");
+  auto h_VV = d_VV.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 6" << std::endl;
-  auto h_VVV = d_VVV.Histo1D({variable_name}, "EventWeight");
+  auto h_VVV = d_VVV.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 7" << std::endl;
-  //auto h_WPlusJets = d_WPlusJets.Histo1D({variable_name}, "EventWeight");
+  //auto h_WPlusJets = d_WPlusJets.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 8" << std::endl;
-  auto h_ttbarV = d_ttbarV.Histo1D({variable_name}, "EventWeight");
+  auto h_ttbarV = d_ttbarV.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 9" << std::endl;
-  //auto h_data = d_data.Histo1D({variable_name}, "EventWeight");
+  //auto h_data = d_data.Histo1D({variable_name.c_str()}, "EventWeight");
   std::cout << "print 10" << std::endl;
 
   //For the canvas
@@ -116,7 +116,7 @@ void process_comparison_plotter(const TString& year, const TString& variable_nam
   pad->Draw();
   pad->cd();
 
-  THStack *MC_Stack = new THStack("MC_Stack",GraphTitle);
+  THStack *MC_Stack = new THStack("MC_Stack",GraphTitle.c_str());
   MC_Stack->SetMinimum(0.);
   MC_Stack->SetMaximum(400.);
   //MC_Stack->Add(h_ZPlusJets.GetPtr());
@@ -139,7 +139,7 @@ void process_comparison_plotter(const TString& year, const TString& variable_nam
   MC_Stack->GetHistogram()->GetYaxis()->SetTitleSize(0.05);
 
   TPaveText* ptext1 = new TPaveText(0.1, 1.0, 0.6, 0.94, "NDCCBR");
-  TText *t1=ptext1->AddText(GraphTitle);
+  TText *t1=ptext1->AddText(GraphTitle.c_str());
   ptext1->SetFillStyle(0);
   ptext1->SetBorderSize(0);
   ptext1->Draw();
@@ -207,17 +207,17 @@ void process_comparison_plotter(const TString& year, const TString& variable_nam
   c1->Update();
   c1->SaveAs(OutputPlot.c_str());
 
-  gSystem->("mv ")
-
 }
 
 
 
 void process_comparison(){
 
-  gSystem->("mkdir Plots");
+  gSystem->Exec("mkdir Plots");
 
   process_comparison_plotter("2016", "InvTopMass", "ee", "Mass [GeV]", "Nominal", "SBR", "Invariant mass of the top quark candidate (ee channel)");
   process_comparison_plotter("2016", "w_mass", "ee", "Mass [GeV]", "Nominal", "SBR", "Reconstructed mass of the W quark candidate (ee channel)");
+
+  gSystem->Exec("mv *.pdf Plots/");
 
 }
