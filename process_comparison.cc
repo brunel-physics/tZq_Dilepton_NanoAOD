@@ -23,25 +23,33 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   RDataFrame d_ttbarV("Events", "ttbarV_Combined.root");
   RDataFrame d_data("Events", "data_Combined.root");
 
+  double min; double max;
+
+  if(xaxis_name == "Mass [GeV]"){min = 0; max = 200;}
+  else if(xaxis_name == "#p_{T} [GeV]"){min = 0; max = 500;}
+  else if(xaxis_name == "#eta"){min = -4; max = 4;}
+  else if(xaxis_name == "#phi"){min = -5; max = 5;}
+  else{throw std::logic_error("ERROR: Check axis_name");}
+
   //Applying the event weight to the histograms
   std::cout << "print 1" << std::endl;
-  auto h_tZq = d_tZq.Histo1D({variable_name.c_str()}, "EventWeight");
+  auto h_tZq = d_tZq.Histo1D("h_tZq", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 2" << std::endl;
-  //auto h_ZPlusJets = d_ZPlusJets.Histo1D({variable_name.c_str()}, "EventWeight");
+  auto h_ZPlusJets = d_ZPlusJets.Histo1D({"h_ZPlusJets", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 3" << std::endl;
-  auto h_ttbar = d_ttbar.Histo1D({variable_name.c_str()}, "EventWeight");
+  auto h_ttbar = d_ttbar.Histo1D({"h_ttbar", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 4" << std::endl;
-  //auto h_SingleTop = d_SingleTop.Histo1D({variable_name.c_str()}, "EventWeight");
+  //auto h_SingleTop = d_SingleTop.Histo1D({"h_SingleTop", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 5" << std::endl;
-  auto h_VV = d_VV.Histo1D({variable_name.c_str()}, "EventWeight");
+  auto h_VV = d_VV.Histo1D({"h_VV", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 6" << std::endl;
-  auto h_VVV = d_VVV.Histo1D({variable_name.c_str()}, "EventWeight");
+  auto h_VVV = d_VVV.Histo1D({"h_VVV", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 7" << std::endl;
-  //auto h_WPlusJets = d_WPlusJets.Histo1D({variable_name.c_str()}, "EventWeight");
+  //auto h_WPlusJets = d_WPlusJets.Histo1D({"h_WPlusJets", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 8" << std::endl;
-  auto h_ttbarV = d_ttbarV.Histo1D({variable_name.c_str()}, "EventWeight");
+  auto h_ttbarV = d_ttbarV.Histo1D({"h_ttbarV", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 9" << std::endl;
-  //auto h_data = d_data.Histo1D({variable_name.c_str()}, "EventWeight");
+  //auto h_data = d_data.Histo1D({"h_data", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
   std::cout << "print 10" << std::endl;
 
   //For the canvas
@@ -72,7 +80,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   gStyle->SetOptTitle(0);
 
   h_tZq->SetFillColor(600); //kBlue
-  //h_ZPlusJets->SetFillColor(632); //kRed
+  h_ZPlusJets->SetFillColor(632); //kRed
   h_ttbar->SetFillColor(418); //kGreen+2
   //h_SingleTop->SetFillColor(618); //kMagenta+2
   h_VV->SetFillColor(802); //kOrange+2
@@ -80,7 +88,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   //h_WPlusJets->SetFillColor(425); //kCyan-7
   h_ttbarV->SetFillColor(920); //kGray
   h_tZq->SetLineColor(600); //kBlue
-  //h_ZPlusJets->SetLineColor(632); //kRed
+  h_ZPlusJets->SetLineColor(632); //kRed
   h_ttbar->SetLineColor(418); //kGreen+2
   //h_SingleTop->SetLineColor(618); //kMagenta+2
   h_VV->SetLineColor(802); //kOrange+2
@@ -92,7 +100,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   //h_data->SetMarkerSize(1.0);
 
   h_tZq->SetTitle("tZq");
-  //h_ZPlusJets->SetTitle("Z+jets");
+  h_ZPlusJets->SetTitle("Z+jets");
   h_ttbar->SetTitle("t#bar{t}");
   //h_SingleTop->SetTitle("Single top");
   h_VV->SetTitle("VV");
@@ -111,22 +119,23 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   pad->SetRightMargin(R / W);
   pad->SetTopMargin(T / H);
   pad->SetBottomMargin(B / H * 0.3);
+  pad->SetLogy();
   pad->SetTickx(0);
   pad->SetTicky(0);
   pad->Draw();
   pad->cd();
 
   THStack *MC_Stack = new THStack("MC_Stack",GraphTitle.c_str());
-  MC_Stack->SetMinimum(0.);
-  MC_Stack->SetMaximum(400.);
-  //MC_Stack->Add(h_ZPlusJets.GetPtr());
-  MC_Stack->Add(h_ttbar.GetPtr());
+  //MC_Stack->SetMinimum(0.);
+  //MC_Stack->SetMaximum(250.);
+  MC_Stack->Add(h_tZq.GetPtr());
+  MC_Stack->Add(h_VVV.GetPtr());
   MC_Stack->Add(h_VV.GetPtr());
+  MC_Stack->Add(h_ttbarV.GetPtr());
+  MC_Stack->Add(h_ttbar.GetPtr());
+  MC_Stack->Add(h_ZPlusJets.GetPtr());
   //MC_Stack->Add(h_WPlusJets.GetPtr());
   //MC_Stack->Add(h_SingleTop.GetPtr());
-  MC_Stack->Add(h_ttbarV.GetPtr());
-  MC_Stack->Add(h_VVV.GetPtr());
-  MC_Stack->Add(h_tZq.GetPtr());
   MC_Stack->Draw("HIST");
   //h_data->Draw("HIST PSAME");
 
@@ -215,8 +224,33 @@ void process_comparison(){
 
   gSystem->Exec("mkdir Plots");
 
-  process_comparison_plotter("2016", "InvTopMass", "ee", "Mass [GeV]", "Nominal", "SBR", "Invariant mass of the top quark candidate (ee channel)");
-  process_comparison_plotter("2016", "w_mass", "ee", "Mass [GeV]", "Nominal", "SBR", "Reconstructed mass of the W quark candidate (ee channel)");
+  process_comparison_plotter("2016", "InvTopMass", "ee", "Mass [GeV]", "Nominal", "SR", "Invariant mass of the top quark candidate (ee channel)");
+  process_comparison_plotter("2016", "w_mass", "ee", "Mass [GeV]", "Nominal", "SR", "Reconstructed mass of the W quark candidate (ee channel)");
+  process_comparison_plotter("2016", "z_mass", "ee", "Mass [GeV]", "Nominal", "SR", "Reconstructed mass of the Z boson candidate (ee channel)");
+  process_comparison_plotter("2016", "LeadingLeptonPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momentum of the leading lepton (ee channel)");
+  process_comparison_plotter("2016", "SubleadingLeptonPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momentum of the subleading lepton (ee channel)");
+  process_comparison_plotter("2016", "LeadingLeptonEta", "ee", "#eta", "Nominal", "SR", "#eta of the leading lepton (ee channel)");
+  process_comparison_plotter("2016", "SubleadingLeptonEta", "ee", "#eta", "Nominal", "SR", "#eta of the subleading lepton (ee channel)");
+  process_comparison_plotter("2016", "LeadingLeptonPhi", "ee", "#phi", "Nominal", "SR", "#phi of the leading lepton (ee channel)");
+  process_comparison_plotter("2016", "SubleadingLeptonPhi", "ee", "#phi", "Nominal", "SR", "#phi of the subleading lepton (ee channel)");
+  process_comparison_plotter("2016", "LeadingLeptonMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the leading lepton (ee channel)");
+  process_comparison_plotter("2016", "SubleadingLeptonMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the subleading lepton (ee channel)");
+  process_comparison_plotter("2016", "SmearedJetPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momenta of smeared jets (ee channel)");
+  process_comparison_plotter("2016", "SmearedJetPhi", "ee", "#phi", "Nominal", "SR", "#phi of smeared jets (ee channel)");
+  process_comparison_plotter("2016", "SmearedJetEta", "ee", "#eta", "Nominal", "SR", "#eta of smeared jets (ee channel)");
+  process_comparison_plotter("2016", "SmearedJetMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of smeared jets (ee channel)");
+  process_comparison_plotter("2016", "TightSmearedJetsPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momenta of tight smeared jets (ee channel)");
+  process_comparison_plotter("2016", "TightSmearedJetsPhi", "ee", "#phi", "Nominal", "SR", "#phi of tight smeared jets (ee channel)");
+  process_comparison_plotter("2016", "TightSmearedJetsEta", "ee", "#eta", "Nominal", "SR", "#eta of tight smeared jets (ee channel)");
+  process_comparison_plotter("2016", "TightSmearedJetsMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of tight smeared jets (ee channel)");
+  process_comparison_plotter("2016", "LeadingJetPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momenta of the leading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "LeadingJetPhi", "ee", "#phi", "Nominal", "SR", "#phi of the leading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "LeadingJetEta", "ee", "#eta", "Nominal", "SR", "#eta of the leading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "LeadingJetMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the leading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "SubleadingJetPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momenta of the subleading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "SubleadingJetPhi", "ee", "#phi", "Nominal", "SR", "#phi of the subleading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "SubleadingJetEta", "ee", "#eta", "Nominal", "SR", "#eta of the subleading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "SubleadingJetMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the subleading tight smeared jet (ee channel)");
 
   gSystem->Exec("mv *.pdf Plots/");
 
