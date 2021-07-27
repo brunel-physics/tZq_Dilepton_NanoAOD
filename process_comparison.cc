@@ -23,34 +23,61 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   RDataFrame d_ttbarV("Events", "ttbarV_Combined.root");
   RDataFrame d_data("Events", "data_Combined.root");
 
-  double min; double max;
+  double min; double max; 
 
-  if(xaxis_name == "Mass [GeV]"){min = 0; max = 200;}
+  int nbins = 25;
+
+  if(xaxis_name == "Mass [GeV]"){min = 0; max = 1000;}
   else if(xaxis_name == "#p_{T} [GeV]"){min = 0; max = 500;}
   else if(xaxis_name == "#eta"){min = -4; max = 4;}
   else if(xaxis_name == "#phi"){min = -5; max = 5;}
   else{throw std::logic_error("ERROR: Check axis_name");}
 
+  auto Zeroes{[](){
+
+  	ROOT::VecOps::RVec<double> Out(1000, 0.);
+	return Out;
+  }};
+
+  auto IncreaseEventWeight_1000{[](const double& EventWeightInput){
+
+	return EventWeightInput * 1000;
+
+  }};
+
+
+
   //Applying the event weight to the histograms
   std::cout << "print 1" << std::endl;
-  auto h_tZq = d_tZq.Histo1D("h_tZq", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  auto h_tZq = d_tZq.Define("IncreasedEventWeight", IncreaseEventWeight_1000, {"EventWeight"})
+		    .Histo1D({"h_tZq", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "IncreasedEventWeight");
   std::cout << "print 2" << std::endl;
-  auto h_ZPlusJets = d_ZPlusJets.Histo1D({"h_ZPlusJets", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  auto h_ZPlusJets = d_ZPlusJets.Histo1D({"h_ZPlusJets", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 3" << std::endl;
-  auto h_ttbar = d_ttbar.Histo1D({"h_ttbar", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  auto h_ttbar = d_ttbar.Histo1D({"h_ttbar", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 4" << std::endl;
-  //auto h_SingleTop = d_SingleTop.Histo1D({"h_SingleTop", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  //auto h_SingleTop = d_SingleTop.Histo1D({"h_SingleTop", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 5" << std::endl;
-  auto h_VV = d_VV.Histo1D({"h_VV", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  auto h_VV = d_VV.Histo1D({"h_VV", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 6" << std::endl;
-  auto h_VVV = d_VVV.Histo1D({"h_VVV", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  auto h_VVV = d_VVV.Histo1D({"h_VVV", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 7" << std::endl;
-  //auto h_WPlusJets = d_WPlusJets.Histo1D({"h_WPlusJets", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  //auto h_WPlusJets = d_WPlusJets.Histo1D({"h_WPlusJets", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 8" << std::endl;
-  auto h_ttbarV = d_ttbarV.Histo1D({"h_ttbarV", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  auto h_ttbarV = d_ttbarV.Histo1D({"h_ttbarV", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 9" << std::endl;
-  //auto h_data = d_data.Histo1D({"h_data", variable_name.c_str(), 200, min, max}, {variable_name.c_str(), "EventWeight"});
+  //auto h_data = d_data.Define("VecOfZeroes", Zeroes, {}).Histo1D({"h_data", variable_name.c_str(), nbins, min, max}, "VecOfZeroes");
+  auto h_data = d_ttbarV.Histo1D({"h_data", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 10" << std::endl;
+
+  //Scaling to unit area
+  h_tZq->Scale(1.0/h_tZq->GetEntries());
+  h_ZPlusJets->Scale(1.0/h_ZPlusJets->GetEntries());
+  h_ttbar->Scale(1.0/h_ttbar->GetEntries());
+  h_VV->Scale(1.0/h_VV->GetEntries());
+  h_VVV->Scale(1.0/h_VVV->GetEntries());
+  h_ttbarV->Scale(1.0/h_ttbarV->GetEntries());
+  h_data->Scale(1.0/h_data->GetEntries());
 
   //For the canvas
   int W = 800;
@@ -79,7 +106,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
 
-  h_tZq->SetFillColor(600); //kBlue
+  //h_tZq->SetFillColor(600); //kBlue
   h_ZPlusJets->SetFillColor(632); //kRed
   h_ttbar->SetFillColor(418); //kGreen+2
   //h_SingleTop->SetFillColor(618); //kMagenta+2
@@ -95,9 +122,9 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   h_VVV->SetLineColor(400); //kYellow
   //h_WPlusJets->SetLineColor(425); //kCyan-7
   h_ttbarV->SetLineColor(920); //kGray
-  //h_data->SetMarkerColor(1); //kBlack
-  //h_data->SetMarkerStyle(20);
-  //h_data->SetMarkerSize(1.0);
+  h_data->SetMarkerColor(1); //kBlack
+  h_data->SetMarkerStyle(20);
+  h_data->SetMarkerSize(1.0);
 
   h_tZq->SetTitle("tZq");
   h_ZPlusJets->SetTitle("Z+jets");
@@ -107,7 +134,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   h_VVV->SetTitle("VVV");
   //h_WPlusJets->SetTitle("W+jets");
   h_ttbarV->SetTitle("t#bar{t}V");
-  //h_data->SetTitle("data");
+  h_data->SetTitle("data");
 
   TPad *pad = new TPad("pad","pad",0.01, 0.315, 0.99, 0.99);
   pad->SetTopMargin(0);
@@ -128,7 +155,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   THStack *MC_Stack = new THStack("MC_Stack",GraphTitle.c_str());
   //MC_Stack->SetMinimum(0.);
   //MC_Stack->SetMaximum(250.);
-  MC_Stack->Add(h_tZq.GetPtr());
+  //MC_Stack->Add(h_tZq.GetPtr());
   MC_Stack->Add(h_VVV.GetPtr());
   MC_Stack->Add(h_VV.GetPtr());
   MC_Stack->Add(h_ttbarV.GetPtr());
@@ -137,7 +164,8 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   //MC_Stack->Add(h_WPlusJets.GetPtr());
   //MC_Stack->Add(h_SingleTop.GetPtr());
   MC_Stack->Draw("HIST");
-  //h_data->Draw("HIST PSAME");
+  h_tZq->Draw("HIST SAME");
+  h_data->Draw("HIST PSAME");
 
   gPad->BuildLegend();
 
@@ -190,7 +218,7 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   pad2->SetGridy(1);
   pad2->Draw();
   pad2->cd();
-/*
+
   //for the ratio plot
   TH1D * rp = (TH1D*)(h_data->Clone());
   rp->Divide((TH1D*)MC_Stack->GetStack()->Last());
@@ -205,11 +233,11 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   rp->GetYaxis()->SetTitleSize(0.12);
   rp->GetYaxis()->SetTitleOffset(L / W * 3.);
   rp->GetYaxis()->CenterTitle();
-  rp->GetXaxis()->SetTitle(xaxis_name);
+  rp->GetXaxis()->SetTitle(xaxis_name.c_str());
   rp->SetMinimum(0.5);
   rp->SetMaximum(1.5);
   rp->Draw();
-*/
+
   //Updating the canvas and saving the output pdf file
   std::string OutputPlot = variable_name + "_" + channel + "_" + systematic + "_" + region + "_" + year + ".pdf";
   
@@ -251,6 +279,14 @@ void process_comparison(){
   process_comparison_plotter("2016", "SubleadingJetPhi", "ee", "#phi", "Nominal", "SR", "#phi of the subleading tight smeared jet (ee channel)");
   process_comparison_plotter("2016", "SubleadingJetEta", "ee", "#eta", "Nominal", "SR", "#eta of the subleading tight smeared jet (ee channel)");
   process_comparison_plotter("2016", "SubleadingJetMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the subleading tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "ThirdJetPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momenta of the third tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "ThirdJetPhi", "ee", "#phi", "Nominal", "SR", "#phi of the third tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "ThirdJetEta", "ee", "#eta", "Nominal", "SR", "#eta of the third tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "ThirdJetMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the third tight smeared jet (ee channel)"); 
+  process_comparison_plotter("2016", "FourthJetPt", "ee", "#p_{T} [GeV]", "Nominal", "SR", "Transverse momenta of the fourth tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "FourthJetPhi", "ee", "#phi", "Nominal", "SR", "#phi of the fourth tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "FourthJetEta", "ee", "#eta", "Nominal", "SR", "#eta of the fourth tight smeared jet (ee channel)");
+  process_comparison_plotter("2016", "FourthJetMass", "ee", "Mass [GeV]", "Nominal", "SR", "Mass of the fourth tight smeared jet (ee channel)");
 
   gSystem->Exec("mv *.pdf Plots/");
 
