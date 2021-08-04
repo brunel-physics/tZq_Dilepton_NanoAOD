@@ -13,14 +13,24 @@ using namespace std;
 
 void process_comparison_plotter(const string& year, const string& variable_name, const string& channel, const string& xaxis_name, const string& systematic, const string& region, const string& GraphTitle){
 
-  RDataFrame d_tZq("Events", "tZq_Combined.root");
-  RDataFrame d_ZPlusJets("Events", "ZPlusJets_Combined.root");
-  RDataFrame d_ttbar("Events", "ttbar_Combined.root");
-  RDataFrame d_SingleTop("Events", "SingleTop_Combined.root");
-  RDataFrame d_VV("Events", "VV_Combined.root");
-  RDataFrame d_VVV("Events", "VVV_Combined.root");
-  RDataFrame d_WPlusJets("Events", "WPlusJets_Combined.root");
-  RDataFrame d_ttbarV("Events", "ttbarV_Combined.root");
+  std::string tZq_file = "tZq_Combined_" + region + ".root";
+  std::string ZPlusJets_file = "ZPlusJets_Combined_" + region + ".root";
+  std::string ttbar_file = "ttbar_Combined_" + region + ".root";
+  std::string SingleTop_file = "SingleTop_Combined_" + region + ".root";
+  std::string VV_file = "VV_Combined_" + region + ".root";
+  std::string VVV_file = "VVV_Combined_" + region + ".root";
+  std::string WPlusJets_file = "WPlusJets_Combined_" + region + ".root";
+  std::string ttbarV_file = "ttbarV_Combined_" + region + ".root";
+  std::string data_file = "data_Combined_"+ region + ".root";
+
+  RDataFrame d_tZq("Events", tZq_file.c_str());
+  RDataFrame d_ZPlusJets("Events", ZPlusJets_file.c_str());
+  RDataFrame d_ttbar("Events", ttbar_file.c_str());
+  RDataFrame d_SingleTop("Events", SingleTop_file.c_str());
+  RDataFrame d_VV("Events", VV_file.c_str());
+  RDataFrame d_VVV("Events", VVV_file.c_str());
+  RDataFrame d_WPlusJets("Events", WPlusJets_file.c_str());
+  RDataFrame d_ttbarV("Events", ttbarV_file.c_str());
   RDataFrame d_data("Events", "data_Combined.root");
 
   double min; double max; 
@@ -69,15 +79,6 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   //auto h_data = d_data.Define("VecOfZeroes", Zeroes, {}).Histo1D({"h_data", variable_name.c_str(), nbins, min, max}, "VecOfZeroes");
   auto h_data = d_ttbarV.Histo1D({"h_data", variable_name.c_str(), nbins, min, max}, variable_name.c_str(), "EventWeight");
   std::cout << "print 10" << std::endl;
-
-  //Scaling to unit area
-  h_tZq->Scale(1.0/h_tZq->GetEntries());
-  h_ZPlusJets->Scale(1.0/h_ZPlusJets->GetEntries());
-  h_ttbar->Scale(1.0/h_ttbar->GetEntries());
-  h_VV->Scale(1.0/h_VV->GetEntries());
-  h_VVV->Scale(1.0/h_VVV->GetEntries());
-  h_ttbarV->Scale(1.0/h_ttbarV->GetEntries());
-  h_data->Scale(1.0/h_data->GetEntries());
 
   //For the canvas
   int W = 800;
@@ -163,6 +164,12 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   MC_Stack->Add(h_ZPlusJets.GetPtr());
   //MC_Stack->Add(h_WPlusJets.GetPtr());
   //MC_Stack->Add(h_SingleTop.GetPtr());
+ 
+  //normalising the stack: https://root-forum.cern.ch/t/normalize-thsatck/21807/6  
+  TH1F *MC_Stack_Normalised = new TH1F(*((TH1F *)(MC_Stack->GetStack()->Last())));
+  MC_Stack_Normalised->SetNameTitle("MC_Stack_Normalised", "my normalized stack");
+  MC_Stack_Normalised->Scale(1./MC_Stack_Normalised->Integral("width"));
+
   MC_Stack->Draw("HIST");
   h_tZq->Draw("HIST SAME");
   h_data->Draw("HIST PSAME");
