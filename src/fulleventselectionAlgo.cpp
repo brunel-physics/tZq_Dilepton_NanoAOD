@@ -8634,14 +8634,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  
 				case 2: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF += TrigSF_Uncert) * 
-							CalculatedPDFWeightInput * MuonSFTest_ID_sys_systInput * MuonSFTest_Iso_sys_systInput * 
-							CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+							CalculatedPDFWeightInput * (MuonSFTest_IDInput += MuonSFTest_ID_sys_systInput + MuonSFTest_ID_sys_statInput) * (MuonSFTest_IsoInput += (MuonSFTest_Iso_sys_systInput + MuonSFTest_Iso_sys_statInput)) * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
                         			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF -= TrigSF_Uncert) * 
-							 CalculatedPDFWeightInput * 
-							 MuonSFTest_ID_sys_statInput * MuonSFTest_Iso_sys_statInput * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * (MuonSFTest_IDInput -= MuonSFTest_ID_sys_systInput + MuonSFTest_ID_sys_statInput) * (MuonSFTest_IsoInput -= (MuonSFTest_Iso_sys_systInput + MuonSFTest_Iso_sys_statInput)) * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 				
 							 break;
