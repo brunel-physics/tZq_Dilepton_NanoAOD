@@ -171,6 +171,6 @@ done
 
 
 
-echo "The tmux sessions for VV ($Channel channel for $Year, $Systematic, $Region) are running."
+echo "The tmux sessions for single top ($Channel channel for $Year, $Systematic, $Region) are running."
 
 
