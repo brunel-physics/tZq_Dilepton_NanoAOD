@@ -824,12 +824,12 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph_NanoAODv7/0E6A5B41-E6D9-C24C-9619-2C05C839C6DB.root", "/data/disk2/nanoAOD_2016/ZPlusJets_M10To50_Madgraph_NanoAODv7/A2A9EA3C-AC86-8649-B52C-D34A4E533798.root"}; HessianOrMC = "MC"; break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/8AEBAA8A-0C46-2F4A-B822-C0CAB855AC14.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/F81AB0EF-E6F6-A342-A029-A69FB1F2660D.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/8C1DCAD7-CDA0-0E4D-B740-BE2931949162.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/F884E241-AF2D-F54D-9BFA-4327C4925508.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/8C7F3B41-CC74-0340-A7A8-8481151A1254.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_NanoAODv7/FD6E49E5-F7AF-CA4D-9A1F-2E9E562BE291.root"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph/8AEBAA8A-0C46-2F4A-B822-C0CAB855AC14.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph/F81AB0EF-E6F6-A342-A029-A69FB1F2660D.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph/8C1DCAD7-CDA0-0E4D-B740-BE2931949162.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph/F884E241-AF2D-F54D-9BFA-4327C4925508.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph/8C7F3B41-CC74-0340-A7A8-8481151A1254.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph/FD6E49E5-F7AF-CA4D-9A1F-2E9E562BE291.root"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                 }
 
@@ -840,12 +840,12 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                 switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/8AEBAA8A-0C46-2F4A-B822-C0CAB855AC14.root",
-					          "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/F81AB0EF-E6F6-A342-A029-A69FB1F2660D.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/8C1DCAD7-CDA0-0E4D-B740-BE2931949162.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/F884E241-AF2D-F54D-9BFA-4327C4925508.root",
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/8C7F3B41-CC74-0340-A7A8-8481151A1254.root",  
-						  "/data/disk1/nanoAOD_2018/ZPlusJets_M10To50_Madgraph_ext_NanoAODv7/FD6E49E5-F7AF-CA4D-9A1F-2E9E562BE291.root"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph_ext/8AEBAA8A-0C46-2F4A-B822-C0CAB855AC14.root",
+					          "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph_ext/F81AB0EF-E6F6-A342-A029-A69FB1F2660D.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph_ext/8C1DCAD7-CDA0-0E4D-B740-BE2931949162.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph_ext/F884E241-AF2D-F54D-9BFA-4327C4925508.root",
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph_ext/8C7F3B41-CC74-0340-A7A8-8481151A1254.root",  
+						  "/nfs/data/eepgkkc/nanoAOD2018/ZPlusJets_M10To50_Madgraph_ext/FD6E49E5-F7AF-CA4D-9A1F-2E9E562BE291.root"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                 }
 
@@ -1043,7 +1043,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_2l2nu_NanoAODv7/000BB1D8-CE7C-5A4E-9763-8CA8E2E3F725.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/032518F3-4610-3044-BA48-0976811367A1.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttbar_2l2nu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbar_2l2nu/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1220,7 +1220,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_schannel_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_schannel_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_schannel_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_schannel/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1275,7 +1275,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampUP_NanoAODv7/00C82738-EF15-0249-9C87-3291B5F46755.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TT_2l2nu_hdampUP_NanoAODv7/077F31CC-A9B9-5A4E-8F17-268D0A52C328.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TT_2l2nu_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TT_2l2nu_hdampUP/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1308,7 +1308,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_NanoAODv7/0844AF28-5718-5446-BFED-2611B7A469AA.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TT_2l2nu_hdampDOWN_NanoAODv7/048A0075-6523-534C-86B6-07250A097155.root "}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TT_2l2nu_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
          
@@ -1319,7 +1319,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_ext1_NanoAODv7/3B63B12F-D124-1E4F-B75B-6D860B633FA2.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN_ext1_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TT_2l2nu_hdampDOWN_ext1/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1330,7 +1330,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TT_2l2nu_hdampDOWN_ext2_NanoAODv7/06395170-0F7C-E04E-86B7-715925950282.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TT_2l2nu_hdampDOWN_ext2_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TT_2l2nu_hdampDOWN_ext2/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1342,7 +1342,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_hdampUP_NanoAODv7/12CB7297-A074-B94D-82F9-C7E7D6045008.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic_hdampUP_NanoAODv7/02EF6768-B939-CA4D-8B59-BB79BA9E81EC.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TTToHadronic_hdampUP/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1353,7 +1353,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToHadronic_hdampDOWN_NanoAODv7/03B778A8-FD83-CF41-9CCF-FB143F91FF30.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToHadronic_hdampDOWN_NanoAODv7/02804A1D-BDBC-234D-BE26-152E1FB6F0A9.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToHadronic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TTToHadronic_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1364,7 +1364,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic_hdampUP_NanoAODv7/05F1E39C-EF03-AD47-9A2B-5972A90BA718.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic_hdampUP_NanoAODv7/12EFB516-9E94-7847-BA79-4EDE218954F0.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_hdampUP_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TTToSemileptonic_hdampUP/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1375,7 +1375,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/TTToSemileptonic_hdampDOWN_NanoAODv7/00FCF88A-CE7A-044E-9225-670309E47F2F.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/TTToSemileptonic_hdampDOWN_NanoAODv7/03821BCB-2773-3E43-9664-A0DBB7AE293B.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/TTToSemileptonic_hdampDOWN_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/TTToSemileptonic_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1398,7 +1398,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdamp_up_NanoAODv7/2387D776-9AAF-2743-98D3-543E39C6DD05.root", "/data/disk2/nanoAOD_2016/ST_tchannel_top_hdamp_up_NanoAODv7/885C9191-6BAD-B743-9706-15F7905F36AA.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top_hdampup_NanoAODv7/09445E82-5F59-8540-A7C6-EB1F3451A2E9.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_hdampup_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tchannel_top_hdampUP/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1409,7 +1409,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_top_hdamp_down_NanoAODv7/055D2101-7B97-BF4F-BD95-F19E0B49B3E9.root", "/data/disk2/nanoAOD_2016/ST_tchannel_top_hdamp_down_NanoAODv7/DA18C934-3FE7-7A49-B6E5-DA35FC4900D1.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_top_hdampdown_NanoAODv7/19F87F8F-61C4-3249-945E-EFD83D0DE4FE.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_top_hdampdown_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tchannel_top_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
 			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1420,7 +1420,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdamp_up_NanoAODv7/1DB2FDB8-0E77-FF49-8EC5-4D073824B3B3.root", "A7E05AAE-3628-0145-90D4-49870ADDCA09.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_antitop_hdampup_NanoAODv7/1169D679-D1D3-A04E-82C7-139BD0DFAC25.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_hdampup_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tchannel_antitop_hdampUP/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1431,7 +1431,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdamp_down_NanoAODv7/08641AB5-9085-8644-A7F8-0E847B67702C.root", "/data/disk2/nanoAOD_2016/ST_tchannel_antitop_hdamp_down_NanoAODv7/DFD9732A-F671-7C40-92EE-BBFBEEE211D1.root"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tchannel_antitop_hdampdown_NanoAODv7/0556D3FB-7D2C-A14C-A5D3-ED77D55240FE.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tchannel_antitop_hdampdown_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tchannel_antitop_hdampDOWN/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1519,7 +1519,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tW_NanoAODv7/06D9E989-C00B-D946-9607-542E72234FA1.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tW/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1552,7 +1552,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ST_tbarW_NanoAODv7/*"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ST_tbarW_NanoAODv7/00DEAE0C-9189-344A-9C6B-3EDC2578BD02.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ST_tbarW_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tbarW/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1585,7 +1585,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tHq_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/tHq_NanoAODv7/07CF8A81-3C58-FA44-8F61-6CAC68E7F36D.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/tHq_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tHq/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1596,7 +1596,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_W_lept_Z_had/4603D4D5-BCCE-F547-9528-E22E533E743B.root"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/tZq_W_lept_Z_had_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tZq_W_lept_Z_had/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 	
@@ -1607,7 +1607,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tWZ_tWll_NanoAODv7/*"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/tWZ_tWll_NanoAODv7/02145890-915D-D640-B56C-D573ACD98CAE.root"}; break;
-                        case 2018: input_files =  {"/data/disk1/nanoAOD_2018/tWZ_tWll_NanoAODv7/*"}; break;
+                        case 2018: input_files =  {"/nfs/data/eepgkkc/nanoAOD2018/SingleTop_tWZ_tWll/*"}; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1629,7 +1629,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2l2Nu_ext1_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZZTo2l2Nu_ext1/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1640,7 +1640,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2l2Nu_ext2_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZZTo2l2Nu_ext2/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1651,7 +1651,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo2l2Q_NanoAODv7/05848197-7279-F74F-8464-F57B647116FC.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZTo2L2Q_NanoAODv7/03107695-5816-1047-9939-51D187E8BCC0.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo2l2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZZTo2l2Q/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1662,7 +1662,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZTo4l_NanoAODv7/03C2E447-DC41-8E4C-A8B8-07D2DD357526.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZTo4L_NanoAODv7/0B039A97-B848-4649-80CA-4ECDA193E3A4.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZZTo4L/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1673,7 +1673,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZTo4L_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZZTo4L_ext/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1685,7 +1685,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo2l2Q_NanoAODv7/0018CE25-C799-E54D-B6AB-2DD871A36FBD.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZTo2L2Q_NanoAODv7/0C3806D3-1AE4-EE40-992C-461D76720455.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo2l2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WZTo2l2Q/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1696,7 +1696,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZTo3LNu_NanoAODv7/1996301D-3EB4-DD4E-944C-928061C43153.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo3lNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WZTo3lNu/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1707,7 +1707,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo3lNu_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WZTo3lNu_ext/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1719,7 +1719,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZTo1l1nu2Q_NanoAODv7/17102F6E-97CB-6E4E-8547-6EC782BA91E8.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZTo1l1Nu2Q_NanoAODv7/093C5650-2ACE-704D-A514-FD8B5C3C9887.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZTo1l1Nu2Q_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WZTo1l1Nu2Q/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1730,7 +1730,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWTo2l2nu_NanoAODv7/777A696F-454F-8A48-B9E4-0EA950833BC8.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWTo2L2Nu_NanoAODv7/26C064C9-F4E0-454A-A97D-FA12456EC337.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWTo2l2Nu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WWTo2l2Nu/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1741,7 +1741,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWToLNuQQ_NanoAODv7/0079B3E9-A07E-D24A-9083-1D1AA7040478.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWToLNuQQ_NanoAODv7/09993B94-2D53-6142-9906-0F5027154FC7.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWToLNuQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WWToLNuQQ/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1763,7 +1763,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WGToLNuG_NanoAODv7/06AA719E-65AE-8740-B0DE-69A8F6C982A7.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WGToLNuG_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_WGToLNuG/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1774,7 +1774,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZGToLLG_NanoAODv7/0C517659-06FB-1D41-AA26-5DA135904A89.root"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG_NanoAODv7/*"}; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZGToLLG/*"}; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1785,7 +1785,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break; 
-			case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZGToLLG_ext_NanoAODv7/*"}; break;
+			case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VV_ZGToLLG_ext/*"}; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1796,7 +1796,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWWTo4F_NanoAODv7/B4CDAAFD-56C3-BF4A-BFC7-20792ABFC8B0.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWWTo4F_NanoAODv7/DCD05A79-384A-734C-9143-BAA5A7CB9342.root"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWWTo4F_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VVV_WWWTo4F/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1818,7 +1818,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WWZ_NanoAODv7/3D3D1AD1-C754-4447-A090-2ED83BE16EA8.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WWZTo4F_NanoAODv7/F93C531F-C13D-7742-B03E-6F9227A7C4D9.root"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WWZ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VVV_WWZ/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1840,7 +1840,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WZZ_NanoAODv7/3D3D1AD1-C754-4447-A090-2ED83BE16EA8.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WZZ_NanoAODv7/0FF6E714-D313-504B-B4CC-33BC0A1FAAE5.root"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WZZ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VVV_WZZ/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1862,7 +1862,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ZZZ_NanoAODv7/63FCD6E4-98A5-8541-A539-9EC2B6B15354.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ZZZ_NanoAODv7/0262CD21-1086-D649-8F2D-00B959D1755D.root"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ZZZ_NanoAODv7/*"}; HessianOrMC = "MC"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/VVV_ZZZ/*"}; HessianOrMC = "MC"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1885,7 +1885,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/WPlusJets_NanoAODv7/*"}; HessianOrMC = "MC"; break;
 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/WJetsToLNu_NanoAODv7/01AEB8AC-38B2-C143-8F9F-002FA14D93BB.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/WPlusJets_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/WPlusJets/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1913,7 +1913,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 						  "/data/disk2/nanoAOD_2016/ttWJetsToLNu_NanoAODv7/C087D760-C6E8-9547-BDB8-EFA6A54A5A3D.root", 
 						  "/data/disk2/nanoAOD_2016/ttWJetsToLNu_NanoAODv7/F0FA2A79-DA71-FC43-B2C2-B385666E3274.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToLNu_NanoAODv7/00CA5D5D-99B5-5C42-9F2B-7D7395C519B7.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToLNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttWJetsToLNu/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1940,7 +1940,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 					          "/data/disk2/nanoAOD_2016/ttWJetsToQQ_NanoAODv7/EDD4A2D1-BC4B-3C42-A2DF-223FA4C024B9.root"}; HessianOrMC = "MC"; break;
 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttWJetsToQQ_NanoAODv7/08187EEE-C916-784E-8BB1-07B3ABE4D0D5.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttWJetsToQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttWJetsToQQ/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1951,7 +1951,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToLL_NanoAODv7/48D6B0EA-653B-6F4A-B038-AE6F9A5181A3.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLL_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttZToLL/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -1973,7 +1973,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToLLNuNu_NanoAODv7/0A891537-1CFE-234C-88E9-2A60E212CC29.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToLLNuNu_NanoAODv7/0B9601B6-2F8D-904C-889A-D708D3F702F7.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToLLNuNu_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttZToLLNuNu/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2006,7 +2006,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttZToQQ_NanoAODv7/22C1C3DA-5A4D-F348-BA51-BCB3DF50FDB8.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ_NanoAODv7/12C9848F-6D17-2F41-9DB4-ED8EFD858EFD.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttZToQQ/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2017,7 +2017,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: break; 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttZToQQ_ext_NanoAODv7/104B45D8-8BC5-F840-978C-64842F7F56CA.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttZToQQ_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttZToQQ_ext/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2028,7 +2028,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHTobb_NanoAODv7/1106DA3E-8806-0D4A-8905-9925BEA500F8.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttHTobb_NanoAODv7/040A1AD7-B228-E44E-9926-9B2C1236B12B.root"}; HessianOrMC = "Hessian"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHTobb_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttHTobb/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2039,7 +2039,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
                  switch(YearInt){
                         case 2016: break;
                         case 2017: break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHTobb_ext_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttHTobb_ext/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2050,7 +2050,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttHToNonbb_NanoAODv7/42F00A8B-701D-C748-91E1-4AC83844FF98.root"}; HessianOrMC = "MC"; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttHToNonbb_NanoAODv7/1D46C2D1-05FB-A042-AE41-E37D4FC843BD.root"}; HessianOrMC = "MC"; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/ttHToNonbb_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbarV_ttHToNonbb/*"}; HessianOrMC = "Hessian"; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2061,7 +2061,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc_NanoAODv7/*.root"}; break;
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbar_2l2nu/*.root"}; break;
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
 
@@ -2074,7 +2074,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"}; break;
 
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/METRun2018B/*.root", "/data/disk1/nanoAOD_2018/METRun2018C/*.root", "/data/disk1/nanoAOD_2018/METRun2018D/*.root"}; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/METRun2018B/*.root", "/nfs/data/eepgkkc/nanoAOD2018/METRun2018C/*.root", "/nfs/data/eepgkkc/nanoAOD2018/METRun2018D/*.root"}; break;
 
                         default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                  }
@@ -2260,7 +2260,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			}; break;
 
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017B/*"}; break;
-			case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018B/*"}; break;
+			case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/DoubleMuonRun2018B/*"}; break;
 			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
 		  }
 
@@ -2283,7 +2283,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			}; break;
 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017C/*"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018C/*"}; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/DoubleMuonRun2018C/*"}; break;
 			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                   }
 
@@ -2306,7 +2306,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 			}; break;
 
                         case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017D/*"}; break;
-                        case 2018: input_files = {"/data/disk1/nanoAOD_2018/DoubleMuonRun2018D/*"}; break;
+                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/DoubleMuonRun2018D/*"}; break;
 			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
                   }
 
@@ -8634,12 +8634,12 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  
 				case 2: switch(SystematicInt){
 						case 9: EventWeightOutput = PUInput * NormalisationFactorFunction() * BTagWeightInput * (TrigSF += TrigSF_Uncert) * 
-							CalculatedPDFWeightInput * (MuonSFTest_IDInput += MuonSFTest_ID_sys_systInput + MuonSFTest_ID_sys_statInput) * (MuonSFTest_IsoInput += (MuonSFTest_Iso_sys_systInput + MuonSFTest_Iso_sys_statInput)) * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
+							CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * TopWeightInput.at(0);
 
 							break;
 
                         			case 10: EventWeightOutput = PUInput * NormalisationFactorFunction() * (TrigSF -= TrigSF_Uncert) * 
-							 CalculatedPDFWeightInput * (MuonSFTest_IDInput -= MuonSFTest_ID_sys_systInput + MuonSFTest_ID_sys_statInput) * (MuonSFTest_IsoInput -= (MuonSFTest_Iso_sys_systInput + MuonSFTest_Iso_sys_statInput)) * CalculatedGeneratorWeightInput * 
+							 CalculatedPDFWeightInput * MuonSFTest_IDInput * MuonSFTest_IsoInput * CalculatedGeneratorWeightInput * 
 							 TopWeightInput.at(0);
 				
 							 break;
