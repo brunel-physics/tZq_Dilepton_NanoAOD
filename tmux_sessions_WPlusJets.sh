@@ -113,7 +113,7 @@ fi
 
 for i in ${!ProcessNamesArray[@]}; do
 
-	j=$(($i + 80))
+	j=$(($i + 104))
 	
 	k=$(($ChannelInt - 1))
 
@@ -121,9 +121,9 @@ for i in ${!ProcessNamesArray[@]}; do
 
         echo './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0'
 
-        tmux new -d -s $tmux_string 'source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 86400'
+	sleep_time=$(($i*180))
 
-        sleep 180
+        tmux new -d -s $tmux_string 'sleep '$sleep_time'; source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 86400'
 
 done
 
