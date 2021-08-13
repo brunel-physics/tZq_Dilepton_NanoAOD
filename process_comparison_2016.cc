@@ -136,6 +136,16 @@ void process_comparison_plotter(const string& year, const string& variable_name,
   h_ttbarV->SetTitle("t#bar{t}V");
   h_data->SetTitle("data");
 
+  h_tZq->Scale(1./h_tZq->Integral());
+  h_ZPlusJets->Scale(1./h_ZPlusJets->Integral());
+  h_ttbar->Scale(1./h_ttbar->Integral());
+  h_SingleTop->Scale(1./h_SingleTop->Integral());
+  //h_VV->Scale(1./h_VV->Integral());
+  h_VVV->Scale(1./h_VVV->Integral());
+  h_WPlusJets->Scale(1./h_WPlusJets->Integral());
+  h_ttbarV->Scale(1./h_ttbarV->Integral());
+  h_data->Scale(1./h_data->Integral());
+
   TPad *pad = new TPad("pad","pad",0.01, 0.315, 0.99, 0.99);
   pad->SetTopMargin(0);
   pad->SetFillColor(0);
@@ -267,7 +277,7 @@ void process_comparison_2016(){
   gSystem->Exec("mkdir Plots");
 
   process_comparison_plotter("2016", "InvTopMass", "ee", "Mass [GeV]", "Nominal", "NoChi2Cut", "Invariant mass of the top quark candidate (ee channel)");
-  process_comparison_plotter("2016", "w_mass", "ee", "Mass [GeV]", "Nominal", "NoChi2Cut", "Reconstructed mass of the W quark candidate (ee channel)");
+/*  process_comparison_plotter("2016", "w_mass", "ee", "Mass [GeV]", "Nominal", "NoChi2Cut", "Reconstructed mass of the W quark candidate (ee channel)");
   process_comparison_plotter("2016", "z_mass", "ee", "Mass [GeV]", "Nominal", "NoChi2Cut", "Reconstructed mass of the Z boson candidate (ee channel)");
   process_comparison_plotter("2016", "LeadingLeptonPt", "ee", "p_{T} [GeV]", "Nominal", "NoChi2Cut", "Transverse momentum of the leading lepton (ee channel)");
   process_comparison_plotter("2016", "SubleadingLeptonPt", "ee", "p_{T} [GeV]", "Nominal", "NoChi2Cut", "Transverse momentum of the subleading lepton (ee channel)");
@@ -301,7 +311,7 @@ void process_comparison_2016(){
   process_comparison_plotter("2016", "FourthJetPhi", "ee", "#phi", "Nominal", "NoChi2Cut", "#phi of the fourth tight smeared jet (ee channel)");
   process_comparison_plotter("2016", "FourthJetEta", "ee", "#eta", "Nominal", "NoChi2Cut", "#eta of the fourth tight smeared jet (ee channel)");
   process_comparison_plotter("2016", "FourthJetMass", "ee", "Mass [GeV]", "Nominal", "NoChi2Cut", "Mass of the fourth tight smeared jet (ee channel)");
-
+*/
   gSystem->Exec("mv *.pdf Plots/");
 
 }
