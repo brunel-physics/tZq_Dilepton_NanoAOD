@@ -124,8 +124,1235 @@ vector <variable> define_variables()
     var.title = "m_{jet4} [GeV]";
     var.graph_title = "Mass of the fourth tight smeared jet";
     variables.push_back(var);
-    
+   
+    //Pile up 
+    var.name = "PU";
+    var.title = "pile up weight";
+    var.graph_title = "Pile up weights";
+    variables.push_back(var);
+
+    var.name = "TightLeptons";
+    var.title = "Tight leptons";
+    var.graph_title = "Tight leptons";
+    variables.push_back(var);
+
+    var.name = "LeptonPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of all leptons";
+    variables.push_back(var);
+
+    var.name = "LeptonPhi";
+    var.title = "#phi";
+    var.graph_title = "Pseudorapidity of all leptons";
+    variables.push_back(var);
+  
+    var.name = "LeptonEta";
+    var.title = "#eta";
+    var.graph_title = "#eta of all leptons";
+    variables.push_back(var);  
+
+    var.name = "LeptonCharge";
+    var.title = "charge";
+    var.graph_title = "Charge of all leptons";
+    variables.push_back(var);
+
+    var.name = "LeptonMass";
+    var.title = "m_{l} [GeV]";
+    var.graph_title = "Mass of all leptons";
+    variables.push_back(var);
+   
+    var.name = "LeptonJetRelIso";
+    var.title = "Lepton-jet relative isolation";
+    var.graph_title = "Lepton-jet relative isolation";
+    variables.push_back(var);
+
+    var.name = "TightLeptonsPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of all tight leptons";
+    variables.push_back(var);
+  
+    var.name = "TightLeptonsPhi";
+    var.title = "#phi";
+    var.graph_title = "Pseudorapidity of all tight leptons";
+    variables.push_back(var);
+
+    var.name = "TightLeptonsEta";
+    var.title = "#eta";
+    var.graph_title = "#eta of all tight leptons";
+    variables.push_back(var);
+
+    var.name = "TightLeptonsCharge";
+    var.title = "charge";
+    var.graph_title = "Charge of all tight leptons";
+    variables.push_back(var);
+
+    var.name = "TightLeptonsMass";
+    var.title = "m_{l} [GeV]";
+    var.graph_title = "Mass of all tight leptons";
+    variables.push_back(var);
+
+    var.name = "TightLeptonsJetRelIso";
+    var.title = "Tight lepton-jet relative isolation";
+    var.graph_title = "Tight lepton-jet relative isolation";
+    variables.push_back(var);
+
+    var.name = "LooseLeptonsPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of all loose leptons";
+    variables.push_back(var);    
+
+    var.name = "LooseLeptonsPhi";
+    var.title = "#phi";
+    var.graph_title = "Pseudorapidity of all loose leptons";
+    variables.push_back(var);    
+
+    var.name = "LooseLeptonsEta";
+    var.title = "#eta";
+    var.graph_title = "#eta of all loose leptons";
+    variables.push_back(var);
+
+    var.name = "LooseLeptonsCharge";
+    var.title = "charge"
+    var.graph_title = "Charge of all loose leptons";
+    variables.push_back(var);
+
+    var.name = "LooseLeptonsMass";
+    var.title = "m_{l} [GeV]";
+    var.graph_title = "Mass of all loose leptons";
+    variables.push_back(var);
+
+    var.name = "LooseLeptonsJetRelIso";
+    var.title = "Loose lepton-jet relative isolation";
+    var.graph_title = "Loose lepton-jet relative isolation";
+    variables.push_back(var);
+
+    var.name = "OppositeSign";
+    var.title = "Opposite sign leptons";
+    var.graph_title = "Opposite sign leptons";
+    variables.push_back(var);
+
+    var.name = "SameSign";
+    var.title = "Same sign leptons";
+    var.graph_title = "Same sign leptons";
+    variables.push_back(var);
+
+    var.name = "LeadingLeptonPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of the leading lepton";
+    variables.push_back(var);
+
+    var.name = "SubleadingLeptonPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of the subleading lepton";
+    variables.push_back(var);  
+
+    var.name = "LeadingLeptonPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of the leading lepton";
+    variables.push_back(var);
+
+    var.name = "SubleadingLeptonPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "LeadingLeptonEta";
+    var.title = "#eta";
+    var.graph_title = "#eta of the leading lepton";
+    variables.push_back(var);
+
+    var.name = "SubleadingLeptonEta";
+    var.title = "#eta";
+    var.graph_title = "#eta of the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "LeadingLeptonMass";
+    var.title = "m_{l} [GeV]";
+    var.graph_title = "Mass of the leading lepton";
+    variables.push_back(var);
+
+    var.name = "SubleadingLeptonMass";
+    var.title = "m_{l} [GeV]";
+    var.graph_title = "Mass of the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "LeadingLepton_RelIso_Selection";
+    var.title = "relative isolation";
+    var.graph_title = "Relative isolation of the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "LeptonGenPartFlav";
+    var.title = "Parton flavour of generator-level leptons";
+    var.graph_title = "parton flavour";   
+    variables.push_back(var);
+
+    var.name = "TightLeptonGenPartFlav";
+    var.title = "Parton flavour of tight generator-level leptons";
+    var.graph_title = "parton flavour";
+    variables.push_back(var);
+
+    var.name = "OppositeSignNonPrompt";
+    var.title = "Opposite sign non prompt leptons";
+    var.graph_title = "Opposite sign non prompt leptons";
+    variables.push_back(var);   
+
+    var.name = "OppositeSignPrompt";
+    var.title = "Opposite sign prompt leptons";
+    var.graph_title = "Opposite sign prompt leptons";
+    variables.push_back(var);
+
+    var.name = "SameSignNonPrompt";
+    var.title = "Same sign non prompt leptons";
+    var.graph_title = "Same sign non prompt leptons";
+    variables.push_back(var);    
+
+    var.name = "SameSignPrompt";
+    var.title = "Same sign prompt leptons";
+    var.graph_title = "Same sign prompt leptons";
+    variables.push_back(var);
+
+    var.name = "RecoZPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of the reconstructed Z quark candidate";
+    variables.push_back(var); 
+
+    var.name = "RecoZPhi";
+    var.title = "#phi";
+    var.graph_title = "Pseudorapidity of the reconstructed Z quark candidate";
+    variables.push_back(var);	
+
+    var.name = "RecoZEta";
+    var.title = "#eta";
+    var.graph_title = "#eta of the reconstructed Z quark candidate";
+    variables.push_back(var);
+
+    var.name = "RecoZMass";
+    var.title = "m_{Z} [GeV]";
+    var.graph_title = "#eta of the reconstructed Z quark candidate";
+    variables.push_back(var);
+
+    var.name = "dR_ll";
+    var.title = "#Delta{R}_{ll}";
+    var.graph_title = "#Delta{R} of the reconstructed Z quark candidate";
+    variables.push_back(var);
+
+    var.name = "dPhi_ll";
+    var.title = "#Delta{#phi}_{ll}";
+    var.graph_title = "#Delta{#phi} of the reconstructed Z quark candidate"
+    variables.push_back(var);
+
+    var.name = "LeptonPt_RochCorr";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of the rochester-corrected leptons";   
+    variables.push_back(var);
+
+    var.name = "LeptonEta_RochCorr";
+    var.title = "#eta";
+    var.graph_title = "#eta of the rochester-corrected leptons";
+    variables.push_back(var);
+
+    var.name = "LeptonPhi_RochCorr";
+    var.title = "#phi";
+    var.graph_title = "#phi of the rochester-corrected leptons";
+    variables.push_back(var);
+
+    var.name = "LeptonMass_RochCorr";
+    var.title = "m_{l}";
+    var.graph_title = "Mass of the rochester-corrected leptons";
+    variables.push_back(var);
+
+    var.name = "z_mass";
+    var.title = "m_{ll}";
+    var.graph_title = "Reconstructed mass of the Z boson candidate";
+    variables.push_back(var);
+
+    var.name = "sJER_Nominal";
+    var.title = "s_{JER}";
+    var.graph_title = "Data-to-simulation core resolution factor (nominal)";
+    variables.push_back(var);   
+
+    var.name = "sJER_up";
+    var.title = "s_{JER}";
+    var.graph_title = "Data-to-simulation core resolution factor (up variation)";
+    variables.push_back(var);
+
+    var.name = "sJER_down";
+    var.title = "s_{JER}";
+    var.graph_title = "Data-to-simulation core resolution factor (down variation)";
+    variables.push_back(var);
+
+    var.name = "sigma_JER";
+    var.title = "#sigma_{JER}";
+    var.graph_title = "Transverse momenta resolution factor (nominal)";
+    variables.push_back(var);
+
+    var.name = "sigma_JER_up";
+    var.title = "#sigma_{JER}";
+    var.graph_title = "Transverse momenta resolution factor (up variation)";
+    variables.push_back(var);
+
+    var.name = "sigma_JER_down";
+    var.title = "#sigma_{JER}";
+    var.graph_title = "Transverse momenta resolution factor (down variation)";
+    variables.push_back(var);
+
+    var.name = "cJER";
+    var.title = "Jet energy smearing correction factor";
+    var.graph_title = "Jet energy smearing correction factor";
+    variables.push_back(var);
+
+    var.name = "SmearedJetPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of smeared jets";
+    variables.push_back(var);
+
+    var.name = "SmearedJetPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of smeared jets";
+    variables.push_back(var);
+
+    var.name = "SmearedJetEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of smeared jets";
+    variables.push_back(var);
+
+    var.name = "SmearedJetMass";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Mass of smeared jets";
+    variables.push_back(var);
+
+    var.name = "dRJet_Lepton";
+    var.title = "#Delta{R}_jl";
+    var.graph_title = "#Delta{R} between jets and leptons";
+    variables.push_back(var);
+
+    var.name = "TightSmearedJetsPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of tight smeared jets";
+    variables.push_back(var);
+
+    var.name = "TightSmearedJetsPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of tight smeared jets";
+    variables.push_back(var);
+
+    var.name = "TightSmearedJetsEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of tight smeared jets";
+    variables.push_back(var);
+   
+    var.name = "TightSmearedJetsMass";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Mass of tight smeared jets";
+    variables.push_back(var);
+
+    var.name = "TightSmearedJetsBTagCSVV2";
+    var.title = "CSVv2 discriminant";
+    var.graph_title = "CSVv2 discriminant of tight smeared jets";
+    variables.push_back(var);   
+
+    var.name = "TightSmearedJetsHadronFlavour";
+    var.title = "Hadron flavour";
+    var.graph_title = "Hadron flavour of tight smeared jets";
+    variables.push_back(var);
+
+    var.name = "TightSmearedJetsJetID";
+    var.title = "Jet ID";
+    var.graph_title = "Jet ID of tight smeared jets";
+    variables.push_back(var);
+
+    var.name = "LeadingJetMass";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Mass of the leading jet";
+    variables.push_back(var);
+
+    var.name = "SubleadingJetMass";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Mass of the subleading jet";
+    variables.push_back(var);
+
+    var.name = "ThirdJetMass";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Mass of the third jet";
+    variables.push_back(var);
+
+    var.name = "FourthJetMass";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Mass of the fourth jet";
+    variables.push_back(var);
+
+    var.name = "LeadingJetPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of the leading jet";
+    variables.push_back(var);
+
+    var.name = "SubleadingJetPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of the subleading jet";
+    variables.push_back(var);
+
+    var.name = "ThirdJetPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of the third jet";
+    variables.push_back(var);
+
+    var.name = "FourthJetPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of the fourth jet";
+    variables.push_back(var);
+
+    var.name = "SumSquaredPt";
+    var.title = "#sum{p_{T}^{2}} [GeV]";
+    var.graph_title = "Summation of the transverse momenta of all jets squared";
+    variables.push_back(var);
+
+    var.name = "JetPtSum";
+    var.title = "#sum{p_{T}} [GeV]";
+    var.graph_title = "Summation of the transverse momenta of all jets";
+    variables.push_back(var);
+
+    var.name = "LeadingJetEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the leading jet";
+    variables.push_back(var);
+
+    var.name = "SubleadingJetEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the subleading jet";
+    variables.push_back(var);
+
+    var.name = "ThirdJetEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the third jet";
+    variables.push_back(var);
+
+    var.name = "FourthJetEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the fourth jet";
+    variables.push_back(var);
+
+    var.name = "LeadingJetPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of the leading jet";
+    variables.push_back(var);
+
+    var.name = "SubleadingJetPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of the subleading jet";
+    variables.push_back(var);
+
+    var.name = "ThirdJetPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of the third jet";
+    variables.push_back(var);
+
+    var.name = "FourthJetPhi";
+    var.title = "#phi";
+    var.graph_title = "#phi of the fourth jet";
+    variables.push_back(var);
+
+    var.name = "dR_j1j2";
+    var.title = "#Delta{R}_{j1j2}";
+    var.graph_title = "#Delta{R} between the leading and subleading jets";
+    variables.push_back(var);
+
+    var.name = "dPhi_j1j2";
+    var.title = "#Delta{#phi}_{j1j2}";
+    var.graph_title = "#Delta{#phi} between the leading and subleading jets";
+    variables.push_back(var);
+
+    var.name = "LeadingJetHT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the leading jet";
+    variables.push_back(var);
+
+    var.name = "SubleadingJetHT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the subleading jet";
+    variables.push_back(var);
+
+    var.name = "ThirdJetHT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the third jet";
+    variables.push_back(var);
+
+    var.name = "FourthJetHT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the fourth jet";
+    variables.push_back(var);
+
+    var.name = "TotJetHT";
+    var.title = "H_{T}";
+    var.graph_title = "Total H_{T} of all jets";
+    variables.push_back(var);
+
+    var.name = "LeadingLeptonHT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the leading lepton";
+    variables.push_back(var);    
+
+    var.name = "SubleadingLeptonHT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "TotLepHT";
+    var.title = "H_{T}";
+    var.graph_title = "Total H_{T} of all leptons";
+    variables.push_back(var);
+
+    var.name = "TotHTOverTotpT_Jets";
+    var.title = "H_{T}/p_{T}";
+    var.graph_title = "H_{T}/p_{T} for all jets";
+    variables.push_back(var);
+
+    var.name = "LepPtSum";
+    var.title = "#Sum{p_{T}_{l}} [GeV]";
+    var.graph_title = "Sum of the transverse momenta of all leptons";
+    variables.push_back(var);
+
+    var.name = "LepEtaSum";
+    var.title = "#Sum{#eta_{l}}";
+    var.graph_title = "Sum of the pseudorapidities of all leptons";
+    variables.push_back(var);
+
+    var.name = "LepPhiSum";
+    var.title = "#Sum{#phi_{l}}";
+    var.graph_title = "Sum of the azimuthal angles of all leptons";
+    variables.push_back(var);
+
+    var.name = "TotHTOverTotpT_Leptons";
+    var.title = "H_{T}/p_{T}";
+    var.graph_title = "H_{T}/p_{T} for all leptons";
+    variables.push_back(var);
+ 
+    var.name = "InvMassAllJets";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Invariant mass of all jets";
+    variables.push_back(var);
+
+    var.name = "InvMass3Jets";
+    var.title = "m_{j} [GeV]";
+    var.graph_title = "Invariant mass of the three most leading jets";
+    variables.push_back(var);
+
+    var.name = "JetEtaSum";
+    var.title = "#Sum{#eta_{j}}";
+    var.graph_title = "Sum of the pseudorapidities of all jets";
+    variables.push_back(var);
+
+    var.name = "JetPhiSum";
+    var.title = "#Sum{#phi_{j}}";
+    var.graph_title = "Sum of the azimuthal angles of all jets";
+    variables.push_back(var);
+
+    var.name = "bjets_pt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of bjet candidates";
+    variables.push_back(var);
+
+    var.name = "bjets_eta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidities of bjet candidates";
+    variables.push_back(var);
+
+    var.name = "bjets_phi";
+    var.title = "#phi";
+    var.graph_title = "Azimuthal angles of bjet candidates";
+    variables.push_back(var);
+
+    var.name = "bjets_mass";
+    var.title = "m_{b} [GeV]";
+    var.graph_title = "Masses of bjet candidates";
+    variables.push_back(var);
+
+    var.name = "nbjets";
+    var.title = "Number of bjets";
+    var.graph_title = "Number of bjet candidates";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_bjet_id_WP";
+    var.title = "BTAGEFF_bjet_id_WP";
+    var.graph_title = "BTAGEFF_bjet_id_WP";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_id_WP";
+    var.title = "BTAGEFF_nonbjet_id_WP";
+    var.graph_title = "BTAGEFF_nonbjet_id_WP";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_bjet_id";
+    var.title = "BTAGEFF_bjet_id";
+    var.graph_title = "BTAGEFF_bjet_id";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_id";
+    var.title = "BTAGEFF_nonbjet_id";
+    var.graph_title = "BTAGEFF_nonbjet_id";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_bjet_pt_num";
+    var.title = "BTAGEFF_bjet_pt_num";
+    var.graph_title = "BTAGEFF_bjet_pt_num";
+    variables.push_back(var);
+ 
+    var.name = "BTAGEFF_bjet_eta_num";
+    var.title = "BTAGEFF_bjet_eta_num";
+    var.graph_title = "BTAGEFF_bjet_eta_num";
+    variables.push_back(var);
+ 
+    var.name = "BTAGEFF_bjet_Jet_btagCSVV2_num";
+    var.title = "BTAGEFF_bjet_Jet_btagCSVV2_num";
+    var.graph_title = "BTAGEFF_bjet_Jet_btagCSVV2_num";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_bjet_Jet_hadronFlavour_num";
+    var.title = "BTAGEFF_bjet_Jet_hadronFlavour_num";
+    var.graph_title = "BTAGEFF_bjet_Jet_hadronFlavour_num";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_pt_num";
+    var.title = "BTAGEFF_nonbjet_pt_num";
+    var.graph_title = "BTAGEFF_nonbjet_pt_num";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_eta_num";
+    var.title = "BTAGEFF_nonbjet_eta_num";
+    var.graph_title = "BTAGEFF_nonbjet_eta_num";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_Jet_btagCSVV2_num";
+    var.title = "BTAGEFF_nonbjet_Jet_btagCSVV2_num";
+    var.graph_title = "BTAGEFF_nonbjet_Jet_btagCSVV2_num";
+    variables.push_back(var);
+ 
+    var.name = "BTAGEFF_nonbjet_Jet_hadronFlavour_num";
+    var.title = "BTAGEFF_nonbjet_Jet_hadronFlavour_num";
+    var.graph_title = "BTAGEFF_nonbjet_Jet_hadronFlavour_num";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_bjet_pt_denom";
+    var.title = "BTAGEFF_bjet_pt_denom";
+    var.graph_title = "BTAGEFF_bjet_pt_denom";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_bjet_eta_denom";
+    var.title = "BTAGEFF_bjet_eta_denom";
+    var.graph_title = "BTAGEFF_bjet_eta_denom";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_pt_denom";
+    var.title = "BTAGEFF_nonbjet_pt_denom";
+    var.graph_title = "BTAGEFF_nonbjet_pt_denom";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_eta_denom";
+    var.title = "BTAGEFF_nonbjet_eta_denom";
+    var.graph_title = "BTAGEFF_nonbjet_eta_denom";
+    variables.push_back(var);
+
+    var.name = "BTAGEFF_nonbjet_eta_denom";
+    var.title = "BTAGEFF_nonbjet_eta_denom";
+    var.graph_title = "BTAGEFF_nonbjet_eta_denom";
+    variables.push_back(var);
+
+    var.name = "w_pair_pt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momentum of the reconstructed W boson candidate";
+    variables.push_back(var);
+
+    var.name = "w_pair_eta";
+    var.title = "#eta"; 
+    var.graph_title = "Pseudorapidity of the reconstructed W boson candidate";   
+    variables.push_back(var);
+
+    var.name = "w_pair_phi";
+    var.title = "#phi";       
+    var.graph_title = "#phi of the reconstructed W boson candidate";
+    variables.push_back(var);
+
+    var.name = "w_pair_mass";
+    var.title = "m_{qq} [GeV]";
+    var.graph_title = "Mass of the reconstructed W boson candidate";
+    variables.push_back(var);
+
+    var.name = "w_mass";
+    var.title = "m_{qq} [GeV]";
+    var.graph_title = "Invariant mass of the reconstructed W boson candidate";
+    variables.push_back(var);
+
+    var.name = "WPairJet1Pt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet2Pt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Transverse momenta of the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet1Eta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet2Eta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet1Phi";
+    var.title = "#phi";
+    var.graph_title = "Azimuthal angle of the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet2Phi";
+    var.title = "#phi";
+    var.graph_title = "Azimuthal angle of the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet1Mass";
+    var.title = "m_{j_{1}} [GeV]";
+    var.graph_title = "Mass of the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WPairJet2Pt";
+    var.title = "m_{j_{2}} [GeV]";
+    var.graph_title = "Mass of the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "dR_WJet1_WJet2";
+    var.title = "#Delta{R}_{j_{1}j_{2}}";
+    var.graph_title = "#Delta{R} between the leading and subleading jets in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "dW_j1j2";
+    var.title = "#Delta{#phi}_{j_{1}j_{2}}";
+    var.graph_title = "#Delta{#phi} between the leading and subleading jets in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "dR_WJet1_LeadingLepton";
+    var.title = "#Delta{R}_{j_{1}l_{1}}";
+    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the leading lepton";
+    variables.push_back(var);
+
+    var.name = "dR_WJet1_SubleadingLepton";
+    var.title = "#Delta{R}_{j_{1}l_{2}}";
+    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "dR_WJet2_LeadingLepton";
+    var.title = "#Delta{R}_{j_{2}l_{1}}";
+    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the leading lepton";
+    variables.push_back(var);
+
+    var.name = "dR_WJet2_SubleadingLepton";
+    var.title = "#Delta{R}_{j_{2}l_{2}}";
+    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "dR_WJet1_LeadingJet";
+    var.title = "#Delta{R}_{W_{j_{1}}j_{1}}";
+    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the leading jet of the system";
+    variables.push_back(var);
+
+    var.name = "dR_WJet1_SubleadingJet";
+    var.title = "#Delta{R}_{W_{j_{1}}j_{2}}";
+    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the subleading jet of the system";
+    variables.push_back(var);
+
+    var.name = "dR_WJet1_ThirdJet";
+    var.title = "#Delta{R}_{W_{j_{1}}j_{3}}";
+    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the third jet of the system";
+    variables.push_back(var);
+ 
+    var.name = "dR_WJet1_FourthJet";
+    var.title = "#Delta{R}_{W_{j_{1}}j_{4}}";
+    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the fourth jet of the system";
+    variables.push_back(var);
+
+    var.name = "dR_WJet2_LeadingJet";
+    var.title = "#Delta{R}_{W_{j_{2}}j_{1}}";
+    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the leading jet of the system";
+    variables.push_back(var);
+
+    var.name = "dR_WJet2_SubleadingJet";
+    var.title = "#Delta{R}_{W_{j_{2}}j_{2}}";
+    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the subleading jet of the system";
+    variables.push_back(var);
+
+    var.name = "dR_WJet2_ThirdJet";
+    var.title = "#Delta{R}_{W_{j_{2}}j_{3}}";
+    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the third jet of the system";
+    variables.push_back(var);
+ 
+    var.name = "dR_WJet2_FourthJet";
+    var.title = "#Delta{R}_{W_{j_{2}}j_{4}}";
+    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the fourth jet of the system";
+    variables.push_back(var);
+
+    var.name = "WJet1HT";
+    var.title = "H_{T} [GeV]";
+    var.graph_title = "H_{T} of the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "WJet2HT";
+    var.title = "H_{T} [GeV]";
+    var.graph_title = "H_{T} of the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "RecoWHT";
+    var.title = "H_{T} [GeV]";
+    var.graph_title = "H_{T} of the reconstructed W boson candidate";
+    variables.push_back(var); 
+
+    var.name = "mtW";
+    var.title = "m_{T}_{jj} [GeV]";
+    var.graph_title = "Transverse mass of the reconstructed W boson candidate";
+    variables.push_back(var);
+
+    var.name = "TightSmearedJetsNumber";
+    var.title = "number";
+    var.graph_title = "Number of tight smeared jets";
+    variables.push_back(var);
+
+    var.name = "SmearedLeadingBJetMass";
+    var.title = "m_{b} [GeV]";
+    var.graph_title = "Mass of the smeared leading b jet";
+    variables.push_back(var);
+
+    var.name = "SmearedLeadingBJetPt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "p_{T} of the smeared leading b jet";
+    variables.push_back(var);
+
+    var.name = "SmearedLeadingBJetEta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the smeared leading b jet";
+    variables.push_back(var);
+
+    var.name = "SmearedLeadingBJetPhi";
+    var.title = "#phi";
+    var.graph_title = "Azimuthal angle of the smeared leading b jet";
+    variables.push_back(var);  
+
+    var.name = "Top_Pt";
+    var.title = "p_{T}";
+    var.graph_title = "Transverse momentum of the reconstructed top quark candidate";
+    variables.push_back(var);
+
+    var.name = "Top_Eta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of the reconstructed top quark candidate";
+    variables.push_back(var);
+
+    var.name = "Top_Phi";
+    var.title = "#phi";
+    var.graph_title = "Azimuthal angle of the reconstructed top quark candidate";
+    variables.push_back(var);
+
+    var.name = "Top_Mass";
+    var.title = "m_{t} [GeV]";
+    var.graph_title = "Mass of the reconstructed top quark candidate";
+    variables.push_back(var);
+
+    var.name = "Top_HT";
+    var.title = "H_{T}";
+    var.graph_title = "H_{T} of the reconstructed top quark candidate";
+    variables.push_back(var);
+
+    var.name = "dR_Top_LeadingElectron";
+    var.title = "#Delta{R}_l_{1}t";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the leading lepton";
+    variables.push_back(var);
+
+    var.name = "dR_Top_SubleadingElectron";
+    var.title = "#Delta{R}_l_{2}t";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the subleading lepton";
+    variables.push_back(var);
+
+    var.name = "dR_Top_LeadingJet";
+    var.title = "#Delta{R}_j_{1}t";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the leading jet";
+    variables.push_back(var);
+
+    var.name = "dR_Top_SubleadingJet";
+    var.title = "#Delta{R}_j_{2}t";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the subleading jet";
+    variables.push_back(var);
+
+    var.name = "dR_Top_ThirdJet";
+    var.title = "#Delta{R}_j_{3}t";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the third jet";
+    variables.push_back(var);
+
+    var.name = "dR_Top_FourthJet";
+    var.title = "#Delta{R}_j_{4}t";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the fourth jet";
+    variables.push_back(var);
+
+    var.name = "dR_Top_W";
+    var.title = "#Delta{R}_tW";
+    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the reconstructed W boson candidate";
+    variables.push_back(var);
+
+    var.name = "dPhi_Wj1_Top";
+    var.title = "#Delta{#phi}_W_{j1}t";
+    var.graph_title = "#Delta{#phi} between the reconstructed top quark candidate and the leading jet from the W reconstruction";
+    variables.push_back(var);
+
+    var.name = "dPhi_Wj2_Top";
+    var.title = "#Delta{#phi}_W_{j2}t";
+    var.graph_title = "#Delta{#phi} between the reconstructed top quark candidate and the subleading jet from the W reconstruction";
+    variables.push_back(var);
+
+    var.name = "dR_Z_Top";
+    var.title = "#Delta{R}_Zt";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson and top quark candidates";
+    variables.push_back(var);
+
+    var.name = "dPhi_Z_Top";
+    var.title = "#Delta{#phi}_Zt";
+    var.graph_title = "#Delta{#phi} between the reconstructed Z boson and top quark candidates";
+    variables.push_back(var);
+
+    var.name = "dR_Z_WPairJet1";
+    var.title = "#Delta{R}_W_{j1}Z";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "dR_Z_WPairJet2";
+    var.title = "#Delta{R}_W_{j2}Z";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "dPhi_Z_WPairJet1";
+    var.title = "#Delta{#phi}_W_{j1}Z";
+    var.graph_title = "#Delta{#phi} between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "dPhi_Z_WPairJet2";
+    var.title = "#Delta{#phi}_W_{j2}Z";
+    var.graph_title = "#Delta{#phi} between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction";
+    variables.push_back(var);
+
+    var.name = "MinDeltaR";
+    var.title = "#Delta{R}_{min}";
+    var.graph_title = "Minimum #Delta{R} of the system";
+    variables.push_back(var);
+
+    var.name = "MinDeltaPhi";
+    var.title = "#Delta{#phi}_{min}";
+    var.graph_title = "Minimum #Delta{#phi} of the system";
+    variables.push_back(var); 
+
+    var.name = "dR_LeadingLepton_LeadingBJet";
+    var.title = "#Delta{R}_l_{1}b_{1}";
+    var.graph_title = "#Delta{R} between the leading lepton and leading bjet";
+    variables.push_back(var);
+
+    var.name = "dR_SubleadingLepton_LeadingBJet";
+    var.title = "#Delta{R}_l_{2}b_{1}";
+    var.graph_title = "#Delta{R} between the subleading lepton and leading bjet";
+    variables.push_back(var);
+ 
+    var.name = "DeltaPhi_LeadingLepton_LeadingBJet";
+    var.title = "#Delta{#phi}_l_{1}b_{1}";
+    var.graph_title = "#Delta{#phi} between the leading lepton and leading bjet";
+    variables.push_back(var);
+
+    var.name = "DeltaPhi_SubleadingLepton_LeadingBJet";
+    var.title = "#Delta{#phi}_l_{2}b_{1}";
+    var.graph_title = "#Delta{#phi} between the subleading lepton and leading bjet";
+    variables.push_back(var);
+
+    var.name = "MET";
+    var.title = "MET"
+    var.graph_title = "Missing E_{T}";
+    variables.push_back(var);
+
+    var.name = "LeadingBJetOutputDiscriminant";
+    var.title = "CSVv2 discriminant";
+    var.graph_title = "CSVv2 discriminant of the leading bjet";
+    variables.push_back(var);
+
+    var.name = "SubleadingBJetOutputDiscriminant";
+    var.title = "CSVv2 discriminant";
+    var.graph_title = "CSVv2 discriminant of the subleading bjet";
+    variables.push_back(var);
+
+    var.name = "ThirdBJetOutputDiscriminant";
+    var.title = "CSVv2 discriminant";
+    var.graph_title = "CSVv2 discriminant of the third bjet";
+    variables.push_back(var);
+
+    var.name = "FourthBJetOutputDiscriminant";
+    var.title = "CSVv2 discriminant";
+    var.graph_title = "CSVv2 discriminant of the fourth bjet";
+    variables.push_back(var);
+
+    var.name = "dPhi_W_Top";
+    var.title = "#Delta{#phi}_tW";
+    var.graph_title = "#Delta{#phi} between the reconstructed top quark and W boson candidates";
+    variables.push_back(var);   
+
+    var.name = "dR_Z_LeadingJet";
+    var.title = "#Delta{R}_j_{1}Z";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the leading jet";
+    variables.push_back(var);
+
+    var.name = "dR_Z_SubleadingJet";
+    var.title = "#Delta{R}_j_{2}Z";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the subleading jet";
+    variables.push_back(var);
+
+    var.name = "dR_Z_ThirdJet";
+    var.title = "#Delta{R}_j_{3}Z";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the third jet";
+    variables.push_back(var);
+
+    var.name = "dR_Z_FourthJet";
+    var.title = "#Delta{R}_j_{4}Z";
+    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the fourth jet";
+    variables.push_back(var);
+
+    var.name = "dPhi_LeadingJet_Z";
+    var.title = "#Delta{#phi}_b_{1}Z";
+    var.graph_title = "#Delta{#phi between the reconstructed Z boson candidate and the leading bjet";
+    variables.push_back(var);
+  
+    var.name = "dPhi_LeadingJet_Z";
+    var.title = "#Delta{#phi}_b_{2}Z";
+    var.graph_title = "#Delta{#phi} between the reconstructed Z boson candidate and the subleading bjet";
+    variables.push_back(var);
+
+    var.name = "dPhi_LeadingJet_Z";
+    var.title = "#Delta{#phi}_b_{3}Z";
+    var.graph_title = "#Delta{#phi} between the reconstructed Z boson candidate and the third bjet";
+    variables.push_back(var);
+
+    var.name = "dPhi_FourthJet_Z";
+    var.title = "#Delta{#phi}_b_{4}Z";
+    var.graph_title = "#Delta{#phi} between the reconstructed Z boson candidate and the fourth bjet";
+    variables.push_back(var);
+
+    var.name = "dR_W_Z";
+    var.title = "#Delta{R}_WZ";
+    var.graph_title = "#Delta{R} between the reconstructed W and Z boson candidates";
+    variables.push_back(var);
+
+    var.name = "RecoZHT";
+    var.title = "H_{T} [GeV]";
+    var.graph_title = "H_{T} of the reconstructed Z boson candidate";
+    variables.push_back(var);
+
+    var.name = "dPhi_W_Z";
+    var.title = "#Delta{#phi}_WZ";
+    var.graph_title = "#Delta{#phi} between the reconstructed W and Z boson candidates";
+    variables.push_back(var);
+
+    var.name = "TotalEta_System";
+    var.title = "#Sum{#eta}";
+    var.graph_title = "Total #eta of all objects in the system";
+    variables.push_back(var);
+
+    var.name = "TotalPhi_System";
+    var.title = "#Sum{#phi}";
+    var.graph_title = "Total #phi of the system";
+    variables.push_back(var);
+
+    var.name = "InvTopMass";
+    var.title = "m_{t} [GeV]";
+    var.graph_title = "Invariant mass of the reconstructed top quark candidate";
+    variables.push_back(var); 
+
+    var.name = "TotalHT_System";
+    var.title = "H_{T} [GeV]";
+    var.graph_title = "Total H_{T} of the system";
+    variables.push_back(var);
+
+    var.name = "TotalPt_System";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "Total p_{T} of the system";
+    variables.push_back(var);
+
+    var.name = "TotHTOverTotpT_System";
+    var.title = "H_{T}/p_{T}";
+    var.graph_title = "Total H_{T}/p_{T} of the system";
+    variables.push_back(var);
+
+    var.name = "CMSBTagSF";
+    var.title = "CMSBTagSF";
+    var.graph_title = "CMS-provided btagging efficiency scale factor (b-tagged jets)";
+    variables.push_back(var);
+
+    var.name = "CMSNonBTagSF";
+    var.title = "CMSNonBTagSF";
+    var.graph_title = "CMS-provided btagging efficiency scale factor (non b-tagged jets)";
+    variables.push_back(var);
+
+    var.name = "notbjetpt";
+    var.title = "p_{T} [GeV]";
+    var.graph_title = "p_{T} of non b-tagged jets";
+    variables.push_back(var);
+
+    var.name = "notbjeteta";
+    var.title = "#eta";
+    var.graph_title = "Pseudorapidity of non b-tagged jets";
+    variables.push_back(var);
+
+    var.name = "EffBTagged";
+    var.title = "#epsilon_{btagged}";
+    var.graph_title = "Efficiency of identifying b-tagged jets";  
+    variables.push_back(var);
+
+    var.name = "EffNonBTagged";
+    var.title = "#epsilon_{nonbtagged}";
+    var.graph_title = "Efficiency of identifying non b-tagged jets";
+    variables.push_back(var);
+
+    var.name = "ProductOperator_E_i";
+    var.title = "#prod{#epsilon_{i}}";
+    var.graph_title = "#prod{#epsilon_{i}}";
+    variables.push_back(var);
+
+    var.name = "ProductOperator_1_Minus_E_j";
+    var.title = "#prod{1-#epsilon_{j}}";
+    var.graph_title = "#prod{1-#epsilon_{j}}";
+    variables.push_back(var);
+
+    var.name = "ProductOperator_SFi_Times_Ei";
+    var.title = "#prod{SF_{i}#epsilon_{i}}";
+    var.graph_title = "#prod{Sf_{i}#epsilon_{i}}";
+    variables.push_back(var);
+
+    var.name = "ProductOperator_1_Minus_SFj_Times_Ej";
+    var.title = "#prod{1-SF_{j}#epsilon_{j}}";
+    var.graph_title = "#prod{1-SF_{j}#epsilon_{j}}";
+    variables.push_back(var);
+
+    var.name = "ProbBTagMC";
+    var.title = "P(MC)";
+    var.graph_title = "P(MC) – btagging efficiency";
+    variables.push_back(var);
+   
+    var.name = "ProbBTagData";
+    var.title = "P(Data)";
+    var.graph_title = "P(Data) – btagging efficiency";
+    variables.push_back(var);
+
+    var.name = "BTagWeight";
+    var.title = "#omega";
+    var.graph_title = "B-tagging efficiency weight";
+    variables.push_back(var);
+
+    var.name = "EGammaSF_egammaEff";
+    var.title = "E#gamma SF";
+    var.graph_title = "E#gamma SF";
+    variables.push_back(var);
+   
+    var.name = "EGammaSF_egammaEffSys";
+    var.title = "E#gamma SF sys";
+    var.graph_title = "E#gamma SF sys";
+    variables.push_back(var);
+
+    var.name = "EGammaSF_egammaEffReco";
+    var.title = "E#gamma SF reco";
+    var.graph_title = "E#gamma SF reco";
+    variables.push_back(var);
+
+    var.name = "EGammaSF_egammaEffRecoSys";
+    var.title = "E#gamma SF reco sys";
+    var.graph_title = "E#gamma SF reco sys";
+    variables.push_back(var);
+
+    var.name = "MuonSFTest_ID";
+    var.title = "Muon ID SF";
+    var.graph_title = "Muon ID SF";
+    variables.push_back(var);
+
+    var.name = "MuonSFTest_ID_sys_stat";
+    var.title = "Muon ID SF (stat.)";
+    var.graph_title = "Muon ID SF (stat.)";
+    variables.push_back(var);
+
+    var.name = "MuonSFTest_ID_sys_syst";
+    var.title = "Muon ID SF (syst.)";
+    var.graph_title = "Muon ID SF (syst.)";
+    variables.push_back(var);
+
+    var.name = "MuonSFTest_Iso";
+    var.title = "Muon Iso SF";
+    var.graph_title = "Muon Iso SF";
+    variables.push_back(var);
+
+    var.name = "MuonSFTest_Iso_sys_stat";
+    var.title = "Muon Iso SF (stat.)";
+    var.graph_title = "Muon Iso SF (stat.)";
+    variables.push_back(var);
+
+    var.name = "MuonSFTest_Iso_sys_syst";
+    var.title = "Muon Iso SF (syst.)";
+    var.graph_title = "Muon Iso SF (syst.)";
+    variables.push_back(var);
+
+    var.name = "ReturnedPSWeight";
+    var.title = "PS weight";
+    var.graph_title = "Parton shower weight";
+    variables.push_back(var);
+
+    var.name = "CalculatedPDFWeight";
+    var.title = "Parton distribution function weight";
+    var.graph_title = "Parton distribution function weight";
+    variables.push_back(var);
+
+    var.name = "CalculatedGeneratorWeight";
+    var.title = "Generator weight";
+    var.graph_title = "Generator weight";
+    variables.push_back(var);
+ 
+    var.name = "OriginalMET";
+    var.title = "Original MET";
+    var.graph_title = "Original MET";
+    variables.push_back(var);
+
+    var.name = "ScaledMET";
+    var.title = "Scaled MET";
+    var.graph_title = "Scaled MET";
+    variables.push_back(var);
+  
+    var.name = "newMET";
+    var.title = "Corrected MET";
+    var.graph_title = "Corrected MET";
+    variables.push_back(var);  
+
+    var.name = "UnsmearedJet4Momentum";
+    var.title = "Four momenta of unsmeared jets";
+    var.graph_title = "Four momenta";
+    variables.push_back(var);
+
+    var.name = "EventWeight";
+    var.title = "Event weight";
+    var.graph_title = "Event weight";
+    variables.push_back(var);
+
+    var.name = "OverallNormalisation";
+    var.title = "Overall normalisation";
+    var.graph_title = "Overall normalisation";
+    variables.push_back(var);
+
+    var.name = "chi2";
+    var.title = "#chi^{2}";
+    var.graph_title = "#chi^{2} (before filter)";
+    variables.push_back(var);
+
+    var.name = "AfterChi2Cut";
+    var.title = "#chi^{2}";
+    var.graph_title = "#chi^{2} (after filter)";
+    variables.push_back(var);
+
     return variables;
+
 }
 
 //////////////////////////////////////////////////////////////////////////
