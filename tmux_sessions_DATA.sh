@@ -91,17 +91,17 @@ fi
 
 
 
-tmux_string="Data_${SystematicNamesArray[0]}_${ChannelArray[0]}_${YearArray[0]}"
+tmux_string="Data_${SystematicNamesArray[0]}_${ChannelArray[0]}_$Year"
 
 k=$(($ChannelInt - 1))
 
 echo './bin/fulleventselectionMain.exe --mc 0 -y '$Year' -p 159 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$ChannelInt' --dcc 0'
 
-tmux new -d -s $tmux_string 'source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 0 -y '$Year' -p 159 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$ChannelInt' --dcc 0; sleep 3600'
+tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 0 -y '$Year' -p 159 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$ChannelInt' --dcc 0; sleep 3600'
 
 
 
 
-echo "The tmux sessions for single top ($Channel channel for $Year in the $Region) are running."
+echo "The tmux sessions for data ($Channel channel for $Year in the $Region) are running."
 
 

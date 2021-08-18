@@ -61,13 +61,13 @@ for i in ${!ChannelArray[@]}; do
 
 	echo './bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 2 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$i' --dcc 0'
 
-	tmux new -d -s $tmux_string_ScaleUp 'sleep 120; source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 2 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$i' --dcc 0; sleep 3600'
+	tmux new -d -s $tmux_string_ScaleUp './bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 2 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$i' --dcc 0; sleep 3600'
 
 	tmux_string_ScaleDown="${ProcessNamesArray[1]}${ChannelArray[i]}_${YearArray[0]}_$Region"
 
 	echo './bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 3 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$i' --dcc 0'
 
-        tmux new -d -s $tmux_string_ScaleDown 'sleep 120; source /cvmfs/sft.cern.ch/lcg/views/LCG_96/x86_64-slc6-gcc8-opt/setup.sh; make clean; make; ./bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 3 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$i' --dcc 0; sleep 3600'
+        tmux new -d -s $tmux_string_ScaleDown './bin/fulleventselectionMain.exe --mc 1 -y 2016 -p 3 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys 0 --channel '$i' --dcc 0; sleep 3600'
 
 
 done
