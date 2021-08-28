@@ -51,8 +51,8 @@ vector <variable> define_variables()
     
     // Generic
     var.nbins = 25;
-    var.log_scale = true;
-    
+    var.log_scale = false;
+   /* 
     var.set_range(0, 1000);
     
     // Invariant top mass
@@ -66,27 +66,31 @@ vector <variable> define_variables()
     var.title = "m_{W} [GeV]";
     var.graph_title = "Reconstructed mass of the W boson candidate";
     variables.push_back(var);
-    
+   
+    var.set_range(0, 250);
+ 
     // Z mass
     var.name = "z_mass";
     var.title = "m_{Z} [GeV]";
     var.graph_title = "Reconstructed mass of the Z boson candidate";
     variables.push_back(var);
     
-    var.set_range(0, 20);
+    var.set_range(0, 100);
     
     // Leading lepton mass
     var.name = "LeadingLeptonMass";
     var.title = "m_{lep1} [GeV]";
     var.graph_title = "Mass of the leading lepton";
-    variables.push_back(var);
-    
+    variables.push_back(var);    
+
+    var.set_range(0, 0.15);
+
     // Subleading lepton mass
     var.name = "SubleadingLeptonMass";
     var.title = "m_{lep2} [GeV]";
     var.graph_title = "Mass of the subleading lepton";
     variables.push_back(var);
-    
+  
     var.set_range(0, 200);
     
     // Smeared jet mass
@@ -100,7 +104,9 @@ vector <variable> define_variables()
     var.title = "m_{tight smeared jets} [GeV]";
     var.graph_title = "Mass of tight smeared jets";
     variables.push_back(var);
-    
+   
+    var.set_range(0, 100);
+ 
     // Leading jet mass
     var.name = "LeadingJetMass";
     var.title = "m_{jet1} [GeV]";
@@ -112,13 +118,17 @@ vector <variable> define_variables()
     var.title = "m_{jet2} [GeV]";
     var.graph_title = "Mass of the subleading tight smeared jet";
     variables.push_back(var);
-    
+   
+    var.set_range(0, 20);
+ 
     // Third jet mass
     var.name = "ThirdJetMass";
     var.title = "m_{jet3} [GeV]";
     var.graph_title = "Mass of the third tight smeared jet";
     variables.push_back(var);
-    
+   
+    var.set_range(0, 20);
+ 
     // Fourth jet mass
     var.name = "FourthJetMass";
     var.title = "m_{jet4} [GeV]";
@@ -155,7 +165,7 @@ vector <variable> define_variables()
     var.graph_title = "Charge of all leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 50);
 
     //Lepton mass
     var.name = "LeptonMass";
@@ -171,7 +181,7 @@ vector <variable> define_variables()
     var.graph_title = "Lepton-jet relative isolation";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 350);
 
     //Tight lepton pt
     var.name = "TightLeptonsPt";
@@ -203,7 +213,7 @@ vector <variable> define_variables()
     var.graph_title = "Charge of all tight leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 0.5);
 
     //Tight lepton mass
     var.name = "TightLeptonsMass";
@@ -219,7 +229,7 @@ vector <variable> define_variables()
     var.graph_title = "Tight lepton-jet relative isolation";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 350);
    
     //Loose leptons pt
     var.name = "LooseLeptonsPt";
@@ -251,7 +261,7 @@ vector <variable> define_variables()
     var.graph_title = "Charge of all loose leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 0.5);
 
     //Loose leptons mass
     var.name = "LooseLeptonsMass";
@@ -259,7 +269,7 @@ vector <variable> define_variables()
     var.graph_title = "Mass of all loose leptons";
     variables.push_back(var);
 
-    var.set_range(0, 10);
+    var.set_range(0, 5);
 
     //Opposite sign leptons
     var.name = "OppositeSign";
@@ -273,15 +283,13 @@ vector <variable> define_variables()
     var.graph_title = "Same sign leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 350);
 
     //Lepton pt
     var.name = "LeadingLeptonPt";
     var.title = "p_{T} [GeV]";
     var.graph_title = "Transverse momenta of the leading lepton";
     variables.push_back(var);
-
-    var.set_range(0, 1000);
 
     //Subleading lepton pt
     var.name = "SubleadingLeptonPt";
@@ -317,7 +325,7 @@ vector <variable> define_variables()
     var.graph_title = "#eta of the subleading lepton";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 0.5);
 
     //Leading lepton mass
     var.name = "LeadingLeptonMass";
@@ -339,7 +347,7 @@ vector <variable> define_variables()
     var.graph_title = "Relative isolation of the subleading lepton";
     variables.push_back(var);
 
-    var.set_range(-10, 10);
+    var.set_range(-1, 2);
 
     //Lepton parton flavour (generator-level)
     var.name = "LeptonGenPartFlav";
@@ -353,7 +361,7 @@ vector <variable> define_variables()
     var.graph_title = "parton flavour";
     variables.push_back(var);
 
-    var.set_range(0, 10);
+    var.set_range(0, 5);
 
     //Number of opposite sign non prompt leptons
     var.name = "OppositeSignNonPrompt";
@@ -379,7 +387,7 @@ vector <variable> define_variables()
     var.graph_title = "Same sign prompt leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 400);
 
     //Pt of the reco Z
     var.name = "RecoZPt";
@@ -403,7 +411,7 @@ vector <variable> define_variables()
     var.graph_title = "#eta of the reconstructed Z quark candidate";
     variables.push_back(var);
 
-     var.set_range(0, 1000);
+    var.set_range(0, 250);
 
     //Mass of the reco Z
     var.name = "RecoZMass";
@@ -411,23 +419,23 @@ vector <variable> define_variables()
     var.graph_title = "#eta of the reconstructed Z quark candidate";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
 
     //Delta R between the final state leptons
     var.name = "dR_ll";
-    var.title = "#Delta{R}_{ll}";
-    var.graph_title = "#Delta{R} between the lepton pair";
+    var.title = "#Delta(R)_{ll}";
+    var.graph_title = "#Delta(R) between the lepton pair";
     variables.push_back(var);
 
-    var.set_range(-4, 4);
+    var.set_range(0, 6);
 
     //Delta phi between the final state leptons
     var.name = "dPhi_ll";
-    var.title = "#Delta{#phi}_{ll}";
-    var.graph_title = "#Delta{#phi} between the lepton pair";
+    var.title = "#Delta(#phi)_{ll}";
+    var.graph_title = "#Delta(#phi) between the lepton pair";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 750);
 
     //Pt of rochester-corrected leptons
     var.name = "LeptonPt_RochCorr";
@@ -451,20 +459,22 @@ vector <variable> define_variables()
     var.graph_title = "#phi of the rochester-corrected leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 250);
 
     //Mass of rochester-corrected leptons
     var.name = "LeptonMass_RochCorr";
     var.title = "m_{l}";
     var.graph_title = "Mass of the rochester-corrected leptons";
     variables.push_back(var);
+*/
+    var.set_range(0, 350);
 
     //Reco Z mass
     var.name = "z_mass";
     var.title = "m_{ll}";
     var.graph_title = "Reconstructed mass of the Z boson candidate";
     variables.push_back(var);
-
+/*
     var.set_range(0, 3.5);
 
     //sJER scale factor (nominal)
@@ -485,11 +495,15 @@ vector <variable> define_variables()
     var.graph_title = "Data-to-simulation core resolution factor (down variation)";
     variables.push_back(var);
 
+    var.set_range(0, 1);
+
     //sigma JER (nominal)
     var.name = "sigma_JER";
     var.title = "#sigma_{JER}";
     var.graph_title = "Transverse momenta resolution factor (nominal)";
     variables.push_back(var);
+
+    var.set_range(0, 3);
 
     //sigma JER (up)
     var.name = "sigma_JER_up";
@@ -504,13 +518,15 @@ vector <variable> define_variables()
     var.graph_title = "Transverse momenta resolution factor (down variation)";
     variables.push_back(var);
 
+    var.set_range(0, 2.5);
+
     //cJER
     var.name = "cJER";
     var.title = "Jet energy smearing correction factor";
     var.graph_title = "Jet energy smearing correction factor";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 400);
 
     //Smeeared jet pt
     var.name = "SmearedJetPt";
@@ -526,7 +542,7 @@ vector <variable> define_variables()
     var.graph_title = "#phi of smeared jets";
     variables.push_back(var);
 
-    var.set_range(-5, 5);
+    var.set_range(-6, 6);
    
     //Smeared jet eta
     var.name = "SmearedJetEta";
@@ -534,7 +550,7 @@ vector <variable> define_variables()
     var.graph_title = "Pseudorapidity of smeared jets";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 50);
 
     //Smeared jet mass
     var.name = "SmearedJetMass";
@@ -542,15 +558,15 @@ vector <variable> define_variables()
     var.graph_title = "Mass of smeared jets";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
 
     //Delta R between jets and leptons 
     var.name = "dRJet_Lepton";
-    var.title = "#Delta{R}_jl";
-    var.graph_title = "#Delta{R} between jets and leptons";
+    var.title = "#Delta(R)_jl";
+    var.graph_title = "#Delta(R) between jets and leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 450);
 
     //Pt of tight smeared jets
     var.name = "TightSmearedJetsPt";
@@ -566,7 +582,7 @@ vector <variable> define_variables()
     var.graph_title = "#phi of tight smeared jets";
     variables.push_back(var);
 
-    var.set_range(-5, 5);
+    var.set_range(-6, 6);
 
     //Eta of tight smeared jets
     var.name = "TightSmearedJetsEta";
@@ -574,7 +590,7 @@ vector <variable> define_variables()
     var.graph_title = "Pseudorapidity of tight smeared jets";
     variables.push_back(var);
    
-    var.set_range(0, 1000);
+    var.set_range(0, 100);
 
     //Mass of tight smeared jets
     var.name = "TightSmearedJetsMass";
@@ -612,6 +628,8 @@ vector <variable> define_variables()
     var.graph_title = "Mass of the leading jet";
     variables.push_back(var);
 
+    var.set_range(0, 70);
+
     //Subleading jet mass
     var.name = "SubleadingJetMass";
     var.title = "m_{j} [GeV]";
@@ -630,6 +648,8 @@ vector <variable> define_variables()
     var.graph_title = "Mass of the fourth jet";
     variables.push_back(var);
 
+    var.set_range(0, 500);
+
     //Leading jet pt
     var.name = "LeadingJetPt";
     var.title = "p_{T} [GeV]";
@@ -642,11 +662,16 @@ vector <variable> define_variables()
     var.graph_title = "Transverse momentum of the subleading jet";
     variables.push_back(var);
 
+    var.set_range(0, 300);
+
     //Third jet pt
     var.name = "ThirdJetPt";
     var.title = "p_{T} [GeV]";
     var.graph_title = "Transverse momentum of the third jet";
     variables.push_back(var);
+
+
+    var.set_range(0, 200);
 
     //Fourth jet pt
     var.name = "FourthJetPt";
@@ -654,21 +679,24 @@ vector <variable> define_variables()
     var.graph_title = "Transverse momentum of the fourth jet";
     variables.push_back(var);
 
-    var.set_range(0, 10000);
+
+    var.set_range(0, 200000);
 
     //Sum of pt squared of all jets
     var.name = "SumSquaredPt";
-    var.title = "#sum{p_{T}^{2}} [GeV]";
+    var.title = "#sum p_{T}^{2} [GeV]";
     var.graph_title = "Summation of the transverse momenta of all jets squared";
     variables.push_back(var);
 
+    var.set_range(0, 2000);
+
     //Sum of jet pt
     var.name = "JetPtSum";
-    var.title = "#sum{p_{T}} [GeV]";
+    var.title = "#sum p_{T} [GeV]";
     var.graph_title = "Summation of the transverse momenta of all jets";
     variables.push_back(var);
 
-    var.set_range(-5, 5);
+    var.set_range(-6, 6);
 
     //Leading jet eta
     var.name = "LeadingJetEta";
@@ -720,18 +748,18 @@ vector <variable> define_variables()
     var.graph_title = "#phi of the fourth jet";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
 
     //Delta R between the leading and subleading jets
     var.name = "dR_j1j2";
-    var.title = "#Delta{R}_{j1j2}";
-    var.graph_title = "#Delta{R} between the leading and subleading jets";
+    var.title = "#Delta(R)_{j1j2}";
+    var.graph_title = "#Delta(R) between the leading and subleading jets";
     variables.push_back(var);
 
     //Delta phi between leading and subleading jets
     var.name = "dPhi_j1j2";
-    var.title = "#Delta{#phi}_{j1j2}";
-    var.graph_title = "#Delta{#phi} between the leading and subleading jets";
+    var.title = "#Delta(#phi)_{j1j2}";
+    var.graph_title = "#Delta(#phi) between the leading and subleading jets";
     variables.push_back(var);
 
     var.set_range(0, 1000);
@@ -742,11 +770,15 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the leading jet";
     variables.push_back(var);
 
+    var.set_range(0, 400);
+
     //Subleading jet HT
     var.name = "SubleadingJetHT";
     var.title = "H_{T}";
     var.graph_title = "H_{T} of the subleading jet";
     variables.push_back(var);
+
+    var.set_range(0, 300);
 
     //Third jet HT
     var.name = "ThirdJetHT";
@@ -754,13 +786,15 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the third jet";
     variables.push_back(var);
 
+    var.set_range(0, 200);
+
     //Fourth jet HT
     var.name = "FourthJetHT";
     var.title = "H_{T}";
     var.graph_title = "H_{T} of the fourth jet";
     variables.push_back(var);
 
-    var.set_range(0, 10000);
+    var.set_range(0, 2000);
 
     //Total HT of all jets
     var.name = "TotJetHT";
@@ -768,7 +802,7 @@ vector <variable> define_variables()
     var.graph_title = "Total H_{T} of all jets";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 300);
 
     //Leading lepton HT
     var.name = "LeadingLeptonHT";
@@ -782,7 +816,7 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the subleading lepton";
     variables.push_back(var);
 
-    var.set_range(0, 10000);
+    var.set_range(0, 500);
 
     //Total HT of all leptons
     var.name = "TotLepHT";
@@ -790,37 +824,39 @@ vector <variable> define_variables()
     var.graph_title = "Total H_{T} of all leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 2);
 
     //Total HT over total pt of all jets
     var.name = "TotHTOverTotpT_Jets";
-    var.title = "H_{T}/p_{T}";
+    var.title = "#sum H_{T}/p_{T}";
     var.graph_title = "H_{T}/p_{T} for all jets";
     variables.push_back(var);
 
-    var.set_range(0, 10000);
+    var.set_range(0, 1000);
 
     //Lepton pt sum
     var.name = "LepPtSum";
-    var.title = "#Sum{p_{T}_{l}} [GeV]";
+    var.title = "#sum p_{T}_{l} [GeV]";
     var.graph_title = "Sum of the transverse momenta of all leptons";
     variables.push_back(var);
 
-    var.set_range(0, 100);
+    var.set_range(0, 400);
 
     //Lepton eta sum
     var.name = "LepEtaSum";
-    var.title = "#Sum{#eta_{l}}";
+    var.title = "#sum #eta_{l}";
     var.graph_title = "Sum of the pseudorapidities of all leptons";
     variables.push_back(var);
 
+    var.set_range(0, 400);
+
     //Lepton phi sum
     var.name = "LepPhiSum";
-    var.title = "#Sum{#phi_{l}}";
+    var.title = "#sum#phi_{l}";
     var.graph_title = "Sum of the azimuthal angles of all leptons";
     variables.push_back(var);
 
-    var.set_range(0, 10000);
+    var.set_range(0, 2);
 
     //Total HT over total pt of all leptons
     var.name = "TotHTOverTotpT_Leptons";
@@ -828,7 +864,7 @@ vector <variable> define_variables()
     var.graph_title = "H_{T}/p_{T} for all leptons";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 2000);
 
     //Invariant mass of all jets 
     var.name = "InvMassAllJets";
@@ -843,21 +879,23 @@ vector <variable> define_variables()
     var.graph_title = "Invariant mass of the three most leading jets";
     variables.push_back(var);
 
-    var.set_range(0, 100);
+    var.set_range(-20, 20);
 
     //Sum of jet etas
     var.name = "JetEtaSum";
-    var.title = "#Sum{#eta_{j}}";
+    var.title = "#sum#eta_{j}";
     var.graph_title = "Sum of the pseudorapidities of all jets";
-    variables.push_back(var);
+    variables.push_back(var);    
+
+    var.set_range(-15, 15);
 
     //Sum of jet phis
     var.name = "JetPhiSum";
-    var.title = "#Sum{#phi_{j}}";
+    var.title = "#sum#phi_{j}";
     var.graph_title = "Sum of the azimuthal angles of all jets";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 500);
 
     //pt of bjets
     var.name = "bjets_pt";
@@ -881,7 +919,7 @@ vector <variable> define_variables()
     var.graph_title = "Azimuthal angles of bjet candidates";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 100);
 
     //mass of bjets
     var.name = "bjets_mass";
@@ -916,57 +954,77 @@ vector <variable> define_variables()
     var.graph_title = "BTAGEFF_nonbjet_id";
     variables.push_back(var);
 
-    var.set_range(0, 100);
+    var.set_range(0, 300);
 
     var.name = "BTAGEFF_bjet_pt_num";
     var.title = "BTAGEFF_bjet_pt_num";
     var.graph_title = "BTAGEFF_bjet_pt_num";
     variables.push_back(var);
- 
+  
+    var.set_range(-5, 5); 
+
     var.name = "BTAGEFF_bjet_eta_num";
     var.title = "BTAGEFF_bjet_eta_num";
     var.graph_title = "BTAGEFF_bjet_eta_num";
     variables.push_back(var);
  
+    var.set_range(0.85, 1.05);
+
     var.name = "BTAGEFF_bjet_Jet_btagCSVV2_num";
     var.title = "BTAGEFF_bjet_Jet_btagCSVV2_num";
     var.graph_title = "BTAGEFF_bjet_Jet_btagCSVV2_num";
     variables.push_back(var);
+
+    var.set_range(-1, 1);
 
     var.name = "BTAGEFF_bjet_Jet_hadronFlavour_num";
     var.title = "BTAGEFF_bjet_Jet_hadronFlavour_num";
     var.graph_title = "BTAGEFF_bjet_Jet_hadronFlavour_num";
     variables.push_back(var);
 
+    var.set_range(0, 300);
+
     var.name = "BTAGEFF_nonbjet_pt_num";
     var.title = "BTAGEFF_nonbjet_pt_num";
     var.graph_title = "BTAGEFF_nonbjet_pt_num";
     variables.push_back(var);
+
+    var.set_range(-5, 5);
 
     var.name = "BTAGEFF_nonbjet_eta_num";
     var.title = "BTAGEFF_nonbjet_eta_num";
     var.graph_title = "BTAGEFF_nonbjet_eta_num";
     variables.push_back(var);
 
+    var.set_range(0, 1);
+
     var.name = "BTAGEFF_nonbjet_Jet_btagCSVV2_num";
     var.title = "BTAGEFF_nonbjet_Jet_btagCSVV2_num";
     var.graph_title = "BTAGEFF_nonbjet_Jet_btagCSVV2_num";
     variables.push_back(var);
  
+    var.set_range(-10, 10);
+
     var.name = "BTAGEFF_nonbjet_Jet_hadronFlavour_num";
     var.title = "BTAGEFF_nonbjet_Jet_hadronFlavour_num";
     var.graph_title = "BTAGEFF_nonbjet_Jet_hadronFlavour_num";
     variables.push_back(var);
+
+    var.set_range(0, 300);
 
     var.name = "BTAGEFF_bjet_pt_denom";
     var.title = "BTAGEFF_bjet_pt_denom";
     var.graph_title = "BTAGEFF_bjet_pt_denom";
     variables.push_back(var);
 
+    var.set_range(-5, 5);
+
     var.name = "BTAGEFF_bjet_eta_denom";
     var.title = "BTAGEFF_bjet_eta_denom";
     var.graph_title = "BTAGEFF_bjet_eta_denom";
     variables.push_back(var);
+
+    var.set_range(0, 300);
 
     var.name = "BTAGEFF_nonbjet_pt_denom";
     var.title = "BTAGEFF_nonbjet_pt_denom";
@@ -983,7 +1041,7 @@ vector <variable> define_variables()
     var.graph_title = "BTAGEFF_nonbjet_eta_denom";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 500);
 
     //pt of the reco W
     var.name = "w_pair_pt";
@@ -1007,7 +1065,7 @@ vector <variable> define_variables()
     var.graph_title = "#phi of the reconstructed W boson candidate";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 100);
 
     //mass of the reco W
     var.name = "w_pair_mass";
@@ -1015,17 +1073,23 @@ vector <variable> define_variables()
     var.graph_title = "Mass of the reconstructed W boson candidate";
     variables.push_back(var);
 
+    var.set_range(0, 1000);
+
     //invariant mass of the reco W
     var.name = "w_mass";
     var.title = "m_{qq} [GeV]";
     var.graph_title = "Invariant mass of the reconstructed W boson candidate";
     variables.push_back(var);
+    
+    var.set_range(0, 500);
 
     //leading jet pt from the reco W 
     var.name = "WPairJet1Pt";
     var.title = "p_{T} [GeV]";
     var.graph_title = "Transverse momenta of the leading jet in the W boson candidate reconstruction";
     variables.push_back(var);
+
+    var.set_range(0, 200);
 
     //subleading jet pt from the reco W 
     var.name = "WPairJet2Pt";
@@ -1061,7 +1125,7 @@ vector <variable> define_variables()
     var.graph_title = "Azimuthal angle of the subleading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 100);
 
     //leading jet mass from the reco W
     var.name = "WPairJet1Mass";
@@ -1069,103 +1133,105 @@ vector <variable> define_variables()
     var.graph_title = "Mass of the leading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
+    var.set_range(0, 200);
+
     //subleading jet mass from the reco W
     var.name = "WPairJet2Pt";
     var.title = "m_{j_{2}} [GeV]";
     var.graph_title = "Mass of the subleading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
 
     //Delta R between the leading and subleading jets in the W pair
     var.name = "dR_WJet1_WJet2";
-    var.title = "#Delta{R}_{j_{1}j_{2}}";
-    var.graph_title = "#Delta{R} between the leading and subleading jets in the W boson candidate reconstruction";
+    var.title = "#Delta(R)_{j_{1}j_{2}}";
+    var.graph_title = "#Delta(R) between the leading and subleading jets in the W boson candidate reconstruction";
     variables.push_back(var);
 
-    var.set_range(-4, 4);
+    var.set_range(0, 6);
 
     //Delta phi between the leading and subleading jets in the W pair
     var.name = "dWj1j2";
-    var.title = "#Delta{#phi}_{j_{1}j_{2}}";
-    var.graph_title = "#Delta{#phi} between the leading and subleading jets in the W boson candidate reconstruction";
+    var.title = "#Delta(#phi)_{j_{1}j_{2}}";
+    var.graph_title = "#Delta(#phi) between the leading and subleading jets in the W boson candidate reconstruction";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
  
     //Delta R between the leading jet in the W boson candidate reconstruction and the leading lepton
     var.name = "dR_WJet1_LeadingLepton";
-    var.title = "#Delta{R}_{j_{1}l_{1}}";
-    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the leading lepton";
+    var.title = "#Delta(R)_{j_{1}l_{1}}";
+    var.graph_title = "#Delta(R) between the leading jet in the W boson candidate reconstruction and the leading lepton";
     variables.push_back(var);
 
     //Delta R between the leading jet in the W boson candidate reconstruction and the subleading lepton
     var.name = "dR_WJet1_SubleadingLepton";
-    var.title = "#Delta{R}_{j_{1}l_{2}}";
-    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the subleading lepton";
+    var.title = "#Delta(R)_{j_{1}l_{2}}";
+    var.graph_title = "#Delta(R) between the leading jet in the W boson candidate reconstruction and the subleading lepton";
     variables.push_back(var);
 
     //Delta R between the subleading jet in the W boson candidate reconstruction and the leading lepton
     var.name = "dR_WJet2_LeadingLepton";
-    var.title = "#Delta{R}_{j_{2}l_{1}}";
-    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the leading lepton";
+    var.title = "#Delta(R)_{j_{2}l_{1}}";
+    var.graph_title = "#Delta(R) between the subleading jet in the W boson candidate reconstruction and the leading lepton";
     variables.push_back(var);
 
     //Delta R between the subleading jet in the W boson candidate reconstruction and the subleading lepton
     var.name = "dR_WJet2_SubleadingLepton";
-    var.title = "#Delta{R}_{j_{2}l_{2}}";
-    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the subleading lepton";
+    var.title = "#Delta(R)_{j_{2}l_{2}}";
+    var.graph_title = "#Delta(R) between the subleading jet in the W boson candidate reconstruction and the subleading lepton";
     variables.push_back(var);
 
     //Delta R between the leading jet in the W boson candidate reconstruction and the leading jet
     var.name = "dR_WJet1_LeadingJet";
-    var.title = "#Delta{R}_{W_{j_{1}}j_{1}}";
-    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the leading jet of the system";
+    var.title = "#Delta(R)_{W_{j_{1}}j_{1}}";
+    var.graph_title = "#Delta(R) between the leading jet in the W boson candidate reconstruction and the leading jet of the system";
     variables.push_back(var);
 
     //Delta R between the leading jet in the W boson candidate reconstruction and the subleading jet
     var.name = "dR_WJet1_SubleadingJet";
-    var.title = "#Delta{R}_{W_{j_{1}}j_{2}}";
-    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the subleading jet of the system";
+    var.title = "#Delta(R)_{W_{j_{1}}j_{2}}";
+    var.graph_title = "#Delta(R) between the leading jet in the W boson candidate reconstruction and the subleading jet of the system";
     variables.push_back(var);
 
     //Delta R between the leading jet in the W boson candidate reconstruction and the third jet
     var.name = "dR_WJet1_ThirdJet";
-    var.title = "#Delta{R}_{W_{j_{1}}j_{3}}";
-    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the third jet of the system";
+    var.title = "#Delta(R)_{W_{j_{1}}j_{3}}";
+    var.graph_title = "#Delta(R) between the leading jet in the W boson candidate reconstruction and the third jet of the system";
     variables.push_back(var);
 
     //Delta R between the leading jet in the W boson candidate reconstruction and the fourth jet 
     var.name = "dR_WJet1_FourthJet";
-    var.title = "#Delta{R}_{W_{j_{1}}j_{4}}";
-    var.graph_title = "#Delta{R} between the leading jet in the W boson candidate reconstruction and the fourth jet of the system";
+    var.title = "#Delta(R)_{W_{j_{1}}j_{4}}";
+    var.graph_title = "#Delta(R) between the leading jet in the W boson candidate reconstruction and the fourth jet of the system";
     variables.push_back(var);
 
     //Delta R between the subleading jet in the W boson candidate reconstruction and the leading jet
     var.name = "dR_WJet2_LeadingJet";
-    var.title = "#Delta{R}_{W_{j_{2}}j_{1}}";
-    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the leading jet of the system";
+    var.title = "#Delta(R)_{W_{j_{2}}j_{1}}";
+    var.graph_title = "#Delta(R) between the subleading jet in the W boson candidate reconstruction and the leading jet of the system";
     variables.push_back(var);
 
     //Delta R between the subleading jet in the W boson candidate reconstruction and the subleading jet
     var.name = "dR_WJet2_SubleadingJet";
-    var.title = "#Delta{R}_{W_{j_{2}}j_{2}}";
-    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the subleading jet of the system";
+    var.title = "#Delta(R)_{W_{j_{2}}j_{2}}";
+    var.graph_title = "#Delta(R) between the subleading jet in the W boson candidate reconstruction and the subleading jet of the system";
     variables.push_back(var);
 
     //Delta R between the subleading jet in the W boson candidate reconstruction and the third jet
     var.name = "dR_WJet2_ThirdJet";
-    var.title = "#Delta{R}_{W_{j_{2}}j_{3}}";
-    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the third jet of the system";
+    var.title = "#Delta(R)_{W_{j_{2}}j_{3}}";
+    var.graph_title = "#Delta(R) between the subleading jet in the W boson candidate reconstruction and the third jet of the system";
     variables.push_back(var);
  
     //Delta R between the subleading jet in the W boson candidate reconstruction and the fourth jet
     var.name = "dR_WJet2_FourthJet";
-    var.title = "#Delta{R}_{W_{j_{2}}j_{4}}";
-    var.graph_title = "#Delta{R} between the subleading jet in the W boson candidate reconstruction and the fourth jet of the system";
+    var.title = "#Delta(R)_{W_{j_{2}}j_{4}}";
+    var.graph_title = "#Delta(R) between the subleading jet in the W boson candidate reconstruction and the fourth jet of the system";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 500);
 
     //HT of the leading jet in the W pair
     var.name = "WJet1HT";
@@ -1173,11 +1239,15 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the leading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
+    var.set_range(0, 200);
+
     //HT of the subleading jet in the W pair
     var.name = "WJet2HT";
     var.title = "H_{T} [GeV]";
     var.graph_title = "H_{T} of the subleading jet in the W boson candidate reconstruction";
     variables.push_back(var);
+
+    var.set_range(0, 500);
 
     //HT of the reco W
     var.name = "RecoWHT";
@@ -1185,13 +1255,15 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the reconstructed W boson candidate";
     variables.push_back(var); 
 
+    var.set_range(0, 400);
+
     //Transverse W mass
     var.name = "mtW";
     var.title = "m_{T}_{jj} [GeV]";
     var.graph_title = "Transverse mass of the reconstructed W boson candidate";
     variables.push_back(var);
 
-    var.set_range(0, 100);
+    var.set_range(0, 10);
 
     //Number of tight smeared jets
     var.name = "TightSmearedJetsNumber";
@@ -1199,13 +1271,15 @@ vector <variable> define_variables()
     var.graph_title = "Number of tight smeared jets";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 100);
 
     //Mass of the leading smeared bjet
     var.name = "SmearedLeadingBJetMass";
     var.title = "m_{b} [GeV]";
     var.graph_title = "Mass of the smeared leading b jet";
     variables.push_back(var);
+
+    var.set_range(0, 1000);
 
     //Pt of the leading smeared bjet
     var.name = "SmearedLeadingBJetPt";
@@ -1267,140 +1341,140 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the reconstructed top quark candidate";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
 
     //Delta R between the reco top and leading lepton
     var.name = "dR_Top_LeadingElectron";
-    var.title = "#Delta{R}_l_{1}t";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the leading lepton";
+    var.title = "#Delta(R)_{l_{1}t}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the leading lepton";
     variables.push_back(var);
 
 
     //Delta R between the reco top and subleading lepton
     var.name = "dR_Top_SubleadingElectron";
-    var.title = "#Delta{R}_l_{2}t";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the subleading lepton";
+    var.title = "#Delta(R)_{l_{2}t}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the subleading lepton";
     variables.push_back(var);
 
     //Delta R between the reco top and leading jet
     var.name = "dR_Top_LeadingJet";
-    var.title = "#Delta{R}_j_{1}t";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the leading jet";
+    var.title = "#Delta(R)_{j_{1}t}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the leading jet";
     variables.push_back(var);
 
     //Delta R between the reco top and subleading jet
     var.name = "dR_Top_SubleadingJet";
-    var.title = "#Delta{R}_j_{2}t";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the subleading jet";
+    var.title = "#Delta(R)_{j_{2}t}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the subleading jet";
     variables.push_back(var);
 
     //Delta R between the reco top and third jet
     var.name = "dR_Top_ThirdJet";
-    var.title = "#Delta{R}_j_{3}t";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the third jet";
+    var.title = "#Delta(R)_{j_{3}t}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the third jet";
     variables.push_back(var);
 
     //Delta R between the reco top and fourth jet
     var.name = "dR_Top_FourthJet";
-    var.title = "#Delta{R}_j_{4}t";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the fourth jet";
+    var.title = "#Delta(R)_{j_{4}t}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the fourth jet";
     variables.push_back(var);
 
     //Delta R between the reco top and reco W
     var.name = "dR_Top_W";
-    var.title = "#Delta{R}_tW";
-    var.graph_title = "#Delta{R} between the reconstructed top quark candidate and the reconstructed W boson candidate";
+    var.title = "#Delta(R)_{tW}";
+    var.graph_title = "#Delta(R) between the reconstructed top quark candidate and the reconstructed W boson candidate";
     variables.push_back(var);
  
     //Delta phi between the reconstructed top quark candidate and the leading jet from the W reconstruction
     var.name = "dPhi_Wj1_Top";
-    var.title = "#Delta{#phi}_W_{j1}t";
-    var.graph_title = "#Delta{#phi} between the reconstructed top quark candidate and the leading jet from the W reconstruction";
+    var.title = "#Delta(#phi)_{W_{j1}t}";
+    var.graph_title = "#Delta(#phi) between the reconstructed top quark candidate and the leading jet from the W reconstruction";
     variables.push_back(var);
 
     //Delta phi between the reconstructed top quark candidate and the subleading jet from the W reconstruction
     var.name = "dPhi_Wj2_Top";
-    var.title = "#Delta{#phi}_W_{j2}t";
-    var.graph_title = "#Delta{#phi} between the reconstructed top quark candidate and the subleading jet from the W reconstruction";
+    var.title = "#Delta(#phi)_{W_{j2}t}";
+    var.graph_title = "#Delta(#phi) between the reconstructed top quark candidate and the subleading jet from the W reconstruction";
     variables.push_back(var);
 
     //Delta R between the reconstructed Z boson and top quark candidates
     var.name = "dR_Z_Top";
-    var.title = "#Delta{R}_Zt";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson and top quark candidates";
+    var.title = "#Delta(R)_{Zt}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson and top quark candidates";
     variables.push_back(var);
 
     //Delta phi between the reconstructed Z boson and top quark candidate
     var.name = "dPhi_Z_Top";
-    var.title = "#Delta{#phi}_Zt";
-    var.graph_title = "#Delta{#phi} between the reconstructed Z boson and top quark candidates";
+    var.title = "#Delta(#phi)_{Zt}";
+    var.graph_title = "#Delta(#phi) between the reconstructed Z boson and top quark candidates";
     variables.push_back(var);
 
     //Delta R between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction
     var.name = "dR_Z_WPairJet1";
-    var.title = "#Delta{R}_W_{j1}Z";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction";
+    var.title = "#Delta(R)_{W_{j1}Z}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
     //Delta R between between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction
     var.name = "dR_Z_WPairJet2";
-    var.title = "#Delta{R}_W_{j2}Z";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction";
+    var.title = "#Delta(R)_{W_{j2}Z}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
     //Delta phi between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction
     var.name = "dPhi_Z_WPairJet1";
-    var.title = "#Delta{#phi}_W_{j1}Z";
-    var.graph_title = "#Delta{#phi} between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction";
+    var.title = "#Delta(#phi)_{W_{j1}Z}";
+    var.graph_title = "#Delta(#phi) between the reconstructed Z boson and the leading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
     //Delta phi between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction
     var.name = "dPhi_Z_WPairJet2";
-    var.title = "#Delta{#phi}_W_{j2}Z";
-    var.graph_title = "#Delta{#phi} between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction";
+    var.title = "#Delta(#phi)_{W_{j2}Z}";
+    var.graph_title = "#Delta(#phi) between the reconstructed Z boson and the subleading jet in the W boson candidate reconstruction";
     variables.push_back(var);
 
     //Min delta R
     var.name = "MinDeltaR";
-    var.title = "#Delta{R}_{min}";
-    var.graph_title = "Minimum #Delta{R} of the system";
+    var.title = "#Delta(R)_{min}";
+    var.graph_title = "Minimum #Delta(R) of the system";
     variables.push_back(var);
 
     //Min delta phi
     var.name = "MinDeltaPhi";
-    var.title = "#Delta{#phi}_{min}";
-    var.graph_title = "Minimum #Delta{#phi} of the system";
+    var.title = "#Delta(#phi)_{min}";
+    var.graph_title = "Minimum #Delta(#phi) of the system";
     variables.push_back(var); 
 
     //Delta R between the leading lepton and leading bjet
     var.name = "dR_LeadingLepton_LeadingBJet";
-    var.title = "#Delta{R}_l_{1}b_{1}";
-    var.graph_title = "#Delta{R} between the leading lepton and leading bjet";
+    var.title = "#Delta(R)_{l_{1}b_{1}}";
+    var.graph_title = "#Delta(R) between the leading lepton and leading bjet";
     variables.push_back(var);
  
     //Delta R between the subleading lepton and leading bjet
     var.name = "dR_SubleadingLepton_LeadingBJet";
-    var.title = "#Delta{R}_l_{2}b_{1}";
-    var.graph_title = "#Delta{R} between the subleading lepton and leading bjet";
+    var.title = "#Delta(R)_{l_{2}b_{1}}";
+    var.graph_title = "#Delta(R) between the subleading lepton and leading bjet";
     variables.push_back(var);
 
     //Delta phi between the leading lepton and leading bjet 
     var.name = "DeltaPhi_Leadinglepton_BJet";
-    var.title = "#Delta{#phi}_l_{1}b_{1}";
-    var.graph_title = "#Delta{#phi} between the leading lepton and leading bjet";
+    var.title = "#Delta(#phi)_{l_{1}b_{1}}";
+    var.graph_title = "#Delta(#phi) between the leading lepton and leading bjet";
     variables.push_back(var);
 
     //Delta phi between the subleading lepton and leading bjet
     var.name = "DeltaPhi_Subleadinglepton_BJet";
-    var.title = "#Delta{#phi}_l_{2}b_{1}";
-    var.graph_title = "#Delta{#phi} between the subleading lepton and leading bjet";
+    var.title = "#Delta(#phi)_{l_{2}b_{1}}";
+    var.graph_title = "#Delta(#phi) between the subleading lepton and leading bjet";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 3000);
 
     //MET
     var.name = "MET";
-    var.title = "MET";
+    var.title = "Uncorrected MET";
     var.graph_title = "Missing E_{T}";
     variables.push_back(var);
 
@@ -1429,68 +1503,72 @@ vector <variable> define_variables()
     var.title = "CSVv2 discriminant";
     var.graph_title = "CSVv2 discriminant of the fourth bjet";
     variables.push_back(var);
+   
+    var.set_range(0, 6);
 
     //Delta phi between the reconstructed top quark and W boson candidates
     var.name = "dPhi_W_Top";
-    var.title = "#Delta{#phi}_tW";
-    var.graph_title = "#Delta{#phi} between the reconstructed top quark and W boson candidates";
+    var.title = "#Delta(#phi)_{tW}";
+    var.graph_title = "#Delta(#phi) between the reconstructed top quark and W boson candidates";
     variables.push_back(var);   
 
     //Delta R between the reconstructed Z boson candidate and the leading jet
     var.name = "dR_Z_LeadingJet";
-    var.title = "#Delta{R}_j_{1}Z";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the leading jet";
+    var.title = "#Delta(R)_{j_{1}Z}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson candidate and the leading jet";
     variables.push_back(var);
 
     //Delta R between the reconstructed Z boson candidate and the subleading jet
     var.name = "dR_Z_SubleadingJet";
-    var.title = "#Delta{R}_j_{2}Z";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the subleading jet";
+    var.title = "#Delta(R)_{j_{2}Z}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson candidate and the subleading jet";
     variables.push_back(var);
 
     //Delta R between the reconstructed Z boson candidate and the third jet
     var.name = "dR_Z_ThirdJet";
-    var.title = "#Delta{R}_j_{3}Z";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the third jet";
+    var.title = "#Delta(R)_{j_{3}Z}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson candidate and the third jet";
     variables.push_back(var);
 
     //Delta R between the reconstructed Z boson candidate and the fourth jet
     var.name = "dR_Z_FourthJet";
-    var.title = "#Delta{R}_j_{4}Z";
-    var.graph_title = "#Delta{R} between the reconstructed Z boson candidate and the fourth jet";
+    var.title = "#Delta(R)_{j_{4}Z}";
+    var.graph_title = "#Delta(R) between the reconstructed Z boson candidate and the fourth jet";
     variables.push_back(var);
 
     //Delta phi between the reconstructed Z boson candidate and the leading bjet
     var.name = "dPhi_LeadingJet_Z";
-    var.title = "#Delta{#phi}_b_{1}Z";
+    var.title = "#Delta(#phi)_{b_{1}Z}";
     var.graph_title = "#Delta{#phi between the reconstructed Z boson candidate and the leading bjet";
     variables.push_back(var);
   
     //Delta phi between the reconstructed Z boson candidate and the subleading bjet
     var.name = "dPhi_SubleadingJet_Z";
-    var.title = "#Delta{#phi}_b_{2}Z";
-    var.graph_title = "#Delta{#phi} between the reconstructed Z boson candidate and the subleading bjet";
+    var.title = "#Delta(#phi)_{b_{2}Z}";
+    var.graph_title = "#Delta(#phi) between the reconstructed Z boson candidate and the subleading bjet";
     variables.push_back(var);
 
     //Delta phi between the reconstructed Z boson candidate and the third bjet
     var.name = "dPhi_ThirdJet_Z";
-    var.title = "#Delta{#phi}_b_{3}Z";
-    var.graph_title = "#Delta{#phi} between the reconstructed Z boson candidate and the third bjet";
+    var.title = "#Delta(#phi)_{b_{3}Z}";
+    var.graph_title = "#Delta(#phi) between the reconstructed Z boson candidate and the third bjet";
     variables.push_back(var);
+
+    var.set_range(0, 6);
 
     //Delta phi between the reconstructed Z boson candidate and the fourth bjet
     var.name = "dPhi_FourthJet_Z";
-    var.title = "#Delta{#phi}_b_{4}Z";
-    var.graph_title = "#Delta{#phi} between the reconstructed Z boson candidate and the fourth bjet";
+    var.title = "#Delta(#phi)_{b_{4}Z}";
+    var.graph_title = "#Delta(#phi) between the reconstructed Z boson candidate and the fourth bjet";
     variables.push_back(var);
 
     //Delta R between the reconstructed W and Z boson candidates
     var.name = "dR_W_Z";
-    var.title = "#Delta{R}_WZ";
-    var.graph_title = "#Delta{R} between the reconstructed W and Z boson candidates";
+    var.title = "#Delta(R)_{WZ}";
+    var.graph_title = "#Delta(R) between the reconstructed W and Z boson candidates";
     variables.push_back(var);
 
-    var.set_range(0, 1000);
+    var.set_range(0, 500);
 
     //HT of the reco Z
     var.name = "RecoZHT";
@@ -1498,25 +1576,25 @@ vector <variable> define_variables()
     var.graph_title = "H_{T} of the reconstructed Z boson candidate";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 6);
 
     //Delta phi between the reconstructed W and Z boson candidates
     var.name = "dPhi_W_Z";
-    var.title = "#Delta{#phi}_WZ";
-    var.graph_title = "#Delta{#phi} between the reconstructed W and Z boson candidates";
+    var.title = "#Delta(#phi)_{WZ}";
+    var.graph_title = "#Delta(#phi) between the reconstructed W and Z boson candidates";
     variables.push_back(var);
 
-    var.set_range(0, 100);
+    var.set_range(0, 500);
    
     //Total eta of the system
     var.name = "TotalEta_System";
-    var.title = "#Sum{#eta}";
+    var.title = "#sum #eta";
     var.graph_title = "Total #eta of all objects in the system";
     variables.push_back(var);
 
     //Total phi of the system
     var.name = "TotalPhi_System";
-    var.title = "#Sum{#phi}";
+    var.title = "#sum #phi";
     var.graph_title = "Total #phi of the system";
     variables.push_back(var);
 
@@ -1528,7 +1606,7 @@ vector <variable> define_variables()
     var.graph_title = "Invariant mass of the reconstructed top quark candidate";
     variables.push_back(var); 
 
-    var.set_range(0, 10000);
+    var.set_range(0, 5000);
 
     //Total HT of the system
     var.name = "TotalHT_System";
@@ -1536,7 +1614,6 @@ vector <variable> define_variables()
     var.graph_title = "Total H_{T} of the system";
     variables.push_back(var);
   
-    var.set_range(0, 10000);
 
     //Total pT of the system
     var.name = "TotalPt_System";
@@ -1544,7 +1621,7 @@ vector <variable> define_variables()
     var.graph_title = "Total p_{T} of the system";
     variables.push_back(var);
 
-    var.set_range(0, 1);
+    var.set_range(0, 2);
 
     //Total HT over pT over the system
     var.name = "TotHTOverTotpT_System";
@@ -1568,7 +1645,7 @@ vector <variable> define_variables()
     var.graph_title = "Pseudorapidity of non b-tagged jets";
     variables.push_back(var);
 
-    var.set_range(0, 2);
+    var.set_range(0.8, 1.2);
 
     //CMS btagging efficiency SF
     var.name = "CMSBTagSF";
@@ -1594,30 +1671,38 @@ vector <variable> define_variables()
     var.graph_title = "Efficiency of identifying non b-tagged jets";
     variables.push_back(var);
 
+    var.set_range(0, 1.2);
+
     //Products of the efficiencies for btagged jets
     var.name = "ProductOperator_E_i";
-    var.title = "#prod{#epsilon_{i}}";
-    var.graph_title = "#prod{#epsilon_{i}}";
+    var.title = "#prod #epsilon_{i}";
+    var.graph_title = "#prod #epsilon_{i}";
     variables.push_back(var);
+
+    var.set_range(0.99, 1.01);
 
     //Products of  1-efficiencies for non-btagged jets
     var.name = "ProductOperator_1_Minus_E_j";
-    var.title = "#prod{1-#epsilon_{j}}";
-    var.graph_title = "#prod{1-#epsilon_{j}}";
+    var.title = "#prod 1-#epsilon_{j}";
+    var.graph_title = "#prod 1-#epsilon_{j}";
     variables.push_back(var);
+
+    var.set_range(0, 1.0);
 
     //Product of the CMS btagging SF times btagging efficiency
     var.name = "ProductOperator_SFi_Times_Ei";
-    var.title = "#prod{SF_{i}#epsilon_{i}}";
-    var.graph_title = "#prod{Sf_{i}#epsilon_{i}}";
+    var.title = "#prod SF_{i}#epsilon_{i}";
+    var.graph_title = "#prod Sf_{i}#epsilon_{i}";
     variables.push_back(var);
 
     //Product of the 1 - non btag SF times non btag efficiency
     var.name = "ProductOperator_1_Minus_SFj_Times_Ej";
-    var.title = "#prod{1-SF_{j}#epsilon_{j}}";
-    var.graph_title = "#prod{1-SF_{j}#epsilon_{j}}";
+    var.title = "#prod 1-SF_{j}#epsilon_{j}";
+    var.graph_title = "#prod 1-SF_{j}#epsilon_{j}";
     variables.push_back(var);
-   
+  
+    var.set_range(0, 1.2);
+ 
     //MC btagging efficiency
     var.name = "ProbBTagMC";
     var.title = "P(MC)";
@@ -1630,11 +1715,14 @@ vector <variable> define_variables()
     var.graph_title = "P(Data) – btagging efficiency";
     variables.push_back(var);
 
+    var.set_range(0, 3);
+    
     //Pile up weight
     var.name = "PU";
     var.title = "pile up weight";
     var.graph_title = "Pile up weights";
     variables.push_back(var);
+
 
     //B tagging efficiency weight
     var.name = "BTagWeight";
@@ -1642,17 +1730,23 @@ vector <variable> define_variables()
     var.graph_title = "B-tagging efficiency weight";
     variables.push_back(var);
 
+    var.set_range(0.8, 1.2);
+
     //egamma SF
     var.name = "EGammaSF_egammaEff";
     var.title = "E#gamma SF";
     var.graph_title = "E#gamma SF";
     variables.push_back(var);
-      
+    
+    var.set_range(0, 0.2);
+
     //egamma systematics
     var.name = "EGammaSF_egammaEffSys";
     var.title = "E#gamma SF sys";
     var.graph_title = "E#gamma SF sys";
     variables.push_back(var);
+
+    var.set_range(0.8, 1.2);
 
     //egamma reco SF
     var.name = "EGammaSF_egammaEffReco";
@@ -1660,11 +1754,15 @@ vector <variable> define_variables()
     var.graph_title = "E#gamma SF reco";
     variables.push_back(var);
 
+    var.set_range(0, 0.2);
+
     //egamma reco systematics
     var.name = "EGammaSF_egammaEffRecoSys";
     var.title = "E#gamma SF reco sys";
     var.graph_title = "E#gamma SF reco sys";
     variables.push_back(var);
+
+    var.set_range(0, 1.1);
 
     //Muon ID Sf
     var.name = "MuonSFTest_ID";
@@ -1702,11 +1800,15 @@ vector <variable> define_variables()
     var.graph_title = "Muon Iso SF (syst.)";
     variables.push_back(var);
 
+    var.set_range(0.99, 1.01);
+
     //parton shower weights
     var.name = "ReturnedPSWeight";
     var.title = "PS weight";
     var.graph_title = "Parton shower weight";
     variables.push_back(var);
+
+    var.set_range(0.8, 1.6);
 
     //PDF weights
     var.name = "CalculatedPDFWeight";
@@ -1714,13 +1816,17 @@ vector <variable> define_variables()
     var.graph_title = "Parton distribution function weight";
     variables.push_back(var);
 
+    var.set_range(0.99, 1.01);
+
     //Generator weight
     var.name = "CalculatedGeneratorWeight";
     var.title = "Generator weight";
     var.graph_title = "Generator weight";
     variables.push_back(var);
 
-    //Event weught
+    var.set_range(-1, 5);
+
+    //Event weight
     var.name = "EventWeight";
     var.title = "Event weight";
     var.graph_title = "Event weight";
@@ -1749,7 +1855,7 @@ vector <variable> define_variables()
     //var.graph_title = "Four momenta";
     //variables.push_back(var);
 
-    var.set_range(0, 10);
+    var.set_range(0, 30);
 
     //Overall normalisation
     var.name = "OverallNormalisation";
@@ -1768,7 +1874,7 @@ vector <variable> define_variables()
     //var.title = "#chi^{2}";
     //var.graph_title = "#chi^{2} (after filter)";
     //variables.push_back(var);
-
+*/
     return variables;
 
 }
@@ -1879,6 +1985,8 @@ vector <process> define_processes(bool include_signal, bool include_data)
 
     return processes;
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // Plotter
@@ -2040,5 +2148,5 @@ void process_comparison(){
             for(const auto & systematic: systematics)
                 for(const auto & region: regions)
                     for(const auto & var: variables)
-                        plotter(var, year, channel, systematic, region, true, false, false);
+                        plotter(var, year, channel, systematic, region, true, false, true);
 }
