@@ -2904,9 +2904,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 159: Process = "Data_Combined";
 
 		  switch(YearInt){
-		  	case 2016: input_files = {"data_2016.root"}; break;
-			case 2017: input_files = {"data_2017.root"}; break;
-			case 2018: input_files = {"data_2018.root"}; break;
+		  	case 2016: input_files = {"Data_2016.root"}; break;
+			case 2017: input_files = {"Data_2017.root"}; break;
+			case 2018: input_files = {"Data_2018.root"}; break;
 			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
 		  }
 
@@ -9923,6 +9923,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("SubleadingJetMass", SubleadingVariable, {"TightSmearedJetsMass"})
                                         .Define("ThirdJetMass", ThirdLeadingVariable, {"TightSmearedJetsMass"})
                                         .Define("FourthJetMass", FourthLeadingVariable, {"TightSmearedJetsMass"})
+					.Define("JetMassSum", JetSum, {"LeadingJetMass", "SubleadingJetMass", "ThirdJetMass", "FourthJetMass"})
                                         .Define("LeadingJetPt", LeadingVariable, {"TightSmearedJetsPt"})
                                         .Define("SubleadingJetPt", SubleadingVariable, {"TightSmearedJetsPt"})
                                         .Define("ThirdJetPt", ThirdLeadingVariable, {"TightSmearedJetsPt"})
