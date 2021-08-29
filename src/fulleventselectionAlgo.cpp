@@ -6314,6 +6314,33 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
+  auto MaxDeltaR{[](const ints& nJet, const doubles& RecoZPhi, const doubles& RecoZEta, const floats& Jet_Phi_Selection, const floats& Jet_eta_Selection){
+
+        //std::cout << "print 108" << std::endl;
+
+        doubles output_vec;
+        double Output;
+
+        for(int i = 0; i < nJet.size(); i++){
+
+                if(RecoZEta.size() > 1){
+                        double DeltaR = sqrt(pow(RecoZPhi.at(i) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(i) - Jet_eta_Selection.at(i), 2));
+                        double DeltaR2 = sqrt(pow(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1), 2) + pow(RecoZEta.at(i+1) - Jet_eta_Selection.at(i+1), 2));
+
+                        Output = (DeltaR2 > DeltaR) ? DeltaR2 : DeltaR;
+
+                }
+                else{Output = sqrt(pow(RecoZPhi.at(0) - Jet_Phi_Selection.at(i), 2) + pow(RecoZEta.at(0) - Jet_eta_Selection.at(i), 2));}
+
+                output_vec.push_back(Output);
+
+        }
+
+        return output_vec;
+
+  }}; 
+
+
   auto MinDeltaPhi{[](const ints& nJet, const doubles& RecoZPhi, const floats& Jet_Phi_Selection){
 
   	//std::cout << "print 109" << std::endl;
@@ -6341,6 +6368,33 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   }};
 
+
+  auto MaxDeltaPhi{[](const ints& nJet, const doubles& RecoZPhi, const floats& Jet_Phi_Selection){
+        
+        //std::cout << "print 109" << std::endl;
+        
+        double output;
+        doubles output_vec{};
+
+        for(int i = 0; i < nJet.size(); i++){
+
+                if(RecoZPhi.size() > 1){
+
+                        double DeltaPhi = std::abs(RecoZPhi.at(i) - Jet_Phi_Selection.at(i));
+                        double DeltaPhi2 = std::abs(RecoZPhi.at(i+1) - Jet_Phi_Selection.at(i+1));
+
+                        output = (DeltaPhi2 > DeltaPhi) ? DeltaPhi2 : DeltaPhi;
+
+                }
+                else{output = std::abs(RecoZPhi.at(0) - Jet_Phi_Selection.at(i));}
+
+                output_vec.push_back(output);
+
+        }
+
+        return output_vec;
+
+  }};
 
   auto dR_Lepton_LeadingBJet_Function{[](const floats& bjeteta, const float& LeptonEta, const floats& bjetphi, const float& LeptonPhi){
 
@@ -10124,8 +10178,8 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			          .Define("Top_Phi", TLorentzVectorVariablePhi, {"RecoTop"})
 			          .Define("Top_Mass", TLorentzVectorVariableMass, {"RecoTop"})
 				  .Define("Top_HT", HT_double, {"Top_Pt"})
-				  .Define("dR_Top_LeadingElectron", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "LeadingLeptonEta", "LeadingLeptonPhi"})
-			          .Define("dR_Top_SubleadingElectron", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
+				  .Define("dR_Top_LeadingLepton", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "LeadingLeptonEta", "LeadingLeptonPhi"})
+			          .Define("dR_Top_SubleadingLepton", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "SubleadingLeptonEta", "SubleadingLeptonPhi"})
 				  .Define("dR_Top_LeadingJet", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "LeadingJetEta", "LeadingJetPhi"})
 			          .Define("dR_Top_SubleadingJet", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "SubleadingJetEta", "SubleadingJetPhi"})
 				  .Define("dR_Top_ThirdJet", deltaRcheck_Top_function, {"Top_Phi", "Top_Eta", "ThirdJetEta", "ThirdJetPhi"})
@@ -10140,16 +10194,22 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			          .Define("dPhi_Z_WPairJet1", DeltaPhi_function2, {"RecoZPhi", "WPairJet1Phi"})
                                   .Define("dPhi_Z_WPairJet2", DeltaPhi_function2, {"RecoZPhi", "WPairJet2Phi"})
 				  .Define("MinDeltaR", MinDeltaR, {"TightSmearedJetsNumber", "RecoZPhi", "RecoZEta", "TightSmearedJetsPhi", "TightSmearedJetsEta"})
+				  .Define("MaxDeltaR", MaxDeltaR, {"TightSmearedJetsNumber", "RecoZPhi", "RecoZEta", "TightSmearedJetsPhi", "TightSmearedJetsEta"})
 				  .Define("MinDeltaPhi", MinDeltaPhi, {"TightSmearedJetsNumber", "RecoZPhi", "TightSmearedJetsPhi"})
+				  .Define("MaxDeltaPhi", MaxDeltaPhi, {"TightSmearedJetsNumber", "RecoZPhi", "TightSmearedJetsPhi"})
 				  .Define("dR_LeadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"SmearedLeadingBJetEta", "LeadingLeptonEta", "SmearedLeadingBJetPhi", "LeadingLeptonPhi"})
 			          .Define("dR_SubleadingLepton_LeadingBJet", dR_Lepton_LeadingBJet_Function, {"SmearedLeadingBJetEta", "SubleadingLeptonEta", "SmearedLeadingBJetPhi", "SubleadingLeptonPhi"})
 				  .Define("DeltaPhi_Leadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "LeadingLeptonPhi"})
                                   .Define("DeltaPhi_Subleadinglepton_BJet", DeltaPhi_Lepton_BJet, {"TightSmearedJetsPhi", "SubleadingLeptonPhi"})		
 				  .Define("MET", MET_function, {"MET_sumEt"})
-			          .Define("LeadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"LeadingJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
-                                  .Define("SubleadingBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"SubleadingJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
-                                  .Define("ThirdBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"ThirdJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
-                                  .Define("FourthBJetOutputDiscriminant", BJetOutputDiscriminantFunction, {"FourthJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+			          .Define("LeadingBJetOutputDiscriminantFunction", BJetOutputDiscriminantFunction, {"LeadingJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+                                  .Define("SubleadingBJetOutputDiscriminantFunction", BJetOutputDiscriminantFunction, {"SubleadingJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+                                  .Define("ThirdBJetOutputDiscriminantFunction", BJetOutputDiscriminantFunction, {"ThirdJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+                                  .Define("FourthBJetOutputDiscriminantFunction", BJetOutputDiscriminantFunction, {"FourthJetPt", "TightSmearedJetsBTagCSVV2", "tight_jets", "TightSmearedJetsEta"})
+				  .Define("LeadingBJetOutputDiscriminant", select<floats>, {"TightSmearedJetsBTagCSVV2", "LeadingJetPt"})
+				  .Define("SubleadingBJetOutputDiscriminant", select<floats>, {"TightSmearedJetsBTagCSVV2", "SubleadingJetPt"})
+				  .Define("ThirdBJetOutputDiscriminant", select<floats>, {"TightSmearedJetsBTagCSVV2", "ThirdJetPt"})
+				  .Define("FourthBJetOutputDiscriminant", select<floats>, {"TightSmearedJetsBTagCSVV2", "FourthJetPt"})
                                   .Define("dPhi_W_Top", DeltaPhi_function4, {"w_pair_phi", "Top_Phi"})
 				  .Define("dR_Z_LeadingJet", deltaRcheck_W_function2, {"RecoZPhi", "RecoZEta", "LeadingJetPhi", "LeadingJetEta"})
                                   .Define("dR_Z_SubleadingJet", deltaRcheck_W_function2, {"RecoZPhi", "RecoZEta", "SubleadingJetPhi", "SubleadingJetEta"})
