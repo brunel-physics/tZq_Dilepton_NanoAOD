@@ -9939,6 +9939,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("ThirdJetPhi", ThirdLeadingVariable, {"TightSmearedJetsPhi"})
                                         .Define("FourthJetPhi", FourthLeadingVariable, {"TightSmearedJetsPhi"})
                                         .Define("dR_j1j2", deltaRcheck_float, {"LeadingJetEta", "LeadingJetPhi", "SubleadingJetEta", "SubleadingJetPhi"})
+					.Define("dR_j2j3", deltaRcheck_float, {"SubleadingJetEta", "SubleadingJetPhi", "ThirdJetEta", "ThirdJetPhi"})
                                         .Define("dPhi_j1j2", DeltaPhi_floatandfloat, {"LeadingJetPhi", "SubleadingJetPhi"})
                                         .Define("LeadingJetHT", HT, {"LeadingJetPt"})
                                         .Define("SubleadingJetHT", HT, {"SubleadingJetPt"})
@@ -10228,102 +10229,128 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 
 
-  if(ProcessInt == 0 && SystematicInt == 0){
+  switch(ProcessInt){
 
-  	auto h_WMass = d_EventWeightDefines.Histo1D("w_mass", "EventWeight");
-  	auto h_InvTopMass = d_EventWeightDefines.Histo1D("InvTopMass", "EventWeight"); 
-	auto h_WMass_Unweighted = d_EventWeightDefines.Histo1D("w_mass");
-        auto h_InvTopMass_Unweighted = d_EventWeightDefines.Histo1D("InvTopMass");
-	auto h_EventWeight = d_EventWeightDefines.Histo1D("EventWeight");	
+	case 0: {switch(SystematicInt){
 
-	h_WMass->Fit("gaus"); 
-        h_InvTopMass->Fit("gaus");
-  	h_WMass_Unweighted->Fit("gaus"); 
-  	h_InvTopMass_Unweighted->Fit("gaus");
+			case 0:{auto h_WMass = d_EventWeightDefines.Histo1D("w_mass", "EventWeight");
+  				auto h_InvTopMass = d_EventWeightDefines.Histo1D("InvTopMass", "EventWeight"); 
+				auto h_WMass_Unweighted = d_EventWeightDefines.Histo1D("w_mass");
+        			auto h_InvTopMass_Unweighted = d_EventWeightDefines.Histo1D("InvTopMass");
+				auto h_EventWeight = d_EventWeightDefines.Histo1D("EventWeight");	
 
-  	W_stddev = h_WMass->GetStdDev(); 
-  	Top_stddev = h_InvTopMass->GetStdDev();
+				h_WMass->Fit("gaus"); 
+        			h_InvTopMass->Fit("gaus");
+  				h_WMass_Unweighted->Fit("gaus"); 
+  				h_InvTopMass_Unweighted->Fit("gaus");
 
-  	std::string GaussianFitsFileString = "GaussianFits_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                             SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
+  				W_stddev = h_WMass->GetStdDev(); 
+  				Top_stddev = h_InvTopMass->GetStdDev();
 
-        TFile * GaussianFitsFile = new TFile(GaussianFitsFileString.c_str(), "RECREATE");
+  				std::string GaussianFitsFileString = "GaussianFits_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                                                     SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-	h_WMass->Write();
-	h_InvTopMass->Write();
-	h_WMass_Unweighted->Write();
-        h_InvTopMass_Unweighted->Write();
-	h_EventWeight->Write();
+        			TFile * GaussianFitsFile = new TFile(GaussianFitsFileString.c_str(), "RECREATE");
 
-	GaussianFitsFile->Close();
+				h_WMass->Write();
+				h_InvTopMass->Write();
+				h_WMass_Unweighted->Write();
+        			h_InvTopMass_Unweighted->Write();
+				h_EventWeight->Write();
 
-  
+				GaussianFitsFile->Close();
 
-  	//Write the nominal mass and resolution values to a text file 
-  	std::ofstream Resolution;
-  	std::string ResolutionString = "Resolution_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                       SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  	Resolution.open(ResolutionString.c_str());
+  				//Write the nominal mass and resolution values to a text file 
+  				std::ofstream Resolution;
+  				std::string ResolutionString = "Resolution_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                       			       SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
 
-  	Resolution << "W_stddev: " << W_stddev << '\n'
-	           << "Top_stddev: " << Top_stddev << std::endl;
+  				Resolution.open(ResolutionString.c_str());
+
+  				Resolution << "W_stddev: " << W_stddev << '\n'
+	           			   << "Top_stddev: " << Top_stddev << std::endl;
+
+  				break;}
+
+			default: {break;}
+
+			}
+
+		break;}
+
+	default: {break;}
 
   }
 
   auto d_Blinding =  d_EventWeightDefines.Define("chi2", Chi2Function, {"w_mass", "InvTopMass"});
 
 
-  if(ProcessInt == 0 && SystematicInt == 0){
+  switch(ProcessInt){
 
-  	int NumberOfSimulatedEvents = *( d_Blinding.Filter("chi2 != 999.0").Count() );	
-	int OneSigmaOfNumEvents = NumberOfSimulatedEvents * 0.68;
+        case 0:{ switch(SystematicInt){
 
-	std::cout << "NumberOfSimulatedEvents = " << std::endl;
+			case 0:{
+
+  				int NumberOfSimulatedEvents = *( d_Blinding.Filter("chi2 != 999.0").Count() );	
+				int OneSigmaOfNumEvents = NumberOfSimulatedEvents * 0.68;
+
+				std::cout << "NumberOfSimulatedEvents = " << std::endl;
 			
-	auto histo_chi2 = d_Blinding.Histo1D("chi2");
-	TAxis *xaxis = histo_chi2->GetXaxis();
-	double MaxBin = xaxis->GetBinCenter( histo_chi2->FindLastBinAbove() );
-	double MinBin = xaxis->GetBinCenter( histo_chi2->FindFirstBinAbove() ) ;
+				auto histo_chi2 = d_Blinding.Histo1D("chi2");
+				TAxis *xaxis = histo_chi2->GetXaxis();
+				double MaxBin = xaxis->GetBinCenter( histo_chi2->FindLastBinAbove() );
+				double MinBin = xaxis->GetBinCenter( histo_chi2->FindFirstBinAbove() ) ;
 
-	int NumBins = MaxBin - MinBin;
+				int NumBins = MaxBin - MinBin;
 
-	auto histo_chi2_rebinned = d_Blinding.Histo1D({"histo_chi2_rebinned", "histo_chi2_rebinned", 2*NumBins, MinBin, MaxBin}, {"chi2"});
+				auto histo_chi2_rebinned = d_Blinding.Histo1D({"histo_chi2_rebinned", "histo_chi2_rebinned", 2*NumBins, MinBin, MaxBin}, {"chi2"});
 
-	TAxis * histo_chi2_rebinned_x = histo_chi2_rebinned->GetXaxis();
+				TAxis * histo_chi2_rebinned_x = histo_chi2_rebinned->GetXaxis();
 
-	int total = 0;
+				int total = 0;
 
-	for(int i = 0; i < histo_chi2_rebinned->GetEntries(); i++){
+				for(int i = 0; i < histo_chi2_rebinned->GetEntries(); i++){
 		
-		auto NumberOfEvents = histo_chi2_rebinned->GetBinContent(i);
-		total += NumberOfEvents;
+					auto NumberOfEvents = histo_chi2_rebinned->GetBinContent(i);
+					total += NumberOfEvents;
 
-		if(total >= OneSigmaOfNumEvents){Chi2_SR = histo_chi2_rebinned_x->GetBinCenter(i); break;}
-		else{continue;}
+					if(total >= OneSigmaOfNumEvents){Chi2_SR = histo_chi2_rebinned_x->GetBinCenter(i); break;}
+					else{continue;}
 
-	}
-
-
-	if(SBRInt == 1){
-
-		//for Chi2_SBR
-		auto MaxElement = std::max_element(CutRanges.begin(), CutRanges.end());
-		auto DistToMax = std::distance(CutRanges.begin(), MaxElement);
-		Chi2_SBR = CutRanges.at(DistToMax);
-
-	}
-	else{Chi2_SBR = 999;}
+				}
 
 
-	std::ofstream Chi2Range;      
-	std::string Chi2Range_string = "Chi2Range_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
-                                       SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
+				if(SBRInt == 1){
+
+					//for Chi2_SBR
+					auto MaxElement = std::max_element(CutRanges.begin(), CutRanges.end());
+					auto DistToMax = std::distance(CutRanges.begin(), MaxElement);
+					Chi2_SBR = CutRanges.at(DistToMax);
+
+				}
+				else{Chi2_SBR = 999;}
+
+
+				std::ofstream Chi2Range;      
+				std::string Chi2Range_string = "Chi2Range_" + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
+                                       			SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".txt";
  
-        Chi2Range.open(Chi2Range_string.c_str());
+        			Chi2Range.open(Chi2Range_string.c_str());
 
-        Chi2Range << Chi2_SR << '\n'
-                  << Chi2_SBR << std::endl;
+        			Chi2Range << Chi2_SR << '\n'
+                  		  	  << Chi2_SBR << std::endl;
+
+				break;}
+
+			default: {break;}
+
+		}
+
+		break;}
+
+
+	default: {break;}
 
   }
 
