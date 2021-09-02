@@ -4769,7 +4769,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	std::cout << "print 38" << std::endl;
 
-  	doubles vec{};
+ 	doubles vec{};
 	
 	switch(VariableChoice){
 		case 1: vec.push_back(object.Pt()); break;
@@ -4779,7 +4779,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		default: break;
 	}
 
-  	return vec;
+  	return vec;	
+
 
   }};
 
@@ -5483,7 +5484,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
   	std::cout << "print 58" << std::endl;
 
-  	std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> OutputVec{};
+  	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> OutputVec{};
 
   	for(unsigned int i = 0; i < nJet; i++){
 
@@ -5497,7 +5498,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		JetFourMomentum_New.SetEta(JetEta_new);
 		JetFourMomentum_New.SetPhi(JetPhi_new);
 		JetFourMomentum_New.SetM(JetMass_new);
-    		OutputVec.push_back(JetFourMomentum_New);
+    		OutputVec += JetFourMomentum_New;
 
   	}
 
@@ -5506,79 +5507,77 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto GetSmearedJetPt{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetPt){
+ auto GetSmearedJetPt{[](const floats& JetPt, const floats& JetEta, const floats& JetPhi, const floats& JetMass, const floats& cJER, const unsigned int& nJet){
 
-  	std::cout << "print 59" << std::endl;
+	std::cout << "print 59" << std::endl;
 
-  	floats NewPtVec = {};
+	floats new_pts{};
 
- 	for(long unsigned int i = 0; i < JetPt.size(); i++){
+        for(unsigned int i = 0; i < nJet; i++){
 
-        	float NewPt = (SmearedJet4Momentum.at(i)).Pt();
- 		NewPtVec.push_back(NewPt);
+                float JetPt_new = JetPt.at(i) * cJER.at(0);
+                new_pts.push_back(JetPt_new);
 
-	}
+        }
 
- 	return NewPtVec;
-
-  }};
-
-
-  auto GetSmearedJetPhi{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetPhi){
-
-  	std::cout << "print 60" << std::endl;
-
- 	floats NewPhiVec{};
-
- 	for(long unsigned int i = 0; i < JetPhi.size(); i++){
-
-		float NewPhi = (SmearedJet4Momentum.at(i)).Phi();
-        	//float NewPhi = JetPhi.at(i);
-		NewPhiVec.push_back(NewPhi);
-
- 	}
- 
-	return NewPhiVec;
-
-  }};
-
- 
-  auto GetSmearedJetEta{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetEta){
-
-  	std::cout << "print 61" << std::endl;
-
- 	floats NewEtaVec = {};
-
- 	for(long unsigned int i = 0; i < JetEta.size(); i++){
-
-        	float NewEta = (SmearedJet4Momentum.at(i)).Eta();
-		NewEtaVec.push_back(NewEta);
-
- 	}
-
- 	return NewEtaVec;
+        return new_pts;
 
   }};
 
 
-  auto GetSmearedJetMass{[](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> SmearedJet4Momentum, const floats& JetMass){
+  auto GetSmearedJetPhi{[](const floats& JetPt, const floats& JetEta, const floats& JetPhi, const floats& JetMass, const floats& cJER, const unsigned int& nJet){
+        
+        std::cout << "print 60" << std::endl;
 
-  	std::cout << "print 62" << std::endl;
+        floats new_phis{};
 
- 	floats NewMassVec = {};
+        for(unsigned int i = 0; i < nJet; i++){
+  
+                float JetPhi_new = JetPhi.at(i) * cJER.at(0); 
+                new_phis.push_back(JetPhi_new);
 
- 	for(long unsigned int i = 0; i < JetMass.size(); i++){
+        }
 
-        	float NewMass = (SmearedJet4Momentum.at(i)).M();	
-		NewMassVec.push_back(NewMass);
-
- 	}
-
- 	return NewMassVec;
+        return new_phis;
 
   }};
 
   
+  auto GetSmearedJetEta{[](const floats& JetPt, const floats& JetEta, const floats& JetPhi, const floats& JetMass, const floats& cJER, const unsigned int& nJet){
+ 
+        std::cout << "print 61" << std::endl;
+
+        floats new_etas{};
+
+        for(unsigned int i = 0; i < nJet; i++){
+        
+                float JetEta_new = JetEta.at(i) * cJER.at(0);
+                new_etas.push_back(JetEta_new);
+  
+        }
+        
+        return new_etas;
+        
+  }}; 
+
+
+  auto GetSmearedJetMass{[](const floats& JetPt, const floats& JetEta, const floats& JetPhi, const floats& JetMass, const floats& cJER, const unsigned int& nJet){
+ 
+        std::cout << "print 62" << std::endl;
+
+        floats new_mass{};
+
+        for(unsigned int i = 0; i < nJet; i++){
+        
+                float JetMass_new = JetMass.at(i) * cJER.at(0);
+                new_mass.push_back(JetMass_new);
+  
+        }
+        
+        return new_mass;
+        
+  }}; 
+
   auto SumSquared2LeadingJets_pT{[](const float& LeadingJetPt, const float& SubleadingJetPt){
 
   	std::cout << "print 63" << std::endl;
@@ -5750,6 +5749,11 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   auto tight_jets_function{[&YearInt](const floats& Jet_pt_Selection, const floats& Jet_eta_Selection, const ints& Jet_jetId_Selection, const floats& dRJet_lep){
 
   	std::cout << "print 73" << std::endl;
+
+	std::cout << "Jet_pt_Selection.size() = " << Jet_pt_Selection.size() << std::endl;
+	std::cout << "Jet_eta_Selection.size() = " << Jet_eta_Selection.size() << std::endl;
+	std::cout << "Jet_jetId_Selection.size() = " << Jet_jetId_Selection.size() << std::endl;
+	std::cout << "dRJet_lep.size() = " << dRJet_lep.size() << std::endl;
 
   	int JetId;
 
@@ -6102,7 +6106,13 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 	std::cout << "Object1_phi.size() = " << Object1_phi.size() << std::endl;
 	std::cout << "Object2_phi.size() = " << Object2_phi.size() << std::endl;
 
-        doubles dPhi = abs(Object1_phi - Object2_phi);
+	doubles dPhi;
+
+	if( Object2_phi.size() > 0 ){
+        	dPhi = abs(Object1_phi - Object2_phi);
+	}
+	else{dPhi = abs(Object1_phi);}
+
         return dPhi;
 
   }};
@@ -8460,18 +8470,18 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	std::cout << "print 163" << std::endl; 
 
-	std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> OriginalMET{};
+	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> OriginalMET{};
 	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> OriginalMET_Element{};
-
+	
 	for(int i = 0; i < MET_phi.size(); i++){
 
-                OriginalMET_Element.SetPt(MET_sumEt.at(i));
+        	OriginalMET_Element.SetPt(MET_sumEt.at(i));
 		OriginalMET_Element.SetEta(0);
 		OriginalMET_Element.SetPhi(MET_phi.at(i));
 		OriginalMET_Element.SetM(MET_sumEt.at(i));
 
-                OriginalMET.push_back(OriginalMET_Element);
-
+        	OriginalMET += OriginalMET_Element;
+	
 	}
 
         return OriginalMET;
@@ -8479,23 +8489,18 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
   }};
 
 
-  auto ScaledMetFunction{[&SystematicInt](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> OriginalMET, const floats& MET_sumEt, const floats& MET_phi, const floats& MET_MetUnclustEnUpDeltaX,  const floats& MET_MetUnclustEnUpDeltaY){
+  auto ScaledMetFunction{[&SystematicInt](ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> OriginalMET, const floats& MET_sumEt, const floats& MET_phi, const floats& MET_MetUnclustEnUpDeltaX,  const floats& MET_MetUnclustEnUpDeltaY){
 
 	std::cout << "print 164" << std::endl;
 
-	std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> ScaledMET{};
+	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> ScaledMET{};
 	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> ScaledMET_Element{};
 	floats metVecOriginal_px;
 	floats metVecOriginal_py;
 
-	for(int i = 0; i < OriginalMET.size(); i++){
+	metVecOriginal_px.push_back( OriginalMET.Px() );
+	metVecOriginal_py.push_back( OriginalMET.Py() );
 	
-		metVecOriginal_px.push_back( (OriginalMET.at(i)).Px() );
-		metVecOriginal_py.push_back( (OriginalMET.at(i)).Py() );
-	
-	}
-
-
 	floats MET_px_up =  metVecOriginal_px + MET_MetUnclustEnUpDeltaX;
         floats MET_py_up =  metVecOriginal_py + MET_MetUnclustEnUpDeltaY;
         floats MET_px_down =  metVecOriginal_px - MET_MetUnclustEnUpDeltaX;
@@ -8529,7 +8534,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 			ScaledMET_Element.SetM(MET_sumEt.at(i));
 		}
 
-                ScaledMET.push_back(ScaledMET_Element);
+                ScaledMET += ScaledMET_Element;
 
         }	
 
@@ -8542,7 +8547,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 
 	std::cout << "print 165" << std::endl;
 
-  	std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> UnsmearedJetVector{};
+  	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> UnsmearedJetVector{};
 	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> UnsmearedJetVector_Element{};	
 
 	for(int i = 0; i < Jet_pt.size(); i++){
@@ -8552,51 +8557,43 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 		UnsmearedJetVector_Element.SetPhi(Jet_phi.at(i));
 		UnsmearedJetVector_Element.SetM(Jet_mass.at(i));
 
-		UnsmearedJetVector.push_back(UnsmearedJetVector_Element);
+		UnsmearedJetVector += UnsmearedJetVector_Element;
 	}
 
 	return UnsmearedJetVector;
   }};
 
 
-  auto METUncertFunction{[&SystematicInt](std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> OriginalMET, std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > > SmearedJet4Momentum, 
-				          std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> UnsmearedJet4Momentum){
+  auto METUncertFunction{[&SystematicInt](ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> OriginalMET, ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> SmearedJet4Momentum, 
+				          ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> UnsmearedJet4Momentum){
 
   	std::cout << "print 148" << std::endl;
 
-	std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>>> NewMetVector{};
+	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> NewMetVector{};
+	ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> FinalVec{};
 
-	for(int i = 0; i < SmearedJet4Momentum.size(); i++){
+	double OriginalMET_Pt = OriginalMET.Pt();	
+	double OriginalMET_Eta = OriginalMET.Eta();
+	double OriginalMET_Phi = OriginalMET.Phi();
+	double OriginalMET_M = OriginalMET.M();		
 
-		//NewMetVector.push_back(OriginalMET.at(0) + SmearedJet4Momentum.at(i) - UnsmearedJet4Momentum.at(i));
+	double SmearedJet4Momentum_Pt = SmearedJet4Momentum.Pt();
+	double SmearedJet4Momentum_Eta = SmearedJet4Momentum.Eta();
+	double SmearedJet4Momentum_Phi = SmearedJet4Momentum.Phi();
+	double SmearedJet4Momentum_M = SmearedJet4Momentum.M();
 
-		ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double>> FinalVec{};
+	double UnsmearedJet4Momentum_Pt = UnsmearedJet4Momentum.Pt();
+        double UnsmearedJet4Momentum_Eta = UnsmearedJet4Momentum.Eta();
+        double UnsmearedJet4Momentum_Phi = UnsmearedJet4Momentum.Phi();
+        double UnsmearedJet4Momentum_M = UnsmearedJet4Momentum.M();
 
-		double OriginalMET_Pt = OriginalMET.at(0).Pt();	
-		double OriginalMET_Eta = OriginalMET.at(0).Eta();
-		double OriginalMET_Phi = OriginalMET.at(0).Phi();
-		double OriginalMET_M = OriginalMET.at(0).M();		
+	FinalVec.SetM(OriginalMET_M + SmearedJet4Momentum_M - UnsmearedJet4Momentum_M);
+	FinalVec.SetEta(OriginalMET_Eta + SmearedJet4Momentum_Eta - UnsmearedJet4Momentum_Eta);
+	FinalVec.SetPhi(OriginalMET_Phi + SmearedJet4Momentum_Phi - UnsmearedJet4Momentum_Phi);
+	FinalVec.SetM(OriginalMET_M + SmearedJet4Momentum_M - UnsmearedJet4Momentum_M);
 
-		double SmearedJet4Momentum_Pt = SmearedJet4Momentum.at(i).Pt();
-		double SmearedJet4Momentum_Eta = SmearedJet4Momentum.at(i).Eta();
-		double SmearedJet4Momentum_Phi = SmearedJet4Momentum.at(i).Phi();
-		double SmearedJet4Momentum_M = SmearedJet4Momentum.at(i).M();
+	NewMetVector += FinalVec;
 
-		double UnsmearedJet4Momentum_Pt = UnsmearedJet4Momentum.at(i).Pt();
-                double UnsmearedJet4Momentum_Eta = UnsmearedJet4Momentum.at(i).Eta();
-                double UnsmearedJet4Momentum_Phi = UnsmearedJet4Momentum.at(i).Phi();
-                double UnsmearedJet4Momentum_M = UnsmearedJet4Momentum.at(i).M();
-
-		FinalVec.SetM(OriginalMET_M + SmearedJet4Momentum_M - UnsmearedJet4Momentum_M);
-		FinalVec.SetEta(OriginalMET_Eta + SmearedJet4Momentum_Eta - UnsmearedJet4Momentum_Eta);
-		FinalVec.SetPhi(OriginalMET_Phi + SmearedJet4Momentum_Phi - UnsmearedJet4Momentum_Phi);
-		FinalVec.SetM(OriginalMET_M + SmearedJet4Momentum_M - UnsmearedJet4Momentum_M);
-
-		NewMetVector.push_back(FinalVec);
-
-
-	}
-	
 	return NewMetVector;
 
   }};
@@ -9995,10 +9992,10 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
 					.Define("sigma_JER_down", sigma_JER_down, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
                       			.Define("cJER", JetSmearingFunction_HybridMethod, {JetSmearingStrings})
                       		        .Define("SmearedJet4Momentum", ApplyCJER, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
-                      			.Define("SmearedJetPt", GetSmearedJetPt, {"SmearedJet4Momentum", "Jet_pt"})
-                      			.Define("SmearedJetPhi", GetSmearedJetPhi, {"SmearedJet4Momentum", "Jet_phi"})
-                      			.Define("SmearedJetEta", GetSmearedJetEta, {"SmearedJet4Momentum", "Jet_eta"})
-                      			.Define("SmearedJetMass", GetSmearedJetMass, {"SmearedJet4Momentum", "Jet_mass"})
+                      			.Define("SmearedJetPt", GetSmearedJetPt, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
+                      			.Define("SmearedJetPhi", GetSmearedJetPhi, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
+                      			.Define("SmearedJetEta", GetSmearedJetEta, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
+                      			.Define("SmearedJetMass", GetSmearedJetMass, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
 					.Define("dRJet_Lepton", deltaRcheck_floats, {JetEtaInput, JetPhiInput, "LeptonEta_RochCorr", "LeptonPhi_RochCorr"})
 					.Define("tight_jets", tight_jets_function, {JetPtInput, JetEtaInput, "Jet_jetId", "dRJet_Lepton"})
 					.Define("TightSmearedJetsPt", select<floats>, {JetPtInput, "tight_jets"})
