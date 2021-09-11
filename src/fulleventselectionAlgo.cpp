@@ -283,7 +283,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::vector<std::string> input_files;
  
   std::string SJER;
-  std::string SIGMAJER;
 
   std::string FileNameJetSmear;
   std::string NPLNumbersString; 
@@ -645,27 +644,27 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   //Setting the SampleType, Channel, Process, NPL, SR, SBR, ZPlusJetsCR, ttbarCR, Year and Systematic strings for the output file names
   switch(SystematicInt){
 
-        case 0: Systematic = "Nominal"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 1: Systematic = "PU_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 2: Systematic = "PU_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 3: Systematic = "BTag_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 4: Systematic = "BTag_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 5: Systematic = "JetSmearing_ScaleUp"; SJER = "sJER_up"; SIGMAJER = "sigma_JER"; break;
-        case 6: Systematic = "JetSmearing_ScaleDown"; SJER = "sJER_down"; SIGMAJER = "sigma_JER"; break;
-        case 7: Systematic = "JetResolution_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER_up"; break;
-        case 8: Systematic = "JetResolution_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER_down"; break;
-        case 9: Systematic = "LeptonEfficiencies_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 10: Systematic = "LeptonEfficiencies_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 11: Systematic = "PDF_ScaleUp"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 12: Systematic = "PDF_ScaleDown"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 13: Systematic = "ME_Up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 14: Systematic = "ME_Down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 15: Systematic = "MET_Up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 16: Systematic = "MET_Down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 17: Systematic = "isr_up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 18: Systematic = "isr_down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 19: Systematic = "fsr_up"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
-        case 20: Systematic = "fsr_down"; SJER = "sJER_Nominal"; SIGMAJER = "sigma_JER"; break;
+        case 0: Systematic = "Nominal"; SJER = "sJER_Nominal"; break;
+        case 1: Systematic = "PU_ScaleUp"; SJER = "sJER_Nominal"; break;
+        case 2: Systematic = "PU_ScaleDown"; SJER = "sJER_Nominal"; break;
+        case 3: Systematic = "BTag_ScaleUp"; SJER = "sJER_Nominal"; break;
+        case 4: Systematic = "BTag_ScaleDown"; SJER = "sJER_Nominal"; break;
+        case 5: Systematic = "JetSmearing_ScaleUp"; SJER = "sJER_up"; break;
+        case 6: Systematic = "JetSmearing_ScaleDown"; SJER = "sJER_down"; break;
+        case 7: Systematic = "JEC_ScaleUp"; SJER = "sJER_Nominal"; break;
+        case 8: Systematic = "JEC_ScaleDown"; SJER = "sJER_Nominal"; break;
+        case 9: Systematic = "LeptonEfficiencies_ScaleUp"; SJER = "sJER_Nominal"; break;
+        case 10: Systematic = "LeptonEfficiencies_ScaleDown"; SJER = "sJER_Nominal"; break;
+        case 11: Systematic = "PDF_ScaleUp"; SJER = "sJER_Nominal"; break;
+        case 12: Systematic = "PDF_ScaleDown"; SJER = "sJER_Nominal"; break;
+        case 13: Systematic = "ME_Up"; SJER = "sJER_Nominal"; break;
+        case 14: Systematic = "ME_Down"; SJER = "sJER_Nominal"; break;
+        case 15: Systematic = "MET_Up"; SJER = "sJER_Nominal"; break;
+        case 16: Systematic = "MET_Down"; SJER = "sJER_Nominal"; break;
+        case 17: Systematic = "isr_up"; SJER = "sJER_Nominal"; break;
+        case 18: Systematic = "isr_down"; SJER = "sJER_Nominal"; break;
+        case 19: Systematic = "fsr_up"; SJER = "sJER_Nominal"; break;
+        case 20: Systematic = "fsr_down"; SJER = "sJER_Nominal"; break;
         default: std::cout << "ERROR: SystematicInt must be between 1 and 20." << std::endl; break;
 
   } 
@@ -678,7 +677,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		GeneratorWeightString = "CaloMET_pt"; //input is not used for the function for data, so have put anything here
 		LeptonGenPartFlavStrings = {"Electron_cleanmask", "Electron_cleanmask"}; //just a random char RDataFrame to use for data, since it won't be used 
 		RochCorrVecStrings = {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "Muon_charge", "Muon_nTrackerLayers"};
-		JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_pt", "Jet_eta", "Jet_phi", SJER, SIGMAJER, "nJet"}; //repeated variables aren't used anyway since a correction factor of 1 is applied for data
+		JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_pt", "Jet_eta", "Jet_phi", SJER, "sigma_JER", "nJet"}; //repeated variables aren't used anyway since a correction factor of 1 is applied for data
 		TightSmearedJetsHadronFlavourStrings = {"Jet_jetId", "tight_jets"};
 		TopReweighting_topquark_strings = {"nJet", "nJet", "Jet_pt"}; //using any input string here as a weight of 1 is returned anyway for data
                 TopReweighting_antitopquark_strings = {"nJet", "nJet", "Jet_pt"}; //using any input string here as a weight of 1 is returned anyway for data
@@ -690,7 +689,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		GeneratorWeightString = "genWeight";
 		LeptonGenPartFlavStrings = {"Electron_genPartFlav", "Muon_genPartFlav"};
 		RochCorrVecStrings = {"TightLeptonsCharge", "TightLeptonsPt", "TightLeptonsEta", "TightLeptonsPhi", "Muon_genPartIdx", "Muon_nTrackerLayers"};
-		JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, SIGMAJER, "Jet_genJetIdx"};
+		JetSmearingStrings = {"Jet_pt", "Jet_eta", "Jet_phi", "GenJet_pt", "GenJet_eta", "GenJet_phi", SJER, "sigma_JER", "Jet_genJetIdx"};
 		TightSmearedJetsHadronFlavourStrings = {"Jet_hadronFlavour", "tight_jets"};
 		TopReweighting_topquark_strings = {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"};
 		TopReweighting_antitopquark_strings = {"GenPart_pdgId", "GenPart_statusFlags", "GenPart_pt"};
@@ -723,7 +722,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 		break;
 
-	case 2: Process = "tZq_scaledown"; HessianOrMC = "";
+	case 2: Process = "tZq_scaledown"; 
 
                 switch(YearInt){
                         case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_scaledown_NanoAODv7/209D68FD-3F65-194A-A604-37EBE9EB665E.root"}; HessianOrMC = "MC"; break;
@@ -2086,14 +2085,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 		 switch(YearInt){
 			case 2016: input_files = {
 
-				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/81381056-A5F3-7A4E-842D-77CEF0CC4300.root", 
-			        "/data/disk2/nanoAOD_2016/DoubleEGRun2016B/EEA5B03C-AA39-0B4D-9502-97491FE32A0D.root", 
-			        "/data/disk2/nanoAOD_2016/DoubleEGRun2016B/DC92FC84-B9C5-6A40-863F-2BA581AE3ED8.root",
-				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/DCFFC3F0-6ACA-7A43-906B-26B73BF5C8DC.root",
-				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/E04B9605-9819-5B47-9DB9-C944975036C5.root",
-				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/E0866D9F-14C2-4C48-8373-5723FF66F04B.root",
-				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/E55B8ACB-768B-D040-BD44-C7684795238C.root",
-				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/E5E28BDF-4E3E-9A40-BD9A-BACD660CEAEE.root"}; 
+				"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; 
 
     			break;
 
@@ -5342,35 +5334,6 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
 
 }};
-
-
-auto sigma_JER_up{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
-
-  std::cout << "print 54" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = true;
-  bool Down = false;
-
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
-
-
-auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,const floats& Jet_pt){
-
-  std::cout << "print 55" << std::endl;
-
-  bool SigmaJER = false;
-  bool JetSmearScaleFactor = false;
-  bool Up = false;
-  bool Down = true;
-  
-  return RowReader3(SigmaJER, JetSmearScaleFactor, Up, Down, Jet_eta, Jet_rho, Jet_pt);
-
-}};
- 
 
 
   auto SJER_Nominal_Function{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho, const floats& Jet_pt){
@@ -9389,7 +9352,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                                     "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter",                 "Flag_eeBadScFilter"}, "Event cleaning filter");
 
  //Filtering events using the golden json file (for data not MC)
- //auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
+ auto d_GoldenJson = d_EventCleaning.Filter(RunAndLumiFilterFunction, {"run", "luminosityBlock"}, "GoldenJson filter");
 
  std::vector<std::string> DoubleCountCheckStrings;
 
@@ -9485,7 +9448,7 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
  }
 
  //Preventing the double-counting of events in the single and double lepton datasets
- auto d_DoubleCountCheck = d_EventCleaning.Filter(DoubleCountCheck_EventFunction, DoubleCountCheckStrings); 
+ auto d_DoubleCountCheck = d_GoldenJson.Filter(DoubleCountCheck_EventFunction, DoubleCountCheckStrings); 
 
  if(DoubleCountCheckInt == 1){
 
@@ -9988,8 +9951,6 @@ auto sigma_JER_down{[&RowReader3](const floats& Jet_eta, const floats& Jet_rho,c
                                         .Define("sJER_up", SJER_Up_Function, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
                                         .Define("sJER_down", SJER_Down_Function, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
                       		        .Define("sigma_JER", sigma_JER, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
-			                .Define("sigma_JER_up", sigma_JER_up, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
-					.Define("sigma_JER_down", sigma_JER_down, {"Jet_eta", "fixedGridRhoFastjetAll", "Jet_pt"})
                       			.Define("cJER", JetSmearingFunction_HybridMethod, {JetSmearingStrings})
                       		        .Define("SmearedJet4Momentum", ApplyCJER, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
                       			.Define("SmearedJetPt", GetSmearedJetPt, {"Jet_pt", "Jet_eta", "Jet_phi", "Jet_mass", "cJER", "nJet"})
