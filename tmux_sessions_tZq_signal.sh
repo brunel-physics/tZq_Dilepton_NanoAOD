@@ -25,7 +25,7 @@ echo ' '
 ProcessNamesArray=("tZq")
 
 SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown" 
-		      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JetResolution_ScaleUp"  "JetResolution_ScaleDown"   "LeptonEfficiencies_ScaleUp"
+		      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JEC_ScaleUp"            "JEC_ScaleDown"             "LeptonEfficiencies_ScaleUp"
 		      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"  	       "PDF_ScaleDown"	        "ME_Up"			    "ME_Down"
 		      "MET_Up"			      "MET_Down"	       "isr_up"		        "isr_down"		    "fsr_up"
 		      "fsr_down")
@@ -101,11 +101,13 @@ for i in ${!SystematicNamesArray[@]}; do
 
 	k=$(($ChannelInt - 1))
 
-        tmux_string="${ProcessNamesArray[0]}_${SystematicNamesArray[i]}_${ChannelArray[$k]}_$Year"
+	j=$(($i + 1))
 
-        echo './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p 0 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$i' --channel '$ChannelInt' --dcc 0'
+        tmux_string="${ProcessNamesArray[0]}_${SystematicNamesArray[$j]}_${ChannelArray[$k]}_$Year"
+
+        echo './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p 0 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$j' --channel '$ChannelInt' --dcc 0'
 	
-        tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p 0 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$i' --channel '$ChannelInt' --dcc 0; sleep 3600'
+        tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p 0 --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$j' --channel '$ChannelInt' --dcc 0; sleep 3600'
 
         #sleep 180
 

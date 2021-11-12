@@ -34,12 +34,11 @@ ProcessNamesArray=("VV_ZZTo2l2nu"			"VV_ZZTo2l2nu_ext1"			"VV_ZZTo2l2nu_ext2"
 		   "VV_WWToLNuQQ_ext"			"VV_WGToLNuG"				"VV_ZGToLLG_ext")
  			        
 
-SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown" 
-		      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JetResolution_ScaleUp"  "JetResolution_ScaleDown"   "LeptonEfficiencies_ScaleUp"
-		      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"  	       "PDF_ScaleDown"	        "ME_Up"			    "ME_Down"
-		      "MET_Up"			      "MET_Down"	       "isr_up"		        "isr_down"		    "fsr_up"
-		      "fsr_down")
-	
+SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown"
+                      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JEC_ScaleUp"            "JEC_ScaleDown"             "LeptonEfficiencies_ScaleUp"
+                      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"            "PDF_ScaleDown"          "ME_Up"                     "ME_Down"
+                      "MET_Up"                        "MET_Down"               "isr_up"                 "isr_down"                  "fsr_up"
+                      "fsr_down")	
 
 
 ChannelArray=("ee" "mumu" "emu")
@@ -126,7 +125,7 @@ for i in ${!ProcessNamesArray[@]}; do
 
         echo './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0'
 
-        tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 86400'
+        tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 3600'
 
 done
 

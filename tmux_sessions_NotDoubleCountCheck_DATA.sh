@@ -28,13 +28,13 @@ echo 'You have chosen the region: ' $Region
 echo ' '
 
 
-ProcessNamesArray=("Data_DoubleEGRunB"       "Data_DoubleEGRunC"       "Data_DoubleEGRunD"   
-		   "Data_DoubleEGRunE"       "Data_DoubleEGRunF"       "Data_DoubleEGRunG" 
-		   "Data_DoubleEGRunH"       "Data_DoubleMuonRunB"     "Data_DoubleMuonRunC" 
-		   "Data_DoubleMuonRunD"     "Data_DoubleMuonRunE"     "Data_DoubleMuonRunF" 
-		   "Data_DoubleMuonRunG"     "Data_DoubleMuonRunH"     "Data_MuonEGRunB"     
-		   "Data_MuonEGRunC"         "Data_MuonEGRunD"         "Data_MuonEGRunE"     
-		   "Data_MuonEGRunF"         "Data_MuonEGRunG"         "Data_MuonEGRunH"     
+ProcessNamesArray=("Data_DoubleEGRun2016B"   "Data_DoubleEGRun2016C"   "Data_DoubleEGRun2016D"   
+		   "Data_DoubleEGRun2016E"   "Data_DoubleEGRun2016F"   "Data_DoubleEGRun2016G" 
+		   "Data_DoubleEGRun2016H"   "Data_DoubleMuonRun2016B" "Data_DoubleMuonRun2016C" 
+		   "Data_DoubleMuonRun2016D" "Data_DoubleMuonRun2016E" "Data_DoubleMuonRun2016F" 
+		   "Data_DoubleMuonRun2016G" "Data_DoubleMuonRun2016H" "Data_MuonEGRun2016B"     
+		   "Data_MuonEGRun2016C"     "Data_MuonEGRun2016D"     "Data_MuonEGRun2016E"     
+		   "Data_MuonEGRun2016F"     "Data_MuonEGRun2016G"     "Data_MuonEGRun2016H"     
 		   "Data_SingleMuonRunB"     "Data_SingleMuonRunC"     "Data_SingleMuonRunD"     
 		   "Data_SingleMuonRunE"     "Data_SingleMuonRunF"     "Data_SingleMuonRunG"     
 		   "Data_SingleMuonRunH"     "Data_SingleElectronRunB" "Data_SingleElectronRunC" 

@@ -33,12 +33,11 @@ ProcessNamesArray=("ttbarV_ttWJetsToLNu"                "ttbarV_ttWJetsToLNu_ext
                    "ttbarV_ttZToQQ"                     "ttbarV_ttZToQQ_ext"                    "ttbarV_ttHTobb"
                    "ttbarV_ttHTobb_ext"                 "ttbarV_ttHToNonbb") 
 
-SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown" 
-		      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JetResolution_ScaleUp"  "JetResolution_ScaleDown"   "LeptonEfficiencies_ScaleUp"
-		      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"  	       "PDF_ScaleDown"	        "ME_Up"			    "ME_Down"
-		      "MET_Up"			      "MET_Down"	       "isr_up"		        "isr_down"		    "fsr_up"
-		      "fsr_down")
-	
+SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown"
+                      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JEC_ScaleUp"            "JEC_ScaleDown"             "LeptonEfficiencies_ScaleUp"
+                      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"            "PDF_ScaleDown"          "ME_Up"                     "ME_Down"
+                      "MET_Up"                        "MET_Down"               "isr_up"                 "isr_down"                  "fsr_up"
+                      "fsr_down")
 
 
 ChannelArray=("ee" "mumu" "emu")

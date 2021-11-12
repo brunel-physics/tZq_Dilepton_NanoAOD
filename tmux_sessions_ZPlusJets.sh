@@ -37,12 +37,12 @@ ProcessNamesArray=("ZPlusJets_M50_aMCatNLO"             "ZPlusJets_M50_aMCatNLO_
                    "ZPlusJets_PtBinned_400To650_ext2"   "ZPlusJets_PtBinned_650ToInf"           "ZPlusJets_PtBinned_650ToInf_ext1"
                    "ZPlusJets_PtBinned_650ToInf_ext2") 
 
-SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown" 
-		      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JetResolution_ScaleUp"  "JetResolution_ScaleDown"   "LeptonEfficiencies_ScaleUp"
-		      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"  	       "PDF_ScaleDown"	        "ME_Up"			    "ME_Down"
-		      "MET_Up"			      "MET_Down"	       "isr_up"		        "isr_down"		    "fsr_up"
-		      "fsr_down")
-	
+
+SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown"
+                      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JEC_ScaleUp"            "JEC_ScaleDown"             "LeptonEfficiencies_ScaleUp"
+                      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"            "PDF_ScaleDown"          "ME_Up"                     "ME_Down"
+                      "MET_Up"                        "MET_Down"               "isr_up"                 "isr_down"                  "fsr_up"
+                      "fsr_down")	
 
 
 ChannelArray=("ee" "mumu" "emu")
@@ -129,7 +129,7 @@ for i in ${!ProcessNamesArray[@]}; do
 
         echo './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0'
 
-        tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 3600'
+        tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 18000'
 
 done
 

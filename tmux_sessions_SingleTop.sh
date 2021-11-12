@@ -39,12 +39,11 @@ ProcessNamesArray3=("SingleTop_tW"	           "SingleTop_tW_ScaleUp" 	 "SingleTo
 		    "SingleTop_tbarW_ScaleUp"	   "SingleTop_tbarW_ScaleDown"   "SingleTop_tHq"			    
 		    "SingleTop_tZq_W_lept_Z_had"   "SingleTop_tWZ_tWll") 
 
-SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown" 
-		      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JetResolution_ScaleUp"  "JetResolution_ScaleDown"   "LeptonEfficiencies_ScaleUp"
-		      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"  	       "PDF_ScaleDown"	        "ME_Up"			    "ME_Down"
-		      "MET_Up"			      "MET_Down"	       "isr_up"		        "isr_down"		    "fsr_up"
-		      "fsr_down")
-	
+SystematicNamesArray=("Nominal"                       "PU_ScaleUp"             "PU_ScaleDown"           "BTag_ScaleUp"              "BTag_ScaleDown"
+                      "JetSmearing_ScaleUp"           "JetSmearing_ScaleDown"  "JEC_ScaleUp"            "JEC_ScaleDown"             "LeptonEfficiencies_ScaleUp"
+                      "LeptonEfficiencies_ScaleDown"  "PDF_ScaleUp"            "PDF_ScaleDown"          "ME_Up"                     "ME_Down"
+                      "MET_Up"                        "MET_Down"               "isr_up"                 "isr_down"                  "fsr_up"
+                      "fsr_down")	
 
 
 ChannelArray=("ee" "mumu" "emu")
@@ -132,8 +131,6 @@ for i in ${!ProcessNamesArray[@]}; do
         echo './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0'
 
 	sleep_time=$(($i*180))
-
-	echo $sleep_time
 
         tmux new -d -s $tmux_string './bin/fulleventselectionMain.exe --mc 1 -y '$Year' -p '$j' --npl 0 --sr '$SRInt' --sbr '$SBRInt' --zjcr '$zjcrInt' --ttcr '$ttcrInt' --sys '$SystematicInt' --channel '$ChannelInt' --dcc 0; sleep 3600'
 
