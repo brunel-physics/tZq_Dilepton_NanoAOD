@@ -2084,443 +2084,84 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 121: Process = "Data_DoubleEGRunB";
+	case 121: Process = "Data_DoubleEGRunB"; break;
 
-		 switch(YearInt){
-			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016B/*"}; break;
-			case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017B/*"}; break;
-			case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-		 }
+	case 122: Process = "Data_DoubleEGRunC"; break;
 
-		  break;
+        case 123: Process = "Data_DoubleEGRunD"; break;
 
-	case 122: Process = "Data_DoubleEGRunC";
-
-		  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016C/*"}; 
-
-			break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017C/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-        case 123: Process = "Data_DoubleEGRunD";
-
-		  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016D/*"}; 
-
-			break;
-
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017D/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 124: Process = "Data_DoubleEGRunE";
-
-		  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016E/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017E/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
+	case 124: Process = "Data_DoubleEGRunE"; break;
 
 
-	case 125: Process = "Data_DoubleEGRunF";
+	case 125: Process = "Data_DoubleEGRunF"; break;
 
-		  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016F/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleEGRun2017F/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 126: Process = "Data_DoubleEGRunG"; break;
 
-		  break;
+	case 127: Process = "Data_DoubleEGRunH"; break;
 
-	case 126: Process = "Data_DoubleEGRunG";
+	case 128: Process = "Data_DoubleMuonRunB"; break;		
 
-		  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016G/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 129: Process = "Data_DoubleMuonRunC"; break;
 
-		  break;
+	case 130: Process = "Data_DoubleMuonRunD"; break;
 
+	case 131: Process = "Data_DoubleMuonRunE"; break;
 
-	case 127: Process = "Data_DoubleEGRunH";
+	case 132: Process = "Data_DoubleMuonRunF"; break;
 
-		  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleEGRun2016H/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-		
-		  break;
+	case 133: Process = "Data_DoubleMuonRunG"; break;
 
-	case 128: Process = "Data_DoubleMuonRunB";
+	case 134: Process = "Data_DoubleMuonRunH"; break;
 
-		  switch(YearInt){
-			case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016B/*"}; break;
-			case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017B/*"}; break;
-			case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/DoubleMuonRun2018B/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-		  }
+	case 135: Process = "Data_MuonEGRunB"; break;
 
-		  break;		
-
-	case 129: Process = "Data_DoubleMuonRunC";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016C/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017C/*"}; break;
-                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/DoubleMuonRun2018C/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 130: Process = "Data_DoubleMuonRunD";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016D/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017D/*"}; break;
-                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/DoubleMuonRun2018D/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 131: Process = "Data_DoubleMuonRunE";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016E/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017E/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 132: Process = "Data_DoubleMuonRunF";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016F/*"}; break;
-
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/DoubleMuonRun2017F/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 133: Process = "Data_DoubleMuonRunG";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016G/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 134: Process = "Data_DoubleMuonRunH";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/DoubleMuonRun2016H/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 135: Process = "Data_MuonEGRunB";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016B/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/MuonEGRun2017B/*"}; break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018B/*"}; break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 136: Process = "Data_MuonEGRunC";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016C/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/MuonEGRun2017C/*"}; break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018C/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
+	case 136: Process = "Data_MuonEGRunC"; break;
 	
-	case 137: Process = "Data_MuonEGRunD";
+	case 137: Process = "Data_MuonEGRunD"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016D/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/MuonEGRun2017D/*"}; break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/MuonEGRun2018D/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+        case 138: Process = "Data_MuonEGRunE"; break;
 
-		  break;
+	case 139: Process = "Data_MuonEGRunF"; break;
 
-        case 138: Process = "Data_MuonEGRunE";
+	case 140: Process = "Data_MuonEGRunG"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016E/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/MuonEGRun2017E/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 141: Process = "Data_MuonEGRunH"; break;
 
-		  break;
+	case 142: Process = "Data_SingleMuonRunB"; break;
 
-	case 139: Process = "Data_MuonEGRunF";
+	case 143: Process = "Data_SingleMuonRunC"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016F/*"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/MuonEGRun2017F/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 144: Process = "Data_SingleMuonRunD"; break;
 
-		  break;
+	case 145: Process = "Data_SingleMuonRunE"; break;
 
-	case 140: Process = "Data_MuonEGRunG";
+	case 146: Process = "Data_SingleMuonRunF"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016G/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 147: Process = "Data_SingleMuonRunG"; break;
 
-		  break;
-
-	case 141: Process = "Data_MuonEGRunH";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/MuonEGRun2016H/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 142: Process = "Data_SingleMuonRunB";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunB/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunB/*"}; break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunB/*"}; break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 143: Process = "Data_SingleMuonRunC";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunC/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunC/*"}; break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunC/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 144: Process = "Data_SingleMuonRunD";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunD/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunD/*"}; break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/SingleMuon_NanoAOD25Oct_2019_RunD/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 145: Process = "Data_SingleMuonRunE";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunE/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunE/*"}; break;
-			case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 146: Process = "Data_SingleMuonRunF";
-
-                  switch(YearInt){
-			case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunF/*"}; break;
-		        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleMuon_NanoAOD25Oct2019_RunF/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 147: Process = "Data_SingleMuonRunG";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunG/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 148: Process = "Data_SingleMuonRunH";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleMuon_NanoAOD25Oct2019_RunH/*"}; break;
-
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
+	case 148: Process = "Data_SingleMuonRunH"; break;
  
-	case 149: Process = "Data_SingleElectronRunB";
+	case 149: Process = "Data_SingleElectronRunB"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunB/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunB/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 150: Process = "Data_SingleElectronRunC"; break;
 
-		  break;
+	case 151: Process = "Data_SingleElectronRunD"; break;
 
-	case 150: Process = "Data_SingleElectronRunC";
+	case 152: Process = "Data_SingleElectronRunE"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunC/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunC/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 153: Process = "Data_SingleElectronRunF"; break;
 
-		  break;
+	case 154: Process = "Data_SingleElectronRunG"; break;
 
-	case 151: Process = "Data_SingleElectronRunD";
+	case 155: Process = "Data_SingleElectronRunH"; break;
 
-                  switch(YearInt){
-			case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunD/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunD/*"}; break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
+	case 156: Process = "Data_EGRunB"; break;
 
-		  break;
+	case 157: Process = "Data_EGRunC"; break;
 
-	case 152: Process = "Data_SingleElectronRunE";
+	case 158: Process = "Data_EGRunD"; break;
 
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunE/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunE/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 153: Process = "Data_SingleElectronRunF";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunF/*"}; break;
-                        case 2017: input_files = {"/data/disk3/nanoAOD_2017/SingleElectron_NanoAOD25Oct2019_RunF/*"}; break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 154: Process = "Data_SingleElectronRunG";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunG/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 155: Process = "Data_SingleElectronRunH";
-
-                  switch(YearInt){
-                        case 2016: input_files = {"/data/disk3/nanoAOD_2016/SingleElectron_NanoAOD25Oct2019_RunH/*"}; break;
-                        case 2017: break;
-                        case 2018: break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 156: Process = "Data_EGRunB";
-
-		  switch(YearInt){
-			case 2016: break;
-			case 2017: break; 
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunB/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 157: Process = "Data_EGRunC";
-
-                  switch(YearInt){
-			case 2016: break;
-			case 2017: break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunC/*"}; break;
-                	default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;  
-		}
-
-		  break;
-
-	case 158: Process = "Data_EGRunD";
-
-                  switch(YearInt){
-			case 2016: break;
-                        case 2017: break;
-                        case 2018: input_files = {"/data/disk3/nanoAOD_2018/EGammaRunD/*"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                  }
-
-		  break;
-
-	case 159: Process = "Data_Combined";
-
-		  switch(YearInt){
-		  	case 2016: input_files = {"Data_2016.root"}; break;
-			case 2017: input_files = {"Data_2017.root"}; break;
-			case 2018: input_files = {"Data_2018.root"}; break;
-			default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-		  }
-
-		  break;
+	case 159: Process = "Data_Combined"; break;
 
 	default: throw std::logic_error("Double check the value of ProcessInt."); break;
 
