@@ -137,6 +137,50 @@ constexpr float TOP_MASS = 172.6;
 float Chi2_SR; 
 float Chi2_SBR;
 
+
+bool batch = true;
+
+//method to convert the text file to vector of ROOT files 
+std::vector<std::string>
+TxtFileListToVecStr(const std::string f)
+{
+    std::ifstream infile(f, std::ifstream::in);
+
+    int i = 0;
+
+    std::vector<std::string> v;
+    std::string line("");
+
+    while (std::getline(infile, line))
+    {
+
+	i++;
+
+        line.erase(std::remove(line.begin(), line.end(), '\n'), line.end());
+        line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
+        line.erase(std::remove(line.begin(), line.end(), '\t'), line.end());
+        if (line.find_first_not_of(' ') == std::string::npos)
+            continue;
+        if (line[line.find_first_not_of(' ')] == '#')
+            continue;
+
+        if (batch)
+        {
+            v.push_back("root://cms-xrd-global.cern.ch//" + line);
+        }
+        else
+        {
+            v.push_back("root://" + line);
+        }
+        
+    }
+
+    infile.close();
+    return v;
+}
+
+
+
 template<typename T>
 [[gnu::const]] T select(const T& a, const ints& mask)
 {
@@ -703,7 +747,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	case 0: Process = "tZq"; 
 
 		switch(YearInt){
-			case 2016: input_files = {"/data/disk2/nanoAOD_2016/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
+			case 2016: input_files = {"/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_signal_files_2016.txt"}; HessianOrMC = "Hessian"; break;
 			case 2017: input_files = {"/data/disk0/nanoAOD_2017/tZq_ll_NanoAODv7/*"}; HessianOrMC = "Hessian"; break;
 			case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/tZq/*"}; HessianOrMC = "Hessian"; break;
 			default: std::cout << "Inside the tZq switch statement. Please choose a year out of 2016, 2017 or 2018" << std::endl; break;
@@ -8903,7 +8947,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   //Input file selection
   EnableImplicitMT(); //to enable multithreading
-  RDataFrame d("Events", input_files); //accessing the events TTree of the input file
+  std::vector<std::string> file_locations = TxtFileListToVecStr(input_files);
+  RDataFrame d("Events", file_locations); //accessing the events TTree of the input file
 
   if(  (YearInt == 2016 && (ProcessInt == 5 || ProcessInt == 6 || ProcessInt == 9 || ProcessInt == 29 || ProcessInt == 30 || ProcessInt == 77 || ProcessInt == 79) ) ||
        (YearInt == 2017 && (ProcessInt == 77 || ProcessInt == 79 || ProcessInt == 93 || ProcessInt == 104 || ProcessInt == 105) ) ||
