@@ -2059,30 +2059,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
                  break;
 
-	case 119: Process = "TriggerSF_MC";
+	case 119: Process = "TriggerSF_MC"; break;
 
-		 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/ttbar_inc_NanoAODv7/*.root"}; break;
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/ttbar_2l2nu_NanoAODv7/*.root"}; break;
-                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/ttbar_2l2nu/*.root"}; break;
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                 }
-
-                 break;
-
-	case 120: Process = "TriggerSF_DATA";
-
-                 switch(YearInt){
-                        case 2016: input_files = {"/data/disk2/nanoAOD_2016/METRun2016B/*.root", "/data/disk2/nanoAOD_2016/METRun2016C/*.root", "/data/disk2/nanoAOD_2016/METRun2016D/*.root", "/data/disk2/nanoAOD_2016/METRun2016E/*.root", "/data/disk2/nanoAOD_2016/METRun2016F/*.root", "/data/disk2/nanoAOD_2016/METRun2016G/*.root", "/data/disk2/nanoAOD_2016/METRun2016H/*.root"}; break;
-
-                        case 2017: input_files = {"/data/disk0/nanoAOD_2017/METRun2017B/*.root", "/data/disk0/nanoAOD_2017/METRun2017C/*.root", "/data/disk0/nanoAOD_2017/METRun2017D/*.root", "/data/disk0/nanoAOD_2017/METRun2017E/*.root", "/data/disk0/nanoAOD_2017/METRun2017F/*"}; break;
-
-                        case 2018: input_files = {"/nfs/data/eepgkkc/nanoAOD2018/METRun2018B/*.root", "/nfs/data/eepgkkc/nanoAOD2018/METRun2018C/*.root", "/nfs/data/eepgkkc/nanoAOD2018/METRun2018D/*.root"}; break;
-
-                        default: throw std::logic_error("Please choose a year out of 2016, 2017 or 2018"); break;
-                 }
-
-                 break;
+	case 120: Process = "TriggerSF_DATA"; break;
 
 	case 121: Process = "Data_DoubleEGRunB"; break;
 
@@ -8581,7 +8560,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   //Input file selection
   EnableImplicitMT(); //to enable multithreading
-  std::input_files = "/afs/cern.ch/work/c/coldham/private/HTCondor/" + Process + "_" + Year + ".txt";
+  std::string input_files = "/afs/cern.ch/work/c/coldham/private/HTCondor/" + Process + "_" + Year + ".txt";
   std::vector<std::string> file_locations = TxtFileListToVecStr(input_files.c_str());
   RDataFrame d("Events", file_locations); //accessing the events TTree of the input file
 
