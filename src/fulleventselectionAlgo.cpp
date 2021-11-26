@@ -8559,7 +8559,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 
   //Input file selection
-  EnableImplicitMT(); //to enable multithreading
+  //EnableImplicitMT(); //to enable multithreading
   std::string input_files = "/afs/cern.ch/work/c/coldham/private/HTCondor/" + Process + "_" + Year + ".txt";
   std::vector<std::string> file_locations = TxtFileListToVecStr(input_files.c_str());
   RDataFrame d("Events", file_locations); //accessing the events TTree of the input file
