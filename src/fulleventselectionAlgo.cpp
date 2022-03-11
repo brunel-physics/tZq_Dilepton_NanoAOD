@@ -112,6 +112,7 @@ void fulleventselectionAlgo::parseCommandLineArguements(int argc, char* argv[]){
 
 using namespace ROOT; // RDataFrame's namespace
 using ROOT::RDF::RNode;
+using namespace std;
 
 using floats = ROOT::VecOps::RVec<float>;
 using ints = ROOT::VecOps::RVec<int>;
@@ -359,22 +360,22 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string HessianOrMC;
   std::string Tune;
 
-  TFile* EGammaEff_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-  TFile* EGammaEffSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
-  TFile* EGammaEffReco_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
-  TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+  TFile* EGammaEff_inputfile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+  TFile* EGammaEffSys_inputfile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaEffi_Tight_80X.txt_EGM2D.root", "READ");
+  TFile* EGammaEffReco_inputfile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
+  TFile* EGammaEffRecoSys_inputfile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2016/egammaRecoEffi.txt_EGM2D.root", "READ");
 
-  TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-  TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
-  TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-  TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-  TFile* EGammaEff_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
-  TFile* EGammaEffSys_inputfile_2017 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+  TFile* EGammaEffReco_HigherPt_inputfile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+  TFile* EGammaEffRecoSys_HigherPt_inputfile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ"); 
+  TFile* EGammaEffReco_LowPt_inputfile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+  TFile* EGammaEffRecoSys_LowPt_inputfile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+  TFile* EGammaEff_inputfile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
+  TFile* EGammaEffSys_inputfile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2017/egammaEffi.txt_EGM2D_runBCDEF_passingTight94X.root", "READ");
 
-  TFile* EGammaEff_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); 
-  TFile* EGammaEffSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
-  TFile* EGammaEffReco_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
-  TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("./ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+  TFile* EGammaEff_inputfile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ"); 
+  TFile* EGammaEffSys_inputfile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/2018_ElectronTight.root", "READ");
+  TFile* EGammaEffReco_inputfile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+  TFile* EGammaEffRecoSys_inputfile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/ElectronSFs/2018/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
 
   TH2* EGammaEff2016_histo = dynamic_cast<TH2*>(EGammaEff_inputfile_2016->Get("EGamma_SF2D")->Clone());
   EGammaEff2016_histo->SetDirectory(nullptr);
@@ -423,61 +424,61 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   EGammaEffRecoSys_inputfile_2018->Close();
 
 
-  TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
+  TFile * inputfile_RunsBCDEF_ID_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_BCDEF.root", "READ");
   TH2* histo_RunsBCDEF_ID_2016 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
   histo_RunsBCDEF_ID_2016->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsGH_ID_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
+  TFile* inputfile_RunsGH_ID_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonID_EfficienciesAndSF_GH.root", "READ");
   TH2* histo_RunsGH_ID_2016 = dynamic_cast<TH2*>(inputfile_RunsGH_ID_2016->Get("MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/pt_abseta_ratio")->Clone());
   histo_RunsGH_ID_2016->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
+  TFile* inputfile_RunsBCDEF_ISO_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_BCDEF.root", "READ");
   TH2* histo_RunsBCDEF_ISO_2016 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
   histo_RunsBCDEF_ISO_2016->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsGH_ISO_2016 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
+  TFile* inputfile_RunsGH_ISO_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2016/MuonISO_EfficienciesAndSF_GH.root", "READ");
   TH2* histo_RunsGH_ISO_2016 = dynamic_cast<TH2*>(inputfile_RunsGH_ISO_2016->Get("TightISO_TightID_pt_eta/pt_abseta_ratio")->Clone());
   histo_RunsGH_ISO_2016->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ID_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
+  TFile* inputfile_RunsBCDEF_ID_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID.root", "READ");
   TH2* histo_RunsBCDEF_ID_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
   histo_RunsBCDEF_ID_2017->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ID_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+  TFile* inputfile_RunsBCDEF_ID_Sys_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
   TH2* histo_RunsBCDEF_ID_Sys_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_Sys_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta")->Clone());
   histo_RunsBCDEF_ID_Sys_2017->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ID_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+  TFile* inputfile_RunsBCDEF_ID_Sys_Stat_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
   TH2* histo_RunsBCDEF_ID_Sys_Stat_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_Sys_Stat_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_stat")->Clone());
   histo_RunsBCDEF_ID_Sys_Stat_2017->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
+  TFile* inputfile_RunsBCDEF_ID_Sys_Syst_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ID_syst.root", "READ");
   TH2* histo_RunsBCDEF_ID_Sys_Syst_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ID_Sys_Syst_2017->Get("NUM_TightID_DEN_genTracks_pt_abseta_syst")->Clone());
   histo_RunsBCDEF_ID_Sys_Syst_2017->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
+  TFile* inputfile_RunsBCDEF_ISO_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO.root", "READ");
   TH2* histo_RunsBCDEF_ISO_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
   histo_RunsBCDEF_ISO_2017->SetDirectory(nullptr);
 
 
-  TFile* inputfile_RunsBCDEF_ISO_Sys_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+  TFile* inputfile_RunsBCDEF_ISO_Sys_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
   TH2* histo_RunsBCDEF_ISO_Sys_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
   histo_RunsBCDEF_ISO_Sys_2017->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ISO_Sys_Stat_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+  TFile* inputfile_RunsBCDEF_ISO_Sys_Stat_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
   TH2* histo_RunsBCDEF_ISO_Sys_Stat_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_Stat_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_stat")->Clone());
   histo_RunsBCDEF_ISO_Sys_Stat_2017->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsBCDEF_ISO_Sys_Syst_2017 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
+  TFile* inputfile_RunsBCDEF_ISO_Sys_Syst_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2017/Muon_RunBCDEF_SF_ISO_syst.root", "READ");
   TH2* histo_RunsBCDEF_ISO_Sys_Syst_2017 = dynamic_cast<TH2*>(inputfile_RunsBCDEF_ISO_Sys_Syst_2017->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta_syst")->Clone());
   histo_RunsBCDEF_ISO_Sys_Syst_2017->SetDirectory(nullptr);
 
 
-  TFile* inputfile_RunsABCD_ID_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
+  TFile* inputfile_RunsABCD_ID_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ID.root", "READ"); //need to double check if root file is correct
   TH2* histo_RunsABCD_ID_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ID_2018->Get("NUM_TightID_DEN_TrackerMuons_pt_abseta")->Clone());
   histo_RunsABCD_ID_2018->SetDirectory(nullptr);
 
-  TFile* inputfile_RunsABCD_ISO_2018 = new TFile("./ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
+  TFile* inputfile_RunsABCD_ISO_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEfficiency/MuonSFs/2018/RunABCD_SF_ISO.root", "READ"); //need to double check if root file is correct
   TH2* histo_RunsABCD_ISO_2018 = dynamic_cast<TH2*>(inputfile_RunsABCD_ISO_2018->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")->Clone());
   histo_RunsABCD_ISO_2018->SetDirectory(nullptr);
 
@@ -515,53 +516,53 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   //Pile up modelling
   //2016
-  TFile *dataPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest.root", "READ");
+  TFile *dataPileupFile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupTest.root", "READ");
   TH1D *dataPU_2016 = dynamic_cast<TH1D*>(dataPileupFile_2016->Get("pileup")->Clone());
 
-  TFile *mcPileupFile_2016 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
+  TFile *mcPileupFile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/pileupMC.root", "READ");
   TH1D* mcPU_2016 = dynamic_cast<TH1D*>(mcPileupFile_2016->Get("pileup")->Clone());
 
   //2016 part 1
-  TFile *dataPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part1.root", "READ");
+  TFile *dataPileupFile_2016_part1 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupTest_part1.root", "READ");
   TH1D *dataPU_2016_part1 = dynamic_cast<TH1D*>(dataPileupFile_2016_part1->Get("pileup")->Clone());
-  TFile *mcPileupFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
+  TFile *mcPileupFile_2016_part1 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/pileupMC.root", "READ");
   TH1D* mcPU_2016_part1 = dynamic_cast<TH1D*>(mcPileupFile_2016_part1->Get("pileup")->Clone());
 
   //2016 part 2
-  TFile *dataPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
+  TFile *dataPileupFile_2016_part2 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupTest_part2.root", "READ");
   TH1D *dataPU_2016_part2 = dynamic_cast<TH1D*>(dataPileupFile_2016_part2->Get("pileup")->Clone());
-  TFile *mcPileupFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/pileupMC.root", "READ");
+  TFile *mcPileupFile_2016_part2 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/pileupMC.root", "READ");
   TH1D* mcPU_2016_part2 = dynamic_cast<TH1D*>(mcPileupFile_2016_part2->Get("pileup")->Clone());
 
   //2017
-  TFile *dataPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupTest.root", "READ");
+  TFile *dataPileupFile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2017/truePileupTest.root", "READ");
   TH1D *dataPU_2017 = dynamic_cast<TH1D*>(dataPileupFile_2017->Get("pileup")->Clone());
-  TFile *mcPileupFile_2017 = new TFile("./ScaleFactors/PileUp/2017/pileupMC.root", "READ");
+  TFile *mcPileupFile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2017/pileupMC.root", "READ");
   TH1D* mcPU_2017 = dynamic_cast<TH1D*>(mcPileupFile_2017->Get("pileup")->Clone());
 
   //2018
-  TFile *dataPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogram2018.root", "READ");
+  TFile *dataPileupFile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2018/MyDataPileupHistogram2018.root", "READ");
   TH1D *dataPU_2018 = dynamic_cast<TH1D*>(dataPileupFile_2018->Get("pileup")->Clone());
-  TFile *mcPileupFile_2018 = new TFile("./ScaleFactors/PileUp/2018/pileupMC2018.root", "READ");
+  TFile *mcPileupFile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2018/pileupMC2018.root", "READ");
   TH1D* mcPU_2018 = dynamic_cast<TH1D*>(mcPileupFile_2018->Get("pileup")->Clone());
 
   //Systematic files
   //2016
-  TFile *systUpFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp.root", "READ");
+  TFile *systUpFile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupUp.root", "READ");
   TH1D *pileupUpHist_2016 = dynamic_cast<TH1D*>(systUpFile_2016->Get("pileup")->Clone());
-  TFile *systDownFile_2016 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown.root", "READ");
+  TFile *systDownFile_2016 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupDown.root", "READ");
   TH1D *pileupDownHist_2016 = dynamic_cast<TH1D*>(systDownFile_2016->Get("pileup")->Clone());
 
   //part 1
-  TFile *systUpFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part1.root", "READ");
+  TFile *systUpFile_2016_part1 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupUp_part1.root", "READ");
   TH1D *pileupUpHist_2016_part1 = dynamic_cast<TH1D*>(systUpFile_2016_part1->Get("pileup")->Clone());
-  TFile *systDownFile_2016_part1 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part1.root", "READ");
+  TFile *systDownFile_2016_part1 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupDown_part1.root", "READ");
   TH1D *pileupDownHist_2016_part1 = dynamic_cast<TH1D*>(systDownFile_2016_part1->Get("pileup")->Clone());
 
   //part 2
-  TFile *systUpFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupUp_part2.root", "READ");
+  TFile *systUpFile_2016_part2 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupUp_part2.root", "READ");
   TH1D *pileupUpHist_2016_part2 = dynamic_cast<TH1D*>(systUpFile_2016_part2->Get("pileup")->Clone());
-  TFile *systDownFile_2016_part2 = new TFile("./ScaleFactors/PileUp/2016/truePileupDown_part2.root", "READ");
+  TFile *systDownFile_2016_part2 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2016/truePileupDown_part2.root", "READ");
   TH1D *pileupDownHist_2016_part2 = dynamic_cast<TH1D*>(systDownFile_2016_part2->Get("pileup")->Clone());
 
   TH1D *puReweight_2016 = dynamic_cast<TH1D*>(dataPU_2016->Clone());
@@ -583,9 +584,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   puReweight_2016_part2->SetDirectory(nullptr);
 
   // 2017
-  TFile *systUpFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
+  TFile *systUpFile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2017/truePileupUp.root", "READ");
   TH1D *pileupUpHist_2017 = dynamic_cast<TH1D*>(systUpFile_2017->Get("pileup")->Clone());
-  TFile *systDownFile_2017 = new TFile("./ScaleFactors/PileUp/2017/truePileupDown.root", "READ");
+  TFile *systDownFile_2017 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2017/truePileupDown.root", "READ");
   TH1D *pileupDownHist_2017 = dynamic_cast<TH1D*>(systDownFile_2017->Get("pileup")->Clone());
 
   TH1D *puReweight_2017 = dynamic_cast<TH1D*>(dataPU_2017->Clone());
@@ -595,9 +596,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   puReweight_2017->SetDirectory(nullptr);
 
   //2018
-  TFile *systUpFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
+  TFile *systUpFile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleUp2018.root", "READ");
   TH1D *pileupUpHist_2018 = dynamic_cast<TH1D*>(systUpFile_2018->Get("pileup")->Clone());
-  TFile *systDownFile_2018 = new TFile("./ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleDown2018.root", "READ");
+  TFile *systDownFile_2018 = new TFile("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/PileUp/2018/MyDataPileupHistogramScaleDown2018.root", "READ");
   TH1D *pileupDownHist_2018 = dynamic_cast<TH1D*>(systDownFile_2018->Get("pileup")->Clone());
 
   TH1D *puReweight_2018 = dynamic_cast<TH1D*>(dataPU_2018->Clone());
@@ -2360,9 +2361,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
    		switch(YearInt){
 
-			case 2016: GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"; break;
-        		case 2017: GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"; break;
-        		case 2018: GoldenJsonFileName = "./ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"; break;
+			case 2016: GoldenJsonFileName = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/GoldenJSON/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"; break;
+        		case 2017: GoldenJsonFileName = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/GoldenJSON/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"; break;
+        		case 2018: GoldenJsonFileName = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/GoldenJSON/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"; break;
         		default: std::cout << "Choose the year out of 2016, 2017 or 2018" << std::endl; break;
 
    		}
@@ -4086,9 +4087,9 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
 	switch(YearInteger){
 
-		case 2016: RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt"; break;
-		case 2017: RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2017.txt"; break;
-		case 2018: RoccoTextFile = "./ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2018.txt"; break;
+		case 2016: RoccoTextFile = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2016.txt"; break;
+		case 2017: RoccoTextFile = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2017.txt"; break;
+		case 2018: RoccoTextFile = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/LeptonEnergyCorrections/RochesterCorrections/roccor.Run2.v3/RoccoR2018.txt"; break;
 		default: std::cout << "Error for rochester corrections: choose a year out of 2016, 2017 or 2018." << std::endl; break;
 	}
 
@@ -4242,48 +4243,48 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	switch(YearInt){
 
 		case 2016: if(sigmaJER == true && SF == false && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";
 			   }
   			   else if(sigmaJER == false && SF == true && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
 			   }
   			   else if(sigmaJER == false && SF == false && up == true && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
 			   }
   			   else if(sigmaJER == false && SF == false && up == false && down == true){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
 			   }
   			   else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 			   break;
  
   		case 2017: if(sigmaJER == true && SF == false && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == true && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == true && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == false && down == true){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
 			   }
         		   else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 			   break;
 
 		case 2018: if(sigmaJER == true && SF == false && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";
 			   }
   			   else if(sigmaJER == false && SF == true && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
 			   }
   			   else if(sigmaJER == false && SF == false && up == true && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
 			   }
   			   else if(sigmaJER == false && SF == false && up == false && down == true){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
 			   }
   			   else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
@@ -4446,48 +4447,48 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	switch(YearInt){
 
 		case 2016: if(sigmaJER == true && SF == false && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_PtResolution_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == true && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == true && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == false && down == true){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2016/Summer16_25nsV1_MC_SF_AK4PFchs.txt";
 			   }
         		   else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 			   break;
 
 		case 2017: if(sigmaJER == true && SF == false && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_PtResolution_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == true && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == true && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == false && down == true){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2017/Fall17_V3_MC_SF_AK4PFchs.txt";
 			   }
         		   else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
 			   break;
 
 		case 2018: if(sigmaJER == true && SF == false && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_PtResolution_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == true && up == false && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
 			   }
         		   else if(sigmaJER == false && SF == false && up == true && down == false){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
 			   }
         		  else if(sigmaJER == false && SF == false && up == false && down == true){
-				FileNameJetSmear = "./ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
+				FileNameJetSmear = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/JECs/JetSmearing/2018/Autumn18_V1_MC_SF_AK4PFchs.txt";
 			   }
         		  else{std::cout << "Please enter an appropriate file name" << std::endl;}
 
@@ -5354,7 +5355,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 	switch(ZPlusJetsCRInt){
       
     		case 0: return !isinf(w_mass); break; //( abs(w_mass - W_MASS) < W_MASS_CUT ); break;
-    		case 1: return !isinf(w_mass) && (MET_sumEt < 50); break;
+    		case 1: return !isinf(w_mass) && ( abs(w_mass - W_MASS) > W_MASS_CUT ) /*(MET_sumEt < 50)*/; break;
       
         }
 
@@ -5847,7 +5848,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   	for(long unsigned int j = 0; j < Jet_hadronFlavour.size(); j++){
 
-		CSVReader reader("./ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
+		CSVReader reader("/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/ScaleFactors/BTaggingEfficiency/CSVv2_94XSF_V2_B_F.csv");
 		std::vector<std::vector<std::string> > dataList = reader.getData();
 		std::vector<std::string> OutputVec{}; 
 		std::vector<std::string> outputstringvec{};
@@ -7822,7 +7823,7 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
         std::cout << "print 150" << std::endl;
         using namespace std;
         
-        std::string NormFileString = "src/Normalisation/NormalisationFactors_" + YearChoice + ".txt";
+        std::string NormFileString = "/afs/cern.ch/work/c/coldham/private/HTCondor/tZq_Dilepton_NanoAOD/src/Normalisation/NormalisationFactors_" + YearChoice + ".txt";
   
         std::fstream file(NormFileString.c_str());
         GotoLine(file, LineNumber);
@@ -8560,9 +8561,14 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
 
   //Input file selection
   //EnableImplicitMT(); //to enable multithreading
-  std::string input_files = "/afs/cern.ch/work/c/coldham/private/HTCondor/" + Process + "_" + Year + ".txt";
+  std::string input_files = "/afs/cern.ch/work/c/coldham/private/HTCondor/" + Process + "_files_" + Year + ".txt";
   std::vector<std::string> file_locations = TxtFileListToVecStr(input_files.c_str());
+
+  std::cout << "input_files.c_str() = " << input_files.c_str() << std::endl;
+  std::cout << "file_locations.at(0) = " << file_locations.at(0) << std::endl;
+
   RDataFrame d("Events", file_locations); //accessing the events TTree of the input file
+  chdir("//eos/user/c/coldham/HTCondor_Results/"); //changing directories so output files are saved to eos 
 
   if(  (YearInt == 2016 && (ProcessInt == 5 || ProcessInt == 6 || ProcessInt == 9 || ProcessInt == 29 || ProcessInt == 30 || ProcessInt == 77 || ProcessInt == 79) ) ||
        (YearInt == 2017 && (ProcessInt == 77 || ProcessInt == 79 || ProcessInt == 93 || ProcessInt == 104 || ProcessInt == 105) ) ||
@@ -9732,7 +9738,8 @@ void tZq_NanoAOD_Output(const int& MCInt,  	    const int& ProcessInt,  const in
   std::string OutRootFile = OutRootFileStart + Process + "_" + Systematic + "_" + Channel + "_" + NonPromptLepton + "_" +
                             SignalRegion + "_" + SideBandRegion + "_" + ZPlusJetsControlRegion + "_" + ttbarControlRegion + "_" + Year + ".root";
 
-  auto Snapshot_WeightedHistos = d_Blinded.Snapshot("Events", OutRootFile.c_str());
+  //auto Snapshot_WeightedHistos = d_Blinded.Snapshot("Events", OutRootFile.c_str());
+  auto Snapshot_WeightedHistos = d_Blinding.Snapshot("Events", OutRootFile.c_str());
 
 
 }
@@ -9789,7 +9796,7 @@ void fulleventselectionAlgo::fulleventselection(){
 
   		std::cout << "print 190" << std::endl;
 
-   		NPL_TextFile = "NPLInfo_" + SampleInput + "_Nominal_" + Channel_String + "__" + SR_String + "_" + SBR_String + "___" + Year_String + ".txt";
+   		NPL_TextFile = "//eos/user/c/coldham/HTCondor_Results/NPLInfo_" + SampleInput + "_Nominal_" + Channel_String + "__" + SR_String + "_" + SBR_String + "___" + Year_String + ".txt";
 
   		using namespace std;
 
